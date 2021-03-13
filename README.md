@@ -20,7 +20,7 @@ just hooked up the GPIO pins with the relay board, and now I can turn the power 
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
-	pip install https://github.com/borisbu/OctoRelay/archive/master.zip
+	https://github.com/borisbu/OctoRelay/archive/master.zip
 
 ## Configuration
 ![Settings panel](img/settings.png)
