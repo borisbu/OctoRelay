@@ -1,0 +1,46 @@
+<form class="form-horizontal">
+	<h3>OctoRelay settings</h3>
+    {% for n in range(1,9) %}
+	<div class="control-group">
+        <label class="control-label">Relay {{n}} active</label>
+        <div class="controls">
+            <label class="checkbox">
+                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.active" >
+            </label>
+        </div>
+        <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active" >
+            <label class="control-label">{{ _('Relay PIN') }}</label>
+            <div class="controls">
+                <input id="relay_pin-input" type="number" min="1" max="40" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
+
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.initial_value">
+                    {{ _('ON on boot') }}
+                </label>
+                <label class="checkbox">
+                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.inverted_output">
+                    {{ _('Inverted output') }}
+                </label>
+            </div>
+            <label class="control-label">{{ _('Icon On') }}</label>
+            <div class="controls">
+                <label class="text">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.iconOn">
+                </label>
+            </div>
+            <label class="control-label">{{ _('Icon Off') }}</label>
+            <div class="controls">
+                <label class="text">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.iconOff">
+                </label>
+            </div>
+            <label class="control-label">{{ _('Label') }}</label>
+            <div class="controls">
+                <label class="text">
+                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.labelText">
+                </label>
+            </div>
+        </div>
+	</div>
+    {% endfor %}
+</form>

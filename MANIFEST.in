@@ -1,0 +1,4 @@
+include README.md
+recursive-include octoprint_octorelay/templates *
+recursive-include octoprint_octorelay/translations *
+recursive-include octoprint_octorelay/static *
