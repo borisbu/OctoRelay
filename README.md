@@ -1,31 +1,40 @@
 # OctoRelay
 A plugin that adds buttons to the navigation bar to toggle GPIO pins on the Raspberry Pi.
 
-This Plugin is based on the Octolight Plugin by Žiga Kralj (https://github.com/gigibu5/OctoLight) thanks ;-)
+This Plugin was based on the Octolight Plugin by Žiga Kralj (https://github.com/gigibu5/OctoLight) thanks ;-)
 
-![WebUI interface](img/screenshoot.png)
+![WebUI interface](img/screenshot.png)
+
+I use it with a 4 relay board, and printed this case for it:
+https://www.thingiverse.com/thing:2975944
+
+![Relay Board](img/relay-raspberry.jpg)
+
+
+
+just hooked up the GPIO pins with the relay board, and now I can turn the power of the printer, the fan and the light on and foo with OctoPrint.
+
+![Raspberry Pi GPIO](img/rpi_gpio.png)
 
 ## Setup
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
-	https://github.com/borisbu/OctoRelay/archive/master.zip
+	pip install https://github.com/borisbu/OctoRelay/archive/master.zip
 
 ## Configuration
 ![Settings panel](img/settings.png)
 
-Curently, you can configure two settings:
-- `Light PIN`: The pin on the Raspberry Pi that the button controls.
-	- Default value: 13
-	- The pin number is saved in the **board layout naming** scheme (gray labels on the pinout image below).
-	- **!! IMPORTANT !!** The Raspberry Pi can only controll the **GPIO** pins (orange labels on the pinout image below)
-	![Raspberry Pi GPIO](img/rpi_gpio.png)
+Curently, OctoRelay supports up to 8 relays:
 
-- `Inverted output`: If true, the output will be inverted
-	- Usage: if you have a light, that is turned off when voltage is applied to the pin (wired in negative logic), you should turn on this option, so the light isn't on when you reboot your Raspberry Pi.
 
-## TO DO
-- [ ] Update interface if Light is turned on or off
+| key | value |
+|--|--|
+| Relay X active | if true, this relay is active. If false, it will disappear in the settings and the navigation bar |
+| Relay PIN | the GPIO pin on the Raspberry pi (see the picture above) |
+| On on boot | if ticked this pin will be set to ON on start |
+| Inverted output | if ticked the output on the pin is inverted (ex. relays is ON if GPIO pi is GND and OFF if GPIO pin is 3.3V) |
+| Icon On | piece of html output if the relay is ON (can be text, img...)|
+| Icon Off | piece of html output if the relay is OFF |
+| Label | the html title of the icon in the navbar (text if you hover the icon) |
 
-Maybe in the distant future:
-- [ ] Turn off on finish print

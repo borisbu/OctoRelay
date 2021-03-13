@@ -35,8 +35,8 @@ class OctoRelayPlugin(
 				relay_pin = 17,
 				inverted_output = True,
 				initial_value = False,
-				iconOn = "&#128161;",
-				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+				iconOn = """<img src="https://github.com/borisbu/OctoRelay/blob/master/img/3d-printer.png?raw=true" highth="24" width="24">""",
+				iconOff = """<img src="https://github.com/borisbu/OctoRelay/blob/master/img/3d-printer.png?raw=true" highth="24" width="24" style="filter: opacity(20%)">""",
 				labelText = "Printer",
 			),
 			r3=dict(
@@ -44,8 +44,8 @@ class OctoRelayPlugin(
 				relay_pin = 18,
 				inverted_output = True,
 				initial_value = False,
-				iconOn = "&#128161;",
-				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+				iconOn = """<img highth="24" width="24" src="https://github.com/borisbu/OctoRelay/blob/master/img/fan-24.png?raw=true" >""",
+				iconOff = """<img highth="24" width="24" src="https://github.com/borisbu/OctoRelay/blob/master/img/fan-24.png?raw=true" style="filter: opacity(20%)">""",
 				labelText = "Fan",
 			),
 			r4=dict(
@@ -62,8 +62,8 @@ class OctoRelayPlugin(
 				relay_pin = 24,
 				inverted_output = True,
 				initial_value = False,
-				iconOn = "&#128438;",
-				iconOff = "<div style=\"filter: grayscale(90%)\">&#128438;</div>",
+				iconOn = "ON",
+				iconOff = "OFF",
 				labelText = "R5",
 			),
 			r6=dict(

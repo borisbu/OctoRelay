@@ -1,8 +1,7 @@
 {% for n in range(1,9) %}
-    <div id="relaisr{{n}}" style="cursor: pointer; user-select: none; ">
-        <a onclick='OctoPrint.simpleApiCommand("octorelay", "update", {"pin":"r{{n}}"})' style="cursor: pointer; user-select: none; ">
-            <div id="isONiconr{{n}}" style="font-size: 1.3em; " >R{{n}}</div>
-            <div id="isONlabelr{{n}}" style="font-size: 0.8em; " >relay {{n}}</div>
+    <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; ">
+        <a id="ralayIconr{{n}}" onclick='OctoPrint.simpleApiCommand("octorelay", "update", {"pin":"r{{n}}"})' title="relay {{n}}" style="text-decoration:none;">
+            R{{n}}
         </a>
     </div>
 {% endfor %}
