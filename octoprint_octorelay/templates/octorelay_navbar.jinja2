@@ -1,7 +1,22 @@
+<script type="application/javascript">
+    function OctoRelayConfirmClick(pin, confirmOff)
+    {
+        console.log("confirmOff "+ confirmOff);
+        if(confirmOff === "true"){
+            var result = window.confirm("Are you sure?");
+            if (result) {
+                OctoPrint.simpleApiCommand("octorelay", "update", pin);
+            }
+        } else {
+            OctoPrint.simpleApiCommand("octorelay", "update", pin);
+        }
+    }
+</script>
 {% for n in range(1,9) %}
     <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; ">
-        <a id="ralayIconr{{n}}" onclick='OctoPrint.simpleApiCommand("octorelay", "update", {"pin":"r{{n}}"})' title="relay {{n}}" style="text-decoration:none;">
+        <a id="ralayIconr{{n}}" onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.getAttribute("data-confirm"))' data-confirm="False" title="relay {{n}}" style="text-decoration:none;">
             R{{n}}
         </a>
     </div>
 {% endfor %}
+
