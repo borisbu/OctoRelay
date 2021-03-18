@@ -209,19 +209,19 @@ class OctoRelayPlugin(
 		if event == Events.CLIENT_OPENED:
 			self.update_ui()
 		elif event == Events.PRINT_STARTED:
-			self._logger.info("Got event: {}".format(event))
+			self._logger.debug("Got event: {}".format(event))
 			self.print_started()
 		elif event == Events.PRINT_DONE:
-			self._logger.info("Got event: {}".format(event))
+			self._logger.debug("Got event: {}".format(event))
 			self.print_stopped()
 		elif event == Events.PRINT_FAILED:
-			self._logger.info("Got event: {}".format(event))
+			self._logger.debug("Got event: {}".format(event))
 			self.print_stopped()
 		elif event == Events.PRINT_CANCELLING:
-			self._logger.info("Got event: {}".format(event))
+			self._logger.debug("Got event: {}".format(event))
 			self.print_stopped()
 		elif event == Events.PRINT_CANCELLED:
-			self._logger.info("Got event: {}".format(event))
+			self._logger.debug("Got event: {}".format(event))
 			self.print_stopped()
 		return
 
@@ -256,17 +256,16 @@ class OctoRelayPlugin(
 			relay_pin = int(settings["relay_pin"])
 			inverted = settings['inverted_output']
 			autoOFFforPrint = settings['autoOFFforPrint']
-			autoOffDelay = settings['autoOffDelay']
+			autoOffDelay = int(settings['autoOffDelay'])
 			if autoOFFforPrint:
-				self._logger.info("turn off pin: {} in {} seconds. index: {}".format(relay_pin, autoOffDelay, index))
-				asyncio.run(self.turn_off_pin(self,autoOffDelay,relay_pin,inverted))
+				self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(relay_pin, autoOffDelay, index))
+				asyncio.run(self.turn_off_pin(autoOffDelay,relay_pin,inverted))
 		self.update_ui()
 
 
 	async def turn_off_pin(self, delay, relay_pin, inverted):
 		self._logger.info("turn off pin: {} in {} seconds.".format(relay_pin, delay))
 		await asyncio.sleep(delay)
-		self._logger.info("turn off pin {}".format(relay_pin))
 		GPIO.setwarnings(False)
 		GPIO.setup(relay_pin, GPIO.OUT)
 		# XOR with inverted
