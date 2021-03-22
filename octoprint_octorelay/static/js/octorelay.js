@@ -23,7 +23,10 @@ $(function() {
                     $("#ralayIcon"+key).html(value.iconText);
                 }
                 if (value.labelText !== undefined) {
-                    $("#ralayIcon"+key).prop("title", (value.labelText));
+                    $("#ralayIcon"+key).attr("title", (value.labelText));
+                }
+                if (value.confirmOff !== undefined) {
+                    $("#ralayIcon"+key).attr("data-confirm", (value.confirmOff));
                 }
             }
         };

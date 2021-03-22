@@ -4,6 +4,7 @@ from __future__ import absolute_import, unicode_literals
 import octoprint.plugin
 from octoprint.events import Events
 import flask
+import asyncio
 
 import RPi.GPIO as GPIO
 
@@ -29,6 +30,10 @@ class OctoRelayPlugin(
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "Light",
+				confirmOff = False,
+				autoONforPrint = True,
+				autoOFFforPrint = True,
+				autoOffDelay = 10,
 			),
 			r2=dict(
 				active = True,
@@ -38,6 +43,10 @@ class OctoRelayPlugin(
 				iconOn = """<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24">""",
 				iconOff = """<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24" style="filter: opacity(20%)">""",
 				labelText = "Printer",
+				confirmOff = True,
+				autoONforPrint = False,
+				autoOFFforPrint = False,
+				autoOffDelay = 0,
 			),
 			r3=dict(
 				active = True,
@@ -47,6 +56,10 @@ class OctoRelayPlugin(
 				iconOn = """<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" >""",
 				iconOff = """<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" style="filter: opacity(20%)">""",
 				labelText = "Fan",
+				confirmOff = False,
+				autoONforPrint = True,
+				autoOFFforPrint = True,
+				autoOffDelay = 10,
 			),
 			r4=dict(
 				active = True,
@@ -56,6 +69,10 @@ class OctoRelayPlugin(
 				iconOn = "&#127765;",
 				iconOff = "&#127761;",
 				labelText = "R4",
+				confirmOff = False,
+				autoONforPrint = False,
+				autoOFFforPrint = False,
+				autoOffDelay = 0,
 			),
 			r5=dict(
 				active = False,
@@ -65,6 +82,10 @@ class OctoRelayPlugin(
 				iconOn = "ON",
 				iconOff = "OFF",
 				labelText = "R5",
+				confirmOff = False,
+				autoONforPrint = False,
+				autoOFFforPrint = False,
+				autoOffDelay = 0,
 			),
 			r6=dict(
 				active = False,
@@ -74,6 +95,10 @@ class OctoRelayPlugin(
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R6",
+				confirmOff = False,
+				autoONforPrint = False,
+				autoOFFforPrint = False,
+				autoOffDelay = 0,
 			),
 			r7=dict(
 				active = False,
@@ -83,6 +108,10 @@ class OctoRelayPlugin(
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R7",
+				confirmOff = False,
+				autoONforPrint = False,
+				autoOFFforPrint = False,
+				autoOffDelay = 0,
 			),
 			r8=dict(
 				active = False,
@@ -92,6 +121,10 @@ class OctoRelayPlugin(
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R8",
+				confirmOff = False,
+				autoONforPrint = False,
+				autoOFFforPrint = False,
+				autoOffDelay = 0,
 			),
 		)
 
@@ -183,10 +216,70 @@ class OctoRelayPlugin(
 	def on_event(self, event, payload):
 		if event == Events.CLIENT_OPENED:
 			self.update_ui()
+		elif event == Events.PRINT_STARTED:
+			self._logger.debug("Got event: {}".format(event))
+			self.print_started()
+		elif event == Events.PRINT_DONE:
+			self._logger.debug("Got event: {}".format(event))
+			self.print_stopped()
+		elif event == Events.PRINT_FAILED:
+			self._logger.debug("Got event: {}".format(event))
+			self.print_stopped()
+		elif event == Events.PRINT_CANCELLING:
+			self._logger.debug("Got event: {}".format(event))
+			self.print_stopped()
+		elif event == Events.PRINT_CANCELLED:
+			self._logger.debug("Got event: {}".format(event))
+			self.print_stopped()
 		return
 
 	def on_settings_save(self, data):
 		octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+		self.update_ui()
+
+	def print_started(self):
+		for n in range(1,9):
+			index = "r"+str(n)
+			settings = self.get_settings_defaults()[index]
+			settings.update(self._settings.get([index]))
+
+			autoONforPrint = settings['autoONforPrint']
+			if autoONforPrint:
+				relay_pin = int(settings["relay_pin"])
+				inverted = settings['inverted_output']
+
+				GPIO.setwarnings(False)
+				GPIO.setup(relay_pin,GPIO.OUT)
+				# XOR with inverted
+				GPIO.output(relay_pin, inverted != True)
+				GPIO.setwarnings(True)
+		self.update_ui()
+
+	def print_stopped(self):
+		for n in range(1,9):
+			index = "r"+str(n)
+			settings = self.get_settings_defaults()[index]
+			settings.update(self._settings.get([index]))
+
+			relay_pin = int(settings["relay_pin"])
+			inverted = settings['inverted_output']
+			autoOFFforPrint = settings['autoOFFforPrint']
+			autoOffDelay = int(settings['autoOffDelay'])
+			if autoOFFforPrint:
+				self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(relay_pin, autoOffDelay, index))
+				asyncio.run(self.turn_off_pin(autoOffDelay,relay_pin,inverted))
+		self.update_ui()
+
+
+	async def turn_off_pin(self, delay, relay_pin, inverted):
+		self._logger.info("turn off pin: {} in {} seconds.".format(relay_pin, delay))
+		await asyncio.sleep(delay)
+		GPIO.setwarnings(False)
+		GPIO.setup(relay_pin, GPIO.OUT)
+		# XOR with inverted
+		GPIO.output(relay_pin, inverted != False)
+		GPIO.setwarnings(True)
+		self._logger.info("pin: {} turned off".format(relay_pin))
 		self.update_ui()
 
 	def update_ui(self):
@@ -201,6 +294,7 @@ class OctoRelayPlugin(
 			inverted = settings['inverted_output']
 			iconOn = settings['iconOn']
 			iconOff = settings['iconOff']
+			confirmOff = settings['confirmOff']
 
 			# set the icon state
 			GPIO.setwarnings(False)
@@ -209,11 +303,14 @@ class OctoRelayPlugin(
 			GPIO.setwarnings(True)
 			if ledState:
 				self.model[index]['iconText'] = iconOn
+				self.model[index]['confirmOff'] = confirmOff
 			else:
 				self.model[index]['iconText'] = iconOff
+				self.model[index]['confirmOff'] = False
 			self.model[index]['labelText'] = labelText
 			self.model[index]['active'] = active
 
+		#self._logger.info("update ui with model {}".format(self.model))
 		self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
 
