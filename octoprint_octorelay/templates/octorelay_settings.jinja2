@@ -55,11 +55,11 @@
                 </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.autoOFFforPrint">
-                    {{ _('Auto OFF after printing') }}
+                    {{ _('Auto OFF after print finishes') }}
                 </label>
                 <label class="text">
                     <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.autoOffDelay">
-                    {{ _('Auto OFF delay in seconds (time lag)') }}
+                    {{ _('Auto OFF delay after print finished in seconds (Auto OFF has to be selected)') }}
                 </label>
             </div>
         </div>
