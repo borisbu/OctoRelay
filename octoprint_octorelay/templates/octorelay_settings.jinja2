@@ -59,7 +59,9 @@
                 </label>
                 <label class="text">
                     <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.autoOffDelay">
-                    {{ _('Auto OFF delay after print finished in seconds (Auto OFF has to be selected)') }}
+                    {{ _('OFF delay after print finished') }}
+                    <span class="help-block">{{ _('The delay to turn OFF a relay automatically in seconds (Auto OFF has to be selected). For example for a fan, that should run a little longer after the print.') }}</span>
+
                 </label>
             </div>
         </div>
