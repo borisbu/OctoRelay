@@ -8,6 +8,7 @@ import flask
 from octoprint.util import ResettableTimer
 
 import RPi.GPIO as GPIO
+import os
 
 GPIO.setmode(GPIO.BCM)
 
@@ -28,6 +29,7 @@ class OctoRelayPlugin(
 				relay_pin = 4,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "Light",
@@ -41,6 +43,7 @@ class OctoRelayPlugin(
 				relay_pin = 17,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = """<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24">""",
 				iconOff = """<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24" style="filter: opacity(20%)">""",
 				labelText = "Printer",
@@ -54,6 +57,7 @@ class OctoRelayPlugin(
 				relay_pin = 18,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = """<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" >""",
 				iconOff = """<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" style="filter: opacity(20%)">""",
 				labelText = "Fan",
@@ -67,6 +71,7 @@ class OctoRelayPlugin(
 				relay_pin = 23,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = "&#127765;",
 				iconOff = "&#127761;",
 				labelText = "R4",
@@ -80,6 +85,7 @@ class OctoRelayPlugin(
 				relay_pin = 24,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = "ON",
 				iconOff = "OFF",
 				labelText = "R5",
@@ -93,6 +99,7 @@ class OctoRelayPlugin(
 				relay_pin = 25,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R6",
@@ -106,6 +113,7 @@ class OctoRelayPlugin(
 				relay_pin = 8,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R7",
@@ -119,6 +127,7 @@ class OctoRelayPlugin(
 				relay_pin = 7,
 				inverted_output = True,
 				initial_value = False,
+				cmd = "",
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R8",
@@ -189,6 +198,7 @@ class OctoRelayPlugin(
 
 		relay_pin = int(settings["relay_pin"])
 		inverted = settings['inverted_output']
+		cmd = settings['cmd']
 
 		GPIO.setwarnings(False)
 
@@ -210,6 +220,8 @@ class OctoRelayPlugin(
 		GPIO.output(relay_pin, inverted != ledState)
 
 		GPIO.setwarnings(True)
+		if cmd:
+			os.system(cmd)
 
 		self.update_ui()
 
@@ -299,6 +311,7 @@ class OctoRelayPlugin(
 			active = int(settings["active"])
 			relay_pin = int(settings["relay_pin"])
 			inverted = settings['inverted_output']
+			cmd = settings['cmd']
 			iconOn = settings['iconOn']
 			iconOff = settings['iconOff']
 			confirmOff = settings['confirmOff']
