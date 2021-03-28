@@ -22,10 +22,16 @@
                     {{ _('Inverted output') }}
                 </label>
             </div>
-	    <label class="control-label">{{ _('OS Command') }}</label>
+            <label class="control-label">{{ _('OS Command ON') }}</label>
             <div class="controls">
                 <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmdON">
+                </label>
+            </div>
+            <label class="control-label">{{ _('OS Command OFF') }}</label>
+            <div class="controls">
+                <label class="text">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmdOFF">
                 </label>
             </div>
             <label class="control-label">{{ _('Icon On') }}</label>
