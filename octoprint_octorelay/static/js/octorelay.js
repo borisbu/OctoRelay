@@ -26,26 +26,10 @@ $(function() {
                     $("#ralayIcon" + key).attr("title", value.labelText);
                 }
                 if (value.confirmOff !== undefined) {
-                    $("#ralayIcon" + key).attr("data-confirm", parseInt(value.confirmOff, 10));
+                    $("#ralayIcon" + key).attr("data-confirm", value.confirmOff);
                 }
             }
         };
-    }
-
-    function OctoRelayConfirmClick(pin, title, confirmOff) {
-        // console.log("confirmOff " + confirmOff);
-        if (confirmOff === 0) {
-            return OctoPrint.simpleApiCommand("octorelay", "update", pin);
-        }
-        $("#octorelay-confirmation-dialog .modal-title").text("Turning " + title + " off");
-        $("#octorelay-confirmation-text").text("Are you sure you want to turn the " + title + " off?")
-        $("#octorelay-confirmation-dialog .btn-cancel").off("click").on("click", function() {
-            $("#octorelay-confirmation-dialog").modal("hide");
-        });
-        $("#octorelay-confirmation-dialog .btn-confirm").off("click").on("click", function() {
-            OctoPrint.simpleApiCommand("octorelay", "update", pin);
-        });
-        $("#octorelay-confirmation-dialog").modal("show");
     }
 
     OCTOPRINT_VIEWMODELS.push({
