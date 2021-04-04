@@ -13,8 +13,8 @@
     }
 </script>
 {% for n in range(1,9) %}
-    <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; ">
-        <a id="ralayIconr{{n}}" onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.getAttribute("data-confirm"))' data-confirm="False" title="relay {{n}}" style="text-decoration:none;">
+    <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; {% if n > 4 %} display:none; {% endif %}">
+        <a id="ralayIconr{{n}}" onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.getAttribute("data-confirm"))' data-confirm="False" title="relay {{n}}" style="text-decoration:none; cursor:pointer;">
             R{{n}}
         </a>
     </div>
