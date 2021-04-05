@@ -2,16 +2,28 @@
 	<h3>OctoRelay settings</h3>
     {% for n in range(1,9) %}
 	<div class="control-group">
-        <label class="control-label">Relay {{n}} active</label>
+        <label class="control-label">{{ _('Relay') }} {{n}}</label>
         <div class="controls">
             <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.active" >
+                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.active">
+                <span>{{ _('Active') }}</span>
+                <span
+                    class="help-inline"
+                    data-bind="hidden: settings.plugins.octorelay.r{{n}}.active, text: settings.plugins.octorelay.r{{n}}.labelText"
+                    style="line-height: initial; vertical-align: unset;"
+                ></span>
             </label>
         </div>
-        <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active" >
+        <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active">
+            <label class="control-label">{{ _('Label') }}</label>
+            <div class="controls">
+                <label class="text">
+                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.labelText">
+                </label>
+            </div>
             <label class="control-label">{{ _('GPIO Number') }}</label>
             <div class="controls">
-                <input id="relay_pin-input" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
+                <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
 
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.initial_value">
@@ -44,12 +56,6 @@
             <div class="controls">
                 <label class="text">
                     <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.iconOff">
-                </label>
-            </div>
-            <label class="control-label">{{ _('Label') }}</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.labelText">
                 </label>
             </div>
             <label class="control-label">{{ _('Confirm') }}</label>
