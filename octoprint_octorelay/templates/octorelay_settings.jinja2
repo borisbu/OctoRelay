@@ -11,7 +11,7 @@
         <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active" >
             <label class="control-label">{{ _('GPIO Number') }}</label>
             <div class="controls">
-                <input id="relay_pin-input" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
+                <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
 
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.initial_value">
