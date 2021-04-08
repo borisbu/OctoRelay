@@ -332,7 +332,7 @@ class OctoRelayPlugin(
 			inverted = settings['inverted_output']
 			iconOn = settings['iconOn']
 			iconOff = settings['iconOff']
-			confirmOff = settings['confirmOff']
+			confirmOff = int(settings['confirmOff'])
 
 			# set the icon state
 			GPIO.setwarnings(False)
@@ -344,7 +344,7 @@ class OctoRelayPlugin(
 				self.model[index]['confirmOff'] = confirmOff
 			else:
 				self.model[index]['iconText'] = iconOff
-				self.model[index]['confirmOff'] = False
+				self.model[index]['confirmOff'] = 0
 			self.model[index]['labelText'] = labelText
 			self.model[index]['active'] = active
 
