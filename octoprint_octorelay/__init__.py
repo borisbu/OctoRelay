@@ -196,6 +196,7 @@ class OctoRelayPlugin(
     def get_api_commands(self):
         return {
             "update": [],
+            "getStatus": [],
         }
 
     def on_api_command(self, command, data):
