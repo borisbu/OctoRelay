@@ -218,7 +218,7 @@ class OctoRelayPlugin(
         ledState = inverted != GPIO.input(relay_pin)
 
         # added api command to get led status
-        if data["command"] == "getStatus":
+        if command == "getStatus":
             return flask.jsonify(status=ledState)
 
         else:
