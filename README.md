@@ -56,3 +56,7 @@ Curently, OctoRelay supports up to 8 relays:
 - optional confirm dialog on turning OFF
 - Auto ON/OFF on start and finish of the print job
 - Auto OFF delay for a fan, that should run longer after the print finished
+
+1.1.1
+
+- Add api command to get pin status {'pin': 'r1', 'command': 'getStatus'}
