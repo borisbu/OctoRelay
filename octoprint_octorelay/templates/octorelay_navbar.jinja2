@@ -1,7 +1,7 @@
 <script type="application/javascript">
     function OctoRelayConfirmClick(pin, title, confirmOff) {
         // console.log("confirmOff " + confirmOff);
-        if (confirmOff === 0) {
+        if (confirmOff === "false") {
             return OctoPrint.simpleApiCommand("octorelay", "update", pin);
         }
         $("#octorelay-confirmation-dialog .modal-title").text("Turning " + title + " off");
@@ -21,8 +21,8 @@
     <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; {% if n > 4 %} display:none; {% endif %}">
         <a
             id="ralayIconr{{n}}"
-            onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.title, parseInt(this.getAttribute("data-confirm"), 10))'
-            data-confirm="0"
+            onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.title, this.getAttribute("data-confirm"))'
+            data-confirm="false"
             title="relay {{n}}"
             style="text-decoration:none; cursor:pointer;"
         >
