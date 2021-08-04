@@ -21,6 +21,10 @@
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.inverted_output">
                     {{ _('Inverted output') }}
                 </label>
+								<label class="checkbox">
+                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.monitor_state">
+                    {{ _('Monitor state') }}
+                </label>
             </div>
             <label class="control-label">{{ _('Icon On') }}</label>
             <div class="controls">

@@ -28,6 +28,7 @@ class OctoRelayPlugin(
 				relay_pin = 4,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "Light",
@@ -41,6 +42,7 @@ class OctoRelayPlugin(
 				relay_pin = 17,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = """<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24">""",
 				iconOff = """<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24" style="filter: opacity(20%)">""",
 				labelText = "Printer",
@@ -54,6 +56,7 @@ class OctoRelayPlugin(
 				relay_pin = 18,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = """<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" >""",
 				iconOff = """<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" style="filter: opacity(20%)">""",
 				labelText = "Fan",
@@ -67,6 +70,7 @@ class OctoRelayPlugin(
 				relay_pin = 23,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = "&#127765;",
 				iconOff = "&#127761;",
 				labelText = "R4",
@@ -80,6 +84,7 @@ class OctoRelayPlugin(
 				relay_pin = 24,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = "ON",
 				iconOff = "OFF",
 				labelText = "R5",
@@ -93,6 +98,7 @@ class OctoRelayPlugin(
 				relay_pin = 25,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R6",
@@ -106,6 +112,7 @@ class OctoRelayPlugin(
 				relay_pin = 8,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R7",
@@ -119,6 +126,7 @@ class OctoRelayPlugin(
 				relay_pin = 7,
 				inverted_output = True,
 				initial_value = False,
+				monitor_state = False,
 				iconOn = "&#128161;",
 				iconOff = "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
 				labelText = "R8",
@@ -194,22 +202,31 @@ class OctoRelayPlugin(
 
 		GPIO.setup(relay_pin, GPIO.OUT)
 		# XOR with inverted
-		ledState = inverted != GPIO.input(relay_pin)
+		ledState = self.model[index]['state']
+		curState = GPIO.input(relay_pin)
+		if (not self.model[index]['monitor_state'] or ledState == curState):
+			ledState = inverted != curState
 
-		self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
-			relay_pin,
-			inverted,
-			ledState
-		))
+			self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
+				relay_pin,
+				inverted,
+				ledState
+			))
 
-		#toggle state
-		ledState = not ledState
+			#toggle state
+			ledState = not ledState
 
-		GPIO.setup(relay_pin,GPIO.OUT)
-		# XOR with inverted
-		GPIO.output(relay_pin, inverted != ledState)
+			GPIO.setup(relay_pin,GPIO.OUT)
+			# XOR with inverted
+			GPIO.output(relay_pin, inverted != ledState)
 
-		GPIO.setwarnings(True)
+			GPIO.setwarnings(True)
+
+		elif self.model[index]['monitor_state']:
+			self._logger.info("Ocotrelay pin {} is already in the desired state: {}".format(
+				relay_pin,
+				ledState
+			))
 
 		self.update_ui()
 
@@ -290,35 +307,39 @@ class OctoRelayPlugin(
 		self.update_ui()
 
 	def update_ui(self):
-		for n in range(1,9):
-			index = "r"+str(n)
-			settings = self.get_settings_defaults()[index]
-			settings.update(self._settings.get([index]))
+		if hasattr(self, 'model'):
+			for n in range(1,9):
+				index = "r"+str(n)
+				settings = self.get_settings_defaults()[index]
+				settings.update(self._settings.get([index]))
 
-			labelText = settings["labelText"]
-			active = int(settings["active"])
-			relay_pin = int(settings["relay_pin"])
-			inverted = settings['inverted_output']
-			iconOn = settings['iconOn']
-			iconOff = settings['iconOff']
-			confirmOff = settings['confirmOff']
+				labelText = settings["labelText"]
+				active = int(settings["active"])
+				relay_pin = int(settings["relay_pin"])
+				inverted = settings['inverted_output']
+				iconOn = settings['iconOn']
+				iconOff = settings['iconOff']
+				confirmOff = settings['confirmOff']
+				monitor_state = settings['monitor_state']
 
-			# set the icon state
-			GPIO.setwarnings(False)
-			GPIO.setup(relay_pin, GPIO.OUT)
-			ledState = inverted != GPIO.input(relay_pin)
-			GPIO.setwarnings(True)
-			if ledState:
-				self.model[index]['iconText'] = iconOn
-				self.model[index]['confirmOff'] = confirmOff
-			else:
-				self.model[index]['iconText'] = iconOff
-				self.model[index]['confirmOff'] = False
-			self.model[index]['labelText'] = labelText
-			self.model[index]['active'] = active
+				# set the icon state
+				GPIO.setwarnings(False)
+				GPIO.setup(relay_pin, GPIO.OUT)
+				ledState = inverted != GPIO.input(relay_pin)
+				GPIO.setwarnings(True)
+				if ledState:
+					self.model[index]['iconText'] = iconOn
+					self.model[index]['confirmOff'] = confirmOff
+				else:
+					self.model[index]['iconText'] = iconOff
+					self.model[index]['confirmOff'] = False
+				self.model[index]['labelText'] = labelText
+				self.model[index]['active'] = active
+				self.model[index]['state'] = ledState
+				self.model[index]['monitor_state'] = monitor_state
 
-		#self._logger.info("update ui with model {}".format(self.model))
-		self._plugin_manager.send_plugin_message(self._identifier, self.model)
+			#self._logger.info("update ui with model {}".format(self.model))
+			self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
 
 	def get_update_information(self):
