@@ -1,22 +1,47 @@
 <script type="application/javascript">
-    function OctoRelayConfirmClick(pin, confirmOff)
-    {
-        console.log("confirmOff "+ confirmOff);
-        if(confirmOff === "true"){
-            var result = window.confirm("Are you sure?");
-            if (result) {
-                OctoPrint.simpleApiCommand("octorelay", "update", pin);
-            }
-        } else {
-            OctoPrint.simpleApiCommand("octorelay", "update", pin);
+    function OctoRelayConfirmClick(pin, title, confirmOff) {
+        // console.log("confirmOff " + confirmOff);
+        if (confirmOff === "false") {
+            return OctoPrint.simpleApiCommand("octorelay", "update", pin);
         }
+        $("#octorelay-confirmation-dialog .modal-title").text("Turning " + title + " off");
+        $("#octorelay-confirmation-text").text("Are you sure you want to turn the " + title + " off?")
+        $("#octorelay-confirmation-dialog .btn-cancel").off("click").on("click", function() {
+            $("#octorelay-confirmation-dialog").modal("hide");
+        });
+        $("#octorelay-confirmation-dialog .btn-confirm").off("click").on("click", function() {
+            OctoPrint.simpleApiCommand("octorelay", "update", pin);
+            $("#octorelay-confirmation-dialog").modal("hide");
+        });
+        $("#octorelay-confirmation-dialog").modal("show");
     }
 </script>
+
 {% for n in range(1,9) %}
     <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; {% if n > 4 %} display:none; {% endif %}">
-        <a id="ralayIconr{{n}}" onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.getAttribute("data-confirm"))' data-confirm="False" title="relay {{n}}" style="text-decoration:none; cursor:pointer;">
+        <a
+            id="ralayIconr{{n}}"
+            onclick='OctoRelayConfirmClick({"pin":"r{{n}}"}, this.title, this.getAttribute("data-confirm"))'
+            data-confirm="false"
+            title="relay {{n}}"
+            style="text-decoration:none; cursor:pointer;"
+        >
             R{{n}}
         </a>
     </div>
 {% endfor %}
+
+<div id="octorelay-confirmation-dialog" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+        <h3 class="modal-title">Turning the relay off</h3>
+    </div>
+    <div class="modal-body">
+        <h4 id="octorelay-confirmation-text">Are you sure?</h4>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-danger btn-confirm">Confirm</button>
+    </div>
+</div>
 
