@@ -204,6 +204,7 @@ class OctoRelayPlugin(
         return {
             "update": [],
             "getStatus": [],
+            "listActives":[],
         }
 
     def on_api_command(self, command, data):
@@ -227,9 +228,19 @@ class OctoRelayPlugin(
         # added api command to get led status
         if command == "getStatus":
             return flask.jsonify(status=ledState)
-
+        elif command == "listActives":
+            activeRelays = {}
+            for key in self.get_settings_defaults():
+                settings = self.get_settings_defaults()[key]
+                settings.update(self._settings.get([key]))
+                if settings["active"]:
+                    relaydata = dict(
+                        name=settings["labelText"],
+                        status=ledState,
+                    )
+                    activeRelays[key] = relaydata
+            return flask.jsonify(activeRelays)
         else:
-
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
                 inverted,
