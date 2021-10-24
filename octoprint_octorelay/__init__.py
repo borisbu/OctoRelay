@@ -204,14 +204,14 @@ class OctoRelayPlugin(
         return {
             "update": [],
             "getStatus": [],
-            "listActives":[],
+            "listAllStatus":[],
         }
 
     def on_api_command(self, command, data):
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command,data))
 
         # added api command to get led status
-        if command == "listActives":
+        if command == "listALlStatus":
             GPIO.setwarnings(False)
             activeRelays = []
             for key in self.get_settings_defaults():
