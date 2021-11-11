@@ -61,3 +61,7 @@ Curently, OctoRelay supports up to 8 relays:
 
 - Add api command to get pin status {'pin': 'r1', 'command': 'getStatus'}
 - Poll GPIO to update the UI if the state changes in the backround
+
+1.2.0
+
+- Add api command to get all the states at once
