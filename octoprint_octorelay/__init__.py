@@ -15,6 +15,7 @@ GPIO.setwarnings(False)
 
 POLLING_INTERVAL = 0.3
 
+
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.StartupPlugin,
@@ -25,6 +26,11 @@ class OctoRelayPlugin(
     octoprint.plugin.EventHandlerPlugin,
     octoprint.plugin.RestartNeedingPlugin
 ):
+
+    def __init__(self):
+        self.polling_timer = None
+        self.model = None
+        self.turn_off_timers = None
 
     def get_settings_defaults(self):
         return dict(
@@ -74,7 +80,7 @@ class OctoRelayPlugin(
                 autoOffDelay=10,
             ),
             r4=dict(
-                active = True,
+                active=True,
                 relay_pin=23,
                 inverted_output=True,
                 initial_value=True,
@@ -200,83 +206,90 @@ class OctoRelayPlugin(
         self._logger.info("OctoRelay plugin stopped")
         self._logger.info("--------------------------------------------")
 
+    def update_relay(self, index, get_status=False):
+        try:
+            settings = self._settings.get([index], merged=True)
+
+            relay_pin = int(settings["relay_pin"])
+            inverted = settings['inverted_output']
+            cmd_on = settings['cmdON']
+            cmd_off = settings['cmdOFF']
+
+            GPIO.setwarnings(False)
+
+            GPIO.setup(relay_pin, GPIO.OUT)
+            # XOR with inverted
+            led_state = inverted != GPIO.input(relay_pin)
+
+            if get_status:
+                return led_state
+
+            self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
+                relay_pin,
+                inverted,
+                led_state
+            ))
+
+            # toggle state
+            led_state = not led_state
+
+            GPIO.setup(relay_pin, GPIO.OUT)
+            # XOR with inverted
+            GPIO.output(relay_pin, inverted != led_state)
+
+            GPIO.setwarnings(True)
+            if led_state:
+                if cmd_on:
+                    self._logger.info(
+                        "Ocotrelay system command: {}".format(cmd_on))
+                    os.system(cmd_on)
+            else:
+                if cmd_off:
+                    self._logger.info(
+                        "Ocotrelay system command: {}".format(cmd_off))
+                    os.system(cmd_off)
+            self.update_ui()
+            return "ok"
+        except Exception as e:
+            self._logger.debug(e)
+            return "error"
+
     def get_api_commands(self):
         return {
-            "update": [],
-            "getStatus": [],
-            "listAllStatus":[],
+            "update": ["pin"],
+            "getStatus": ["pin"],
+            "listAllStatus": [],
         }
 
     def on_api_command(self, command, data):
-        self._logger.debug("on_api_command {}, some_parameter is {}".format(command,data))
+        self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
 
         # added api command to get led status
         if command == "listAllStatus":
             GPIO.setwarnings(False)
-            activeRelays = []
+            active_relays = []
             for key in self.get_settings_defaults():
-                settings = self.get_settings_defaults()[key]
-                settings.update(self._settings.get([key]))
+                settings = self._settings.get([key], merged=True)
                 if settings["active"]:
-                    relay_pin = int(settings["relay_pin"])   
-                    inverted = settings['inverted_output']     
+                    relay_pin = int(settings["relay_pin"])
+                    inverted = settings['inverted_output']
                     GPIO.setup(relay_pin, GPIO.OUT)
-                    relaydata = dict(
+                    relay_data = dict(
                         id=key,
                         name=settings["labelText"],
                         active=inverted != GPIO.input(relay_pin),
                     )
-                    activeRelays.append(relaydata)
-            return flask.jsonify(activeRelays)
+                    active_relays.append(relay_data)
+            return flask.jsonify(active_relays)
 
-        index = data['pin']
-
-        settings = self.get_settings_defaults()[index]
-        settings.update(self._settings.get([index]))
-
-        relay_pin = int(settings["relay_pin"])
-        inverted = settings['inverted_output']
-        cmdON = settings['cmdON']
-        cmdOFF = settings['cmdOFF']
-
-        GPIO.setwarnings(False)
-
-        GPIO.setup(relay_pin, GPIO.OUT)
-        # XOR with inverted
-        ledState = inverted != GPIO.input(relay_pin)
-        
         # added api command to get led status
         if command == "getStatus":
-            return flask.jsonify(status=ledState)
-            
-        else:
-            self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
-                relay_pin,
-                inverted,
-                ledState
-            ))
+            led_state = self.update_relay(data["pin"], get_status=True)
+            return flask.jsonify(status=led_state)
 
-            # toggle state
-            ledState = not ledState
-
-            GPIO.setup(relay_pin, GPIO.OUT)
-            # XOR with inverted
-            GPIO.output(relay_pin, inverted != ledState)
-
-            GPIO.setwarnings(True)
-            if ledState:
-                if cmdON:
-                    self._logger.info(
-                        "Ocotrelay system command: {}".format(cmdON))
-                    os.system(cmdON)
-            else:
-                if cmdOFF:
-                    self._logger.info(
-                        "Ocotrelay system command: {}".format(cmdOFF))
-                    os.system(cmdOFF)
-            self.update_ui()
-
-            return flask.jsonify(status="ok")
+        if command == "update":
+            status = self.update_relay(data["pin"])
+            return flask.jsonify(status=status)
 
     def on_event(self, event, payload):
         self._logger.debug("Got event: {}".format(event))
@@ -289,10 +302,10 @@ class OctoRelayPlugin(
             self.print_stopped()
         elif event == Events.PRINT_FAILED:
             self.print_stopped()
-        #elif event == Events.PRINT_CANCELLING:
-            # self.print_stopped()
-        #elif event == Events.PRINT_CANCELLED:
-            # self.print_stopped()
+        # elif event == Events.PRINT_CANCELLING:
+        # self.print_stopped()
+        # elif event == Events.PRINT_CANCELLED:
+        # self.print_stopped()
         return
 
     def on_settings_save(self, data):
@@ -304,48 +317,46 @@ class OctoRelayPlugin(
             try:
                 self.turn_off_timers[off_timer].cancel()
                 self._logger.info("cancelled timer: {}".format(off_timer))
-            except:
+            except Exception:
                 self._logger.warn("could not cancel timer: {}".format(off_timer))
         for index in self.model:
-            settings = self.get_settings_defaults()[index]
-            settings.update(self._settings.get([index]))
+            settings = self._settings.get([index], merged=True)
 
-            autoONforPrint = settings['autoONforPrint']
-            if autoONforPrint:
+            auto_on_for_print = settings['autoONforPrint']
+            if auto_on_for_print:
                 relay_pin = int(settings["relay_pin"])
                 inverted = settings['inverted_output']
 
                 GPIO.setup(relay_pin, GPIO.OUT)
                 # XOR with inverted
-                GPIO.output(relay_pin, inverted != True)
+                GPIO.output(relay_pin, inverted is not True)
         self.update_ui()
 
     def print_stopped(self):
         for index in self.model:
-            settings = self.get_settings_defaults()[index]
-            settings.update(self._settings.get([index]))
+            settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
-            autoOFFforPrint = settings['autoOFFforPrint']
-            autoOffDelay = int(settings['autoOffDelay'])
-            cmdOFF = settings['cmdOFF']
+            auto_off_for_print = settings['autoOFFforPrint']
+            auto_off_delay = int(settings['autoOffDelay'])
+            cmd_off = settings['cmdOFF']
             active = settings["active"]
-            if autoOFFforPrint and active:
+            if auto_off_for_print and active:
                 self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(
-                    relay_pin, autoOffDelay, index))
+                    relay_pin, auto_off_delay, index))
                 self.turn_off_timers[index] = ResettableTimer(
-                    autoOffDelay, self.turn_off_pin, [relay_pin, inverted, cmdOFF])
+                    auto_off_delay, self.turn_off_pin, [relay_pin, inverted, cmd_off])
                 self.turn_off_timers[index].start()
         self.update_ui()
 
-    def turn_off_pin(self, relay_pin, inverted, cmdOFF):
+    def turn_off_pin(self, relay_pin, inverted, cmd_off):
         GPIO.setup(relay_pin, GPIO.OUT)
         # XOR with inverted
-        GPIO.output(relay_pin, inverted != False)
+        GPIO.output(relay_pin, inverted is not False)
         GPIO.setwarnings(True)
-        if cmdOFF:
-            os.system(cmdOFF)
+        if cmd_off:
+            os.system(cmd_off)
         self._logger.info("pin: {} turned off".format(relay_pin))
         self.update_ui()
 
@@ -354,30 +365,35 @@ class OctoRelayPlugin(
         for index in settings:
             settings[index].update(self._settings.get([index]))
 
-            labelText = settings[index]["labelText"]
+            label_text = settings[index]["labelText"]
             active = int(settings[index]["active"])
             relay_pin = int(settings[index]["relay_pin"])
             inverted = settings[index]['inverted_output']
-            iconOn = settings[index]['iconOn']
-            iconOff = settings[index]['iconOff']
-            confirmOff = settings[index]['confirmOff']
+            icon_on = settings[index]['iconOn']
+            icon_off = settings[index]['iconOff']
+            confirm_off = settings[index]['confirmOff']
 
             # set the icon state
             GPIO.setup(relay_pin, GPIO.OUT)
             self.model[index]['relay_pin'] = relay_pin
             self.model[index]['state'] = GPIO.input(relay_pin)
-            self.model[index]['labelText'] = labelText
+            self.model[index]['labelText'] = label_text
             self.model[index]['active'] = active
             if inverted != self.model[index]['state']:
-                self.model[index]['iconText'] = iconOn
-                self.model[index]['confirmOff'] = confirmOff
+                self.model[index]['iconText'] = icon_on
+                self.model[index]['confirmOff'] = confirm_off
             else:
-                self.model[index]['iconText'] = iconOff
+                self.model[index]['iconText'] = icon_off
                 self.model[index]['confirmOff'] = False
 
-        #self._logger.info("update ui with model {}".format(self.model))
+        # self._logger.info("update ui with model {}".format(self.model))
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
+    def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
+        if command == "OCTORELAY":
+            index = parameters
+            self.update_relay(index)
+            return None
 
     def get_update_information(self):
         return dict(
@@ -402,10 +418,11 @@ class OctoRelayPlugin(
                 self.update_ui()
                 break
 
+
 __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
-    "octoprint.plugin.softwareupdate.check_config":
-        __plugin_implementation__.get_update_information
+    "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
+    "octoprint.comm.protocol.atcommand.sending": __plugin_implementation__.process_at_command
 }
