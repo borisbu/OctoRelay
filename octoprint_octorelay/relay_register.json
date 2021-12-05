@@ -1,0 +1,8 @@
+{ "relays" : 
+  [ 
+    { "name" : "<default>", "submod" : "mrGpio" },
+    { "name" : "GPIO",      "submod" : "mrGpio" },
+    { "name" : "ProXr",     "submod" : "proxr"  },
+    { "name" : "null",      "submod" : "mrBase" }
+  ]
+}
