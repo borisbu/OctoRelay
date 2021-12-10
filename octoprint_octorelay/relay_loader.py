@@ -60,9 +60,12 @@ import importlib
 ## relevent relay class. Relays are registered in a json file along
 ## with the class name for the API.
 ## function returns a created instance for this relay, or None if the
-## relay name was not matched.
-def instantiate_relay_object( relayName ):
-    jsonDBName = "relay_register.json"
+## relay name was not matched and an exception (error) string.
+## Returns: (rinst, error)
+##     OK   (<val>, None)
+##  Error   (None, '<str>')
+def instantiate_relay_object( cwd, relayName ):
+    jsonDBName = cwd + "/relay_register.json"
     relayDBFile = None
     relay = None
     try:
@@ -71,12 +74,13 @@ def instantiate_relay_object( relayName ):
         relayDBFile.close()
         for R in relayDB['relays']:
             if R['name'] == relayName:
-                submodpath = 'relay_modules.%s' % R['submod']
-                sm = importlib.import_module(submodpath)
+                submodpath = '.relay_modules.' + R['submod']
+                sm = importlib.import_module(name=submodpath, package=__package__)
                 relay = sm.get_top_class_instance()
-    except:
+    except Exception as ex:
+        error = "[relay_loader.instantiate_relay_object() Exception: {}".format(ex)
         if relayDBFile != None:
             relayDBFile.close()
-        return None
-    return relay
+        return (None, error)
+    return (relay, None)
     

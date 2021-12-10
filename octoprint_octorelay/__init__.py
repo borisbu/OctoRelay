@@ -6,11 +6,13 @@ from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 
-# *NEW* Relay Driver Plugin module - supports multiple relay types
-import relay_loader
-
 import flask
 import os
+
+print ( "********* CURRENT DIRECTORY: {}".format(os.getcwd()) )
+
+# *NEW* Relay Driver Plugin module - supports multiple relay types
+from . import relay_loader
 
 POLLING_INTERVAL = 0.3
 
@@ -188,9 +190,9 @@ class OctoRelayPlugin(
             self._logger.debug("settings for global relay driver: {}".format(settings['driver']))
             d_id = settings['driver']['driver_id']
             d_attr = settings['driver']['driver_attr']
-            self.driver = relay_loader.instantiate_relay_object(d_id)
+            (self.driver, error) = relay_loader.instantiate_relay_object(self._basefolder, d_id)
             if self.driver == None:
-                self._logger.error("Invalid Relay driver plugin ID : {}".format(d_id))
+                self._logger.error("Load failed : {}".format(error))
             else:
                 self._logger.debug("Using relay driver plugin: {}".format(d_id))
                 self.driver.open(d_attr) # open plugin, with configured attributes (if needed)
@@ -417,10 +419,19 @@ class OctoRelayPlugin(
                 iconOff = settings[index]['iconOff']
                 confirmOff = settings[index]['confirmOff']
 
-                # set the icon state
-                #GPIO.setup(relay_pin, GPIO.OUT)
+                # Did a GPIO just go active?
+                if active:
+                    if 'active' not in self.model[index]:
+                        #print("[update_ui] - New GPIO :: {}".format(relay_pin))
+                        if self.driver != None:
+                            self.driver.relaySet(relay_pin, inverted != False)
+                    elif int(self.model[index]['active']) != active:
+                        #print("[update_ui] - Re-activated GPIO :: {}".format(relay_pin))
+                        if self.driver != None:
+                            self.driver.relaySet(relay_pin, inverted != False)
+                        
                 r_state = False
-                if self.driver != None:
+                if active and self.driver != None:
                     r_state = self.driver.relayGet(relay_pin)
                 
                 self.model[index]['relay_pin'] = relay_pin
@@ -457,15 +468,17 @@ class OctoRelayPlugin(
     # GPIO Polling thread
     def input_polling(self):
         self._logger.debug("input_polling")
+        mcount = 0 # count # pins changed, if more than zero then update UI
         for index in self.model:
-            r_state = False
-            relay_pin = self.model[index]['relay_pin']
-            if self.driver != None:
-                r_state = self.driver.relayGet(relay_pin)
-            ## if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
-            if self.model[index]['active'] and r_state != self.model[index]['state']:
-                self.update_ui()
-                break
+            if self.model[index]['active']:
+                r_state = False
+                relay_pin = self.model[index]['relay_pin']
+                if self.driver != None:
+                    r_state = self.driver.relayGet(relay_pin)
+                if r_state != self.model[index]['state']:
+                    mcount += 1
+        if mcount > 0:
+            self.update_ui()
 
 __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
