@@ -172,6 +172,34 @@ class OctoRelayPlugin(
             js=["js/octorelay.js"],
         )
 
+    def rplug_reload_driver(self, settings):
+        # 'settings' is a just-created dictionary cache of settings, 
+        # read from Octoprint settings system.
+        # [class] 'self.model' is a dictionary of the current state of
+        # driver and relay/gpios.
+        # On a difference in 'driver', unload any current driver and 
+        # load a new one.
+        if 'driver' in settings:
+            #self._logger.debug("settings for global relay driver: {}".format(settings['driver']))
+            d_id = settings['driver']['driver_id']
+            d_attr = settings['driver']['driver_attr']
+            if 'driver' not in self.model:
+                self.model['driver'] = dict()
+            if 'd_id' not in self.model['driver'] or self.model['driver']['d_id'] != d_id:
+                if self.driver != None:
+                    self._logger.debug("rplug_reload_driver() - unloading old relay driver plugin...")
+                    self.driver.close()
+                    self.driver = None
+                self._logger.debug("rplug_reload_driver() - changing driver plugin to: {}, attrs: {}".format(d_id, d_attr))
+                (self.driver, error) = relay_loader.instantiate_relay_object(self._basefolder, d_id)
+                if self.driver == None:
+                    self._logger.error("rplug_reload_driver() - Load failed : {}".format(error))
+                else:
+                    self._logger.debug("rplug_reload_driver() - loaded OK.")
+                    self.driver.open(d_attr) # open plugin, with configured attributes (if needed)
+                    self.model['driver']['d_id']   = d_id
+                    self.model['driver']['d_attr'] = d_attr
+        
     ## OK
     def on_after_startup(self):
         self._logger.info("--------------------------------------------")
@@ -186,17 +214,9 @@ class OctoRelayPlugin(
         # find and update the global section first. includes loading the 
         # requested relay driver plugin, needed by all enabled relays.
         settings['driver'].update(self._settings.get(['driver']))
-        if 'driver' in settings:
-            self._logger.debug("settings for global relay driver: {}".format(settings['driver']))
-            d_id = settings['driver']['driver_id']
-            d_attr = settings['driver']['driver_attr']
-            (self.driver, error) = relay_loader.instantiate_relay_object(self._basefolder, d_id)
-            if self.driver == None:
-                self._logger.error("Load failed : {}".format(error))
-            else:
-                self._logger.debug("Using relay driver plugin: {}".format(d_id))
-                self.driver.open(d_attr) # open plugin, with configured attributes (if needed)
                 
+        if 'driver' in settings:
+            self.rplug_reload_driver(settings)
         else:
             self._logger.error("Missing global relay configuration settings! (driver)")
 
@@ -408,9 +428,10 @@ class OctoRelayPlugin(
     def update_ui(self):
         settings = self.get_settings_defaults()
         for index in settings:
-            if index != 'driver':
-                settings[index].update(self._settings.get([index]))
-
+            settings[index].update(self._settings.get([index]))
+            if index == 'driver':
+                self.rplug_reload_driver(settings)
+            else:
                 labelText = settings[index]["labelText"]
                 active = int(settings[index]["active"])
                 relay_pin = int(settings[index]["relay_pin"])
@@ -470,13 +491,14 @@ class OctoRelayPlugin(
         self._logger.debug("input_polling")
         mcount = 0 # count # pins changed, if more than zero then update UI
         for index in self.model:
-            if self.model[index]['active']:
-                r_state = False
-                relay_pin = self.model[index]['relay_pin']
-                if self.driver != None:
-                    r_state = self.driver.relayGet(relay_pin)
-                if r_state != self.model[index]['state']:
-                    mcount += 1
+            if index != 'driver':
+                if 'active' in self.model[index] and self.model[index]['active']:
+                    r_state = False
+                    relay_pin = self.model[index]['relay_pin']
+                    if self.driver != None:
+                        r_state = self.driver.relayGet(relay_pin)
+                    if r_state != self.model[index]['state']:
+                        mcount += 1
         if mcount > 0:
             self.update_ui()
 
