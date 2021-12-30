@@ -1,5 +1,19 @@
 <form class="form-horizontal">
 	<h3>OctoRelay Settings</h3>
+    <div class="control-group">
+        <label class="control-label">{{ _('Driver Name') }}</label>
+        <div class="controls">
+            <label class="text">
+                <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.driver.driver_id">
+            </label>
+        </div>
+        <label class="control-label">{{ _('Driver Attributes') }}</label>
+        <div class="controls">
+            <label class="text">
+                <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.driver.driver_attr">
+            </label>
+        </div>
+    </div>
     {% for n in range(1,9) %}
 	<div class="control-group">
         <label class="control-label">{{ _('Relay') }} {{n}}</label>

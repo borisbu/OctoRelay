@@ -65,3 +65,34 @@ Curently, OctoRelay supports up to 8 relays:
 1.2.0
 
 - Add api command to get all the states at once
+
+1.3.0 ? 2.0 ?
+
+- Extended GPIO/Relay Support using a Relay Plugins Module
+- Additional config options to select plugin.
+- Currently supports:
+ - "<default>" (no attributes) - same as "GPIO".
+ - "GPIO"      (no attributes) - use the default Raspberry Pi's onboard GPIOs.
+ - "ProXr"     (<serial device>) - use a Relay board that supports the ProXr command protocol.
+- Easy extension of GPIO/Relay Modules by adding new plugins (see mRBase.py example)
+- Plugins registered using relay_register.json
+
+Additional Info on "ProXr" module:
+- Relay board sometimes un-responsive, see logging info below for a fix.
+- Logging may show errors such as: device reports readiness to read but returned no data
+  If so then use the following to turn off getty on the underlying port:
+  user:~ $ sudo systemctl stop serial-getty@tty<USBn>.service
+  user:~ $ sudo systemctl mask serial-getty@tty<USBn>.service
+    where USBn is the ttyUSB device number connected to the relay board.
+  eg. (for /dev/ttyUSB0) :
+    'sudo systemctl stop serial-getty@ttyUSB0.service'
+    'sudo systemctl mask serial-getty@ttyUSB0.service'
+  This creates a null symlink at /etc/systemd/system/<device> that can be deleted
+  at a later date if the user wants to return the mounting of a TTY to this
+  serial device (needed by login consoles but not by simple serial interfaces)
+- Module Attributes (Full control). The atributes are a comma-separated string but
+  all parameters beyond the device name are optional:
+  <dev[,baud[,bits,par,stops]]>
+  Defaults are: baud=115200, bits=8, par=N, stops=1
+  Response timeout: this is hardcoded to 1 second.
+  
