@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = `
+{
+  "loginState": {
+    "login": true,
+  },
+  "onDataUpdaterPluginMessage": [Function],
+  "settingsViewModel": {
+    "settings": true,
+  },
+}
+`;
+
+exports[`OctoRelayViewModel Should push the model into the registry 1`] = `
+{
+  "construct": [Function],
+  "dependencies": [
+    "settingsViewModel",
+    "loginStateViewModel",
+  ],
+}
+`;
