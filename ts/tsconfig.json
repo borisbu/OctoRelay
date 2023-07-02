@@ -1,0 +1,14 @@
+{
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "alwaysStrict": false,
+    "removeComments": true,
+    "outDir": "../octoprint_octorelay/static/js"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

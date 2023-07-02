@@ -1,0 +1,11 @@
+{
+  "name": "octorelay",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {},
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.0",
+    "@types/jquery": "^3.5.16",
+    "typescript": "^5.1.6"
+  }
+}
