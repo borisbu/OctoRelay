@@ -4,7 +4,6 @@
     "target": "ES5",
     "module": "CommonJS",
     "moduleResolution": "Node",
-    "alwaysStrict": false,
     "removeComments": true,
     "outDir": "../octoprint_octorelay/static/js"
   },
