@@ -15,10 +15,7 @@ $(function () {
       if (plugin !== "octorelay") {
         return;
       }
-      // console.log("onDataUpdaterPluginMessage: " + JSON.stringify(data));
       for (const [key, value] of Object.entries(data)) {
-        // console.log(JSON.stringify(key));
-        // console.log(JSON.stringify(value));
         const btn = $("#relais" + key);
         if (value.active !== undefined) {
           btn.toggle(value.active === 1)
