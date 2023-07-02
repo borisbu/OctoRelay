@@ -1,13 +1,14 @@
 type MessageHandler = (plugin: string, data: object) => void;
+type PluginViewModel = (this: PluginViewModel & {
+  settingsViewModel: object,
+  loginState: object,
+  onDataUpdaterPluginMessage: MessageHandler
+}, dependencies: object[]) => void;
 
 $(function () {
-  function OctoRelayViewModel(
-    this: typeof OctoRelayViewModel & {
-      settingsViewModel: object,
-      loginState: object,
-      onDataUpdaterPluginMessage: MessageHandler
-    },
-    [settingsViewModel, loginStateViewModel]: object[]
+  const OctoRelayViewModel: PluginViewModel = function (
+    this,
+    [settingsViewModel, loginStateViewModel]
   ) {
     const self = this;
     self.settingsViewModel = settingsViewModel;
