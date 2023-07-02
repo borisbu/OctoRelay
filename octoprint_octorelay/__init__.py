@@ -390,7 +390,19 @@ class OctoRelayPlugin(
 
                 user="borisbu",
                 repo="OctoRelay",
-                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip"
+                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+
+                stable_branch=dict(
+                    name="Stable",
+                    branch="master",
+                    commitish=["master"]
+                ),
+
+                prerelease_branches=[dict(
+                    name="Prerelease",
+                    branch="develop",
+                    commitish=["develop", "master"]
+                )]
             )
         )
 
