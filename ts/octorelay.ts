@@ -21,11 +21,7 @@ $(function () {
         // console.log(JSON.stringify(value));
         const btn = $("#relais" + key);
         if (value.active !== undefined) {
-          if (value.active === 1) {
-            btn.show();
-          } else {
-            btn.hide();
-          }
+          btn.toggle(value.active === 1)
         }
         const icon = $("#ralayIcon" + key);
         if (value.iconText !== undefined) {
