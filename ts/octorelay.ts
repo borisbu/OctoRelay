@@ -1,9 +1,11 @@
+type MessageHandler = (plugin: string, data: object) => void;
+
 $(function () {
   function OctoRelayViewModel(
     this: typeof OctoRelayViewModel & {
       settingsViewModel: object,
       loginState: object,
-      onDataUpdaterPluginMessage: (plugin: string, data: object) => void
+      onDataUpdaterPluginMessage: MessageHandler
     },
     [settingsViewModel, loginStateViewModel]: object[]
   ) {
@@ -11,7 +13,7 @@ $(function () {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    self.onDataUpdaterPluginMessage = (plugin: string, data: object)=> {
+    self.onDataUpdaterPluginMessage = (plugin, data) => {
       if (plugin !== "octorelay") {
         return;
       }
