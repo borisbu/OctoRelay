@@ -8,6 +8,10 @@ describe("OctoRelayViewModel", () => {
   });
   require("./octorelay");
 
+  afterEach(() => {
+    jQueryMock.mockReset();
+  });
+
   test("Should push the model into the registry", () => {
     expect(jQueryMock).toHaveBeenCalled();
     expect(registry).toHaveLength(1);
@@ -20,5 +24,12 @@ describe("OctoRelayViewModel", () => {
     expect(Object.keys(construct)).toEqual([]);
     construct.call(construct, [{ settings: true }, { login: true }]);
     expect({ ...construct }).toMatchSnapshot();
+  });
+
+  test("Message handler should ignore other recipients", () => {
+    const handler = (registry[0].construct as PluginViewModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    handler("test", {});
+    expect(jQueryMock).not.toHaveBeenCalled();
   });
 });

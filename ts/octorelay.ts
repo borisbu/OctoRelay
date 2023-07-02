@@ -1,14 +1,17 @@
 type MessageHandler = (plugin: string, data: object) => void;
+
+interface OwnProperties {
+  settingsViewModel: object;
+  loginState: object;
+  onDataUpdaterPluginMessage: MessageHandler;
+}
+
 type PluginViewModel = (
-  this: PluginViewModel & {
-    settingsViewModel: object;
-    loginState: object;
-    onDataUpdaterPluginMessage: MessageHandler;
-  },
+  this: PluginViewModel & OwnProperties,
   dependencies: object[]
 ) => void;
 
-$(function () {
+$(() => {
   const OctoRelayViewModel: PluginViewModel = function (
     this,
     [settingsViewModel, loginStateViewModel]

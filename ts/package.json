@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint ./",
     "test": "jest",
-    "build": "tsc"
+    "build": "tsc -p ./tsconfig.build.json"
   },
   "dependencies": {},
   "devDependencies": {
