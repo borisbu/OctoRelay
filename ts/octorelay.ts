@@ -1,9 +1,12 @@
 type MessageHandler = (plugin: string, data: object) => void;
-type PluginViewModel = (this: PluginViewModel & {
-  settingsViewModel: object,
-  loginState: object,
-  onDataUpdaterPluginMessage: MessageHandler
-}, dependencies: object[]) => void;
+type PluginViewModel = (
+  this: PluginViewModel & {
+    settingsViewModel: object;
+    loginState: object;
+    onDataUpdaterPluginMessage: MessageHandler;
+  },
+  dependencies: object[]
+) => void;
 
 $(function () {
   const OctoRelayViewModel: PluginViewModel = function (
@@ -21,7 +24,7 @@ $(function () {
       for (const [key, value] of Object.entries(data)) {
         const btn = $("#relais" + key);
         if (value.active !== undefined) {
-          btn.toggle(value.active === 1)
+          btn.toggle(value.active === 1);
         }
         const icon = $("#ralayIcon" + key);
         if (value.iconText !== undefined) {
@@ -35,7 +38,7 @@ $(function () {
         }
       }
     };
-  }
+  };
 
   OCTOPRINT_VIEWMODELS.push({
     construct: OctoRelayViewModel,

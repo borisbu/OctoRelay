@@ -1,6 +1,6 @@
 interface ViewModel {
   construct: (params: object[]) => void;
-  dependencies: string[]
+  dependencies: string[];
 }
 
-declare const OCTOPRINT_VIEWMODELS: Array<ViewModel>
+declare const OCTOPRINT_VIEWMODELS: Array<ViewModel>;
