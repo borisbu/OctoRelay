@@ -39,7 +39,7 @@ Each one has the following settings *(in order of appearance)*:
 | OS Command *(ON/OFF)* | The command or a script to toggle the relay                |
 | Icon *(ON/OFF)*       | An HTML tag to display on the navigation bar               |
 | Confirmation          | Enables a confirmation dialog when turning the relay OFF   |
-| ON initially on boot  | Sets the pin ON on start                                   |
+| ON initially on boot  | Turns the relay ON on start                                |
 | ON before printing    | Turns the relay ON when started printing                   |
 | OFF after printing    | Turns the relay OFF after finished printing                |
 | Delay                 | Postpones turning the relay OFF for *X* seconds            |
