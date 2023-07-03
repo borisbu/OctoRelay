@@ -35,10 +35,10 @@ Each one has the following settings *(in order of appearance)*:
 | Active                | Activates the relay and its control on the navigation bar  |
 | Label                 | The HTML title of the icon in the navigation bar (hint)    |
 | GPIO Number           | The GPIO pin on the Raspberry Pi *(see the picture above)* |
-| Inverted output       | For normally closed relay: they relay is ON without power  |
+| Inverted output       | For normally closed relay: the relay is ON without power   |
 | OS Command *(ON/OFF)* | The command or a script to toggle the relay                |
 | Icon *(ON/OFF)*       | An HTML tag to display on the navigation bar               |
-| Confirmation          | Enables a confirmation dialog when turning the relay off   |
+| Confirmation          | Enables a confirmation dialog when turning the relay OFF   |
 | ON initially on boot  | Sets the pin ON on start                                   |
 | ON before printing    | Turns the relay ON when started printing                   |
 | OFF after printing    | Turns the relay OFF after finished printing                |
