@@ -2,6 +2,11 @@
 
 ## Version 1
 
+### 1.3.0
+
+- Making a pre-release channel.
+- Updating the documentation.
+
 ### 1.2.0
 
 - Add API command to get all the states at once.
