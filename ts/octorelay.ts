@@ -1,5 +1,3 @@
-type MessageHandler = (plugin: string, data: Record<string, any>) => void;
-
 interface RelayInfo {
   active: 1 | 0;
   confirmOff: boolean;
@@ -10,6 +8,8 @@ interface RelayInfo {
 }
 
 type OwnMessage = Record<`r${number}`, RelayInfo>;
+
+type MessageHandler = (plugin: string, data: OwnMessage) => void;
 
 interface OwnProperties {
   settingsViewModel: object;
@@ -32,14 +32,11 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    self.onDataUpdaterPluginMessage = (plugin, data: OwnMessage) => {
+    self.onDataUpdaterPluginMessage = (plugin, data) => {
       if (plugin !== ownCode) {
         return;
       }
-      const handleClick = (
-        key: string,
-        value: (typeof data)[keyof typeof data]
-      ) => {
+      const handleClick = (key: string, value: RelayInfo) => {
         const command = () =>
           OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
         if (!value.confirmOff) {
