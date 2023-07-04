@@ -130,6 +130,7 @@ describe("OctoRelayViewModel", () => {
 
     // clicking confirm button of the modal
     elementMock.on.mock.calls[6][1]();
+    expect(jQueryMock).toHaveBeenCalledWith("#octorelay-confirmation-dialog");
     expect(elementMock.modal).toHaveBeenCalledTimes(3);
     expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
     expect(apiMock).toHaveBeenCalledTimes(2);
