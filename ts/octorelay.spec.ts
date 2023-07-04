@@ -98,7 +98,7 @@ describe("OctoRelayViewModel", () => {
         confirmOff: false,
       },
     });
-    expect(jQueryMock.mock.calls).toMatchSnapshot();
+    expect(jQueryMock.mock.calls).toMatchSnapshot("$()");
     expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
     expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");

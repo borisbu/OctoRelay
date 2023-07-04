@@ -12,7 +12,7 @@ exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = 
 }
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: $() 1`] = `
 [
   [
     "#relaisr1",
