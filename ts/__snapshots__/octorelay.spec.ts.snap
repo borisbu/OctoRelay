@@ -112,6 +112,34 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
+exports[`OctoRelayViewModel Message handler should process the supplied configuration 5`] = `
+[
+  [
+    ".modal-title",
+  ],
+  [
+    "#octorelay-confirmation-text",
+  ],
+  [
+    ".btn-cancel",
+  ],
+  [
+    ".btn-confirm",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration 6`] = `
+[
+  [
+    "Turning Printer off",
+  ],
+  [
+    "Are you sure you want to turn the Printer off?",
+  ],
+]
+`;
+
 exports[`OctoRelayViewModel Should push the model into the registry 1`] = `
 {
   "construct": [Function],

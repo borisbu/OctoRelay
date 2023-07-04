@@ -1,7 +1,7 @@
 describe("OctoRelayViewModel", () => {
   const registry: ViewModel[] = [];
   const elementMock: Record<
-    "toggle" | "html" | "attr" | "off" | "on",
+    "toggle" | "html" | "attr" | "off" | "on" | "find" | "text" | "modal",
     jest.Mock
   > = {
     toggle: jest.fn(),
@@ -9,6 +9,9 @@ describe("OctoRelayViewModel", () => {
     attr: jest.fn(),
     off: jest.fn(() => elementMock),
     on: jest.fn(),
+    find: jest.fn(() => elementMock),
+    text: jest.fn(),
+    modal: jest.fn(),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -16,9 +19,11 @@ describe("OctoRelayViewModel", () => {
     }
     return elementMock;
   });
+  const apiMock = jest.fn();
 
   Object.assign(global, {
     OCTOPRINT_VIEWMODELS: registry,
+    OctoPrint: { simpleApiCommand: apiMock },
     $: jQueryMock,
   });
   require("./octorelay");
@@ -66,7 +71,7 @@ describe("OctoRelayViewModel", () => {
         labelText: "Printer",
         active: 1,
         iconText: '<img src="plugin/dashboard/static/img/printer-icon.png">',
-        confirmOff: false,
+        confirmOff: true,
       },
       r3: {
         relay_pin: 18,
@@ -101,5 +106,35 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.off).toHaveBeenCalledWith("click");
     expect(elementMock.on).toHaveBeenCalledTimes(5);
     expect(elementMock.on).toHaveBeenCalledWith("click", expect.any(Function));
+
+    // clicking on 1st button, no confirmation
+    elementMock.on.mock.calls[0][1]();
+    expect(apiMock).toHaveBeenCalledTimes(1);
+    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", { pin: "r1" });
+    expect(elementMock.on).toHaveBeenCalledTimes(5); // remains
+
+    // clicking on 2nd button, with confirmation
+    elementMock.on.mock.calls[1][1]();
+    expect(apiMock).toHaveBeenCalledTimes(1);
+    expect(elementMock.find.mock.calls).toMatchSnapshot();
+    expect(elementMock.text.mock.calls).toMatchSnapshot();
+    expect(elementMock.modal).toHaveBeenCalledTimes(1);
+    expect(elementMock.modal).toHaveBeenCalledWith("show");
+    expect(elementMock.on).toHaveBeenCalledTimes(7);
+
+    // clicking cancel button of the modal
+    elementMock.on.mock.calls[5][1]();
+    expect(elementMock.modal).toHaveBeenCalledTimes(2);
+    expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
+    expect(apiMock).toHaveBeenCalledTimes(1); // remains
+
+    // clicking confirm button of the modal
+    elementMock.on.mock.calls[6][1]();
+    expect(elementMock.modal).toHaveBeenCalledTimes(3);
+    expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
+    expect(apiMock).toHaveBeenCalledTimes(2);
+    expect(apiMock).toHaveBeenLastCalledWith("octorelay", "update", {
+      pin: "r2",
+    });
   });
 });
