@@ -47,47 +47,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 2`] = `
-[
-  [
-    true,
-  ],
-  [
-    true,
-  ],
-  [
-    true,
-  ],
-  [
-    true,
-  ],
-  [
-    false,
-  ],
-]
-`;
-
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 3`] = `
-[
-  [
-    "<div>&#128161;</div>",
-  ],
-  [
-    "<img src="plugin/dashboard/static/img/printer-icon.png">",
-  ],
-  [
-    "<img src="plugin/dashboard/static/img/fan-icon.png">",
-  ],
-  [
-    "<div>&#127774;</div>",
-  ],
-  [
-    "ON",
-  ],
-]
-`;
-
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 4`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .attr() 1`] = `
 [
   [
     "title",
@@ -112,7 +72,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 5`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
 [
   [
     ".modal-title",
@@ -129,13 +89,53 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 6`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .html() 1`] = `
+[
+  [
+    "<div>&#128161;</div>",
+  ],
+  [
+    "<img src="plugin/dashboard/static/img/printer-icon.png">",
+  ],
+  [
+    "<img src="plugin/dashboard/static/img/fan-icon.png">",
+  ],
+  [
+    "<div>&#127774;</div>",
+  ],
+  [
+    "ON",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
 [
   [
     "Turning Printer off",
   ],
   [
     "Are you sure you want to turn the Printer off?",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .toggle() 1`] = `
+[
+  [
+    true,
+  ],
+  [
+    true,
+  ],
+  [
+    true,
+  ],
+  [
+    true,
+  ],
+  [
+    false,
   ],
 ]
 `;

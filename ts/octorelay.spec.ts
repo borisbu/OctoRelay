@@ -99,9 +99,9 @@ describe("OctoRelayViewModel", () => {
       },
     });
     expect(jQueryMock.mock.calls).toMatchSnapshot();
-    expect(elementMock.toggle.mock.calls).toMatchSnapshot();
-    expect(elementMock.html.mock.calls).toMatchSnapshot();
-    expect(elementMock.attr.mock.calls).toMatchSnapshot();
+    expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
+    expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
+    expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");
     expect(elementMock.off).toHaveBeenCalledTimes(5);
     expect(elementMock.off).toHaveBeenCalledWith("click");
     expect(elementMock.on).toHaveBeenCalledTimes(5);
@@ -116,8 +116,8 @@ describe("OctoRelayViewModel", () => {
     // clicking on 2nd button, with confirmation
     elementMock.on.mock.calls[1][1]();
     expect(apiMock).toHaveBeenCalledTimes(1);
-    expect(elementMock.find.mock.calls).toMatchSnapshot();
-    expect(elementMock.text.mock.calls).toMatchSnapshot();
+    expect(elementMock.find.mock.calls).toMatchSnapshot(".find()");
+    expect(elementMock.text.mock.calls).toMatchSnapshot(".text()");
     expect(elementMock.modal).toHaveBeenCalledTimes(1);
     expect(elementMock.modal).toHaveBeenCalledWith("show");
     expect(elementMock.on).toHaveBeenCalledTimes(7);
