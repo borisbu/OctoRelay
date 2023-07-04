@@ -11,9 +11,6 @@ on:
 jobs:
   UI:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./ts
     steps:
       - name: Get yarn cache dir
         id: yarnCache
@@ -32,8 +29,11 @@ jobs:
           path: ${{ steps.yarnCache.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
+        working-directory: ts
         run: yarn install
       - name: Lint
+        working-directory: ts
         run: yarn lint
       - name: Test
+        working-directory: ts
         run: yarn test
