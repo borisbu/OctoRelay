@@ -37,3 +37,14 @@ jobs:
       - name: Test
         working-directory: ts
         run: yarn test
+      - name: Build JS
+        working-directory: ts
+        run: yarn build
+      - name: Check changes
+        run: |
+          if output=$(git status --porcelain) && [ -z "$output" ]; then
+            echo OK
+          else
+            echo Building the JS caused changes that has to be committed and pushed manually.
+            exit 1
+          fi
