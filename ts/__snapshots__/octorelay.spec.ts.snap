@@ -94,40 +94,20 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
     "Nozzle Light",
   ],
   [
-    "data-confirm",
-    false,
-  ],
-  [
     "title",
     "Printer",
-  ],
-  [
-    "data-confirm",
-    false,
   ],
   [
     "title",
     "Fan",
   ],
   [
-    "data-confirm",
-    false,
-  ],
-  [
     "title",
     "Chassis Light",
   ],
   [
-    "data-confirm",
-    false,
-  ],
-  [
     "title",
     "R5",
-  ],
-  [
-    "data-confirm",
-    false,
   ],
 ]
 `;

@@ -1,9 +1,14 @@
 describe("OctoRelayViewModel", () => {
   const registry: ViewModel[] = [];
-  const elementMock = {
+  const elementMock: Record<
+    "toggle" | "html" | "attr" | "off" | "on",
+    jest.Mock
+  > = {
     toggle: jest.fn(),
     html: jest.fn(),
     attr: jest.fn(),
+    off: jest.fn(() => elementMock),
+    on: jest.fn(),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -37,14 +42,14 @@ describe("OctoRelayViewModel", () => {
   });
 
   test("Message handler should ignore other recipients", () => {
-    const handler = (registry[0].construct as PluginViewModel & OwnProperties)
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("test", {});
     expect(jQueryMock).not.toHaveBeenCalled();
   });
 
   test("Message handler should process the supplied configuration", () => {
-    const handler = (registry[0].construct as PluginViewModel & OwnProperties)
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("octorelay", {
       r1: {
@@ -92,5 +97,9 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.toggle.mock.calls).toMatchSnapshot();
     expect(elementMock.html.mock.calls).toMatchSnapshot();
     expect(elementMock.attr.mock.calls).toMatchSnapshot();
+    expect(elementMock.off).toHaveBeenCalledTimes(5);
+    expect(elementMock.off).toHaveBeenCalledWith("click");
+    expect(elementMock.on).toHaveBeenCalledTimes(5);
+    expect(elementMock.on).toHaveBeenCalledWith("click", expect.any(Function));
   });
 });
