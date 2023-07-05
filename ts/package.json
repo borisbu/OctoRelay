@@ -1,7 +1,13 @@
 {
-  "name": "octorelay",
+  "name": "octorelay-ui",
+  "description": "The UI scripts for OctoRelay plugin",
   "version": "1.0.0",
   "private": true,
+  "author": {
+    "name": "Anna Bocharova",
+    "url": "https://github.com/RobinTail"
+  },
+  "license": "AGPL-3.0-only",
   "scripts": {
     "lint": "eslint ./",
     "test": "tsc --noEmit && jest",
