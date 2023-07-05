@@ -107,13 +107,13 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.on).toHaveBeenCalledTimes(5);
     expect(elementMock.on).toHaveBeenCalledWith("click", expect.any(Function));
 
-    // clicking on 1st button, no confirmation
+    // clicking on 1st icon, no confirmation
     elementMock.on.mock.calls[0][1]();
     expect(apiMock).toHaveBeenCalledTimes(1);
     expect(apiMock).toHaveBeenCalledWith("octorelay", "update", { pin: "r1" });
     expect(elementMock.on).toHaveBeenCalledTimes(5); // remains
 
-    // clicking on 2nd button, with confirmation
+    // clicking on 2nd icon, with confirmation
     elementMock.on.mock.calls[1][1]();
     expect(apiMock).toHaveBeenCalledTimes(1);
     expect(elementMock.find.mock.calls).toMatchSnapshot(".find()");

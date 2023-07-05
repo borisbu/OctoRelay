@@ -67,7 +67,6 @@ $(() => {
         if (value.active !== undefined) {
           btn.toggle(value.active === 1);
         }
-        btn.off("click").on("click", () => handleClick(key, value));
         const icon = $("#ralayIcon" + key);
         if (value.iconText !== undefined) {
           icon.html(value.iconText);
@@ -75,6 +74,7 @@ $(() => {
         if (value.labelText !== undefined) {
           icon.attr("title", value.labelText);
         }
+        icon.off("click").on("click", () => handleClick(key, value));
       }
     };
   };

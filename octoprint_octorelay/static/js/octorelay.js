@@ -40,7 +40,6 @@ $(function () {
                 if (value.active !== undefined) {
                     btn.toggle(value.active === 1);
                 }
-                btn.off("click").on("click", function () { return handleClick(key, value); });
                 var icon = $("#ralayIcon" + key);
                 if (value.iconText !== undefined) {
                     icon.html(value.iconText);
@@ -48,6 +47,7 @@ $(function () {
                 if (value.labelText !== undefined) {
                     icon.attr("title", value.labelText);
                 }
+                icon.off("click").on("click", function () { return handleClick(key, value); });
             };
             for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
                 var _b = _a[_i], key = _b[0], value = _b[1];
