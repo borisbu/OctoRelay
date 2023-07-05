@@ -1,9 +1,17 @@
 describe("OctoRelayViewModel", () => {
   const registry: ViewModel[] = [];
-  const elementMock = {
+  const elementMock: Record<
+    "toggle" | "html" | "attr" | "off" | "on" | "find" | "text" | "modal",
+    jest.Mock
+  > = {
     toggle: jest.fn(),
     html: jest.fn(),
     attr: jest.fn(),
+    off: jest.fn(() => elementMock),
+    on: jest.fn(),
+    find: jest.fn(() => elementMock),
+    text: jest.fn(),
+    modal: jest.fn(),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -11,9 +19,11 @@ describe("OctoRelayViewModel", () => {
     }
     return elementMock;
   });
+  const apiMock = jest.fn();
 
   Object.assign(global, {
     OCTOPRINT_VIEWMODELS: registry,
+    OctoPrint: { simpleApiCommand: apiMock },
     $: jQueryMock,
   });
   require("./octorelay");
@@ -37,14 +47,14 @@ describe("OctoRelayViewModel", () => {
   });
 
   test("Message handler should ignore other recipients", () => {
-    const handler = (registry[0].construct as PluginViewModel & OwnProperties)
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("test", {});
     expect(jQueryMock).not.toHaveBeenCalled();
   });
 
   test("Message handler should process the supplied configuration", () => {
-    const handler = (registry[0].construct as PluginViewModel & OwnProperties)
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("octorelay", {
       r1: {
@@ -61,7 +71,7 @@ describe("OctoRelayViewModel", () => {
         labelText: "Printer",
         active: 1,
         iconText: '<img src="plugin/dashboard/static/img/printer-icon.png">',
-        confirmOff: false,
+        confirmOff: true,
       },
       r3: {
         relay_pin: 18,
@@ -88,9 +98,44 @@ describe("OctoRelayViewModel", () => {
         confirmOff: false,
       },
     });
-    expect(jQueryMock.mock.calls).toMatchSnapshot();
-    expect(elementMock.toggle.mock.calls).toMatchSnapshot();
-    expect(elementMock.html.mock.calls).toMatchSnapshot();
-    expect(elementMock.attr.mock.calls).toMatchSnapshot();
+    expect(jQueryMock.mock.calls).toMatchSnapshot("$()");
+    expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
+    expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
+    expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");
+    expect(elementMock.off).toHaveBeenCalledTimes(5);
+    expect(elementMock.off).toHaveBeenCalledWith("click");
+    expect(elementMock.on).toHaveBeenCalledTimes(5);
+    expect(elementMock.on).toHaveBeenCalledWith("click", expect.any(Function));
+
+    // clicking on 1st icon, no confirmation
+    elementMock.on.mock.calls[0][1]();
+    expect(apiMock).toHaveBeenCalledTimes(1);
+    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", { pin: "r1" });
+    expect(elementMock.on).toHaveBeenCalledTimes(5); // remains
+
+    // clicking on 2nd icon, with confirmation
+    elementMock.on.mock.calls[1][1]();
+    expect(apiMock).toHaveBeenCalledTimes(1);
+    expect(elementMock.find.mock.calls).toMatchSnapshot(".find()");
+    expect(elementMock.text.mock.calls).toMatchSnapshot(".text()");
+    expect(elementMock.modal).toHaveBeenCalledTimes(1);
+    expect(elementMock.modal).toHaveBeenCalledWith("show");
+    expect(elementMock.on).toHaveBeenCalledTimes(7);
+
+    // clicking cancel button of the modal
+    elementMock.on.mock.calls[5][1]();
+    expect(elementMock.modal).toHaveBeenCalledTimes(2);
+    expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
+    expect(apiMock).toHaveBeenCalledTimes(1); // remains
+
+    // clicking confirm button of the modal
+    elementMock.on.mock.calls[6][1]();
+    expect(jQueryMock).toHaveBeenCalledWith("#octorelay-confirmation-dialog");
+    expect(elementMock.modal).toHaveBeenCalledTimes(3);
+    expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
+    expect(apiMock).toHaveBeenCalledTimes(2);
+    expect(apiMock).toHaveBeenLastCalledWith("octorelay", "update", {
+      pin: "r2",
+    });
   });
 });

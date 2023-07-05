@@ -12,7 +12,7 @@ exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = 
 }
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: $() 1`] = `
 [
   [
     "#relaisr1",
@@ -47,27 +47,49 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 2`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .attr() 1`] = `
 [
   [
-    true,
+    "title",
+    "Nozzle Light",
   ],
   [
-    true,
+    "title",
+    "Printer",
   ],
   [
-    true,
+    "title",
+    "Fan",
   ],
   [
-    true,
+    "title",
+    "Chassis Light",
   ],
   [
-    false,
+    "title",
+    "R5",
   ],
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 3`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
+[
+  [
+    ".modal-title",
+  ],
+  [
+    "#octorelay-confirmation-text",
+  ],
+  [
+    ".btn-cancel",
+  ],
+  [
+    ".btn-confirm",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .html() 1`] = `
 [
   [
     "<div>&#128161;</div>",
@@ -87,46 +109,32 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration 4`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
 [
   [
-    "title",
-    "Nozzle Light",
+    "Turning Printer off",
   ],
   [
-    "data-confirm",
-    false,
+    "Are you sure you want to turn the Printer off?",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .toggle() 1`] = `
+[
+  [
+    true,
   ],
   [
-    "title",
-    "Printer",
+    true,
   ],
   [
-    "data-confirm",
-    false,
+    true,
   ],
   [
-    "title",
-    "Fan",
+    true,
   ],
   [
-    "data-confirm",
-    false,
-  ],
-  [
-    "title",
-    "Chassis Light",
-  ],
-  [
-    "data-confirm",
-    false,
-  ],
-  [
-    "title",
-    "R5",
-  ],
-  [
-    "data-confirm",
     false,
   ],
 ]
