@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = `
+{
+  "loginState": {
+    "login": true,
+  },
+  "onDataUpdaterPluginMessage": [Function],
+  "settingsViewModel": {
+    "settings": true,
+  },
+}
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration 1`] = `
+[
+  [
+    "#relaisr1",
+  ],
+  [
+    "#ralayIconr1",
+  ],
+  [
+    "#relaisr2",
+  ],
+  [
+    "#ralayIconr2",
+  ],
+  [
+    "#relaisr3",
+  ],
+  [
+    "#ralayIconr3",
+  ],
+  [
+    "#relaisr4",
+  ],
+  [
+    "#ralayIconr4",
+  ],
+  [
+    "#relaisr5",
+  ],
+  [
+    "#ralayIconr5",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration 2`] = `
+[
+  [
+    true,
+  ],
+  [
+    true,
+  ],
+  [
+    true,
+  ],
+  [
+    true,
+  ],
+  [
+    false,
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration 3`] = `
+[
+  [
+    "<div>&#128161;</div>",
+  ],
+  [
+    "<img src="plugin/dashboard/static/img/printer-icon.png">",
+  ],
+  [
+    "<img src="plugin/dashboard/static/img/fan-icon.png">",
+  ],
+  [
+    "<div>&#127774;</div>",
+  ],
+  [
+    "ON",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration 4`] = `
+[
+  [
+    "title",
+    "Nozzle Light",
+  ],
+  [
+    "data-confirm",
+    false,
+  ],
+  [
+    "title",
+    "Printer",
+  ],
+  [
+    "data-confirm",
+    false,
+  ],
+  [
+    "title",
+    "Fan",
+  ],
+  [
+    "data-confirm",
+    false,
+  ],
+  [
+    "title",
+    "Chassis Light",
+  ],
+  [
+    "data-confirm",
+    false,
+  ],
+  [
+    "title",
+    "R5",
+  ],
+  [
+    "data-confirm",
+    false,
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should push the model into the registry 1`] = `
+{
+  "construct": [Function],
+  "dependencies": [
+    "settingsViewModel",
+    "loginStateViewModel",
+  ],
+}
+`;
