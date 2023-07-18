@@ -15,11 +15,11 @@ plugin_package = "octoprint_octorelay"
 plugin_name = "OctoRelay"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "1.3.0"
+plugin_version = "1.4.0"
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """A plugin, that add's buttons to the navbar, toggleing GPIO on the RPi. It can be used for turning on and off relays."""
+plugin_description = """A plugin that adds buttons to the navbar for toggling GPIO on the RPi. It can be used for turning relays on and off."""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
 plugin_author = "Boris Burgstaller"
