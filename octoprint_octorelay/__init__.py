@@ -315,7 +315,7 @@ class OctoRelayPlugin(
             autoONforPrint = settings['autoONforPrint']
             active = settings["active"]
             if autoONforPrint and active:
-                self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
+                self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
                 GPIO.setup(relay_pin, GPIO.OUT)
                 # XOR with inverted
                 GPIO.output(relay_pin, inverted != True)
