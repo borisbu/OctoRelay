@@ -2,6 +2,12 @@
 
 ## Version 1
 
+### 1.4.0
+
+- JS: Types constraints and tests.
+- Moving JS from template.
+- Plugin description update.
+
 ### 1.3.0
 
 - Making a pre-release channel.
