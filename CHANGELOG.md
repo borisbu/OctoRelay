@@ -2,6 +2,13 @@
 
 ## Version 1
 
+### 1.4.1
+
+- Fixed issue with turning relays ON when start printing.
+  - Thanks to [@hcooper](https://github.com/hcooper)'s contribution issues
+    [#39](https://github.com/borisbu/OctoRelay/issues/39) and
+    [#52](https://github.com/borisbu/OctoRelay/issues/52) are most likely resolved.
+
 ### 1.4.0
 
 - JS: Types constraints and tests.
