@@ -50,8 +50,8 @@ class OctoRelayPlugin(
                 initial_value=False,
                 cmdON="",
                 cmdOFF="",
-                iconOn="""<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24">""",
-                iconOff="""<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24" style="filter: opacity(20%)">""",
+                iconOn="""<img src="/plugin/octorelay/static/img/3d-printer.svg">""",
+                iconOff="""<img src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
                 labelText="Printer",
                 confirmOff=True,
                 autoONforPrint=False,
@@ -65,8 +65,8 @@ class OctoRelayPlugin(
                 initial_value=False,
                 cmdON="",
                 cmdOFF="",
-                iconOn="""<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" >""",
-                iconOff="""<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" style="filter: opacity(20%)">""",
+                iconOn="""<img src="/plugin/octorelay/static/img/fan.svg" >""",
+                iconOff="""<img src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
                 labelText="Fan",
                 confirmOff=False,
                 autoONforPrint=True,
@@ -80,8 +80,8 @@ class OctoRelayPlugin(
                 initial_value=True,
                 cmdON="sudo service webcamd start",
                 cmdOFF="sudo service webcamd stop",
-                iconOn="""<img highth="24" width="24" src="/plugin/octorelay/static/img/webcam.png" >""",
-                iconOff="""<img highth="24" width="24" src="/plugin/octorelay/static/img/webcam.png" style="filter: opacity(20%)">""",
+                iconOn="""<img src="/plugin/octorelay/static/img/webcam.svg" >""",
+                iconOff="""<img src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
                 labelText="Webcam",
                 confirmOff=False,
                 autoONforPrint=True,
@@ -218,8 +218,8 @@ class OctoRelayPlugin(
                 settings = self.get_settings_defaults()[key]
                 settings.update(self._settings.get([key]))
                 if settings["active"]:
-                    relay_pin = int(settings["relay_pin"])   
-                    inverted = settings['inverted_output']     
+                    relay_pin = int(settings["relay_pin"])
+                    inverted = settings['inverted_output']
                     GPIO.setup(relay_pin, GPIO.OUT)
                     relaydata = dict(
                         id=key,
@@ -244,11 +244,11 @@ class OctoRelayPlugin(
         GPIO.setup(relay_pin, GPIO.OUT)
         # XOR with inverted
         ledState = inverted != GPIO.input(relay_pin)
-        
+
         # added api command to get led status
         if command == "getStatus":
             return flask.jsonify(status=ledState)
-            
+
         else:
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
