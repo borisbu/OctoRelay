@@ -4,7 +4,7 @@
 
 ### 1.4.2
 
-- Fixed `height` property of the icons in the initial plugin config.
+- Fixed `height` property of the icons in the initial config.
 
 ### 1.4.1
 
