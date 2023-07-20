@@ -2,6 +2,10 @@
 
 ## Version 1
 
+### 1.4.2
+
+- Fixed `height` property of the icons in the initial plugin config.
+
 ### 1.4.1
 
 - Fixed issue with turning relays ON when start printing.
