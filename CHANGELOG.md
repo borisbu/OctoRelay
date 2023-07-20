@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2
+
+### 2.0.0
+
+- Minimal JavaScript version support requires: `ES6` (aka ES2015).
+  - Minimal browser versions supporting ES6 are listed [here](https://caniuse.com/?search=es6).
+
 ## Version 1
 
 ### 1.4.2
