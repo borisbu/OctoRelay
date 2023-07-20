@@ -1,5 +1,12 @@
 # Changelog
 
+## Version 2
+
+### 2.0.0
+
+- **Breaking changes**
+  - Minimal Python version required: `3.7`.
+
 ## Version 1
 
 ### 1.3.0
