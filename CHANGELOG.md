@@ -4,14 +4,20 @@
 
 ### 2.0.0
 
-- The distributed PNG icons are replaced with SVG ones.
-  - In case you've been using them in your configuration (`Icon ON/OFF`), you need to change their filenames:
-    - `3d-printer.png` –> `3d-printer.svg`
-    - `fan-24.png` –> `fan.svg`
-    - `webcam.png` –> `webcam.svg`.
-  - `refresh.png` icon is removed from the distribution.
+- **Breaking changes**
+  - Minimal Python version required: `3.7`.
+  - The distributed PNG icons are replaced with SVG ones.
+    - In case you've been using them in your configuration (`Icon ON/OFF`), you need to change their filenames:
+      - `3d-printer.png` –> `3d-printer.svg`,
+      - `fan-24.png` –> `fan.svg`,
+      - `webcam.png` –> `webcam.svg`.
+    - `refresh.png` icon is removed from the distribution.
 
 ## Version 1
+
+### 1.4.2
+
+- Fixed `height` property of the icons in the initial config.
 
 ### 1.4.1
 
