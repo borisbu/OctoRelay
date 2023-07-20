@@ -1,23 +1,20 @@
 "use strict";
-$(function () {
-    var OctoRelayViewModel = function (_a) {
-        var settingsViewModel = _a[0], loginStateViewModel = _a[1];
-        var ownCode = "octorelay";
-        var self = this;
+$(() => {
+    const OctoRelayViewModel = function ([settingsViewModel, loginStateViewModel]) {
+        const ownCode = "octorelay";
+        const self = this;
         self.settingsViewModel = settingsViewModel;
         self.loginState = loginStateViewModel;
-        self.onDataUpdaterPluginMessage = function (plugin, data) {
+        self.onDataUpdaterPluginMessage = (plugin, data) => {
             if (plugin !== ownCode) {
                 return;
             }
-            var handleClick = function (key, value) {
-                var command = function () {
-                    return OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
-                };
+            const handleClick = (key, value) => {
+                const command = () => OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
                 if (!value.confirmOff) {
                     return command();
                 }
-                var dialog = $("#octorelay-confirmation-dialog");
+                const dialog = $("#octorelay-confirmation-dialog");
                 dialog.find(".modal-title").text("Turning " + value.labelText + " off");
                 dialog
                     .find("#octorelay-confirmation-text")
@@ -25,33 +22,29 @@ $(function () {
                 dialog
                     .find(".btn-cancel")
                     .off("click")
-                    .on("click", function () { return dialog.modal("hide"); });
+                    .on("click", () => dialog.modal("hide"));
                 dialog
                     .find(".btn-confirm")
                     .off("click")
-                    .on("click", function () {
+                    .on("click", () => {
                     command();
                     dialog.modal("hide");
                 });
                 dialog.modal("show");
             };
-            var _loop_1 = function (key, value) {
-                var btn = $("#relais" + key);
+            for (const [key, value] of Object.entries(data)) {
+                const btn = $("#relais" + key);
                 if (value.active !== undefined) {
                     btn.toggle(value.active === 1);
                 }
-                var icon = $("#ralayIcon" + key);
+                const icon = $("#ralayIcon" + key);
                 if (value.iconText !== undefined) {
                     icon.html(value.iconText);
                 }
                 if (value.labelText !== undefined) {
                     icon.attr("title", value.labelText);
                 }
-                icon.off("click").on("click", function () { return handleClick(key, value); });
-            };
-            for (var _i = 0, _a = Object.entries(data); _i < _a.length; _i++) {
-                var _b = _a[_i], key = _b[0], value = _b[1];
-                _loop_1(key, value);
+                icon.off("click").on("click", () => handleClick(key, value));
             }
         };
     };
