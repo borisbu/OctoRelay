@@ -49,3 +49,17 @@ jobs:
             echo Building the JS caused changes that has to be committed and pushed manually.
             exit 1
           fi
+
+  Python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+          # cache: 'pip'
+      - name: Install OctoPrint
+        run: pip install octoprint
+      - name: Install OctoRelay
+        run: pip install -e .
