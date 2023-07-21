@@ -66,3 +66,6 @@ jobs:
         run: pip install octoprint~=${{ matrix.octoprint }}
       - name: Install OctoRelay
         run: pip install -e .
+      - name: Test
+        working-directory: octoprint_octorelay
+        run: python -m unittest test__init.py
