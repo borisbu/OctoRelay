@@ -203,7 +203,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(__plugin_pythoncompat__, ">=3.7,<4")
 
     def test_exposed_implementation(self):
-        self.assertInstance(__plugin_implementation__, OctoRelayPlugin)
+        self.assertIsInstance(__plugin_implementation__, OctoRelayPlugin)
+
+    def test_exposed_hooks(self):
+        expected = {
+            "octoprint.plugin.softwareupdate.check_config":
+                __plugin_implementation__.get_update_information
+        }
+        self.assertEqual(__plugin_hooks__, expected)
 
 if __name__ == '__main__':
     unittest.main()
