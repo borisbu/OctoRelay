@@ -71,3 +71,5 @@ jobs:
       - name: Test
         working-directory: octoprint_octorelay
         run: python -m coverage run -m unittest test__init.py
+      - name: Report the coverage
+        run: python -m coverage report
