@@ -36,7 +36,7 @@ Each one has the following settings *(in order of appearance)*:
 | Label                 | The HTML title of the icon in the navigation bar (hint)    |
 | GPIO Number           | The GPIO pin on the Raspberry Pi *(see the picture above)* |
 | Inverted output       | For normally closed relay: the relay is ON without power   |
-| OS Command *(ON/OFF)* | The command or a script to toggle the relay                |
+| OS Command *(ON/OFF)* | An optional command to run when the relay state changes    |
 | Icon *(ON/OFF)*       | An HTML tag to display on the navigation bar               |
 | Confirmation          | Enables a confirmation dialog when turning the relay OFF   |
 | ON initially on boot  | Turns the relay ON on start                                |
