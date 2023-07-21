@@ -1,6 +1,5 @@
 import unittest
-from unittest.mock import Mock, patch
-import RPi.GPIO as GPIO
+from unittest.mock import Mock, patch, MagicMock
 import os
 
 from __init__ import OctoRelayPlugin
