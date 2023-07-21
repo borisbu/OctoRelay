@@ -164,5 +164,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_assets()
         self.assertEqual(actual, expected)
 
+    def test_get_api_commands(self):
+        expected = {
+            "update": [],
+            "getStatus": [],
+            "listAllStatus":[],
+        }
+        actual = self.plugin_instance.get_api_commands()
+        self.assertEqual(actual, expected)
+
 if __name__ == '__main__':
     unittest.main()
