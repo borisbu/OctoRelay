@@ -173,5 +173,30 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
+    def test_get_update_information(self):
+        expected = dict(
+            octorelay=dict(
+                displayName="OctoRelay",
+                displayVersion=self._plugin_version,
+                type="github_release",
+                current=self._plugin_version,
+                user="borisbu",
+                repo="OctoRelay",
+                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+                stable_branch=dict(
+                    name="Stable",
+                    branch="master",
+                    commitish=["master"]
+                ),
+                prerelease_branches=[dict(
+                    name="Prerelease",
+                    branch="develop",
+                    commitish=["develop", "master"]
+                )]
+           )
+        )
+        actual = self.plugin_instance.get_update_information()
+        self.assertEqual(actual, expected)
+
 if __name__ == '__main__':
     unittest.main()
