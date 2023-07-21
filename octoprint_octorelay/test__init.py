@@ -8,7 +8,7 @@ RPi_mock = Mock()
 sys.modules['RPi'] = RPi_mock
 sys.modules['RPi.GPIO'] = RPi_mock
 
-from __init__ import OctoRelayPlugin, __plugin_pythoncompat__
+from __init__ import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__
 
 class TestOctoRelayPlugin(unittest.TestCase):
 
@@ -201,6 +201,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_python_compatibility(self):
         self.assertEqual(__plugin_pythoncompat__, ">=3.7,<4")
+
+    def test_exposed_implementation(self):
+        self.assertInstance(__plugin_implementation__, OctoRelayPlugin)
 
 if __name__ == '__main__':
     unittest.main()
