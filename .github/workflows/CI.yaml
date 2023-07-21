@@ -62,12 +62,22 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
+      - name: Get pip cache dir
+        id: pipCache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Install OctoPrint
         run: pip install octoprint~=${{ matrix.octoprint }}
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
         run: pip install coverage
+      - name: Cache pip modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-pip
+        with:
+          path: ${{ steps.pipCache.outputs.dir }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
       - name: Test
         working-directory: octoprint_octorelay
         run: python -m coverage run -m unittest test__init.py
