@@ -157,5 +157,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_template_configs()
         self.assertEqual(actual, expected)
 
+    def test_get_assets(self):
+        expected = dict(
+            js=["js/octorelay.js"]
+        )
+        actual = self.plugin_instance.get_assets()
+        self.assertEqual(actual, expected)
+
 if __name__ == '__main__':
     unittest.main()
