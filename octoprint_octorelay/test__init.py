@@ -15,7 +15,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         # Create an instance of the OctoRelayPlugin class
-        cls.plugin_instance = octorelay.OctoRelayPlugin()
+        cls.plugin_instance = OctoRelayPlugin()
 
     @classmethod
     def tearDownClass(cls):
