@@ -16,7 +16,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def setUpClass(cls):
         # Create an instance of the OctoRelayPlugin class
         cls.plugin_instance = OctoRelayPlugin()
-        cls.plugin_instance._plugin_version = "MockedVersion"
 
     @classmethod
     def tearDownClass(cls):
@@ -178,9 +177,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
         expected = dict(
             octorelay=dict(
                 displayName="OctoRelay",
-                displayVersion="MockedVersion",
+                displayVersion=self.plugin_instance._plugin_version,
                 type="github_release",
-                current="MockedVersion",
+                current=self.plugin_instance._plugin_version,
                 user="borisbu",
                 repo="OctoRelay",
                 pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip",
