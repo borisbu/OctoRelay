@@ -52,14 +52,18 @@ jobs:
 
   Python:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ "3.7" ]
+        octoprint: [ "1.9" ]
     steps:
       - uses: actions/checkout@v3
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: ${{ matrix.python }}
           # cache: 'pip'
       - name: Install OctoPrint
-        run: pip install octoprint
+        run: pip install octoprint~=${{ matrix.octoprint }}
       - name: Install OctoRelay
         run: pip install -e .
