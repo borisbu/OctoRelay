@@ -19,16 +19,14 @@ from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
 
 class TestOctoRelayPlugin(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
+    def setUp(self):
         # Create an instance of the OctoRelayPlugin class
-        cls.plugin_instance = OctoRelayPlugin()
-        cls.plugin_instance._identifier = "MockedIdentifier"
-        cls.plugin_instance._plugin_version = "MockedVersion"
-        cls.plugin_instance._logger = Mock()
-        cls.plugin_instance._settings = Mock()
-        cls.plugin_instance._plugin_manager = Mock()
+        self.plugin_instance = OctoRelayPlugin()
+        self.plugin_instance._identifier = "MockedIdentifier"
+        self.plugin_instance._plugin_version = "MockedVersion"
+        self.plugin_instance._logger = Mock()
+        self.plugin_instance._settings = Mock()
+        self.plugin_instance._plugin_manager = Mock()
 
     @classmethod
     def tearDownClass(cls):
@@ -321,6 +319,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.print_started = Mock()
         self.plugin_instance.print_stopped = Mock()
+        self.plugin_instance.model = {
+            "r1": {}, "r2": {}, "r3": {}, "r4": {},
+            "r5": {}, "r6": {}, "r7": {}, "r8": {},
+        }
         cases = [
             { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
             { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
@@ -367,6 +369,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "test": timerMock }
+        self.plugin_instance.model = {
+            "r1": {}, "r2": {}, "r3": {}, "r4": {},
+            "r5": {}, "r6": {}, "r7": {}, "r8": {},
+        }
         cases = [
             { "autoOn": True, "inverted": True, "expectedOutput": False},
             { "autoOn": True, "inverted": False, "expectedOutput": True },
@@ -393,6 +399,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays with autoOff feature should set timer to turn its pin off
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.turn_off_timers = { "r4": timerMock }
+        self.plugin_instance.model = {
+            "r1": {}, "r2": {}, "r3": {}, "r4": {},
+            "r5": {}, "r6": {}, "r7": {}, "r8": {},
+        }
         cases = [
             { "autoOff": True, "expectedCall": True },
             { "autoOff": False, "expectedCall": False },
