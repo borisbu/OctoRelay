@@ -254,14 +254,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
         self.plugin_instance.update_ui()
-        self.plugin_instance._settings.get.assert_any_call(["r1"])
-        self.plugin_instance._settings.get.assert_any_call(["r2"])
-        self.plugin_instance._settings.get.assert_any_call(["r3"])
-        self.plugin_instance._settings.get.assert_any_call(["r4"])
-        self.plugin_instance._settings.get.assert_any_call(["r5"])
-        self.plugin_instance._settings.get.assert_any_call(["r6"])
-        self.plugin_instance._settings.get.assert_any_call(["r7"])
-        self.plugin_instance._settings.get.assert_called_with(["r8"])
+        for index in self.plugin_instance.get_settings_defaults():
+            self.plugin_instance._settings.get.assert_any_call([index])
         self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
             "MockedIdentifier",
             self.plugin_instance.model
