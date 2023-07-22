@@ -174,27 +174,27 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_get_update_information(self):
-        expected = dict(
-            octorelay=dict(
-                displayName="OctoRelay",
-                displayVersion="MockedVersion",
-                type="github_release",
-                current="MockedVersion",
-                user="borisbu",
-                repo="OctoRelay",
-                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip",
-                stable_branch=dict(
-                    name="Stable",
-                    branch="master",
-                    commitish=["master"]
-                ),
-                prerelease_branches=[dict(
-                    name="Prerelease",
-                    branch="develop",
-                    commitish=["develop", "master"]
-                )]
-           )
-        )
+        expected = {
+            "octorelay": {
+                "displayName": "OctoRelay",
+                "displayVersion": "MockedVersion",
+                "type": "github_release",
+                "current": "MockedVersion",
+                "user": "borisbu",
+                "repo": "OctoRelay",
+                "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+                "stable_branch": {
+                    "name": "Stable",
+                    "branch": "master",
+                    "commitish": [ "master" ]
+                },
+                "prerelease_branches": [{
+                    "name": "Prerelease",
+                    "branch": "develop",
+                    "commitish": [ "develop", "master" ]
+                }]
+            }
+        }
         actual = self.plugin_instance.get_update_information()
         self.assertEqual(actual, expected)
 
