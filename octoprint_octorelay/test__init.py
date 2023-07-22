@@ -419,6 +419,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_api_command(self, json):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
+        GPIO_mock.input = Mock(return_value=True)
         cases = [
             {
                 "command": "listAllStatus",
