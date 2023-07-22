@@ -293,11 +293,16 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_turn_off_pin(self, systemMock):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_pin(17, True, "CommandMock")
-        GPIO_mock.setup.assert_called_with(17, "MockedOUT")
-        GPIO_mock.output.assert_called_with(17, True)
-        GPIO_mock.setwarnings.assert_called_with(True)
-        systemMock.assert_called_with("CommandMock")
+        cases = [
+            { "inverted": True, "output": True },
+            { "inverted": False, "output": False }
+        ]
+        for case in cases:
+            self.plugin_instance.turn_off_pin(17, case["inverted"], "CommandMock")
+            GPIO_mock.setup.assert_called_with(17, "MockedOUT")
+            GPIO_mock.output.assert_called_with(17, case["output"])
+            GPIO_mock.setwarnings.assert_called_with(True)
+            systemMock.assert_called_with("CommandMock")
         self.plugin_instance.update_ui = originalUpdate
 
 if __name__ == '__main__':
