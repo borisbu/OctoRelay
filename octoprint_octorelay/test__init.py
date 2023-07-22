@@ -278,6 +278,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch('os.system')
     def test_turn_off_pin(self, systemMock):
+        # Should set the pin state depending on inverted parameter and execute the supplied command
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         cases = [
@@ -291,6 +292,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
             GPIO_mock.setwarnings.assert_called_with(True)
             systemMock.assert_called_with("CommandMock")
         self.plugin_instance.update_ui = originalUpdate
+
+    @patch('octoprint.plugin')
+    def test_on_settings_save(self, octoprintPluginMock):
+        # Should call the SettingsPlugin event handler with own instance and supplied argument
+        originalUpdate = self.plugin_instance.update_ui
+        self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.on_settings_save("MockedData")
+        octoprintPluginMock.SettingsPlugin.on_settings_save.assert_called_with(
+            self.plugin_instance, "MockedData"
+        )
+        self.plugin_instance.update_ui.assert_called_with()
+        self.plugin_instance.update_ui = originalUpdate
+
 
 if __name__ == '__main__':
     unittest.main()
