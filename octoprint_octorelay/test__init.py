@@ -420,7 +420,21 @@ class TestOctoRelayPlugin(unittest.TestCase):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         cases = [
-            { "command": "listAllStatus", "data": None, "inverted": True, "expectedJson": {} }
+            {
+                "command": "listAllStatus",
+                "data": None,
+                "inverted": True,
+                "expectedJson": [
+                    { "id": "r1", "name": "TEST", "active": False },
+                    { "id": "r2", "name": "TEST", "active": False },
+                    { "id": "r3", "name": "TEST", "active": False },
+                    { "id": "r4", "name": "TEST", "active": False },
+                    { "id": "r5", "name": "TEST", "active": False },
+                    { "id": "r6", "name": "TEST", "active": False },
+                    { "id": "r7", "name": "TEST", "active": False },
+                    { "id": "r8", "name": "TEST", "active": False }
+                ]
+            }
         ]
         for case in cases:
             settingValueMock = {
