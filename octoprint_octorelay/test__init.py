@@ -244,63 +244,50 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "r5": {}, "r6": {}, "r7": {}, "r8": {},
         }
         GPIO_mock.input = Mock(return_value=False)
-        # inverted relay case
-        settingValueMock = {
-            "active": True,
-            "relay_pin": 17,
-            "inverted_output": True,
-            "iconOn": "ON",
-            "iconOff": "OFF",
-            "labelText": "TEST",
-            "confirmOff": False
-        }
-        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
-        expectedModel = {}
-        for index in self.plugin_instance.get_settings_defaults():
-            expectedModel[index] = {
-                "relay_pin": 17,
-                "state": False,
-                "labelText": "TEST",
+        cases = [
+            { "inverted": True, "expectedIcon": "ON" },
+            { "inverted": False, "expectedIcon": "OFF" }
+        ]
+        for case in cases:
+            settingValueMock = {
                 "active": True,
-                "iconText": "ON",
+                "relay_pin": 17,
+                "inverted_output": case["inverted"],
+                "iconOn": "ON",
+                "iconOff": "OFF",
+                "labelText": "TEST",
                 "confirmOff": False
             }
-        self.plugin_instance.update_ui()
-        for index in self.plugin_instance.get_settings_defaults():
-            self.plugin_instance._settings.get.assert_any_call([index])
-        self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
-            "MockedIdentifier", expectedModel
-        )
-        # non-inverted relay case
-        settingValueMock["inverted_output"] = False
-        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
-        expectedModel = {}
-        for index in self.plugin_instance.get_settings_defaults():
-            expectedModel[index] = {
-                "relay_pin": 17,
-                "state": False,
-                "labelText": "TEST",
-                "active": True,
-                "iconText": "OFF",
-                "confirmOff": False
-            }
-        self.plugin_instance.update_ui()
-        self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
-            "MockedIdentifier", expectedModel
-        )
+            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            expectedModel = {}
+            for index in self.plugin_instance.get_settings_defaults():
+                expectedModel[index] = {
+                    "relay_pin": 17,
+                    "state": False,
+                    "labelText": "TEST",
+                    "active": True,
+                    "iconText": case["expectedIcon"],
+                    "confirmOff": False
+                }
+            self.plugin_instance.update_ui()
+            for index in self.plugin_instance.get_settings_defaults():
+                self.plugin_instance._settings.get.assert_any_call([index])
+            self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
+                "MockedIdentifier", expectedModel
+            )
 
     @patch('os.system')
     def test_turn_off_pin(self, systemMock):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         cases = [
-            { "inverted": True, "output": True },
-            { "inverted": False, "output": False }
+            { "inverted": True, "expectedOutput": True },
+            { "inverted": False, "expectedOutput": False }
         ]
         for case in cases:
             self.plugin_instance.turn_off_pin(17, case["inverted"], "CommandMock")
             GPIO_mock.setup.assert_called_with(17, "MockedOUT")
-            GPIO_mock.output.assert_called_with(17, case["output"])
+            GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
             GPIO_mock.setwarnings.assert_called_with(True)
             systemMock.assert_called_with("CommandMock")
         self.plugin_instance.update_ui = originalUpdate
