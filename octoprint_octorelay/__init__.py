@@ -317,7 +317,6 @@ class OctoRelayPlugin(
             active = settings["active"]
             if autoONforPrint and active:
                 self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
-                GPIO.setup(relay_pin, GPIO.OUT)
                 self.turn_on_pin(relay_pin, inverted, cmdON)
         self.update_ui()
 
@@ -356,7 +355,6 @@ class OctoRelayPlugin(
         if cmdON:
             os.system(cmdON)
         self._logger.info("pin: {} turned on".format(relay_pin))
-        self.update_ui()
 
     def update_ui(self):
         settings = self.get_settings_defaults()
