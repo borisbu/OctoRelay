@@ -1,6 +1,7 @@
 import unittest
 import sys
 from unittest.mock import Mock, patch, MagicMock
+from octoprint.events import Events
 
 # Patch RPi.GPIO module before importing OctoRelayPlugin class
 GPIO_mock = Mock()
@@ -305,6 +306,26 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance.update_ui = originalUpdate
 
+    def test_on_event(self):
+        # Depending on certain event type should call a corresponding method
+        originalUpdate = self.plugin_instance.update_ui
+        originalStarted = self.plugin_instance.print_started
+        originalStopped = self.plugin_instance.print_stopped
+        self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.print_started = Mock()
+        self.plugin_instance.print_stopped = Mock()
+        cases = [
+            { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
+            { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
+            { "event": Events.PRINT_DONE, "expectedMethod": self.plugin_instance.print_stopped },
+            { "event": Events.PRINT_FAILED, "expectedMethod": self.plugin_instance.print_stopped }
+        ]
+        for case in cases:
+            self.plugin_instance.on_event(case["event"], "MockedPayload")
+            case["expectedMethod"].assert_called_with()
+        self.plugin_instance.update_ui = originalUpdate
+        self.plugin_instance.print_started = originalStarted
+        self.plugin_instance.print_stopped = originalStopped
 
 if __name__ == '__main__':
     unittest.main()
