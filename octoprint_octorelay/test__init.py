@@ -2,7 +2,6 @@ import unittest
 import sys
 from unittest.mock import Mock, patch, MagicMock
 from octoprint.events import Events
-from flask import Flask
 
 # Patching required before importing OctoRelayPlugin class
 GPIO_mock = Mock()
@@ -30,16 +29,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cls.plugin_instance._logger = Mock()
         cls.plugin_instance._settings = Mock()
         cls.plugin_instance._plugin_manager = Mock()
-        app = Flask(__name__)
-        cls.app_context = app.app_context()
-        cls.app_context.push()
 
     @classmethod
     def tearDownClass(cls):
         # Clean up
         del sys.modules['RPi.GPIO']
         del sys.modules['octoprint.util']
-        cls.app_context.pop()
 
     def test_GPIO_initialization(self):
         GPIO_mock.setmode.assert_called_with("MockedBCM")
