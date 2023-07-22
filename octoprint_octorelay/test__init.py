@@ -17,6 +17,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Create an instance of the OctoRelayPlugin class
         cls.plugin_instance = OctoRelayPlugin()
         cls.plugin_instance._plugin_version = "MockedVersion"
+        cls.plugin_instance._logger = Mock()
 
     @classmethod
     def tearDownClass(cls):
@@ -211,6 +212,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 __plugin_implementation__.get_update_information
         }
         self.assertEqual(__plugin_hooks__, expected)
+
+    def test_on_shutdown(self):
+        self.plugin_instance.polling_timer = Mock()
+        self.plugin_instance.on_shutdown()
+        self.plugin_instance.polling_timer.cancel.assert_called_with()
 
 if __name__ == '__main__':
     unittest.main()
