@@ -8,6 +8,9 @@ GPIO_mock = Mock()
 GPIO_mock.BCM = "MockedBCM"
 GPIO_mock.OUT = "MockedOUT"
 sys.modules['RPi.GPIO'] = GPIO_mock
+timerMock = Mock()
+utilMock = Mock(RepeatedTimer = Mock(return_value=timerMock))
+sys.modules['octoprint.util'] = utilMock
 
 from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
@@ -326,6 +329,35 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = originalUpdate
         self.plugin_instance.print_started = originalStarted
         self.plugin_instance.print_stopped = originalStopped
+
+    def test_on_after_startup(self):
+        # Depending on actual settings should set the pins state, update UI and start polling
+        originalUpdate = self.plugin_instance.update_ui
+        self.plugin_instance.update_ui = Mock()
+        cases = [
+            { "inverted": True, "initial": True, "expectedOutput": False },
+            { "inverted": True, "initial": False, "expectedOutput": True },
+            { "inverted": False, "initial": True, "expectedOutput": True },
+            { "inverted": False, "initial": False, "expectedOutput": False }
+        ]
+        for case in cases:
+            settingValueMock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": case["inverted"],
+                "initial_value": case["initial"]
+            }
+            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance.on_after_startup()
+            GPIO_mock.setup.assert_called_with(17, "MockedOUT")
+            GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
+            self.plugin_instance.update_ui.assert_called_with()
+            utilMock.RepeatedTimer.assert_called_with(
+                0.3, self.plugin_instance.input_polling, daemon = True
+            )
+            timerMock.start.assert_called_with()
+        self.plugin_instance.update_ui = originalUpdate
+
 
 if __name__ == '__main__':
     unittest.main()
