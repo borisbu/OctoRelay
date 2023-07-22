@@ -9,7 +9,10 @@ GPIO_mock.BCM = "MockedBCM"
 GPIO_mock.OUT = "MockedOUT"
 sys.modules['RPi.GPIO'] = GPIO_mock
 timerMock = Mock()
-utilMock = Mock(RepeatedTimer = Mock(return_value=timerMock))
+utilMock = Mock(
+    RepeatedTimer = Mock(return_value=timerMock),
+    ResettableTimer = Mock(return_value=timerMock)
+)
 sys.modules['octoprint.util'] = utilMock
 
 from __init__ import OctoRelayPlugin
@@ -383,6 +386,32 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if case["expectedOutput"] != None:
                 GPIO_mock.setup.assert_called_with(17, "MockedOUT")
                 GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
+            self.plugin_instance.update_ui.assert_called_with()
+        self.plugin_instance.update_ui = originalUpdate
+
+    def test_print_stopped(self):
+        originalUpdate = self.plugin_instance.update_ui
+        self.plugin_instance.update_ui = Mock()
+        cases = [
+            { "autoOff": True, "expectedCall": True },
+            { "autoOff": False, "expectedCall": False },
+        ]
+        for case in cases:
+            settingValueMock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": False,
+                "autoOFFforPrint": case["autoOff"],
+                "autoOffDelay": 300,
+                "cmdOFF": "CommandMock"
+            }
+            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance.print_stopped()
+            if case["expectedCall"]:
+                utilMock.RepeatedTimer.assert_called_with(
+                    300, self.plugin_instance.turn_off_pin, [17, False, "CommandMock"]
+                )
+                timerMock.start.assert_called_with()
             self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance.update_ui = originalUpdate
 
