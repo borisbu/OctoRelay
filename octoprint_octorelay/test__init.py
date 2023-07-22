@@ -157,8 +157,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_template_configs(self):
         expected = [
-            dict(type="navbar", custom_bindings=False),
-            dict(type="settings", custom_bindings=False)
+            { "type": "navbar", "custom_bindings": False },
+            { "type": "settings", "custom_bindings": False }
         ]
         actual = self.plugin_instance.get_template_configs()
         self.assertEqual(actual, expected)
