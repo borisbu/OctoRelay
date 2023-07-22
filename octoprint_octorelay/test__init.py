@@ -239,6 +239,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = originalUpdate
 
     def test_update_ui(self):
+        # Should send message via plugin manager containing actual settings and the pins state
         self.plugin_instance.model = {
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
             "r5": {}, "r6": {}, "r7": {}, "r8": {},
