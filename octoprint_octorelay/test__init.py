@@ -30,6 +30,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cls.plugin_instance._logger = Mock()
         cls.plugin_instance._settings = Mock()
         cls.plugin_instance._plugin_manager = Mock()
+        # see: https://stackoverflow.com/a/29419548/15290849
         app = Flask(__name__)
         cls.app_context = app.app_context()
         cls.app_context.push()
@@ -37,9 +38,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Clean up
+        cls.app_context.pop()
         del sys.modules['RPi.GPIO']
         del sys.modules['octoprint.util']
-        cls.app_context.pop()
 
     def test_GPIO_initialization(self):
         GPIO_mock.setmode.assert_called_with("MockedBCM")
@@ -424,7 +425,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         cases = [
-            { "command": "listAllStatus", "data": None, "inverted": True, "returns": "" }
+            { "command": "listAllStatus", "data": None, "inverted": True, "returns": {} }
         ]
         for case in cases:
             settingValueMock = {
@@ -435,7 +436,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             actual = self.plugin_instance.on_api_command(case["command"], case["data"])
-            self.assertEqual(actual, expected)
+            print(actual)
+            self.assertEqual(actual, case["returns"])
 
         self.plugin_instance.update_ui = originalUpdate
 
