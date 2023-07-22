@@ -8,7 +8,8 @@ RPi_mock = Mock()
 sys.modules['RPi'] = RPi_mock
 sys.modules['RPi.GPIO'] = RPi_mock
 
-from __init__ import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
+from __init__ import OctoRelayPlugin
+from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
 
 class TestOctoRelayPlugin(unittest.TestCase):
 
