@@ -20,6 +20,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cls.plugin_instance = OctoRelayPlugin()
         cls.plugin_instance._plugin_version = "MockedVersion"
         cls.plugin_instance._logger = Mock()
+        print(cls.plugin_instance._settings)
         cls.plugin_instance._settings = Mock()
 
     @classmethod
