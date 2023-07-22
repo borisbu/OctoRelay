@@ -450,6 +450,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     { "id": "r7", "name": "TEST", "active": True },
                     { "id": "r8", "name": "TEST", "active": True }
                 ]
+            },
+            {
+                "command": "getStatus",
+                "data": { "pin": "r4" },
+                "inverted": True,
+                "expectedStatus": False
             }
         ]
         for case in cases:
@@ -461,7 +467,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
-            json.assert_called_with(case["expectedJson"])
+            if hasattr(case, "expectedJson"):
+                json.assert_called_with(case["expectedJson"])
+            if hasattr(case, "expectedStatus"):
+                json.assert_called_with(status=case["expectedStatus"])
 
         self.plugin_instance.update_ui = originalUpdate
 
