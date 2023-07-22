@@ -5,7 +5,7 @@ import os
 
 # Patch RPi.GPIO module before importing OctoRelayPlugin class
 GPIO_mock = Mock()
-GPIO_mock.BCM = "BCM"
+GPIO_mock.BCM = "MockedBCM"
 sys.modules['RPi.GPIO'] = GPIO_mock
 
 from __init__ import OctoRelayPlugin
@@ -26,7 +26,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         del sys.modules['RPi.GPIO']
 
     def test_GPIO_initialization(self):
-        GPIO_mock.setmode.assert_called_with(GPIO_mock.BCM)
+        GPIO_mock.setmode.assert_called_with("MockedBCM")
         GPIO_mock.setwarnings.assert_called_with(False)
 
     def test_get_settings_defaults(self):
