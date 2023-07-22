@@ -290,8 +290,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         )
 
     @patch('os.system')
-    def test_turn_off_pin(systemMock, self):
-        print(systemMock, self)
+    def test_turn_off_pin(self, systemMock):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.turn_off_pin(self.plugin_instance, 17, True, "CommandMock")
         GPIO_mock.setup.assert_called_with(17, "MockedOUT")
