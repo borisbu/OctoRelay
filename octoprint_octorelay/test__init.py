@@ -18,9 +18,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def setUpClass(cls):
         # Create an instance of the OctoRelayPlugin class
         cls.plugin_instance = OctoRelayPlugin()
+        cls.plugin_instance._identifier = "MockedIdentifier"
         cls.plugin_instance._plugin_version = "MockedVersion"
         cls.plugin_instance._logger = Mock()
         cls.plugin_instance._settings = Mock()
+        cls.plugin_instance._plugin_manager = Mock()
 
     @classmethod
     def tearDownClass(cls):
@@ -253,6 +255,17 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
         self.plugin_instance.update_ui()
         self.plugin_instance._settings.get.assert_called_with(["r1"])
+        self.plugin_instance._settings.get.assert_called_with(["r2"])
+        self.plugin_instance._settings.get.assert_called_with(["r3"])
+        self.plugin_instance._settings.get.assert_called_with(["r4"])
+        self.plugin_instance._settings.get.assert_called_with(["r5"])
+        self.plugin_instance._settings.get.assert_called_with(["r6"])
+        self.plugin_instance._settings.get.assert_called_with(["r7"])
+        self.plugin_instance._settings.get.assert_called_with(["r8"])
+        self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
+            "MockedIdentifier",
+            self.plugin_instance.model
+        )
 
 if __name__ == '__main__':
     unittest.main()
