@@ -244,6 +244,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
             "r5": {}, "r6": {}, "r7": {}, "r8": {},
         }
+        GPIO_mock.input = Mock(return_value=False)
+        # inverted relay case
         settingValueMock = {
             "active": True,
             "relay_pin": 17,
@@ -254,7 +256,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "confirmOff": False
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
-        GPIO_mock.input = Mock(return_value=False)
         expectedModel = {}
         for index in self.plugin_instance.get_settings_defaults():
             expectedModel[index] = {
@@ -268,6 +269,23 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui()
         for index in self.plugin_instance.get_settings_defaults():
             self.plugin_instance._settings.get.assert_any_call([index])
+        self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
+            "MockedIdentifier", expectedModel
+        )
+        # non-inverted relay case
+        settingValueMock["inverted_output"] = False
+        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        expectedModel = {}
+        for index in self.plugin_instance.get_settings_defaults():
+            expectedModel[index] = {
+                "relay_pin": 17,
+                "state": False,
+                "labelText": "TEST",
+                "active": True,
+                "iconText": "OFF",
+                "confirmOff": False
+            }
+        self.plugin_instance.update_ui()
         self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
             "MockedIdentifier", expectedModel
         )
