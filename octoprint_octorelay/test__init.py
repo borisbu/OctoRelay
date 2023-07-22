@@ -8,10 +8,6 @@ GPIO_mock.BCM = "MockedBCM"
 GPIO_mock.OUT = "MockedOUT"
 sys.modules['RPi.GPIO'] = GPIO_mock
 
-# Patch os module before importing the plugin class
-os_mock = Mock()
-sys.modules['os'] = os_mock
-
 from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
 
@@ -293,13 +289,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "MockedIdentifier", expectedModel
         )
 
-    def test_turn_off_pin(self):
+    @patch('os.system')
+    def test_turn_off_pin(systemMock, self):
+        print(systemMock, self)
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.turn_off_pin(self.plugin_instance, 17, True, "CommandMock")
         GPIO_mock.setup.assert_called_with(17, "MockedOUT")
         GPIO_mock.output.assert_called_with(17, True)
         GPIO_mock.setwarnings.assert_called_with(True)
-        os_mock.system.assert_called_with("CommandMock")
+        systemMock.assert_called_with("CommandMock")
         self.plugin_instance.update_ui = originalUpdate
 
 if __name__ == '__main__':
