@@ -3,7 +3,7 @@ import sys
 from unittest.mock import Mock, patch, MagicMock
 from octoprint.events import Events
 
-# Patch RPi.GPIO module before importing OctoRelayPlugin class
+# Patching required before importing OctoRelayPlugin class
 GPIO_mock = Mock()
 GPIO_mock.BCM = "MockedBCM"
 GPIO_mock.OUT = "MockedOUT"
@@ -31,6 +31,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def tearDownClass(cls):
         # Clean up
         del sys.modules['RPi.GPIO']
+        del sys.modules['octoprint.util']
 
     def test_GPIO_initialization(self):
         GPIO_mock.setmode.assert_called_with("MockedBCM")
