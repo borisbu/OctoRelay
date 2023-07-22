@@ -230,6 +230,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         GPIO_mock.input = Mock(return_value=True)
         self.plugin_instance.input_polling()
         self.plugin_instance.update_ui.assert_called_with()
+        self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
         self.plugin_instance.update_ui = originalUpdate
 
 if __name__ == '__main__':
