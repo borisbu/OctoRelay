@@ -456,6 +456,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "data": { "pin": "r4" },
                 "inverted": True,
                 "expectedStatus": False
+            },
+            {
+                "command": "getStatus",
+                "data": { "pin": "r4" },
+                "inverted": False,
+                "expectedStatus": True
             }
         ]
         for case in cases:
