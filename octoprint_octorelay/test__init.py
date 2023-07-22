@@ -415,11 +415,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance.update_ui = originalUpdate
 
-    def test_on_api_command(self):
+    @patch('flask.jsonify')
+    def test_on_api_command(self, json):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         cases = [
-            { "command": "listAllStatus", "data": None, "inverted": True, "returns": "" }
+            { "command": "listAllStatus", "data": None, "inverted": True, "expectedJson": {} }
         ]
         for case in cases:
             settingValueMock = {
@@ -429,8 +430,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "labelText": "TEST"
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
-            actual = self.plugin_instance.on_api_command(case["command"], case["data"])
-            self.assertEqual(actual, expected)
+            self.plugin_instance.on_api_command(case["command"], case["data"])
+            json.assert_called_with(case["expectedJson"])
 
         self.plugin_instance.update_ui = originalUpdate
 
