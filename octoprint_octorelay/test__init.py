@@ -220,7 +220,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.polling_timer.cancel.assert_called_with()
 
     def test_input_polling(self):
-        originalModel = self.plugin_instance.model
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.model = {
             "r1": { "active": False, "state": True },
@@ -231,7 +230,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         GPIO_mock.input = Mock(return_value=True)
         self.plugin_instance.input_polling()
         self.plugin_instance.update_ui.assert_called_with()
-        self.plugin_instance.model = originalModel
         self.plugin_instance.update_ui = originalUpdate
 
 if __name__ == '__main__':
