@@ -353,7 +353,8 @@ class OctoRelayPlugin(
     def update_ui(self):
         settings = self.get_settings_defaults()
         for index in settings:
-            settings[index].update(self._settings.get([index]))
+            nextValue = self._settings.get([index])
+            settings[index].update(nextValue)
 
             labelText = settings[index]["labelText"]
             active = int(settings[index]["active"])
