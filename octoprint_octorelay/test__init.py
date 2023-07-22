@@ -20,7 +20,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cls.plugin_instance = OctoRelayPlugin()
         cls.plugin_instance._plugin_version = "MockedVersion"
         cls.plugin_instance._logger = Mock()
-        print(cls.plugin_instance._settings)
         cls.plugin_instance._settings = Mock()
 
     @classmethod
@@ -238,6 +237,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = originalUpdate
 
     def test_update_ui(self):
+        self.plugin_instance.model = {
+            "r1": {}, "r2": {}, "r3": {}, "r4": {},
+            "r5": {}, "r6": {}, "r7": {}, "r8": {},
+        }
         settingValueMock = {
             "active": True,
             "relay_pin": 17,
