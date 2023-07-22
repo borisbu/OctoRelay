@@ -1,0 +1,86 @@
+# https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: CI
+
+on:
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  UI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get yarn cache dir
+        id: yarnCache
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - name: Cache node modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-yarn
+        with:
+          path: ${{ steps.yarnCache.outputs.dir }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+      - name: Install dependencies
+        working-directory: ts
+        run: yarn install
+      - name: Lint
+        working-directory: ts
+        run: yarn lint
+      - name: Test
+        working-directory: ts
+        run: yarn test
+      - name: Build JS
+        working-directory: ts
+        run: yarn build
+      - name: Check changes
+        # https://unix.stackexchange.com/questions/155046/determine-if-git-working-directory-is-clean-from-a-script
+        run: |
+          if output=$(git status --porcelain) && [ -z "$output" ]; then
+            echo OK
+          else
+            echo Building the JS caused changes that has to be committed and pushed manually.
+            exit 1
+          fi
+
+  Python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ "3.7" ]
+        octoprint: [ "1.9" ]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Get pip cache dir
+        id: pipCache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache pip modules
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-pip
+        with:
+          path: ${{ steps.pipCache.outputs.dir }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
+      - name: Install OctoPrint
+        run: pip install octoprint~=${{ matrix.octoprint }}
+      - name: Install OctoRelay
+        run: pip install -e .
+      - name: Prepare testing environment
+        run: pip install coverage
+      - name: Test
+        working-directory: octoprint_octorelay
+        run: python -m coverage run -m unittest test__init.py
+      - name: Report the coverage
+        working-directory: octoprint_octorelay
+        run: python -m coverage report --show-missing --omit=test*

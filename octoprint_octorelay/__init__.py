@@ -50,8 +50,8 @@ class OctoRelayPlugin(
                 initial_value=False,
                 cmdON="",
                 cmdOFF="",
-                iconOn="""<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24">""",
-                iconOff="""<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24" style="filter: opacity(20%)">""",
+                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
+                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
                 labelText="Printer",
                 confirmOff=True,
                 autoONforPrint=False,
@@ -65,8 +65,8 @@ class OctoRelayPlugin(
                 initial_value=False,
                 cmdON="",
                 cmdOFF="",
-                iconOn="""<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" >""",
-                iconOff="""<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" style="filter: opacity(20%)">""",
+                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
+                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
                 labelText="Fan",
                 confirmOff=False,
                 autoONforPrint=True,
@@ -80,8 +80,8 @@ class OctoRelayPlugin(
                 initial_value=True,
                 cmdON="sudo service webcamd start",
                 cmdOFF="sudo service webcamd stop",
-                iconOn="""<img highth="24" width="24" src="/plugin/octorelay/static/img/webcam.png" >""",
-                iconOff="""<img highth="24" width="24" src="/plugin/octorelay/static/img/webcam.png" style="filter: opacity(20%)">""",
+                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
                 labelText="Webcam",
                 confirmOff=False,
                 autoONforPrint=True,
@@ -309,12 +309,14 @@ class OctoRelayPlugin(
         for index in self.model:
             settings = self.get_settings_defaults()[index]
             settings.update(self._settings.get([index]))
+
+            relay_pin = int(settings["relay_pin"])
+            inverted = settings['inverted_output']
             autoONforPrint = settings['autoONforPrint']
             cmdON = settings['cmdON']
             active = settings["active"]
             if autoONforPrint and active:
-                relay_pin = int(settings["relay_pin"])
-                inverted = settings['inverted_output']
+                self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
                 GPIO.setup(relay_pin, GPIO.OUT)
                 self.turn_on_pin(relay_pin, inverted, cmdON)
         self.update_ui()
@@ -397,7 +399,19 @@ class OctoRelayPlugin(
 
                 user="borisbu",
                 repo="OctoRelay",
-                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip"
+                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+
+                stable_branch=dict(
+                    name="Stable",
+                    branch="master",
+                    commitish=["master"]
+                ),
+
+                prerelease_branches=[dict(
+                    name="Prerelease",
+                    branch="develop",
+                    commitish=["develop", "master"]
+                )]
             )
         )
 
@@ -409,7 +423,7 @@ class OctoRelayPlugin(
                 self.update_ui()
                 break
 
-__plugin_pythoncompat__ = ">=2.7,<4"
+__plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {

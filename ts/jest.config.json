@@ -1,0 +1,14 @@
+{
+  "transform": {
+    "^.+\\.ts$": [
+      "@swc/jest"
+    ]
+  },
+  "collectCoverage": true,
+  "coverageReporters": [
+    "json",
+    "lcov",
+    "text",
+    "html"
+  ]
+}
