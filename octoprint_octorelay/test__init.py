@@ -222,9 +222,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_input_polling(self):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.model = {
-            "r1": { "active": False, "state": True },
-            "r2": { "active": True, "state": True },
-            "r3": { "active": True, "state": False }
+            "r1": { "active": False, "relay_pin": 4, "state": True },
+            "r2": { "active": True, "relay_pin": 17, "state": True },
+            "r3": { "active": True, "relay_pin": 18, "state": False }
         }
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=True)
