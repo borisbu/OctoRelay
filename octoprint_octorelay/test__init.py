@@ -390,6 +390,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = originalUpdate
 
     def test_print_stopped(self):
+        # For relays with autoOff feature should set timer to turn its pin off
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         cases = [
@@ -418,6 +419,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @patch('flask.jsonify')
     @patch('os.system')
     def test_on_api_command(self, json, systemMock):
+        # Depending on command should perform different actions and response with JSON
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=True)
