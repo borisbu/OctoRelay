@@ -237,7 +237,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = originalUpdate
 
     def test_update_ui(self):
-        self.plugin_instance.update_ui()
         settingValueMock = {
             "active": True,
             "relay_pin": 17,
@@ -248,6 +247,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "confirmOff": False
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        self.plugin_instance.update_ui()
         self.plugin_instance._settings.get.assert_called_with(["r1"])
 
 if __name__ == '__main__':
