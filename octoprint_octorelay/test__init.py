@@ -25,6 +25,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Clean up
         del sys.modules['RPi.GPIO']
 
+    def test_GPIO_initialization(self):
+        GPIO_mock.setmode.assert_called_with(GPIO_mock.BCM)
+        GPIO_mock.setwarnings.assert_called_with(False)
+
     def test_get_settings_defaults(self):
         expected = dict(
             r1=dict(
