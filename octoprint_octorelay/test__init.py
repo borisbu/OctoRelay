@@ -8,7 +8,7 @@ RPi_mock = Mock()
 sys.modules['RPi'] = RPi_mock
 sys.modules['RPi.GPIO'] = RPi_mock
 
-from __init__ import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
+from __init__ import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
 
 class TestOctoRelayPlugin(unittest.TestCase):
 
@@ -212,6 +212,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 __plugin_implementation__.get_update_information
         }
         self.assertEqual(__plugin_hooks__, expected)
+
+    def test_exposed_polling_interval(self):
+        self.assertEqual(POLLING_INTERVAL, 0.3)
 
     def test_on_shutdown(self):
         self.plugin_instance.polling_timer = Mock()
