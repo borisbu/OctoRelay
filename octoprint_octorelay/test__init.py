@@ -359,6 +359,32 @@ class TestOctoRelayPlugin(unittest.TestCase):
             timerMock.start.assert_called_with()
         self.plugin_instance.update_ui = originalUpdate
 
+    def test_print_started(self):
+        # For relays configured with autoON should set a certain state
+        originalUpdate = self.plugin_instance.update_ui
+        self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.turn_off_timers = { "test": timerMock }
+        cases = [
+            { "autoOn": True, "inverted": True, "expectedOutput": False},
+            { "autoOn": True, "inverted": False, "expectedOutput": True },
+            { "autoOn": False, "inverted": True, "expectedOutput": None },
+            { "autoOn": False, "inverted": False, "expectedOutput": None }
+        ]
+        for case in cases:
+            settingValueMock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": case["inverted"],
+                "autoONforPrint": case["autoOn"]
+            }
+            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance.print_started()
+            timerMock.cancel.assert_called_with()
+            if case["expectedOutput"] != None:
+                GPIO_mock.setup.assert_called_with(17, "MockedOUT")
+                GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
+            self.plugin_instance.update_ui.assert_called_with()
+        self.plugin_instance.update_ui = originalUpdate
 
 if __name__ == '__main__':
     unittest.main()
