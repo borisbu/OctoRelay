@@ -220,6 +220,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.polling_timer.cancel.assert_called_with()
 
     def test_input_polling(self):
+        # First active relay having state not equal to the one stored in model should trigger UI update
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.model = {
             "r1": { "active": False, "relay_pin": 4, "state": True },
