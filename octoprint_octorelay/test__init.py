@@ -471,6 +471,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedStatus": "ok",
                 "expectedOutput": True,
                 "expectedCommand": "CommandOnMock"
+            },
+            {
+                "command": "update",
+                "data": { "pin": "r4" },
+                "inverted": False,
+                "expectedStatus": "ok",
+                "expectedOutput": False,
+                "expectedCommand": "CommandOffMock"
             }
         ]
         for case in cases:
