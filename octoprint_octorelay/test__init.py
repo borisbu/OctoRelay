@@ -435,6 +435,21 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     { "id": "r7", "name": "TEST", "active": False },
                     { "id": "r8", "name": "TEST", "active": False }
                 ]
+            },
+            {
+                "command": "listAllStatus",
+                "data": None,
+                "inverted": False,
+                "expectedJson": [
+                    { "id": "r1", "name": "TEST", "active": True },
+                    { "id": "r2", "name": "TEST", "active": True },
+                    { "id": "r3", "name": "TEST", "active": True },
+                    { "id": "r4", "name": "TEST", "active": True },
+                    { "id": "r5", "name": "TEST", "active": True },
+                    { "id": "r6", "name": "TEST", "active": True },
+                    { "id": "r7", "name": "TEST", "active": True },
+                    { "id": "r8", "name": "TEST", "active": True }
+                ]
             }
         ]
         for case in cases:
