@@ -253,12 +253,78 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "confirmOff": False
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        GPIO_mock.input = Mock(return_value=False)
         self.plugin_instance.update_ui()
         for index in self.plugin_instance.get_settings_defaults():
             self.plugin_instance._settings.get.assert_any_call([index])
+        expectedModel = {
+            "r1": {
+                "relay_pin": 17,
+                "state": False,
+                "labelText": "TEST",
+                "active": True,
+                "iconText": "ON",
+                "confirmOff": False
+            },
+            "r2": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            },
+            "r3": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            },
+            "r4": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            },
+            "r5": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            },
+            "r6": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            },
+            "r7": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            },
+            "r8": {
+              "relay_pin": 17,
+              "state": False,
+              "labelText": "TEST",
+              "active": True,
+              "iconText": "ON",
+              "confirmOff": False
+            }
+        }
         self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
-            "MockedIdentifier",
-            self.plugin_instance.model
+            "MockedIdentifier", expectedModel
         )
 
 if __name__ == '__main__':
