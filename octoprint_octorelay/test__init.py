@@ -164,18 +164,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_get_assets(self):
-        expected = dict(
-            js=["js/octorelay.js"]
-        )
+        expected = { "js": [ "js/octorelay.js" ] }
         actual = self.plugin_instance.get_assets()
         self.assertEqual(actual, expected)
 
     def test_get_api_commands(self):
-        expected = {
-            "update": [],
-            "getStatus": [],
-            "listAllStatus":[],
-        }
+        expected = { "update": [], "getStatus": [], "listAllStatus": [] }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
