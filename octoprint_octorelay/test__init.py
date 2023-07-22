@@ -4,9 +4,9 @@ from unittest.mock import Mock, patch, MagicMock
 import os
 
 # Patch RPi.GPIO module before importing OctoRelayPlugin class
-RPi_mock = Mock()
-sys.modules['RPi'] = RPi_mock
-sys.modules['RPi.GPIO'] = RPi_mock
+GPIO_mock = Mock()
+GPIO_mock.BCM = "BCM"
+sys.modules['RPi.GPIO'] = GPIO_mock
 
 from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
@@ -23,7 +23,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Clean up
-        del sys.modules['RPi']
         del sys.modules['RPi.GPIO']
 
     def test_get_settings_defaults(self):
