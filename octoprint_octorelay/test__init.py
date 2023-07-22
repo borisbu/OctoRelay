@@ -408,7 +408,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.print_stopped()
             if case["expectedCall"]:
-                utilMock.RepeatedTimer.assert_called_with(
+                utilMock.ResettableTimer.assert_called_with(
                     300, self.plugin_instance.turn_off_pin, [17, False, "CommandMock"]
                 )
                 timerMock.start.assert_called_with()
