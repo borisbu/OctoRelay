@@ -415,5 +415,24 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance.update_ui = originalUpdate
 
+    def test_on_api_command(self):
+        originalUpdate = self.plugin_instance.update_ui
+        self.plugin_instance.update_ui = Mock()
+        cases = [
+            { "command": "listAllStatus", "data": None, "inverted": True, "returns": "" }
+        ]
+        for case in cases:
+            settingValueMock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": case["inverted"],
+                "labelText": "TEST"
+            }
+            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            actual = self.plugin_instance.on_api_command(case["command"], case["data"])
+            self.assertEqual(actual, expected)
+
+        self.plugin_instance.update_ui = originalUpdate
+
 if __name__ == '__main__':
     unittest.main()
