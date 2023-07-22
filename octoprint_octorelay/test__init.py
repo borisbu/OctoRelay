@@ -6,6 +6,7 @@ import os
 # Patch RPi.GPIO module before importing OctoRelayPlugin class
 GPIO_mock = Mock()
 GPIO_mock.BCM = "MockedBCM"
+GPIO_mock.OUT = "MockedOUT"
 sys.modules['RPi.GPIO'] = GPIO_mock
 
 from __init__ import OctoRelayPlugin
@@ -19,6 +20,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cls.plugin_instance = OctoRelayPlugin()
         cls.plugin_instance._plugin_version = "MockedVersion"
         cls.plugin_instance._logger = Mock()
+        print(cls.plugin_instance._settings)
+        cls.plugin_instance._settings = Mock()
 
     @classmethod
     def tearDownClass(cls):
@@ -233,6 +236,20 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
         self.plugin_instance.update_ui = originalUpdate
+
+    def test_update_ui(self):
+        self.plugin_instance.update_ui()
+        settingValueMock = {
+            "active": True,
+            "relay_pin": 17,
+            "inverted_output": True,
+            "iconOn": "ON",
+            "iconOff": "OFF",
+            "labelText": "TEST",
+            "confirmOff": False
+        }
+        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        self.plugin_instance._settings.get.assert_called_with(["r1"])
 
 if __name__ == '__main__':
     unittest.main()
