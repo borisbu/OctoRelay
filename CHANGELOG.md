@@ -2,6 +2,13 @@
 
 ## Version 2
 
+### 2.0.1
+
+- Fixed turning non-inverted relays ON and executing the corresponding optional OS Command when start printing.
+  - Thanks to [@NDR008](https://github.com/NDR008) contribution, the issue
+    [#46](https://github.com/borisbu/OctoRelay/issues/46) most is likely resolved.
+  
+
 ### 2.0.0
 
 - **Breaking changes**
