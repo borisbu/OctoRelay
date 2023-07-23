@@ -74,7 +74,7 @@ jobs:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
       - name: Install OctoPrint
-        run: pip install octoprint~=${{ matrix.octoprint }}
+        run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
