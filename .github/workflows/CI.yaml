@@ -51,6 +51,7 @@ jobs:
           fi
 
   Python:
+    name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
