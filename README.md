@@ -1,5 +1,7 @@
 # OctoRelay
 
+[![CI](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml)
+
 A plugin that adds buttons to the navigation bar to toggle GPIO pins on the Raspberry Pi.
 
 This Plugin was based on the [Octolight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)
