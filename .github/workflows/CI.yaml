@@ -81,7 +81,9 @@ jobs:
       - name: Install OctoPrint
         run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install OctoRelay
-        run: pip install -e .
+        run: |
+          pip install wheel
+          pip install -e .
       - name: Prepare testing environment
         run: pip install coverage
       - name: Test
