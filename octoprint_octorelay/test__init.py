@@ -307,6 +307,20 @@ class TestOctoRelayPlugin(unittest.TestCase):
             systemMock.assert_called_with("CommandMock")
         restoreUI()
 
+    @patch('os.system')
+    def test_turn_on_pin(self, systemMock):
+        # Depending on relay type it should set its pin state and execute the supplied command
+        cases = [
+            { "inverted": True, "expectedOutput": False},
+            { "inverted": False, "expectedOutput": True },
+        ]
+        for case in cases:
+            self.plugin_instance.turn_on_pin(17, case["inverted"], "CommandMock")
+            GPIO_mock.setup.assert_called_with(17, "MockedOUT")
+            GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
+            GPIO_mock.setwarnings.assert_called_with(True)
+            systemMock.assert_called_with("CommandMock")
+
     @patch('octoprint.plugin')
     def test_on_settings_save(self, octoprintPluginMock):
         # Should call the SettingsPlugin event handler with own instance and supplied argument
@@ -367,30 +381,33 @@ class TestOctoRelayPlugin(unittest.TestCase):
         restoreUI()
 
     def test_print_started(self):
-        # For relays configured with autoON should set a certain state
+        # For relays configured with autoON should call turn_on_pin method and update UI
         restoreUI = self.mockUpdateUI()
         self.plugin_instance.turn_off_timers = { "test": timerMock }
+        originalTurnOn = self.plugin_instance.turn_on_pin
+        self.plugin_instance.turn_on_pin = Mock()
         self.mockModel()
         cases = [
-            { "autoOn": True, "inverted": True, "expectedOutput": False},
-            { "autoOn": True, "inverted": False, "expectedOutput": True },
-            { "autoOn": False, "inverted": True, "expectedOutput": None },
-            { "autoOn": False, "inverted": False, "expectedOutput": None }
+            { "autoOn": True, "inverted": True, "expectedCall": True},
+            { "autoOn": True, "inverted": False, "expectedCall": True },
+            { "autoOn": False, "inverted": True, "expectedCall": False },
+            { "autoOn": False, "inverted": False, "expectedCall": False }
         ]
         for case in cases:
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
-                "autoONforPrint": case["autoOn"]
+                "autoONforPrint": case["autoOn"],
+                "cmdON": "CommandMock"
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.print_started()
             timerMock.cancel.assert_called_with()
-            if case["expectedOutput"] != None:
-                GPIO_mock.setup.assert_called_with(17, "MockedOUT")
-                GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
+            if case["expectedCall"]:
+                self.plugin_instance.turn_on_pin.assert_called_with(17, case["inverted"], "CommandMock")
             self.plugin_instance.update_ui.assert_called_with()
+        self.plugin_instance.turn_on_pin = originalTurnOn
         restoreUI()
 
     def test_print_stopped(self):

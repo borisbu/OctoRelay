@@ -313,12 +313,11 @@ class OctoRelayPlugin(
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
             autoONforPrint = settings['autoONforPrint']
+            cmdON = settings['cmdON']
             active = settings["active"]
             if autoONforPrint and active:
                 self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
-                GPIO.setup(relay_pin, GPIO.OUT)
-                # XOR with inverted
-                GPIO.output(relay_pin, inverted != True)
+                self.turn_on_pin(relay_pin, inverted, cmdON)
         self.update_ui()
 
     def print_stopped(self):
@@ -349,6 +348,15 @@ class OctoRelayPlugin(
             os.system(cmdOFF)
         self._logger.info("pin: {} turned off".format(relay_pin))
         self.update_ui()
+
+    def turn_on_pin(self, relay_pin, inverted, cmdON):
+        GPIO.setup(relay_pin, GPIO.OUT)
+        # XOR with inverted
+        GPIO.output(relay_pin, inverted == False)
+        GPIO.setwarnings(True)
+        if cmdON:
+            os.system(cmdON)
+        self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
         settings = self.get_settings_defaults()
