@@ -34,6 +34,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         del sys.modules['RPi.GPIO']
         del sys.modules['octoprint.util']
 
+    def mockModel(self):
+        self.plugin_instance.model = {
+            "r1": {}, "r2": {}, "r3": {}, "r4": {},
+            "r5": {}, "r6": {}, "r7": {}, "r8": {},
+        }
+
     def test_GPIO_initialization(self):
         GPIO_mock.setmode.assert_called_with("MockedBCM")
         GPIO_mock.setwarnings.assert_called_with(False)
@@ -245,10 +251,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_update_ui(self):
         # Should send message via plugin manager containing actual settings and the pins state
-        self.plugin_instance.model = {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {},
-        }
+        self.mockModel()
         GPIO_mock.input = Mock(return_value=False)
         cases = [
             { "inverted": True, "expectedIcon": "ON" },
@@ -319,10 +322,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.print_started = Mock()
         self.plugin_instance.print_stopped = Mock()
-        self.plugin_instance.model = {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {},
-        }
+        self.mockModel()
         cases = [
             { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
             { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
@@ -369,10 +369,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "test": timerMock }
-        self.plugin_instance.model = {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {},
-        }
+        self.mockModel()
         cases = [
             { "autoOn": True, "inverted": True, "expectedOutput": False},
             { "autoOn": True, "inverted": False, "expectedOutput": True },
@@ -400,10 +397,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         originalUpdate = self.plugin_instance.update_ui
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "r4": timerMock }
-        self.plugin_instance.model = {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {},
-        }
+        self.mockModel()
         cases = [
             { "autoOff": True, "expectedCall": True },
             { "autoOff": False, "expectedCall": False },
