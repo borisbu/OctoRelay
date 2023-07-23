@@ -394,6 +394,26 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.turn_on_pin.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
 
+    def test_print_started__exception(self):
+        # Should handle a possible exception when cancelling the timer
+        self.plugin_instance.update_ui = Mock()
+        def cancelMock():
+            raise Exception("Sample message")
+        self.plugin_instance.turn_off_timers = { "test": Mock(cancel=cancelMock) }
+        self.plugin_instance.turn_on_pin = Mock()
+        self.mockModel()
+        settingValueMock = {
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "autoONforPrint": False,
+        }
+        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        self.plugin_instance.print_started()
+        self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test")
+        self.plugin_instance.turn_on_pin.assert_not_called()
+        self.plugin_instance.update_ui.assert_called_with()
+
     def test_print_stopped(self):
         # For relays with autoOff feature should set timer to turn its pin off
         self.plugin_instance.update_ui = Mock()
