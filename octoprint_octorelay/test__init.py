@@ -377,6 +377,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "autoOn": False, "inverted": False, "expectedCall": False }
         ]
         for case in cases:
+            self.plugin_instance.turn_on_pin.reset_mock()
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
@@ -389,6 +390,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             timerMock.cancel.assert_called_with()
             if case["expectedCall"]:
                 self.plugin_instance.turn_on_pin.assert_called_with(17, case["inverted"], "CommandMock")
+            else:
+                self.plugin_instance.turn_on_pin.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
 
     def test_print_stopped(self):
