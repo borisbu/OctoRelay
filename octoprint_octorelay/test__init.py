@@ -325,8 +325,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_event(self):
         # Depending on certain event type should call a corresponding method
         self.plugin_instance.update_ui = Mock()
-        originalStarted = self.plugin_instance.print_started
-        originalStopped = self.plugin_instance.print_stopped
         self.plugin_instance.print_started = Mock()
         self.plugin_instance.print_stopped = Mock()
         self.mockModel()
@@ -339,8 +337,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         for case in cases:
             self.plugin_instance.on_event(case["event"], "MockedPayload")
             case["expectedMethod"].assert_called_with()
-        self.plugin_instance.print_started = originalStarted
-        self.plugin_instance.print_stopped = originalStopped
 
     def test_on_after_startup(self):
         # Depending on actual settings should set the pins state, update UI and start polling
@@ -372,7 +368,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays configured with autoON should call turn_on_pin method and update UI
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "test": timerMock }
-        originalTurnOn = self.plugin_instance.turn_on_pin
         self.plugin_instance.turn_on_pin = Mock()
         self.mockModel()
         cases = [
@@ -395,7 +390,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if case["expectedCall"]:
                 self.plugin_instance.turn_on_pin.assert_called_with(17, case["inverted"], "CommandMock")
             self.plugin_instance.update_ui.assert_called_with()
-        self.plugin_instance.turn_on_pin = originalTurnOn
 
     def test_print_stopped(self):
         # For relays with autoOff feature should set timer to turn its pin off
