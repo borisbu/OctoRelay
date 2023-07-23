@@ -418,6 +418,7 @@ class OctoRelayPlugin(
         self._logger.debug("input_polling")
         for index in self.model:
             if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
+                self._logger.debug("relay: {} has changed its pin state".format(index))
                 self.update_ui()
                 break
 
