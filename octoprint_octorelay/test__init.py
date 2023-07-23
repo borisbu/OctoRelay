@@ -308,7 +308,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         restoreUI()
 
     @patch('os.system')
-    def test_turn_off_on(self, systemMock):
+    def test_turn_on_pin(self, systemMock):
         # Depending on relay type it should set its pin state and execute the supplied command
         cases = [
             { "inverted": True, "expectedOutput": False},
