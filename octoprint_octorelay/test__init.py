@@ -404,6 +404,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "autoOff": False, "expectedCall": False },
         ]
         for case in cases:
+            utilMock.ResettableTimer.reset_mock()
+            timerMock.start.reset_mock()
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
@@ -419,6 +421,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     300, self.plugin_instance.turn_off_pin, [17, False, "CommandMock"]
                 )
                 timerMock.start.assert_called_with()
+            else:
+                utilMock.ResettableTimer.assert_not_called()
+                timerMock.start.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
 
     @patch('flask.jsonify')
