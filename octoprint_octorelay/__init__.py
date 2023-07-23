@@ -332,6 +332,8 @@ class OctoRelayPlugin(
             cmdOFF = settings['cmdOFF']
             active = settings["active"]
             if autoOFFforPrint and active:
+                self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(
+                    relay_pin, autoOffDelay, index))
                 self.turn_off_timers[index] = ResettableTimer(
                     autoOffDelay, self.turn_off_pin, [relay_pin, inverted, cmdOFF])
                 self.turn_off_timers[index].start()
