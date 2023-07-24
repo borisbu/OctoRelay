@@ -1,5 +1,8 @@
 # OctoRelay
 
+[![CI](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/borisbu/OctoRelay/badge.svg?branch=master)](https://coveralls.io/github/borisbu/OctoRelay?branch=master)
+
 A plugin that adds buttons to the navigation bar to toggle GPIO pins on the Raspberry Pi.
 
 This Plugin was based on the [Octolight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)
@@ -36,7 +39,7 @@ Each one has the following settings *(in order of appearance)*:
 | Label                 | The HTML title of the icon in the navigation bar (hint)    |
 | GPIO Number           | The GPIO pin on the Raspberry Pi *(see the picture above)* |
 | Inverted output       | For normally closed relay: the relay is ON without power   |
-| OS Command *(ON/OFF)* | The command or a script to toggle the relay                |
+| OS Command *(ON/OFF)* | An optional command to run when the relay state changes    |
 | Icon *(ON/OFF)*       | An HTML tag to display on the navigation bar               |
 | Confirmation          | Enables a confirmation dialog when turning the relay OFF   |
 | ON initially on boot  | Turns the relay ON on start                                |

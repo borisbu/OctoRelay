@@ -55,8 +55,8 @@ class OctoRelayPlugin(
                 initial_value=False,
                 cmdON="",
                 cmdOFF="",
-                iconOn="""<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24">""",
-                iconOff="""<img src="/plugin/octorelay/static/img/3d-printer.png" highth="24" width="24" style="filter: opacity(20%)">""",
+                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
+                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
                 labelText="Printer",
                 confirmOff=True,
                 autoONforPrint=False,
@@ -70,8 +70,8 @@ class OctoRelayPlugin(
                 initial_value=False,
                 cmdON="",
                 cmdOFF="",
-                iconOn="""<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" >""",
-                iconOff="""<img highth="24" width="24" src="/plugin/octorelay/static/img/fan-24.png" style="filter: opacity(20%)">""",
+                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
+                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
                 labelText="Fan",
                 confirmOff=False,
                 autoONforPrint=True,
@@ -85,8 +85,8 @@ class OctoRelayPlugin(
                 initial_value=True,
                 cmdON="sudo service webcamd start",
                 cmdOFF="sudo service webcamd stop",
-                iconOn="""<img highth="24" width="24" src="/plugin/octorelay/static/img/webcam.png" >""",
-                iconOff="""<img highth="24" width="24" src="/plugin/octorelay/static/img/webcam.png" style="filter: opacity(20%)">""",
+                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
                 labelText="Webcam",
                 confirmOff=False,
                 autoONforPrint=True,
@@ -321,14 +321,14 @@ class OctoRelayPlugin(
         for index in self.model:
             settings = self._settings.get([index], merged=True)
 
+            relay_pin = int(settings["relay_pin"])
+            inverted = settings['inverted_output']
             autoONforPrint = settings['autoONforPrint']
-            if autoONforPrint:
-                relay_pin = int(settings["relay_pin"])
-                inverted = settings['inverted_output']
-
-                GPIO.setup(relay_pin, GPIO.OUT)
-                # XOR with inverted
-                GPIO.output(relay_pin, inverted is not True)
+            cmdON = settings['cmdON']
+            active = settings["active"]
+            if autoONforPrint and active:
+                self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
+                self.turn_on_pin(relay_pin, inverted, cmdON)
         self.update_ui()
 
     def print_stopped(self):
@@ -358,6 +358,15 @@ class OctoRelayPlugin(
             os.system(cmdOFF)
         self._logger.info("pin: {} turned off".format(relay_pin))
         self.update_ui()
+
+    def turn_on_pin(self, relay_pin, inverted, cmdON):
+        GPIO.setup(relay_pin, GPIO.OUT)
+        # XOR with inverted
+        GPIO.output(relay_pin, inverted is not True)
+        GPIO.setwarnings(True)
+        if cmdON:
+            os.system(cmdON)
+        self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
         settings = self.get_settings_defaults()
@@ -426,10 +435,11 @@ class OctoRelayPlugin(
         self._logger.debug("input_polling")
         for index in self.model:
             if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
+                self._logger.debug("relay: {} has changed its pin state".format(index))
                 self.update_ui()
                 break
 
-__plugin_pythoncompat__ = ">=2.7,<4"
+__plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {

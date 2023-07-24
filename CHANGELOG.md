@@ -1,6 +1,42 @@
 # Changelog
 
+## Version 2
+
+### 2.0.1
+
+- Fixed turning non-inverted relays ON and executing the corresponding optional OS Command when start printing.
+  - Thanks to [@NDR008](https://github.com/NDR008) contribution, the issue
+    [#46](https://github.com/borisbu/OctoRelay/issues/46) most is likely resolved.
+- Fixed incorrect description of OS Command setting in the documentation.
+- Plugin executable code now has `99%` test coverage.
+  - All following contributions, features and fixes should take this into account.
+  
+
+### 2.0.0
+
+- **Breaking changes**
+  - Minimal Python version required: `3.7`.
+  - Minimal JavaScript version support required: `ES6` (aka ES2015).
+    - Minimal browser versions supporting ES6 are listed [here](https://caniuse.com/?search=es6).
+  - The distributed PNG icons are replaced with SVG ones.
+    - In case you've been using them in your configuration (`Icon ON/OFF`), you need to change their filenames:
+      - `3d-printer.png` –> `3d-printer.svg`,
+      - `fan-24.png` –> `fan.svg`,
+      - `webcam.png` –> `webcam.svg`.
+    - `refresh.png` icon is removed from the distribution.
+
 ## Version 1
+
+### 1.4.2
+
+- Fixed `height` property of the icons in the initial config.
+
+### 1.4.1
+
+- Fixed issue with turning relays ON when start printing.
+  - Thanks to [@hcooper](https://github.com/hcooper)'s contribution issues
+    [#39](https://github.com/borisbu/OctoRelay/issues/39) and
+    [#52](https://github.com/borisbu/OctoRelay/issues/52) are most likely resolved.
 
 ### 1.4.0
 
