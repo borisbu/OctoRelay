@@ -4,7 +4,7 @@
 
 ### 2.0.2
 
-- Fixed missing parameter `pin` for API commands `update` and `getStatus`.
+- Fixed missing requirement on the `pin` parameter for API commands `update` and `getStatus`.
   - Thanks to [@jneilliii](https://github.com/jneilliii) for the contribution.
 
 ### 2.0.1
