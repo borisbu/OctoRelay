@@ -15,7 +15,6 @@ GPIO.setwarnings(False)
 
 POLLING_INTERVAL = 0.3
 
-
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.StartupPlugin,
@@ -80,7 +79,7 @@ class OctoRelayPlugin(
                 autoOffDelay=10,
             ),
             r4=dict(
-                active=True,
+                active = True,
                 relay_pin=23,
                 inverted_output=True,
                 initial_value=True,
@@ -302,10 +301,10 @@ class OctoRelayPlugin(
             self.print_stopped()
         elif event == Events.PRINT_FAILED:
             self.print_stopped()
-        # elif event == Events.PRINT_CANCELLING:
-        # self.print_stopped()
-        # elif event == Events.PRINT_CANCELLED:
-        # self.print_stopped()
+        #elif event == Events.PRINT_CANCELLING:
+            # self.print_stopped()
+        #elif event == Events.PRINT_CANCELLED:
+            # self.print_stopped()
         return
 
     def on_settings_save(self, data):
@@ -386,7 +385,7 @@ class OctoRelayPlugin(
                 self.model[index]['iconText'] = icon_off
                 self.model[index]['confirmOff'] = False
 
-        # self._logger.info("update ui with model {}".format(self.model))
+        #self._logger.info("update ui with model {}".format(self.model))
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
     def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
@@ -429,7 +428,6 @@ class OctoRelayPlugin(
             if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
                 self.update_ui()
                 break
-
 
 __plugin_pythoncompat__ = ">=2.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
