@@ -37,6 +37,13 @@ jobs:
       - name: Test
         working-directory: ts
         run: yarn test
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: ui
+          parallel: true        
       - name: Build JS
         working-directory: ts
         run: yarn build
@@ -51,11 +58,18 @@ jobs:
           fi
 
   Python:
+    name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ "3.7", "3.8", "3.9", "3.10" ]
-        octoprint: [ "1.9" ]
+        python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+        octoprint: [ "1.8", "1.9" ]
+        exclude:
+          # These versions are not compatible to each other:
+          - python: 3.11
+            octoprint: 1.8
+          - python: 3.10
+            octoprint: 1.8
     steps:
       - uses: actions/checkout@v3
       - name: Install Python
@@ -73,7 +87,12 @@ jobs:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
       - name: Install OctoPrint
-        run: pip install octoprint~=${{ matrix.octoprint }}
+        # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
+        run: pip install octoprint~=${{ matrix.octoprint }}.0
+      - name: Install Wheel
+        # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
+        if: matrix.octoprint == '1.8'
+        run: pip install wheel
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
@@ -83,4 +102,25 @@ jobs:
         run: python -m coverage run -m unittest test__init.py
       - name: Report the coverage
         working-directory: octoprint_octorelay
-        run: python -m coverage report --show-missing --omit=test*
+        run: |
+          python -m coverage lcov --omit=test*
+          python -m coverage report --show-missing --omit=test*
+      - name: Coveralls
+        uses: coverallsapp/github-action@v2
+        continue-on-error: true
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: python-${{ matrix.python }}-octoprint-${{ matrix.octoprint }}
+          parallel: true
+          file: ./octoprint_octorelay/coverage.lcov
+
+  finish:
+    needs: [UI, Python]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        continue-on-error: true
+        uses: coverallsapp/github-action@v2
+        with:
+          github-token: ${{ secrets.github_token }}
+          parallel-finished: true
