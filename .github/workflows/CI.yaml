@@ -112,6 +112,7 @@ jobs:
           github-token: ${{ secrets.github_token }}
           flag-name: python-${{ matrix.python }}-octoprint-${{ matrix.octoprint }}
           parallel: true
+          file: ./octoprint_octorelay/coverage.lcov
 
   finish:
     needs: [UI, Python]
