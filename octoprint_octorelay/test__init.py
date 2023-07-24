@@ -407,6 +407,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "relay_pin": 17,
             "inverted_output": False,
             "autoONforPrint": False,
+            "cmdON": None
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
         self.plugin_instance.print_started()
