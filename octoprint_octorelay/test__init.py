@@ -184,7 +184,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_get_api_commands(self):
-        expected = { "update": [], "getStatus": [], "listAllStatus": [] }
+        expected = { "update": [ "pin" ], "getStatus": [ "pin" ], "listAllStatus": [] }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
