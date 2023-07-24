@@ -218,20 +218,20 @@ class OctoRelayPlugin(
         # added api command to get led status
         if command == "listAllStatus":
             GPIO.setwarnings(False)
-            active_relays = []
+            activeRelays = []
             for key in self.get_settings_defaults():
                 settings = self._settings.get([key], merged=True)
                 if settings["active"]:
-                    relay_pin = int(settings["relay_pin"])
-                    inverted = settings['inverted_output']
+                    relay_pin = int(settings["relay_pin"])   
+                    inverted = settings['inverted_output']     
                     GPIO.setup(relay_pin, GPIO.OUT)
-                    relay_data = dict(
+                    relaydata = dict(
                         id=key,
                         name=settings["labelText"],
                         active=inverted != GPIO.input(relay_pin),
                     )
-                    active_relays.append(relay_data)
-            return flask.jsonify(active_relays)
+                    activeRelays.append(relaydata)
+            return flask.jsonify(activeRelays)
 
         # added api command to get led status
         if command == "getStatus":
