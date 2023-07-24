@@ -211,42 +211,42 @@ class OctoRelayPlugin(
 
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
-            cmd_on = settings['cmdON']
-            cmd_off = settings['cmdOFF']
+            cmdON = settings['cmdON']
+            cmdOFF = settings['cmdOFF']
 
             GPIO.setwarnings(False)
 
             GPIO.setup(relay_pin, GPIO.OUT)
             # XOR with inverted
-            led_state = inverted != GPIO.input(relay_pin)
+            ledState = inverted != GPIO.input(relay_pin)
 
             if get_status:
-                return led_state
+                return ledState
 
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
                 inverted,
-                led_state
+                ledState
             ))
 
             # toggle state
-            led_state = not led_state
+            ledState = not ledState
 
             GPIO.setup(relay_pin, GPIO.OUT)
             # XOR with inverted
-            GPIO.output(relay_pin, inverted != led_state)
+            GPIO.output(relay_pin, inverted != ledState)
 
             GPIO.setwarnings(True)
-            if led_state:
-                if cmd_on:
+            if ledState:
+                if cmdON:
                     self._logger.info(
-                        "Ocotrelay system command: {}".format(cmd_on))
-                    os.system(cmd_on)
+                        "Ocotrelay system command: {}".format(cmdON))
+                    os.system(cmdON)
             else:
-                if cmd_off:
+                if cmdOFF:
                     self._logger.info(
-                        "Ocotrelay system command: {}".format(cmd_off))
-                    os.system(cmd_off)
+                        "Ocotrelay system command: {}".format(cmdOFF))
+                    os.system(cmdOFF)
             self.update_ui()
             return "ok"
         except Exception as e:
@@ -283,8 +283,8 @@ class OctoRelayPlugin(
 
         # added api command to get led status
         if command == "getStatus":
-            led_state = self.update_relay(data["pin"], get_status=True)
-            return flask.jsonify(status=led_state)
+            ledState = self.update_relay(data["pin"], get_status=True)
+            return flask.jsonify(status=ledState)
 
         if command == "update":
             status = self.update_relay(data["pin"])
@@ -321,8 +321,8 @@ class OctoRelayPlugin(
         for index in self.model:
             settings = self._settings.get([index], merged=True)
 
-            auto_on_for_print = settings['autoONforPrint']
-            if auto_on_for_print:
+            autoONforPrint = settings['autoONforPrint']
+            if autoONforPrint:
                 relay_pin = int(settings["relay_pin"])
                 inverted = settings['inverted_output']
 
@@ -337,25 +337,25 @@ class OctoRelayPlugin(
 
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
-            auto_off_for_print = settings['autoOFFforPrint']
-            auto_off_delay = int(settings['autoOffDelay'])
-            cmd_off = settings['cmdOFF']
+            autoOFFforPrint = settings['autoOFFforPrint']
+            autoOffDelay = int(settings['autoOffDelay'])
+            cmdOFF = settings['cmdOFF']
             active = settings["active"]
-            if auto_off_for_print and active:
+            if autoOFFforPrint and active:
                 self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(
-                    relay_pin, auto_off_delay, index))
+                    relay_pin, autoOffDelay, index))
                 self.turn_off_timers[index] = ResettableTimer(
-                    auto_off_delay, self.turn_off_pin, [relay_pin, inverted, cmd_off])
+                    autoOffDelay, self.turn_off_pin, [relay_pin, inverted, cmdOFF])
                 self.turn_off_timers[index].start()
         self.update_ui()
 
-    def turn_off_pin(self, relay_pin, inverted, cmd_off):
+    def turn_off_pin(self, relay_pin, inverted, cmdOFF):
         GPIO.setup(relay_pin, GPIO.OUT)
         # XOR with inverted
         GPIO.output(relay_pin, inverted is not False)
         GPIO.setwarnings(True)
-        if cmd_off:
-            os.system(cmd_off)
+        if cmdOFF:
+            os.system(cmdOFF)
         self._logger.info("pin: {} turned off".format(relay_pin))
         self.update_ui()
 
@@ -364,25 +364,25 @@ class OctoRelayPlugin(
         for index in settings:
             settings[index].update(self._settings.get([index]))
 
-            label_text = settings[index]["labelText"]
+            labelText = settings[index]["labelText"]
             active = int(settings[index]["active"])
             relay_pin = int(settings[index]["relay_pin"])
             inverted = settings[index]['inverted_output']
-            icon_on = settings[index]['iconOn']
-            icon_off = settings[index]['iconOff']
-            confirm_off = settings[index]['confirmOff']
+            iconOn = settings[index]['iconOn']
+            iconOff = settings[index]['iconOff']
+            confirmOff = settings[index]['confirmOff']
 
             # set the icon state
             GPIO.setup(relay_pin, GPIO.OUT)
             self.model[index]['relay_pin'] = relay_pin
             self.model[index]['state'] = GPIO.input(relay_pin)
-            self.model[index]['labelText'] = label_text
+            self.model[index]['labelText'] = labelText
             self.model[index]['active'] = active
             if inverted != self.model[index]['state']:
-                self.model[index]['iconText'] = icon_on
-                self.model[index]['confirmOff'] = confirm_off
+                self.model[index]['iconText'] = iconOn
+                self.model[index]['confirmOff'] = confirmOff
             else:
-                self.model[index]['iconText'] = icon_off
+                self.model[index]['iconText'] = iconOff
                 self.model[index]['confirmOff'] = False
 
         #self._logger.info("update ui with model {}".format(self.model))
