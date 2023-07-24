@@ -222,7 +222,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_exposed_hooks(self):
         expected = {
             "octoprint.plugin.softwareupdate.check_config":
-                __plugin_implementation__.get_update_information
+                __plugin_implementation__.get_update_information,
+            "octoprint.comm.protocol.atcommand.sending": 
+                __plugin_implementation__.process_at_command
         }
         self.assertEqual(__plugin_hooks__, expected)
 
