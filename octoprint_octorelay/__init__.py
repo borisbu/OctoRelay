@@ -205,6 +205,43 @@ class OctoRelayPlugin(
         self._logger.info("OctoRelay plugin stopped")
         self._logger.info("--------------------------------------------")
 
+    def get_api_commands(self):
+        return {
+            "update": ["pin"],
+            "getStatus": ["pin"],
+            "listAllStatus": [],
+        }
+
+    def on_api_command(self, command, data):
+        self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
+
+        # added api command to get led status
+        if command == "listAllStatus":
+            GPIO.setwarnings(False)
+            active_relays = []
+            for key in self.get_settings_defaults():
+                settings = self._settings.get([key], merged=True)
+                if settings["active"]:
+                    relay_pin = int(settings["relay_pin"])
+                    inverted = settings['inverted_output']
+                    GPIO.setup(relay_pin, GPIO.OUT)
+                    relay_data = dict(
+                        id=key,
+                        name=settings["labelText"],
+                        active=inverted != GPIO.input(relay_pin),
+                    )
+                    active_relays.append(relay_data)
+            return flask.jsonify(active_relays)
+
+        # added api command to get led status
+        if command == "getStatus":
+            ledState = self.update_relay(data["pin"], get_status=True)
+            return flask.jsonify(status=ledState)
+
+        if command == "update":
+            status = self.update_relay(data["pin"])
+            return flask.jsonify(status=status)
+
     def update_relay(self, index, get_status=False):
         try:
             settings = self._settings.get([index], merged=True)
@@ -252,43 +289,6 @@ class OctoRelayPlugin(
         except Exception as e:
             self._logger.debug(e)
             return "error"
-
-    def get_api_commands(self):
-        return {
-            "update": ["pin"],
-            "getStatus": ["pin"],
-            "listAllStatus": [],
-        }
-
-    def on_api_command(self, command, data):
-        self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
-
-        # added api command to get led status
-        if command == "listAllStatus":
-            GPIO.setwarnings(False)
-            active_relays = []
-            for key in self.get_settings_defaults():
-                settings = self._settings.get([key], merged=True)
-                if settings["active"]:
-                    relay_pin = int(settings["relay_pin"])
-                    inverted = settings['inverted_output']
-                    GPIO.setup(relay_pin, GPIO.OUT)
-                    relay_data = dict(
-                        id=key,
-                        name=settings["labelText"],
-                        active=inverted != GPIO.input(relay_pin),
-                    )
-                    active_relays.append(relay_data)
-            return flask.jsonify(active_relays)
-
-        # added api command to get led status
-        if command == "getStatus":
-            ledState = self.update_relay(data["pin"], get_status=True)
-            return flask.jsonify(status=ledState)
-
-        if command == "update":
-            status = self.update_relay(data["pin"])
-            return flask.jsonify(status=status)
 
     def on_event(self, event, payload):
         self._logger.debug("Got event: {}".format(event))
