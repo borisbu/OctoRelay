@@ -2,6 +2,11 @@
 
 ## Version 2
 
+### 2.0.2
+
+- Fixed missing parameter `pin` for API commands `update` and `getStatus`.
+  - Thanks to [@jneilliii](https://github.com/jneilliii) for the contribution.
+
 ### 2.0.1
 
 - Fixed turning non-inverted relays ON and executing the corresponding optional OS Command when start printing.
