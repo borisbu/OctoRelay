@@ -406,9 +406,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_started__exception(self):
         # Should handle a possible exception when cancelling the timer
         self.plugin_instance.update_ui = Mock()
-        def cancelMock():
-            raise Exception("Sample message")
-        self.plugin_instance.turn_off_timers = { "test": Mock(cancel=cancelMock) }
+        self.plugin_instance.turn_off_timers = { "test": Mock( cancel=Mock(side_effect=Exception) ) }
         self.plugin_instance.turn_on_pin = Mock()
         self.mockModel()
         settingValueMock = {
@@ -457,16 +455,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_has_switch_permission(self):
         # Should proxy the permission and handle a possible exception
-        def positive():
-            return True
-        def negative():
-            return False
-        def faulty():
-            raise Exception("Sample message")
         cases = [
-            { "mock": positive, "expected": True },
-            { "mock": negative, "expected": False },
-            { "mock": faulty, "expected": False }
+            { "mock": Mock(return_value=True), "expected": True },
+            { "mock": Mock(return_value=False), "expected": False },
+            { "mock": Mock(side_effect=Exception), "expected": False }
         ]
         for case in cases:
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = case["mock"]
