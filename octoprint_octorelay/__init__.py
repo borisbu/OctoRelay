@@ -208,6 +208,16 @@ class OctoRelayPlugin(
             "getStatus": ["pin"],
             "listAllStatus": [],
         }
+    
+    def get_additional_permissions(self):
+        return [{
+            "key": "SWITCH",
+            "name": "Switching relays ON and OFF",
+            "description": "Allows to toggle the GPIO pins and execute the associated OS commands.",
+            "roles": [ "switch" ],
+            "dangerous": False,
+            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+        }]
 
     def has_switch_permission(self):
         try:
@@ -434,16 +444,6 @@ class OctoRelayPlugin(
                 self._logger.debug("relay: {} has changed its pin state".format(index))
                 self.update_ui()
                 break
-
-    def get_additional_permissions(self):
-        return [{
-            "key": "SWITCH",
-            "name": "Switching relays ON and OFF",
-            "description": "Allows to toggle the GPIO pins and execute the associated OS commands.",
-            "roles": [ "switch" ],
-            "dangerous": False,
-            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
-        }]
 
 __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
