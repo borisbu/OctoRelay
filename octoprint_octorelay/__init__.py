@@ -209,6 +209,12 @@ class OctoRelayPlugin(
             "listAllStatus": [],
         }
 
+    def has_switch_permission(self):
+        try:
+            return Permissions.PLUGIN_OCTORELAY_SWITCH.can() # may raise UnknownPermission(key)
+        except Exception:
+            return False
+
     def on_api_command(self, command, data):
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command,data))
 
@@ -252,7 +258,7 @@ class OctoRelayPlugin(
             return flask.jsonify(status=ledState)
             
         else:
-            if not Permissions.PLUGIN_OCTORELAY_SWITCH.can():
+            if not self.has_switch_permission():
                 return flask.abort(403)
 
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
