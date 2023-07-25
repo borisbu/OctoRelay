@@ -16,7 +16,9 @@ utilMock = Mock(
 )
 sys.modules['octoprint.util'] = utilMock
 permissionsMock = Mock()
-sys.modules['octoprint.access.permissions'] = Mock(Permissions=permissionsMock)
+sys.modules['octoprint.access.permissions'] = Mock(
+    Permissions=permissionsMock
+)
 
 from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
