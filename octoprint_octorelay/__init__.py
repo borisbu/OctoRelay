@@ -440,7 +440,7 @@ class OctoRelayPlugin(
             "key": "SWITCH",
             "name": "Switching relays ON and OFF",
             "description": "Allows to toggle the GPIO pins and execute the associated OS commands.",
-            "roles": [ "default" ],
+            "roles": [ "switch" ],
             "dangerous": False,
             "default_groups": [ ADMIN_GROUP, USER_GROUP ]
         }]
