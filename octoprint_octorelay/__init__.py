@@ -235,7 +235,7 @@ class OctoRelayPlugin(
 
         # added api command to get led status
         if command == "getStatus":
-            settings = self._settings.get(data["pin"], merged=True)
+            settings = self._settings.get([data["pin"]], merged=True)
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
             GPIO.setwarnings(False)
