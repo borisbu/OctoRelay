@@ -259,6 +259,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should send message via plugin manager containing actual settings and the pins state
         self.mockModel()
         GPIO_mock.input = Mock(return_value=False)
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         cases = [
             { "inverted": True, "expectedIcon": "ON" },
             { "inverted": False, "expectedIcon": "OFF" }
@@ -570,6 +571,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmdOFF": "CommandOffMock"
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
         self.plugin_instance.on_api_command("update", { "pin": "r4" })
         abortMock.assert_called_with(403)
 
