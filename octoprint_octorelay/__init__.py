@@ -375,7 +375,7 @@ class OctoRelayPlugin(
             settings[index].update(self._settings.get([index]))
 
             labelText = settings[index]["labelText"]
-            active = int(settings[index]["active"])
+            active = int(settings[index]["active"] and self.has_switch_permission()) # issue 51
             relay_pin = int(settings[index]["relay_pin"])
             inverted = settings[index]['inverted_output']
             iconOn = settings[index]['iconOn']
