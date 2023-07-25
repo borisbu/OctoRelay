@@ -15,6 +15,8 @@ utilMock = Mock(
     ResettableTimer = Mock(return_value=timerMock)
 )
 sys.modules['octoprint.util'] = utilMock
+permissionsMock = Mock()
+sys.modules['octoprint.access.permissions'] = Mock(Permissions=permissionsMock)
 
 from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
@@ -34,6 +36,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Clean up
         del sys.modules['RPi.GPIO']
         del sys.modules['octoprint.util']
+        del sys.modules['octoprint.access.permissions']
 
     def mockModel(self):
         self.plugin_instance.model = {
@@ -448,6 +451,24 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
+
+    def test_has_switch_permission(self):
+        # Should proxy the permission and handle a possible exception
+        def positive():
+            return True
+        def negative():
+            return False
+        def faulty():
+            raise Exception("Sample message")
+        cases = [
+            { "mock": positive, "expected": True },
+            { "mock": negative, "expected": False },
+            { "mock": faulty, "expected": False }
+        ]
+        for case in cases:
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = case["mock"]
+            actual = self.plugin_instance.has_switch_permission()
+            self.assertEqual(actual, case["expected"])
 
     @patch('flask.jsonify')
     @patch('os.system')
