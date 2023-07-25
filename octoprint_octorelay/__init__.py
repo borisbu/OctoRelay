@@ -235,14 +235,19 @@ class OctoRelayPlugin(
 
         # added api command to get led status
         if command == "getStatus":
-            ledState = self.update_relay(data["pin"], get_status=True)
+            settings = self._settings.get(data["pin"], merged=True)
+            relay_pin = int(settings["relay_pin"])
+            inverted = settings['inverted_output']
+            GPIO.setwarnings(False)
+            GPIO.setup(relay_pin, GPIO.OUT)
+            ledState = inverted != GPIO.input(relay_pin)
             return flask.jsonify(status=ledState)
 
         if command == "update":
             status = self.update_relay(data["pin"])
             return flask.jsonify(status=status)
 
-    def update_relay(self, index, get_status=False):
+    def update_relay(self, index):
         try:
             settings = self._settings.get([index], merged=True)
 
@@ -256,9 +261,6 @@ class OctoRelayPlugin(
             GPIO.setup(relay_pin, GPIO.OUT)
             # XOR with inverted
             ledState = inverted != GPIO.input(relay_pin)
-
-            if get_status:
-                return ledState
 
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
