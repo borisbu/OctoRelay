@@ -2,6 +2,7 @@ import unittest
 import sys
 from unittest.mock import Mock, patch, MagicMock
 from octoprint.events import Events
+from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 # Patching required before importing OctoRelayPlugin class
 GPIO_mock = Mock()
@@ -533,6 +534,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 systemMock.assert_called_with(case["expectedCommand"])
             if hasattr(case, "expectedStatus"):
                 json.assert_called_with(status=case["expectedStatus"])
+
+    def test_get_additional_permissions(self):
+        expected = [{
+            "key": "SWITCH",
+            "name": "Switching relays ON and OFF",
+            "description": "Allows to toggle the GPIO pins and execute the associated OS commands.",
+            "roles": [ "default" ],
+            "dangerous": False,
+            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+        }]
+        actual = self.plugin_instance.get_additional_permissions()
+        self.assertEqual(actual, expected)
 
 if __name__ == '__main__':
     unittest.main()
