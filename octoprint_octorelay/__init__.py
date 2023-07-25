@@ -6,6 +6,7 @@ from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access import ADMIN_GROUP, USER_GROUP
+from octoprint.access.permissions import Permissions
 
 import flask
 import RPi.GPIO as GPIO
@@ -251,6 +252,9 @@ class OctoRelayPlugin(
             return flask.jsonify(status=ledState)
             
         else:
+            if not Permissions.PLUGIN_OCTORELAY_SWITCH.can():
+                return flask.abort(403)
+
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
                 inverted,
