@@ -5,6 +5,7 @@ import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
+from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 import flask
 import RPi.GPIO as GPIO
@@ -424,10 +425,22 @@ class OctoRelayPlugin(
                 self.update_ui()
                 break
 
+    def get_additional_permissions(self):
+        return [{
+            "key": "SWITCHING",
+            "name": "Switching relays ON and OFF",
+            "description": "Allows to toggle the GPIO pins and execute OS commands associated with them",
+            "roles": [ "default" ],
+            "dangerous": False,
+            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+        }]
+
 __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
     "octoprint.plugin.softwareupdate.check_config":
-        __plugin_implementation__.get_update_information
+        __plugin_implementation__.get_update_information,
+    "octoprint.access.permissions":
+        __plugin_implementation__.get_additional_permissions
 }
