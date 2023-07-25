@@ -455,6 +455,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=True)
+        self.plugin_instance.has_switch_permission = Mock(return_value=True)
         cases = [
             {
                 "command": "listAllStatus",
