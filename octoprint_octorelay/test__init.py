@@ -474,7 +474,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch('flask.jsonify')
     @patch('os.system')
-    def test_on_api_command(self, json, systemMock):
+    def test_on_api_command(self, jsonMock, systemMock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=True)
@@ -551,13 +551,27 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
             if hasattr(case, "expectedJson"):
-                json.assert_called_with(case["expectedJson"])
+                jsonMock.assert_called_with(case["expectedJson"])
             if hasattr(case, "expectedOutput"):
                 GPIO_mock.output.assert_called_with("r4", case["expectedOutput"])
             if hasattr(case, "expectedCommand"):
                 systemMock.assert_called_with(case["expectedCommand"])
             if hasattr(case, "expectedStatus"):
-                json.assert_called_with(status=case["expectedStatus"])
+                jsonMock.assert_called_with(status=case["expectedStatus"])
+
+    @patch('flask.abort')
+    def test_on_api_command__exception(self, abortMock):
+        # Should refuse to update the pin state in case of insufficient permissions
+        settingValueMock = {
+            "active": True,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "cmdON": "CommandOnMock",
+            "cmdOFF": "CommandOffMock"
+        }
+        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        self.plugin_instance.on_api_command("update", { "pin": "r4" })
+        abortMock.assert_called_with(403)
 
     def test_get_additional_permissions(self):
         expected = [{
