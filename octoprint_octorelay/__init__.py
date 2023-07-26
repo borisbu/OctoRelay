@@ -5,6 +5,8 @@ import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
+from octoprint.access import ADMIN_GROUP, USER_GROUP
+from octoprint.access.permissions import Permissions
 
 import flask
 import RPi.GPIO as GPIO
@@ -206,6 +208,22 @@ class OctoRelayPlugin(
             "getStatus": ["pin"],
             "listAllStatus": [],
         }
+    
+    def get_additional_permissions(self):
+        return [{
+            "key": "SWITCH",
+            "name": "Relay switching",
+            "description": "Allows to switch GPIO pins and execute related OS commands.",
+            "roles": [ "switch" ],
+            "dangerous": False,
+            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+        }]
+
+    def has_switch_permission(self):
+        try:
+            return Permissions.PLUGIN_OCTORELAY_SWITCH.can() # may raise UnknownPermission(key)
+        except Exception:
+            return False
 
     def on_api_command(self, command, data):
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command,data))
@@ -250,6 +268,9 @@ class OctoRelayPlugin(
             return flask.jsonify(status=ledState)
             
         else:
+            if not self.has_switch_permission():
+                return flask.abort(403)
+
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
                 inverted,
@@ -429,5 +450,7 @@ __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
     "octoprint.plugin.softwareupdate.check_config":
-        __plugin_implementation__.get_update_information
+        __plugin_implementation__.get_update_information,
+    "octoprint.access.permissions":
+        __plugin_implementation__.get_additional_permissions
 }
