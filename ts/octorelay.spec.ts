@@ -67,7 +67,7 @@ describe("OctoRelayViewModel", () => {
     hasPermissionMock.mockImplementationOnce(() => true);
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
-    handler.call(registry[0].construct, "octorelay", {
+    handler("octorelay", {
       r1: {
         relay_pin: 16,
         state: 1,
