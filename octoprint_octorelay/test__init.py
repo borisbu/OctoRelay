@@ -545,6 +545,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if hasattr(case, "expectedStatus"):
                 jsonMock.assert_called_with(status=case["expectedStatus"])
 
+    def test_update_relay__exception(self):
+        # Should catch possible exceptions within try-catch block
+        self.plugin_instance._settings.get = Mock(side_effect=Exception)
+        actual = self.plugin_instance.update_relay("r4")
+        self.assertEqual(actual, "error")
+
     @patch('flask.abort')
     def test_on_api_command__exception(self, abortMock):
         # Should refuse to update the pin state in case of insufficient permissions
