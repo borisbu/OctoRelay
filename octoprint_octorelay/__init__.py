@@ -180,7 +180,7 @@ class OctoRelayPlugin(
             self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
             self.model[index] = dict()
-            if settings[index]['active'] and self.has_switch_permission():
+            if settings[index]['active']:
                 relay_pin = int(settings[index]['relay_pin'])
                 initial_value = settings[index]['initial_value']
                 inverted_output = settings[index]['inverted_output']
@@ -336,7 +336,7 @@ class OctoRelayPlugin(
             autoONforPrint = settings['autoONforPrint']
             cmdON = settings['cmdON']
             active = settings["active"]
-            if autoONforPrint and active and self.has_switch_permission():
+            if autoONforPrint and active:
                 self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
                 self.turn_on_pin(relay_pin, inverted, cmdON)
         self.update_ui()
@@ -352,7 +352,7 @@ class OctoRelayPlugin(
             autoOffDelay = int(settings['autoOffDelay'])
             cmdOFF = settings['cmdOFF']
             active = settings["active"]
-            if autoOFFforPrint and active and self.has_switch_permission():
+            if autoOFFforPrint and active:
                 self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(
                     relay_pin, autoOffDelay, index))
                 self.turn_off_timers[index] = ResettableTimer(
@@ -385,7 +385,7 @@ class OctoRelayPlugin(
             settings[index].update(self._settings.get([index]))
 
             labelText = settings[index]["labelText"]
-            active = int(settings[index]["active"] and self.has_switch_permission()) # issue 51
+            active = int(settings[index]["active"])
             relay_pin = int(settings[index]["relay_pin"])
             inverted = settings[index]['inverted_output']
             iconOn = settings[index]['iconOn']

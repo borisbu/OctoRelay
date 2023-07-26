@@ -260,13 +260,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.mockModel()
         GPIO_mock.input = Mock(return_value=False)
         cases = [
-            { "inverted": True, "permission": True, "expectedIcon": "ON", "expectedActive": True },
-            { "inverted": False, "permission": True, "expectedIcon": "OFF", "expectedActive": True },
-            { "inverted": True, "permission": False, "expectedIcon": "ON", "expectedActive": False },
-            { "inverted": False, "permission": False, "expectedIcon": "OFF", "expectedActive": False }
+            { "inverted": True, "expectedIcon": "ON" },
+            { "inverted": False, "expectedIcon": "OFF" },
         ]
         for case in cases:
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=case["permission"])
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
@@ -283,12 +280,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "relay_pin": 17,
                     "state": False,
                     "labelText": "TEST",
-                    "active": case["expectedActive"],
+                    "active": True,
                     "iconText": case["expectedIcon"],
                     "confirmOff": False
                 }
             self.plugin_instance.update_ui()
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             for index in self.plugin_instance.get_settings_defaults():
                 self.plugin_instance._settings.get.assert_any_call([index])
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
@@ -360,7 +356,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "inverted": False, "initial": False, "expectedOutput": False }
         ]
         for case in cases:
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
@@ -369,7 +364,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.on_after_startup()
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             GPIO_mock.setup.assert_called_with(17, "MockedOUT")
             GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
             self.plugin_instance.update_ui.assert_called_with()
@@ -390,7 +384,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "autoOn": False, "inverted": False, "expectedCall": False }
         ]
         for case in cases:
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             self.plugin_instance.turn_on_pin = Mock()
             settingValueMock = {
                 "active": True,
@@ -403,10 +396,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.print_started()
             timerMock.cancel.assert_called_with()
             if case["expectedCall"]:
-                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
                 self.plugin_instance.turn_on_pin.assert_called_with(17, case["inverted"], "CommandMock")
             else:
-                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_not_called()
                 self.plugin_instance.turn_on_pin.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
 
@@ -438,7 +429,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "autoOff": False, "expectedCall": False },
         ]
         for case in cases:
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
             settingValueMock = {
@@ -452,13 +442,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.print_stopped()
             if case["expectedCall"]:
-                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
                 utilMock.ResettableTimer.assert_called_with(
                     300, self.plugin_instance.turn_off_pin, [17, False, "CommandMock"]
                 )
                 timerMock.start.assert_called_with()
             else:
-                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_not_called()
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
