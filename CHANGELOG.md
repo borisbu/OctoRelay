@@ -2,6 +2,17 @@
 
 ## Version 2
 
+### 2.1.0
+
+- This version contains an important security fix:
+  - Read only users are prohibited from switching the relays.
+    - Including automations by "Auto ON/OFF on boot" and "before/after printing" settings.
+    - Including related OS commands associated with relay toggling.
+  - Thanks to [@plazarch](https://github.com/plazarch) for reporting the important security flaw.
+- This version introduces a custom permission: "Relay switching".
+  - The following groups are granted that permission by default: admins and users (operators).
+  - You can allow relay switching to other ones in "Access control" section of OctoPrint settings.
+
 ### 2.0.2
 
 - Fixed missing requirement on the `pin` parameter for API commands `update` and `getStatus`.
