@@ -26,9 +26,6 @@ or manually using this URL:
 
 > https://github.com/borisbu/OctoRelay/archive/master.zip
 
-In case you want to enable the plugin for user groups other than admins and users (operators), you need to 
-grant them the permission "Relay switching" in the "Access control" section of OctoPrint settings.
-
 ## Configuration
 
 ![Settings panel](img/settings.png)

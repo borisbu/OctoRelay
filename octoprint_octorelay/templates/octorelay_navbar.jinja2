@@ -1,5 +1,5 @@
 {% for n in range(1,9) %}
-    <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; display: none;">
+    <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; {% if n > 4 %} display:none; {% endif %}">
         <a
             id="ralayIconr{{n}}"
             title="relay {{n}}"
@@ -23,3 +23,4 @@
         <button class="btn btn-danger btn-confirm">Confirm</button>
     </div>
 </div>
+

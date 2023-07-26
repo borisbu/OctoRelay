@@ -5,8 +5,6 @@ import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
-from octoprint.access import ADMIN_GROUP, USER_GROUP
-from octoprint.access.permissions import Permissions
 
 import flask
 import RPi.GPIO as GPIO
@@ -180,7 +178,7 @@ class OctoRelayPlugin(
             self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
             self.model[index] = dict()
-            if settings[index]['active'] and self.has_switch_permission():
+            if settings[index]['active']:
                 relay_pin = int(settings[index]['relay_pin'])
                 initial_value = settings[index]['initial_value']
                 inverted_output = settings[index]['inverted_output']
@@ -208,22 +206,6 @@ class OctoRelayPlugin(
             "getStatus": ["pin"],
             "listAllStatus": [],
         }
-    
-    def get_additional_permissions(self):
-        return [{
-            "key": "SWITCH",
-            "name": "Relay switching",
-            "description": "Allows switch GPIO pins and execute related OS commands.",
-            "roles": [ "switch" ],
-            "dangerous": False,
-            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
-        }]
-
-    def has_switch_permission(self):
-        try:
-            return Permissions.PLUGIN_OCTORELAY_SWITCH.can() # may raise UnknownPermission(key)
-        except Exception:
-            return False
 
     def on_api_command(self, command, data):
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command,data))
@@ -268,9 +250,6 @@ class OctoRelayPlugin(
             return flask.jsonify(status=ledState)
             
         else:
-            if not self.has_switch_permission():
-                return flask.abort(403)
-
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
                 inverted,
@@ -336,7 +315,7 @@ class OctoRelayPlugin(
             autoONforPrint = settings['autoONforPrint']
             cmdON = settings['cmdON']
             active = settings["active"]
-            if autoONforPrint and active and self.has_switch_permission():
+            if autoONforPrint and active:
                 self._logger.debug("turning on pin: {}, index: {}".format(relay_pin, index))
                 self.turn_on_pin(relay_pin, inverted, cmdON)
         self.update_ui()
@@ -352,7 +331,7 @@ class OctoRelayPlugin(
             autoOffDelay = int(settings['autoOffDelay'])
             cmdOFF = settings['cmdOFF']
             active = settings["active"]
-            if autoOFFforPrint and active and self.has_switch_permission():
+            if autoOFFforPrint and active:
                 self._logger.debug("turn off pin: {} in {} seconds. index: {}".format(
                     relay_pin, autoOffDelay, index))
                 self.turn_off_timers[index] = ResettableTimer(
@@ -385,7 +364,7 @@ class OctoRelayPlugin(
             settings[index].update(self._settings.get([index]))
 
             labelText = settings[index]["labelText"]
-            active = int(settings[index]["active"] and self.has_switch_permission()) # issue 51
+            active = int(settings[index]["active"])
             relay_pin = int(settings[index]["relay_pin"])
             inverted = settings[index]['inverted_output']
             iconOn = settings[index]['iconOn']
@@ -450,7 +429,5 @@ __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
     "octoprint.plugin.softwareupdate.check_config":
-        __plugin_implementation__.get_update_information,
-    "octoprint.access.permissions":
-        __plugin_implementation__.get_additional_permissions
+        __plugin_implementation__.get_update_information
 }
