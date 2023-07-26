@@ -370,7 +370,7 @@ class OctoRelayPlugin(
     def turn_off_pin(self, relay_pin, inverted, cmdOFF):
         GPIO.setup(relay_pin, GPIO.OUT)
         # XOR with inverted
-        GPIO.output(relay_pin, inverted is not False)
+        GPIO.output(relay_pin, inverted != False)
         GPIO.setwarnings(True)
         if cmdOFF:
             os.system(cmdOFF)
@@ -380,7 +380,7 @@ class OctoRelayPlugin(
     def turn_on_pin(self, relay_pin, inverted, cmdON):
         GPIO.setup(relay_pin, GPIO.OUT)
         # XOR with inverted
-        GPIO.output(relay_pin, inverted is not True)
+        GPIO.output(relay_pin, inverted == False)
         GPIO.setwarnings(True)
         if cmdON:
             os.system(cmdON)
