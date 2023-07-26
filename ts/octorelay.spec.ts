@@ -63,7 +63,7 @@ describe("OctoRelayViewModel", () => {
     expect(jQueryMock).not.toHaveBeenCalled();
   });
 
-  test("Message handler should process the supplied configuration %#", () => {
+  test("Message handler should process the supplied configuration", () => {
     hasPermissionMock.mockImplementationOnce(() => true);
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
