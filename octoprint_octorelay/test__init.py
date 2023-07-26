@@ -261,7 +261,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         GPIO_mock.input = Mock(return_value=False)
         cases = [
             { "inverted": True, "expectedIcon": "ON" },
-            { "inverted": False, "expectedIcon": "OFF" },
+            { "inverted": False, "expectedIcon": "OFF" }
         ]
         for case in cases:
             settingValueMock = {
