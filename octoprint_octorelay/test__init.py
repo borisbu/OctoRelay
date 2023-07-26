@@ -352,6 +352,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_after_startup(self):
         # Depending on actual settings should set the pins state, update UI and start polling
         self.plugin_instance.update_ui = Mock()
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         cases = [
             { "inverted": True, "initial": True, "expectedOutput": False },
             { "inverted": True, "initial": False, "expectedOutput": True },
@@ -367,6 +368,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.on_after_startup()
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             GPIO_mock.setup.assert_called_with(17, "MockedOUT")
             GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
             self.plugin_instance.update_ui.assert_called_with()
