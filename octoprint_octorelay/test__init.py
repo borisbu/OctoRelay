@@ -288,6 +288,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "confirmOff": False
                 }
             self.plugin_instance.update_ui()
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             for index in self.plugin_instance.get_settings_defaults():
                 self.plugin_instance._settings.get.assert_any_call([index])
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
@@ -352,7 +353,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_after_startup(self):
         # Depending on actual settings should set the pins state, update UI and start polling
         self.plugin_instance.update_ui = Mock()
-        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         cases = [
             { "inverted": True, "initial": True, "expectedOutput": False },
             { "inverted": True, "initial": False, "expectedOutput": True },
@@ -360,6 +360,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "inverted": False, "initial": False, "expectedOutput": False }
         ]
         for case in cases:
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
@@ -381,8 +382,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays configured with autoON should call turn_on_pin method and update UI
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "test": timerMock }
-        self.plugin_instance.turn_on_pin = Mock()
-        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         self.mockModel()
         cases = [
             { "autoOn": True, "inverted": True, "expectedCall": True},
@@ -391,7 +390,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "autoOn": False, "inverted": False, "expectedCall": False }
         ]
         for case in cases:
-            self.plugin_instance.turn_on_pin.reset_mock()
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
+            self.plugin_instance.turn_on_pin = Mock()
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
@@ -401,11 +401,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.print_started()
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             timerMock.cancel.assert_called_with()
             if case["expectedCall"]:
+                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
                 self.plugin_instance.turn_on_pin.assert_called_with(17, case["inverted"], "CommandMock")
             else:
+                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_not_called()
                 self.plugin_instance.turn_on_pin.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
 
@@ -431,13 +432,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays with autoOff feature should set timer to turn its pin off
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "r4": timerMock }
-        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         self.mockModel()
         cases = [
             { "autoOff": True, "expectedCall": True },
             { "autoOff": False, "expectedCall": False },
         ]
         for case in cases:
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
             settingValueMock = {
@@ -450,13 +451,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.print_stopped()
-            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             if case["expectedCall"]:
+                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
                 utilMock.ResettableTimer.assert_called_with(
                     300, self.plugin_instance.turn_off_pin, [17, False, "CommandMock"]
                 )
                 timerMock.start.assert_called_with()
             else:
+                permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_not_called()
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
@@ -480,7 +482,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=True)
-        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         cases = [
             {
                 "command": "listAllStatus",
@@ -542,6 +543,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
         ]
         for case in cases:
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             settingValueMock = {
                 "active": True,
                 "relay_pin": 17,
