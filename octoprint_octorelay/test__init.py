@@ -467,6 +467,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         for case in cases:
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = case["mock"]
             actual = self.plugin_instance.has_switch_permission()
+            permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             self.assertEqual(actual, case["expected"])
 
     @patch('flask.jsonify')
@@ -475,7 +476,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=True)
-        self.plugin_instance.has_switch_permission = Mock(return_value=True)
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
         cases = [
             {
                 "command": "listAllStatus",
@@ -569,6 +570,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
         self.plugin_instance.on_api_command("update", { "pin": "r4" })
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abortMock.assert_called_with(403)
 
     def test_get_additional_permissions(self):
