@@ -545,12 +545,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if hasattr(case, "expectedStatus"):
                 jsonMock.assert_called_with(status=case["expectedStatus"])
 
-    def test_update_relay__exception(self):
-        # Should catch possible exceptions within try-catch block
-        self.plugin_instance._settings.get = Mock(side_effect=Exception)
-        actual = self.plugin_instance.update_relay("r4")
-        self.assertEqual(actual, "error")
-
     @patch('flask.abort')
     def test_on_api_command__exception(self, abortMock):
         # Should refuse to update the pin state in case of insufficient permissions
@@ -566,6 +560,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.on_api_command("update", { "pin": "r4" })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abortMock.assert_called_with(403)
+
+    def test_update_relay__exception(self):
+        # Should catch possible exceptions within try-catch block
+        self.plugin_instance._settings.get = Mock(side_effect=Exception)
+        actual = self.plugin_instance.update_relay("r4")
+        self.assertEqual(actual, "error")
+
+    def test_process_at_command(self):
+        # Should call update_relay() method with supplied parameter
+        self.plugin_instance.update_relay = Mock()
+        actual = self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4")
+        self.plugin_instance.update_relay.assert_called_with("r4")
+        self.assertEqual(actual, None)
 
     def test_get_additional_permissions(self):
         expected = [{
