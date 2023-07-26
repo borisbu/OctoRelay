@@ -124,9 +124,7 @@ describe("OctoRelayViewModel", () => {
     // clicking on 1st icon, no confirmation
     elementMock.on.mock.calls[0][1]();
     expect(apiMock).toHaveBeenCalledTimes(1);
-    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", {
-      pin: "r1",
-    });
+    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", { pin: "r1" });
     expect(elementMock.on).toHaveBeenCalledTimes(5); // remains
 
     // clicking on 2nd icon, with confirmation
