@@ -534,6 +534,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
+            if case["command"] != "listAllStatus":
+                self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if hasattr(case, "expectedJson"):
                 jsonMock.assert_called_with(case["expectedJson"])
             if hasattr(case, "expectedOutput"):
