@@ -213,7 +213,7 @@ class OctoRelayPlugin(
         return [{
             "key": "SWITCH",
             "name": "Relay switching",
-            "description": "Allows switch GPIO pins and execute related OS commands.",
+            "description": "Allows to switch GPIO pins and execute related OS commands.",
             "roles": [ "switch" ],
             "dangerous": False,
             "default_groups": [ ADMIN_GROUP, USER_GROUP ]
