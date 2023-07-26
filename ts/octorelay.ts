@@ -12,8 +12,16 @@ type OwnMessage = Record<`r${number}`, RelayInfo>;
 type MessageHandler = (plugin: string, data: OwnMessage) => void;
 
 interface OwnProperties {
-  settingsViewModel: object;
-  loginState: object;
+  settingsViewModel: {
+    access?: {
+      permissions?: {
+        PLUGIN_OCTORELAY_SWITCH?: object;
+      };
+    };
+  };
+  loginState: {
+    hasPermission?: (permission: object) => boolean;
+  };
   onDataUpdaterPluginMessage: MessageHandler;
 }
 
@@ -32,10 +40,16 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    self.onDataUpdaterPluginMessage = (plugin, data) => {
+    self.onDataUpdaterPluginMessage = function (plugin, data) {
       if (plugin !== ownCode) {
         return;
       }
+      const permission =
+        self.settingsViewModel.access?.permissions?.PLUGIN_OCTORELAY_SWITCH;
+      const hasPermission =
+        permission && self.loginState.hasPermission
+          ? self.loginState.hasPermission(permission)
+          : false;
       const handleClick = (key: string, value: RelayInfo) => {
         const command = () =>
           OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
@@ -65,7 +79,7 @@ $(() => {
       for (const [key, value] of Object.entries(data)) {
         const btn = $("#relais" + key);
         if (value.active !== undefined) {
-          btn.toggle(value.active === 1);
+          btn.toggle(hasPermission && value.active === 1);
         }
         const icon = $("#ralayIcon" + key);
         if (value.iconText !== undefined) {
