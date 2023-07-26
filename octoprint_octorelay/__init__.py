@@ -180,7 +180,7 @@ class OctoRelayPlugin(
             self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
             self.model[index] = dict()
-            if settings[index]['active']:
+            if settings[index]['active'] and self.has_switch_permission():
                 relay_pin = int(settings[index]['relay_pin'])
                 initial_value = settings[index]['initial_value']
                 inverted_output = settings[index]['inverted_output']
