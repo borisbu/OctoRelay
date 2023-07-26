@@ -28,6 +28,13 @@ class OctoRelayPlugin(
     octoprint.plugin.RestartNeedingPlugin
 ):
 
+    def __init__(self):
+        self.polling_timer = None
+        self.turn_off_timers = dict()
+        self.model = dict()
+        for index in self.get_settings_defaults():
+            self.model[index] = dict()
+
     def get_settings_defaults(self):
         return dict(
             r1=dict(
@@ -169,17 +176,12 @@ class OctoRelayPlugin(
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-
-        self.model = dict()
-        self.turn_off_timers = dict()
-
         settings = self.get_settings_defaults()
 
         for index in settings:
             settings[index].update(self._settings.get([index]))
             self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
-            self.model[index] = dict()
             if settings[index]['active']:
                 relay_pin = int(settings[index]['relay_pin'])
                 initial_value = settings[index]['initial_value']
@@ -226,15 +228,14 @@ class OctoRelayPlugin(
             return False
 
     def on_api_command(self, command, data):
-        self._logger.debug("on_api_command {}, some_parameter is {}".format(command,data))
+        self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
 
         # added api command to get led status
         if command == "listAllStatus":
             GPIO.setwarnings(False)
             activeRelays = []
             for key in self.get_settings_defaults():
-                settings = self.get_settings_defaults()[key]
-                settings.update(self._settings.get([key]))
+                settings = self._settings.get([key], merged=True)
                 if settings["active"]:
                     relay_pin = int(settings["relay_pin"])   
                     inverted = settings['inverted_output']     
@@ -247,29 +248,36 @@ class OctoRelayPlugin(
                     activeRelays.append(relaydata)
             return flask.jsonify(activeRelays)
 
-        index = data['pin']
-
-        settings = self.get_settings_defaults()[index]
-        settings.update(self._settings.get([index]))
-
-        relay_pin = int(settings["relay_pin"])
-        inverted = settings['inverted_output']
-        cmdON = settings['cmdON']
-        cmdOFF = settings['cmdOFF']
-
-        GPIO.setwarnings(False)
-
-        GPIO.setup(relay_pin, GPIO.OUT)
-        # XOR with inverted
-        ledState = inverted != GPIO.input(relay_pin)
-        
         # added api command to get led status
         if command == "getStatus":
+            settings = self._settings.get([data["pin"]], merged=True)
+            relay_pin = int(settings["relay_pin"])
+            inverted = settings['inverted_output']
+            GPIO.setwarnings(False)
+            GPIO.setup(relay_pin, GPIO.OUT)
+            ledState = inverted != GPIO.input(relay_pin)
             return flask.jsonify(status=ledState)
-            
-        else:
+
+        if command == "update":
             if not self.has_switch_permission():
                 return flask.abort(403)
+            status = self.update_relay(data["pin"])
+            return flask.jsonify(status=status)
+
+    def update_relay(self, index):
+        try:
+            settings = self._settings.get([index], merged=True)
+
+            relay_pin = int(settings["relay_pin"])
+            inverted = settings['inverted_output']
+            cmdON = settings['cmdON']
+            cmdOFF = settings['cmdOFF']
+
+            GPIO.setwarnings(False)
+
+            GPIO.setup(relay_pin, GPIO.OUT)
+            # XOR with inverted
+            ledState = inverted != GPIO.input(relay_pin)
 
             self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
                 relay_pin,
@@ -296,14 +304,15 @@ class OctoRelayPlugin(
                         "Ocotrelay system command: {}".format(cmdOFF))
                     os.system(cmdOFF)
             self.update_ui()
-
-            return flask.jsonify(status="ok")
+            return "ok"
+        except Exception as e:
+            self._logger.debug(e)
+            return "error"
 
     def on_event(self, event, payload):
         self._logger.debug("Got event: {}".format(event))
         if event == Events.CLIENT_OPENED:
-            if hasattr(self, 'model'):
-                self.update_ui()
+            self.update_ui()
         elif event == Events.PRINT_STARTED:
             self.print_started()
         elif event == Events.PRINT_DONE:
@@ -325,11 +334,10 @@ class OctoRelayPlugin(
             try:
                 self.turn_off_timers[off_timer].cancel()
                 self._logger.info("cancelled timer: {}".format(off_timer))
-            except:
+            except Exception:
                 self._logger.warn("could not cancel timer: {}".format(off_timer))
         for index in self.model:
-            settings = self.get_settings_defaults()[index]
-            settings.update(self._settings.get([index]))
+            settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
@@ -343,8 +351,7 @@ class OctoRelayPlugin(
 
     def print_stopped(self):
         for index in self.model:
-            settings = self.get_settings_defaults()[index]
-            settings.update(self._settings.get([index]))
+            settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
@@ -408,6 +415,11 @@ class OctoRelayPlugin(
         #self._logger.info("update ui with model {}".format(self.model))
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
+    def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
+        if command == "OCTORELAY":
+            index = parameters
+            self.update_relay(index)
+            return None
 
     def get_update_information(self):
         return dict(
@@ -452,5 +464,7 @@ __plugin_hooks__ = {
     "octoprint.plugin.softwareupdate.check_config":
         __plugin_implementation__.get_update_information,
     "octoprint.access.permissions":
-        __plugin_implementation__.get_additional_permissions
+        __plugin_implementation__.get_additional_permissions,
+    "octoprint.comm.protocol.atcommand.sending":
+        __plugin_implementation__.process_at_command
 }
