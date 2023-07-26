@@ -30,8 +30,10 @@ class OctoRelayPlugin(
 
     def __init__(self):
         self.polling_timer = None
-        self.model = None
-        self.turn_off_timers = None
+        self.turn_off_timers = dict()
+        self.model = dict()
+        for index in self.get_settings_defaults():
+            self.model[index] = dict()
 
     def get_settings_defaults(self):
         return dict(
@@ -174,17 +176,12 @@ class OctoRelayPlugin(
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-
-        self.model = dict()
-        self.turn_off_timers = dict()
-
         settings = self.get_settings_defaults()
 
         for index in settings:
             settings[index].update(self._settings.get([index]))
             self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
-            self.model[index] = dict()
             if settings[index]['active']:
                 relay_pin = int(settings[index]['relay_pin'])
                 initial_value = settings[index]['initial_value']
@@ -315,8 +312,7 @@ class OctoRelayPlugin(
     def on_event(self, event, payload):
         self._logger.debug("Got event: {}".format(event))
         if event == Events.CLIENT_OPENED:
-            if hasattr(self, 'model'):
-                self.update_ui()
+            self.update_ui()
         elif event == Events.PRINT_STARTED:
             self.print_started()
         elif event == Events.PRINT_DONE:

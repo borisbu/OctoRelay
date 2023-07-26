@@ -40,12 +40,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         del sys.modules['octoprint.util']
         del sys.modules['octoprint.access.permissions']
 
-    def mockModel(self):
-        self.plugin_instance.model = {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {},
-        }
-
     def test_GPIO_initialization(self):
         GPIO_mock.setmode.assert_called_with("MockedBCM")
         GPIO_mock.setwarnings.assert_called_with(False)
@@ -259,7 +253,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_update_ui(self):
         # Should send message via plugin manager containing actual settings and the pins state
-        self.mockModel()
         GPIO_mock.input = Mock(return_value=False)
         cases = [
             { "inverted": True, "expectedIcon": "ON" },
@@ -337,7 +330,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.print_started = Mock()
         self.plugin_instance.print_stopped = Mock()
-        self.mockModel()
         cases = [
             { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
             { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
@@ -378,7 +370,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays configured with autoON should call turn_on_pin method and update UI
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "test": timerMock }
-        self.mockModel()
         cases = [
             { "autoOn": True, "inverted": True, "expectedCall": True},
             { "autoOn": True, "inverted": False, "expectedCall": True },
@@ -408,7 +399,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "test": Mock( cancel=Mock(side_effect=Exception) ) }
         self.plugin_instance.turn_on_pin = Mock()
-        self.mockModel()
         settingValueMock = {
             "active": False,
             "relay_pin": 17,
@@ -426,7 +416,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays with autoOff feature should set timer to turn its pin off
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.turn_off_timers = { "r4": timerMock }
-        self.mockModel()
         cases = [
             { "autoOff": True, "expectedCall": True },
             { "autoOff": False, "expectedCall": False },
