@@ -20,10 +20,8 @@ describe("OctoRelayViewModel", () => {
     return elementMock;
   });
   const apiMock = jest.fn();
-  const permissionsMock = {
-    PLUGIN_OCTORELAY_SWITCH: { test: "I am PLUGIN_OCTORELAY_SWITCH" } as
-      | object
-      | undefined,
+  const permissionsMock: Partial<Record<"PLUGIN_OCTORELAY_SWITCH", object>> = {
+    PLUGIN_OCTORELAY_SWITCH: { test: "I am PLUGIN_OCTORELAY_SWITCH" },
   };
   const hasPermissionMock = jest.fn();
 
