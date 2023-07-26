@@ -5,10 +5,15 @@ $(() => {
         const self = this;
         self.settingsViewModel = settingsViewModel;
         self.loginState = loginStateViewModel;
-        self.onDataUpdaterPluginMessage = (plugin, data) => {
+        self.onDataUpdaterPluginMessage = function (plugin, data) {
+            var _a, _b;
             if (plugin !== ownCode) {
                 return;
             }
+            const permission = (_b = (_a = self.settingsViewModel.access) === null || _a === void 0 ? void 0 : _a.permissions) === null || _b === void 0 ? void 0 : _b.PLUGIN_OCTORELAY_SWITCH;
+            const hasPermission = permission && self.loginState.hasPermission
+                ? self.loginState.hasPermission(permission)
+                : false;
             const handleClick = (key, value) => {
                 const command = () => OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
                 if (!value.confirmOff) {
@@ -35,7 +40,7 @@ $(() => {
             for (const [key, value] of Object.entries(data)) {
                 const btn = $("#relais" + key);
                 if (value.active !== undefined) {
-                    btn.toggle(value.active === 1);
+                    btn.toggle(hasPermission && value.active === 1);
                 }
                 const icon = $("#ralayIcon" + key);
                 if (value.iconText !== undefined) {

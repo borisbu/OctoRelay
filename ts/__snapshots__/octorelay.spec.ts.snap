@@ -3,16 +3,22 @@
 exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = `
 {
   "loginState": {
-    "login": true,
+    "hasPermission": [MockFunction],
   },
   "onDataUpdaterPluginMessage": [Function],
   "settingsViewModel": {
-    "settings": true,
+    "access": {
+      "permissions": {
+        "PLUGIN_OCTORELAY_SWITCH": {
+          "test": "I am PLUGIN_OCTORELAY_SWITCH",
+        },
+      },
+    },
   },
 }
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: $() 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration %#: $() 1`] = `
 [
   [
     "#relaisr1",
@@ -47,7 +53,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .attr() 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration %#: .attr() 1`] = `
 [
   [
     "title",
@@ -72,7 +78,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration %#: .find() 1`] = `
 [
   [
     ".modal-title",
@@ -89,7 +95,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .html() 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration %#: .html() 1`] = `
 [
   [
     "<div>&#128161;</div>",
@@ -109,7 +115,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration %#: .text() 1`] = `
 [
   [
     "Turning Printer off",
@@ -120,7 +126,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .toggle() 1`] = `
+exports[`OctoRelayViewModel Message handler should process the supplied configuration %#: .toggle() 1`] = `
 [
   [
     true,

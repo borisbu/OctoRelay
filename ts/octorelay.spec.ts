@@ -20,6 +20,7 @@ describe("OctoRelayViewModel", () => {
     return elementMock;
   });
   const apiMock = jest.fn();
+  const hasPermissionMock = jest.fn();
 
   Object.assign(global, {
     OCTOPRINT_VIEWMODELS: registry,
@@ -42,7 +43,16 @@ describe("OctoRelayViewModel", () => {
     const [model] = registry;
     const { construct } = model;
     expect(Object.keys(construct)).toEqual([]);
-    construct.call(construct, [{ settings: true }, { login: true }]);
+    construct.call(construct, [
+      {
+        access: {
+          permissions: {
+            PLUGIN_OCTORELAY_SWITCH: { test: "I am PLUGIN_OCTORELAY_SWITCH" },
+          },
+        },
+      },
+      { hasPermission: hasPermissionMock },
+    ]);
     expect({ ...construct }).toMatchSnapshot();
   });
 
@@ -53,10 +63,11 @@ describe("OctoRelayViewModel", () => {
     expect(jQueryMock).not.toHaveBeenCalled();
   });
 
-  test("Message handler should process the supplied configuration", () => {
+  test("Message handler should process the supplied configuration %#", () => {
+    hasPermissionMock.mockImplementationOnce(() => true);
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
-    handler("octorelay", {
+    handler.call(registry[0].construct, "octorelay", {
       r1: {
         relay_pin: 16,
         state: 1,
@@ -98,6 +109,9 @@ describe("OctoRelayViewModel", () => {
         confirmOff: false,
       },
     });
+    expect(hasPermissionMock).toHaveBeenCalledWith({
+      test: "I am PLUGIN_OCTORELAY_SWITCH",
+    });
     expect(jQueryMock.mock.calls).toMatchSnapshot("$()");
     expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
@@ -110,7 +124,9 @@ describe("OctoRelayViewModel", () => {
     // clicking on 1st icon, no confirmation
     elementMock.on.mock.calls[0][1]();
     expect(apiMock).toHaveBeenCalledTimes(1);
-    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", { pin: "r1" });
+    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", {
+      pin: "r1",
+    });
     expect(elementMock.on).toHaveBeenCalledTimes(5); // remains
 
     // clicking on 2nd icon, with confirmation
