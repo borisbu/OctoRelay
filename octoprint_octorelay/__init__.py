@@ -212,8 +212,8 @@ class OctoRelayPlugin(
     def get_additional_permissions(self):
         return [{
             "key": "SWITCH",
-            "name": "Switching relays ON and OFF",
-            "description": "Allows to toggle the GPIO pins and execute the associated OS commands.",
+            "name": "Relay switching",
+            "description": "Allows switch GPIO pins and execute related OS commands.",
             "roles": [ "switch" ],
             "dangerous": False,
             "default_groups": [ ADMIN_GROUP, USER_GROUP ]
