@@ -152,4 +152,24 @@ describe("OctoRelayViewModel", () => {
       pin: "r2",
     });
   });
+
+  test("Should not show buttons without permission", () => {
+    hasPermissionMock.mockImplementationOnce(() => false);
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    handler("octorelay", {
+      r1: {
+        relay_pin: 16,
+        state: 1,
+        labelText: "Nozzle Light",
+        active: 1,
+        iconText: "<div>&#128161;</div>",
+        confirmOff: false,
+      },
+    });
+    expect(hasPermissionMock).toHaveBeenCalledWith({
+      test: "I am PLUGIN_OCTORELAY_SWITCH",
+    });
+    expect(elementMock.toggle).toHaveBeenLastCalledWith(false);
+  });
 });
