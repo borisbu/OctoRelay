@@ -20,6 +20,10 @@ describe("OctoRelayViewModel", () => {
     return elementMock;
   });
   const apiMock = jest.fn();
+  const permissionsMock: Partial<Record<"PLUGIN_OCTORELAY_SWITCH", object>> = {
+    PLUGIN_OCTORELAY_SWITCH: { test: "I am PLUGIN_OCTORELAY_SWITCH" },
+  };
+  const hasPermissionMock = jest.fn();
 
   Object.assign(global, {
     OCTOPRINT_VIEWMODELS: registry,
@@ -42,7 +46,10 @@ describe("OctoRelayViewModel", () => {
     const [model] = registry;
     const { construct } = model;
     expect(Object.keys(construct)).toEqual([]);
-    construct.call(construct, [{ settings: true }, { login: true }]);
+    construct.call(construct, [
+      { access: { permissions: permissionsMock } },
+      { hasPermission: hasPermissionMock },
+    ]);
     expect({ ...construct }).toMatchSnapshot();
   });
 
@@ -54,6 +61,7 @@ describe("OctoRelayViewModel", () => {
   });
 
   test("Message handler should process the supplied configuration", () => {
+    hasPermissionMock.mockImplementationOnce(() => true);
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("octorelay", {
@@ -98,6 +106,9 @@ describe("OctoRelayViewModel", () => {
         confirmOff: false,
       },
     });
+    expect(hasPermissionMock).toHaveBeenCalledWith({
+      test: "I am PLUGIN_OCTORELAY_SWITCH",
+    });
     expect(jQueryMock.mock.calls).toMatchSnapshot("$()");
     expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
@@ -138,4 +149,41 @@ describe("OctoRelayViewModel", () => {
       pin: "r2",
     });
   });
+
+  test.each([
+    {
+      hasPermission: false,
+      permission: permissionsMock.PLUGIN_OCTORELAY_SWITCH,
+    },
+    {
+      hasPermission: true,
+      permission: undefined,
+    },
+  ])(
+    "Should not show buttons without permission %#",
+    ({ hasPermission, permission }) => {
+      hasPermissionMock.mockImplementationOnce(() => hasPermission);
+      jest.replaceProperty(
+        permissionsMock,
+        "PLUGIN_OCTORELAY_SWITCH",
+        permission
+      );
+      const handler = (registry[0].construct as OwnModel & OwnProperties)
+        .onDataUpdaterPluginMessage;
+      handler("octorelay", {
+        r1: {
+          relay_pin: 16,
+          state: 1,
+          labelText: "Nozzle Light",
+          active: 1,
+          iconText: "<div>&#128161;</div>",
+          confirmOff: false,
+        },
+      });
+      expect(hasPermissionMock).toHaveBeenCalledWith({
+        test: "I am PLUGIN_OCTORELAY_SWITCH",
+      });
+      expect(elementMock.toggle).toHaveBeenLastCalledWith(false);
+    }
+  );
 });

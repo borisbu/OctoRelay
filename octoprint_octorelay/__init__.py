@@ -5,6 +5,8 @@ import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
+from octoprint.access import ADMIN_GROUP, USER_GROUP
+from octoprint.access.permissions import Permissions
 
 import flask
 import RPi.GPIO as GPIO
@@ -211,6 +213,22 @@ class OctoRelayPlugin(
             "getStatus": ["pin"],
             "listAllStatus": [],
         }
+    
+    def get_additional_permissions(self):
+        return [{
+            "key": "SWITCH",
+            "name": "Relay switching",
+            "description": "Allows to switch GPIO pins and execute related OS commands.",
+            "roles": [ "switch" ],
+            "dangerous": False,
+            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+        }]
+
+    def has_switch_permission(self):
+        try:
+            return Permissions.PLUGIN_OCTORELAY_SWITCH.can() # may raise UnknownPermission(key)
+        except Exception:
+            return False
 
     def on_api_command(self, command, data):
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
@@ -244,6 +262,8 @@ class OctoRelayPlugin(
             return flask.jsonify(status=ledState)
 
         if command == "update":
+            if not self.has_switch_permission():
+                return flask.abort(403)
             status = self.update_relay(data["pin"])
             return flask.jsonify(status=status)
 
@@ -445,6 +465,10 @@ __plugin_pythoncompat__ = ">=3.7,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
-    "octoprint.plugin.softwareupdate.check_config": __plugin_implementation__.get_update_information,
-    "octoprint.comm.protocol.atcommand.sending": __plugin_implementation__.process_at_command
+    "octoprint.plugin.softwareupdate.check_config":
+        __plugin_implementation__.get_update_information,
+    "octoprint.access.permissions":
+        __plugin_implementation__.get_additional_permissions,
+    "octoprint.comm.protocol.atcommand.sending":
+        __plugin_implementation__.process_at_command
 }
