@@ -34,7 +34,7 @@ class OctoRelayPlugin(
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}
-        for index in self.get_settings_defaults():
+        for index in defaultSettings:
             self.model[index] = {}
 
     def get_settings_defaults(self):
