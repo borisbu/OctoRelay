@@ -8,7 +8,7 @@ from octoprint.util import RepeatedTimer
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings, relayIndexes
+from const import defaultSettings, relayIndexes, templates, assets
 
 import flask
 import RPi.GPIO as GPIO
@@ -41,15 +41,10 @@ class OctoRelayPlugin(
         return defaultSettings
 
     def get_template_configs(self):
-        return [
-            { "type": "navbar", "custom_bindings": False },
-            { "type": "settings", "custom_bindings": False }
-        ]
+        return templates
 
     def get_assets(self):
-        # Define your plugin's asset files to automatically include in the
-        # core UI here.
-        return { "js": [ "js/octorelay.js" ] }
+        return assets
 
     def on_after_startup(self):
 

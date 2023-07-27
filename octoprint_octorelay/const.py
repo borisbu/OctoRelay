@@ -1,3 +1,4 @@
+# Plugin's default settings
 defaultSettings = {
     "r1": {
         "active": True,
@@ -121,4 +122,14 @@ defaultSettings = {
     },
 }
 
+# Keys of the default settings, used for iterations: [r1...r8]
 relayIndexes = defaultSettings.keys()
+
+# Plugin's template
+templates = [
+    { "type": "navbar", "custom_bindings": False },
+    { "type": "settings", "custom_bindings": False }
+]
+
+# Plugin's asset files to automatically include in the core UI
+assets = { "js": [ "js/octorelay.js" ] }
