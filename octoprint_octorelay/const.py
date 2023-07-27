@@ -177,7 +177,9 @@ preReleaseChannel = {
 updateConfig = {
     **github,
     "type": "github_release",
-    "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+    "pip": "https://github.com/{}/{}/archive/{}.zip".format(
+        github["user"], github["repo"], "{target}"
+    ),
     "stable_branch": stableChannel,
     "prerelease_branches": [ preReleaseChannel ]
 }
