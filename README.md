@@ -55,7 +55,7 @@ Each one has the following settings *(in order of appearance)*:
 You can toggle the relays ON and OFF by:
 
 - Clicking the configured buttons on the navigation bar;
-- Or by sending GCODE command `@OCTORELAY r#`,
+- Or sending GCODE command `@OCTORELAY r#`,
   - where `#` is relay index from `1` to `8`.
 
 ## Updates
