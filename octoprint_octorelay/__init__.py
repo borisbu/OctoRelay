@@ -48,7 +48,7 @@ class OctoRelayPlugin(
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = { **DEFAULT_SETTINGS } # clone
+        settings = DEFAULT_SETTINGS.copy()
 
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
@@ -252,7 +252,7 @@ class OctoRelayPlugin(
         self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
-        settings = { **DEFAULT_SETTINGS } # clone
+        settings = DEFAULT_SETTINGS.copy()
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
 
