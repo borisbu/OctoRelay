@@ -215,7 +215,7 @@ class OctoRelayPlugin(
                 self._logger.info("cancelled timer: {}".format(off_timer))
             except Exception:
                 self._logger.warn("could not cancel timer: {}".format(off_timer))
-        for index in self.model:
+        for index in relayIndexes:
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
@@ -229,7 +229,7 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def print_stopped(self):
-        for index in self.model:
+        for index in relayIndexes:
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
@@ -326,7 +326,7 @@ class OctoRelayPlugin(
     # GPIO Polling thread
     def input_polling(self):
         self._logger.debug("input_polling")
-        for index in self.model:
+        for index in relayIndexes:
             if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
                 self._logger.debug("relay: {} has changed its pin state".format(index))
                 self.update_ui()
