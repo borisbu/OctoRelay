@@ -55,9 +55,9 @@ class OctoRelayPlugin(
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = self.get_settings_defaults()
+        settings = { **defaultSettings } # clone
 
-        for index in settings:
+        for index in relayIndexes:
             settings[index].update(self._settings.get([index]))
             self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
@@ -113,7 +113,7 @@ class OctoRelayPlugin(
         if command == "listAllStatus":
             GPIO.setwarnings(False)
             activeRelays = []
-            for key in self.get_settings_defaults():
+            for key in relayIndexes:
                 settings = self._settings.get([key], merged=True)
                 if settings["active"]:
                     relay_pin = int(settings["relay_pin"])
@@ -266,8 +266,8 @@ class OctoRelayPlugin(
         self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
-        settings = self.get_settings_defaults()
-        for index in settings:
+        settings = { **defaultSettings } # clone
+        for index in relayIndexes:
             settings[index].update(self._settings.get([index]))
 
             labelText = settings[index]["labelText"]
