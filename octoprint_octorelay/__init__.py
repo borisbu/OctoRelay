@@ -8,7 +8,7 @@ from octoprint.util import RepeatedTimer
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings
+from const import defaultSettings, relayIndexes
 
 import flask
 import RPi.GPIO as GPIO
@@ -34,7 +34,7 @@ class OctoRelayPlugin(
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}
-        for index in defaultSettings:
+        for index in relayIndexes:
             self.model[index] = {}
 
     def get_settings_defaults(self):

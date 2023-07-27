@@ -120,3 +120,5 @@ defaultSettings = {
         "autoOffDelay": 0,
     },
 }
+
+relayIndexes = defaultSettings.keys()
