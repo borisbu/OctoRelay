@@ -15,9 +15,6 @@ import flask
 import RPi.GPIO as GPIO
 import os
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.StartupPlugin,
@@ -30,6 +27,8 @@ class OctoRelayPlugin(
 ):
 
     def __init__(self):
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setwarnings(False)
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}

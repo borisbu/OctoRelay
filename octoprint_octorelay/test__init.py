@@ -40,9 +40,16 @@ class TestOctoRelayPlugin(unittest.TestCase):
         del sys.modules['octoprint.util']
         del sys.modules['octoprint.access.permissions']
 
-    def test_GPIO_initialization(self):
+    def test_constructor(self):
+        # During the instantiation should configure GPIO and set initial values to certain props
         GPIO_mock.setmode.assert_called_with("MockedBCM")
         GPIO_mock.setwarnings.assert_called_with(False)
+        self.assertEqual(self.plugin_instance.polling_timer, None)
+        self.assertEqual(self.plugin_instance.turn_off_timers, {})
+        self.assertEqual(self.plugin_instance.model, {
+            "r1": {}, "r2": {}, "r3": {}, "r4": {},
+            "r5": {}, "r6": {}, "r7": {}, "r8": {}
+        })
 
     def test_get_settings_defaults(self):
         expected = {
