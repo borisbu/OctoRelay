@@ -230,7 +230,7 @@ class OctoRelayPlugin(
     def on_api_command(self, command, data):
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
 
-        # added api command to get led status
+        # API command to get relay statuses
         if command == "listAllStatus":
             GPIO.setwarnings(False)
             activeRelays = []
@@ -248,15 +248,15 @@ class OctoRelayPlugin(
                     activeRelays.append(relaydata)
             return flask.jsonify(activeRelays)
 
-        # added api command to get led status
+        # API command to get relay status
         if command == "getStatus":
             settings = self._settings.get([data["pin"]], merged=True)
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
             GPIO.setwarnings(False)
             GPIO.setup(relay_pin, GPIO.OUT)
-            ledState = inverted != GPIO.input(relay_pin)
-            return flask.jsonify(status=ledState)
+            relayState = inverted != GPIO.input(relay_pin)
+            return flask.jsonify(status=relayState)
 
         if command == "update":
             if not self.has_switch_permission():
@@ -277,31 +277,31 @@ class OctoRelayPlugin(
 
             GPIO.setup(relay_pin, GPIO.OUT)
             # XOR with inverted
-            ledState = inverted != GPIO.input(relay_pin)
+            relayState = inverted != GPIO.input(relay_pin)
 
-            self._logger.debug("Ocotrelay before pin: {}, inverted: {}, currentState: {}".format(
+            self._logger.debug("OctoRelay before pin: {}, inverted: {}, relayState: {}".format(
                 relay_pin,
                 inverted,
-                ledState
+                relayState
             ))
 
             # toggle state
-            ledState = not ledState
+            relayState = not relayState
 
             GPIO.setup(relay_pin, GPIO.OUT)
             # XOR with inverted
-            GPIO.output(relay_pin, inverted != ledState)
+            GPIO.output(relay_pin, inverted != relayState)
 
             GPIO.setwarnings(True)
-            if ledState:
+            if relayState:
                 if cmdON:
                     self._logger.info(
-                        "Ocotrelay system command: {}".format(cmdON))
+                        "OctoRelay system command: {}".format(cmdON))
                     os.system(cmdON)
             else:
                 if cmdOFF:
                     self._logger.info(
-                        "Ocotrelay system command: {}".format(cmdOFF))
+                        "OctoRelay system command: {}".format(cmdOFF))
                     os.system(cmdOFF)
             self.update_ui()
             return "ok"
