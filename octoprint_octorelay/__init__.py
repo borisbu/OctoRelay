@@ -30,147 +30,145 @@ class OctoRelayPlugin(
 
     def __init__(self):
         self.polling_timer = None
-        self.turn_off_timers = dict()
-        self.model = dict()
+        self.turn_off_timers = {}
+        self.model = {}
         for index in self.get_settings_defaults():
-            self.model[index] = dict()
+            self.model[index] = {}
 
     def get_settings_defaults(self):
-        return dict(
-            r1=dict(
-                active=True,
-                relay_pin=4,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="&#128161;",
-                iconOff="<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                labelText="Light",
-                confirmOff=False,
-                autoONforPrint=True,
-                autoOFFforPrint=True,
-                autoOffDelay=10,
-            ),
-            r2=dict(
-                active=True,
-                relay_pin=17,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
-                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
-                labelText="Printer",
-                confirmOff=True,
-                autoONforPrint=False,
-                autoOFFforPrint=False,
-                autoOffDelay=0,
-            ),
-            r3=dict(
-                active=True,
-                relay_pin=18,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
-                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
-                labelText="Fan",
-                confirmOff=False,
-                autoONforPrint=True,
-                autoOFFforPrint=True,
-                autoOffDelay=10,
-            ),
-            r4=dict(
-                active = True,
-                relay_pin=23,
-                inverted_output=True,
-                initial_value=True,
-                cmdON="sudo service webcamd start",
-                cmdOFF="sudo service webcamd stop",
-                iconOn="""<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                iconOff="""<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
-                labelText="Webcam",
-                confirmOff=False,
-                autoONforPrint=True,
-                autoOFFforPrint=True,
-                autoOffDelay=10,
-            ),
-            r5=dict(
-                active=False,
-                relay_pin=24,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="ON",
-                iconOff="OFF",
-                labelText="R5",
-                confirmOff=False,
-                autoONforPrint=False,
-                autoOFFforPrint=False,
-                autoOffDelay=0,
-            ),
-            r6=dict(
-                active=False,
-                relay_pin=25,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="&#128161;",
-                iconOff="<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                labelText="R6",
-                confirmOff=False,
-                autoONforPrint=False,
-                autoOFFforPrint=False,
-                autoOffDelay=0,
-            ),
-            r7=dict(
-                active=False,
-                relay_pin=8,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="&#128161;",
-                iconOff="<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                labelText="R7",
-                confirmOff=False,
-                autoONforPrint=False,
-                autoOFFforPrint=False,
-                autoOffDelay=0,
-            ),
-            r8=dict(
-                active=False,
-                relay_pin=7,
-                inverted_output=True,
-                initial_value=False,
-                cmdON="",
-                cmdOFF="",
-                iconOn="&#128161;",
-                iconOff="<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                labelText="R8",
-                confirmOff=False,
-                autoONforPrint=False,
-                autoOFFforPrint=False,
-                autoOffDelay=0,
-            ),
-        )
+        return {
+            "r1": {
+               "active": True,
+               "relay_pin": 4,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "Light",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            "r2": {
+               "active": True,
+               "relay_pin": 17,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
+               "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
+               "labelText": "Printer",
+               "confirmOff": True,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r3": {
+               "active": True,
+               "relay_pin": 18,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
+               "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
+               "labelText": "Fan",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            "r4": {
+               "active": True,
+               "relay_pin": 23,
+               "inverted_output": True,
+               "initial_value": True,
+               "cmdON": "sudo service webcamd start",
+               "cmdOFF": "sudo service webcamd stop",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+               "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
+               "labelText": "Webcam",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            "r5": {
+               "active": False,
+               "relay_pin": 24,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "ON",
+               "iconOff": "OFF",
+               "labelText": "R5",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r6": {
+               "active": False,
+               "relay_pin": 25,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "R6",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r7": {
+               "active": False,
+               "relay_pin": 8,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "R7",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r8": {
+               "active": False,
+               "relay_pin": 7,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "R8",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+        }
 
     def get_template_configs(self):
         return [
-            dict(type="navbar", custom_bindings=False),
-            dict(type="settings", custom_bindings=False)
+            { "type": "navbar", "custom_bindings": False },
+            { "type": "settings", "custom_bindings": False }
         ]
 
     def get_assets(self):
         # Define your plugin's asset files to automatically include in the
         # core UI here.
-        return dict(
-            js=["js/octorelay.js"],
-        )
+        return { "js": [ "js/octorelay.js" ] }
 
     def on_after_startup(self):
 
@@ -240,12 +238,12 @@ class OctoRelayPlugin(
                     relay_pin = int(settings["relay_pin"])
                     inverted = settings['inverted_output']
                     GPIO.setup(relay_pin, GPIO.OUT)
-                    relaydata = dict(
-                        id=key,
-                        name=settings["labelText"],
-                        active=inverted != GPIO.input(relay_pin),
-                    )
-                    activeRelays.append(relaydata)
+                    relayData = {
+                        "id": key,
+                        "name": settings["labelText"],
+                        "active": inverted != GPIO.input(relay_pin),
+                    }
+                    activeRelays.append(relayData)
             return flask.jsonify(activeRelays)
 
         # API command to get relay status
@@ -422,31 +420,27 @@ class OctoRelayPlugin(
             return None
 
     def get_update_information(self):
-        return dict(
-            octorelay=dict(
-                displayName="OctoRelay",
-                displayVersion=self._plugin_version,
-
-                type="github_release",
-                current=self._plugin_version,
-
-                user="borisbu",
-                repo="OctoRelay",
-                pip="https://github.com/borisbu/OctoRelay/archive/{target}.zip",
-
-                stable_branch=dict(
-                    name="Stable",
-                    branch="master",
-                    commitish=["master"]
-                ),
-
-                prerelease_branches=[dict(
-                    name="Prerelease",
-                    branch="develop",
-                    commitish=["develop", "master"]
-                )]
-            )
-        )
+        return {
+            "octorelay": {
+                "displayName": "OctoRelay",
+                "displayVersion": self._plugin_version,
+                "type": "github_release",
+                "current": self._plugin_version,
+                "user": "borisbu",
+                "repo": "OctoRelay",
+                "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+                "stable_branch": {
+                    "name": "Stable",
+                    "branch": "master",
+                    "commitish": [ "master" ]
+                },
+                "prerelease_branches": [{
+                    "name": "Prerelease",
+                    "branch": "develop",
+                    "commitish": [ "develop", "master" ]
+                }]
+            }
+        }
 
     # GPIO Polling thread
     def input_polling(self):
