@@ -77,7 +77,7 @@ jobs=1
 # Control the amount of potential inferred values when inferring a single
 # object. This can help the performance when dealing with large functions or
 # complex, nested conditions.
-limit-inference-results=100
+limit-inference-results=120
 
 # List of plugins (as comma separated values of python module names) to load,
 # usually to register additional checkers.
