@@ -152,3 +152,32 @@ permissions = [{
     "dangerous": False,
     "default_groups": [ ADMIN_GROUP, USER_GROUP ]
 }]
+
+# used by updateConfig
+github = {
+    "user": "borisbu",
+    "repo": "OctoRelay"
+}
+
+# used by updateConfig
+stableChannel = {
+    "name": "Stable",
+    "branch": "master",
+    "commitish": [ "master" ]
+}
+
+# used by updateConfig
+preReleaseChannel = {
+    "name": "Prerelease",
+    "branch": "develop",
+    "commitish": [ "develop", "master" ]
+}
+
+# https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#octoprint-plugin-softwareupdate-check-config
+updateConfig = {
+    **github,
+    "type": "github_release",
+    "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+    "stable_branch": stableChannel,
+    "prerelease_branches": [ preReleaseChannel ]
+}

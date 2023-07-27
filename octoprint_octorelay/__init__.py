@@ -7,7 +7,7 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings, relayIndexes, templates, assets, apiCommands, permissions
+from const import defaultSettings, relayIndexes, templates, assets, apiCommands, permissions, updateConfig
 
 import flask
 import RPi.GPIO as GPIO
@@ -286,21 +286,8 @@ class OctoRelayPlugin(
             "octorelay": {
                 "displayName": "OctoRelay",
                 "displayVersion": self._plugin_version,
-                "type": "github_release",
                 "current": self._plugin_version,
-                "user": "borisbu",
-                "repo": "OctoRelay",
-                "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
-                "stable_branch": {
-                    "name": "Stable",
-                    "branch": "master",
-                    "commitish": [ "master" ]
-                },
-                "prerelease_branches": [{
-                    "name": "Prerelease",
-                    "branch": "develop",
-                    "commitish": [ "develop", "master" ]
-                }]
+                **updateConfig
             }
         }
 
