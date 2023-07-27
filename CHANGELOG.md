@@ -2,6 +2,12 @@
 
 ## Version 2
 
+### 2.2.1
+
+- Technical update: no fixes or new features.
+  - Adaptation of a method for possible future changes.
+  - Minor refactoring.
+
 ### 2.2.0
 
 - Thanks to [@jneilliii](https://github.com/jneilliii)'s contribution, the plugin supports GCODE command `@OCTORELAY`.
