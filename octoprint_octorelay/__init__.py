@@ -5,10 +5,9 @@ import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
-from octoprint.access import ADMIN_GROUP, USER_GROUP
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings, relayIndexes, templates, assets, apiCommands
+from const import defaultSettings, relayIndexes, templates, assets, apiCommands, permissions
 
 import flask
 import RPi.GPIO as GPIO
@@ -81,14 +80,7 @@ class OctoRelayPlugin(
         return apiCommands
 
     def get_additional_permissions(self, *args, **kwargs):
-        return [{
-            "key": "SWITCH",
-            "name": "Relay switching",
-            "description": "Allows to switch GPIO pins and execute related OS commands.",
-            "roles": [ "switch" ],
-            "dangerous": False,
-            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
-        }]
+        return permissions
 
     def has_switch_permission(self):
         try:

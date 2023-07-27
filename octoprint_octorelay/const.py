@@ -1,3 +1,5 @@
+from octoprint.access import ADMIN_GROUP, USER_GROUP
+
 # Plugin's default settings
 defaultSettings = {
     "r1": {
@@ -140,3 +142,13 @@ apiCommands = {
     "getStatus": [ "pin" ],
     "listAllStatus": [],
 }
+
+# see https://docs.octoprint.org/en/master/plugins/hooks.html#octoprint-access-permissions
+permissions = [{
+    "key": "SWITCH",
+    "name": "Relay switching",
+    "description": "Allows to switch GPIO pins and execute related OS commands.",
+    "roles": [ "switch" ],
+    "dangerous": False,
+    "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+}]
