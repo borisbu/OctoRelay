@@ -251,16 +251,17 @@ class OctoRelayPlugin(
         self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
+        settings = { **defaultSettings } # clone
         for index in RELAY_INDEXES:
-            settings = self._settings.get([index])
+            settings[index].update(self._settings.get([index]))
 
-            labelText = settings["labelText"]
-            active = int(settings["active"])
-            relay_pin = int(settings["relay_pin"])
-            inverted = settings['inverted_output']
-            iconOn = settings['iconOn']
-            iconOff = settings['iconOff']
-            confirmOff = settings['confirmOff']
+            labelText = settings[index]["labelText"]
+            active = int(settings[index]["active"])
+            relay_pin = int(settings[index]["relay_pin"])
+            inverted = settings[index]['inverted_output']
+            iconOn = settings[index]['iconOn']
+            iconOff = settings[index]['iconOff']
+            confirmOff = settings[index]['confirmOff']
 
             # set the icon state
             GPIO.setup(relay_pin, GPIO.OUT)
