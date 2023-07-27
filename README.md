@@ -50,6 +50,14 @@ Each one has the following settings *(in order of appearance)*:
 | OFF after printing    | Turns the relay OFF after finished printing                |
 | Delay                 | Postpones turning the relay OFF for *X* seconds            |
 
+## Operation
+
+You can toggle the relays ON and OFF by:
+
+- Clicking the configured buttons on the navigation bar;
+- Or sending GCODE command `@OCTORELAY r#`,
+  - where `#` is relay index from `1` to `8`.
+
 ## Updates
 
 Check out the versions, their features and bug fixes in the [Changelog](CHANGELOG.md).

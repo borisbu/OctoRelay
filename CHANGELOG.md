@@ -2,6 +2,14 @@
 
 ## Version 2
 
+### 2.2.0
+
+- Thanks to [@jneilliii](https://github.com/jneilliii)'s contribution, the plugin supports GCODE command `@OCTORELAY`.
+  - The command toggles the relay by its index specified in parameters.
+  - Currently supported indexes are from `r1` to `r8`.
+  - Example: `@OCTORELAY r4`.
+  - Documentation on `@` commands: https://docs.octoprint.org/en/master/features/atcommands.html
+
 ### 2.1.0
 
 - This version contains an important security fix:
