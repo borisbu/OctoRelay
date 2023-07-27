@@ -2,6 +2,10 @@
 
 ## Version 2
 
+### 2.2.2
+
+- Another technical update: minor refactoring only.
+
 ### 2.2.1
 
 - Technical update: no fixes or new features.
