@@ -1,7 +1,7 @@
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 # Plugin's default settings
-defaultSettings = {
+DEFAULT_SETTINGS = {
     "r1": {
         "active": True,
         "relay_pin": 4,
@@ -125,62 +125,62 @@ defaultSettings = {
 }
 
 # Keys of the default settings, used for iterations: [r1...r8]
-relayIndexes = defaultSettings.keys()
+RELAY_INDEXES = DEFAULT_SETTINGS.keys()
 
 # Plugin's template
-templates = [
+TEMPLATES = [
     { "type": "navbar", "custom_bindings": False },
     { "type": "settings", "custom_bindings": False }
 ]
 
 # Plugin's asset files to automatically include in the core UI
-assets = { "js": [ "js/octorelay.js" ] }
+ASSETS = { "js": [ "js/octorelay.js" ] }
 
 # Public interface commands:
-apiCommandUpdate = "update"
-apiCommandGetStatus = "getStatus"
-apiCommandListAll = "listAllStatus"
-atCommand = "OCTORELAY"
+UPDATE_COMMAND = "update"
+GET_STATUS_COMMAND = "getStatus"
+LIST_ALL_COMMAND = "listAllStatus"
+AT_COMMAND = "OCTORELAY"
 
 # see https://docs.octoprint.org/en/master/plugins/hooks.html#octoprint-access-permissions
-permissions = [{
+SWITCH_PERMISSION = {
     "key": "SWITCH",
     "name": "Relay switching",
     "description": "Allows to switch GPIO pins and execute related OS commands.",
     "roles": [ "switch" ],
     "dangerous": False,
     "default_groups": [ ADMIN_GROUP, USER_GROUP ]
-}]
+}
 
 # used by updateConfig
-github = {
+GITHUB = {
     "user": "borisbu",
     "repo": "OctoRelay"
 }
 
 # used by updateConfig
-stableChannel = {
+STABLE_CHANNEL = {
     "name": "Stable",
     "branch": "master",
     "commitish": [ "master" ]
 }
 
 # used by updateConfig
-preReleaseChannel = {
+PRE_RELEASE_CHANNEL = {
     "name": "Prerelease",
     "branch": "develop",
     "commitish": [ "develop", "master" ]
 }
 
 # https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#octoprint-plugin-softwareupdate-check-config
-updateConfig = {
-    **github,
+UPDATES_CONFIG = {
+    **GITHUB,
     "type": "github_release",
     "pip": "https://github.com/{}/{}/archive/{}.zip".format(
-        github["user"], github["repo"], "{target}"
+        GITHUB["user"], GITHUB["repo"], "{target}"
     ),
-    "stable_branch": stableChannel,
-    "prerelease_branches": [ preReleaseChannel ]
+    "stable_branch": STABLE_CHANNEL,
+    "prerelease_branches": [ PRE_RELEASE_CHANNEL ]
 }
 
-pollingInterval = 0.3
+POLLING_INTERVAL = 0.3

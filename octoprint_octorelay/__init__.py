@@ -7,9 +7,9 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings, relayIndexes, templates, assets
-from const import permissions, updateConfig, pollingInterval
-from const import apiCommandUpdate, apiCommandGetStatus, apiCommandListAll, atCommand
+from const import DEFAULT_SETTINGS, RELAY_INDEXES, TEMPLATES, ASSETS
+from const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
+from const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 
 import flask
 import RPi.GPIO as GPIO
@@ -32,24 +32,24 @@ class OctoRelayPlugin(
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}
-        for index in relayIndexes:
+        for index in RELAY_INDEXES:
             self.model[index] = {}
 
     def get_settings_defaults(self):
-        return defaultSettings
+        return DEFAULT_SETTINGS
 
     def get_template_configs(self):
-        return templates
+        return TEMPLATES
 
     def get_assets(self):
-        return assets
+        return ASSETS
 
     def on_after_startup(self):
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
 
-        for index in relayIndexes:
+        for index in RELAY_INDEXES:
             settings = self._settings.get([index])
             self._logger.debug("settings for {}: {}".format(index, settings))
 
@@ -64,7 +64,7 @@ class OctoRelayPlugin(
                 GPIO.output(relay_pin, initial_value != inverted_output)
 
         self.update_ui()
-        self.polling_timer = RepeatedTimer(pollingInterval, self.input_polling, daemon=True)
+        self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
         self.polling_timer.start()
 
         self._logger.info("OctoRelay plugin started")
@@ -77,13 +77,13 @@ class OctoRelayPlugin(
 
     def get_api_commands(self):
         return {
-            apiCommandUpdate: [ "pin" ],
-            apiCommandGetStatus: [ "pin" ],
-            apiCommandListAll: [],
+            UPDATE_COMMAND: [ "pin" ],
+            GET_STATUS_COMMAND: [ "pin" ],
+            LIST_ALL_COMMAND: [],
         }
 
     def get_additional_permissions(self, *args, **kwargs):
-        return permissions
+        return [ SWITCH_PERMISSION ]
 
     def has_switch_permission(self):
         try:
@@ -95,10 +95,10 @@ class OctoRelayPlugin(
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
 
         # API command to get relay statuses
-        if command == apiCommandListAll:
+        if command == LIST_ALL_COMMAND:
             GPIO.setwarnings(False)
             activeRelays = []
-            for index in relayIndexes:
+            for index in RELAY_INDEXES:
                 settings = self._settings.get([index], merged=True)
                 if settings["active"]:
                     relay_pin = int(settings["relay_pin"])
@@ -113,7 +113,7 @@ class OctoRelayPlugin(
             return flask.jsonify(activeRelays)
 
         # API command to get relay status
-        if command == apiCommandGetStatus:
+        if command == GET_STATUS_COMMAND:
             settings = self._settings.get([data["pin"]], merged=True)
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
@@ -122,7 +122,7 @@ class OctoRelayPlugin(
             relayState = inverted != GPIO.input(relay_pin)
             return flask.jsonify(status=relayState)
 
-        if command == apiCommandUpdate:
+        if command == UPDATE_COMMAND:
             if not self.has_switch_permission():
                 return flask.abort(403)
             status = self.update_relay(data["pin"])
@@ -200,7 +200,7 @@ class OctoRelayPlugin(
                 self._logger.info("cancelled timer: {}".format(off_timer))
             except Exception:
                 self._logger.warn("could not cancel timer: {}".format(off_timer))
-        for index in relayIndexes:
+        for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
@@ -214,7 +214,7 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def print_stopped(self):
-        for index in relayIndexes:
+        for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
@@ -251,7 +251,7 @@ class OctoRelayPlugin(
         self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
-        for index in relayIndexes:
+        for index in RELAY_INDEXES:
             settings = self._settings.get([index])
 
             labelText = settings["labelText"]
@@ -279,7 +279,7 @@ class OctoRelayPlugin(
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
     def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
-        if command == atCommand:
+        if command == AT_COMMAND:
             index = parameters
             self.update_relay(index)
             return None
@@ -290,14 +290,14 @@ class OctoRelayPlugin(
                 "displayName": "OctoRelay",
                 "displayVersion": self._plugin_version,
                 "current": self._plugin_version,
-                **updateConfig
+                **UPDATES_CONFIG
             }
         }
 
     # GPIO Polling thread
     def input_polling(self):
         self._logger.debug("input_polling")
-        for index in relayIndexes:
+        for index in RELAY_INDEXES:
             if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
                 self._logger.debug("relay: {} has changed its pin state".format(index))
                 self.update_ui()
