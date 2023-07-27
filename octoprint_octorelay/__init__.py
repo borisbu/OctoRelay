@@ -55,16 +55,15 @@ class OctoRelayPlugin(
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = { **defaultSettings } # clone
 
         for index in relayIndexes:
-            settings[index].update(self._settings.get([index]))
-            self._logger.debug("settings for {}: {}".format(index, settings[index]))
+            settings = self._settings.get([index])
+            self._logger.debug("settings for {}: {}".format(index, settings))
 
-            if settings[index]['active']:
-                relay_pin = int(settings[index]['relay_pin'])
-                initial_value = settings[index]['initial_value']
-                inverted_output = settings[index]['inverted_output']
+            if settings['active']:
+                relay_pin = int(settings['relay_pin'])
+                initial_value = settings['initial_value']
+                inverted_output = settings['inverted_output']
 
                 # Setting the default state of pin
                 GPIO.setup(relay_pin, GPIO.OUT)
