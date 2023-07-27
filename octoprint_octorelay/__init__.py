@@ -8,7 +8,8 @@ from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
 from const import defaultSettings, relayIndexes, templates, assets
-from const import apiCommands, permissions, updateConfig, pollingInterval
+from const import permissions, updateConfig, pollingInterval
+from const import apiCommandUpdate, apiCommandGetStatus, apiCommandListAll, atCommand
 
 import flask
 import RPi.GPIO as GPIO
@@ -76,7 +77,11 @@ class OctoRelayPlugin(
         self._logger.info("--------------------------------------------")
 
     def get_api_commands(self):
-        return apiCommands
+        return {
+            apiCommandUpdate: [ "pin" ],
+            apiCommandGetStatus: [ "pin" ],
+            apiCommandListAll: [],
+        }
 
     def get_additional_permissions(self, *args, **kwargs):
         return permissions
@@ -91,7 +96,7 @@ class OctoRelayPlugin(
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
 
         # API command to get relay statuses
-        if command == "listAllStatus":
+        if command == apiCommandListAll:
             GPIO.setwarnings(False)
             activeRelays = []
             for index in relayIndexes:
@@ -109,7 +114,7 @@ class OctoRelayPlugin(
             return flask.jsonify(activeRelays)
 
         # API command to get relay status
-        if command == "getStatus":
+        if command == apiCommandGetStatus:
             settings = self._settings.get([data["pin"]], merged=True)
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
@@ -118,7 +123,7 @@ class OctoRelayPlugin(
             relayState = inverted != GPIO.input(relay_pin)
             return flask.jsonify(status=relayState)
 
-        if command == "update":
+        if command == apiCommandUpdate:
             if not self.has_switch_permission():
                 return flask.abort(403)
             status = self.update_relay(data["pin"])
@@ -275,7 +280,7 @@ class OctoRelayPlugin(
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
     def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
-        if command == "OCTORELAY":
+        if command == atCommand:
             index = parameters
             self.update_relay(index)
             return None

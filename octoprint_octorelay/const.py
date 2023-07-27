@@ -136,12 +136,11 @@ templates = [
 # Plugin's asset files to automatically include in the core UI
 assets = { "js": [ "js/octorelay.js" ] }
 
-# Accepted commands with their lists of mandatory parameters
-apiCommands = {
-    "update": [ "pin" ],
-    "getStatus": [ "pin" ],
-    "listAllStatus": [],
-}
+# Public interface commands:
+apiCommandUpdate = "update"
+apiCommandGetStatus = "getStatus"
+apiCommandListAll = "listAllStatus"
+atCommand = "OCTORELAY"
 
 # see https://docs.octoprint.org/en/master/plugins/hooks.html#octoprint-access-permissions
 permissions = [{
