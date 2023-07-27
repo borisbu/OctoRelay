@@ -210,7 +210,7 @@ class OctoRelayPlugin(
             "getStatus": ["pin"],
             "listAllStatus": [],
         }
-    
+
     def get_additional_permissions(self, *args, **kwargs):
         return [{
             "key": "SWITCH",
