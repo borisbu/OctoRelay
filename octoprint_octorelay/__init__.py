@@ -7,9 +7,9 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from const import DEFAULT_SETTINGS, RELAY_INDEXES, TEMPLATES, ASSETS
-from const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
-from const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
+from octoprint_octorelay.const import DEFAULT_SETTINGS, RELAY_INDEXES, TEMPLATES, ASSETS
+from octoprint_octorelay.const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
+from octoprint_octorelay.const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 
 import flask
 import RPi.GPIO as GPIO
