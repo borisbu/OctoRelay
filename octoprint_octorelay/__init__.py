@@ -113,14 +113,14 @@ class OctoRelayPlugin(
         if command == "listAllStatus":
             GPIO.setwarnings(False)
             activeRelays = []
-            for key in relayIndexes:
-                settings = self._settings.get([key], merged=True)
+            for index in relayIndexes:
+                settings = self._settings.get([index], merged=True)
                 if settings["active"]:
                     relay_pin = int(settings["relay_pin"])
                     inverted = settings['inverted_output']
                     GPIO.setup(relay_pin, GPIO.OUT)
                     relayData = {
-                        "id": key,
+                        "id": index,
                         "name": settings["labelText"],
                         "active": inverted != GPIO.input(relay_pin),
                     }
