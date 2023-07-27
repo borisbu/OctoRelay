@@ -127,7 +127,7 @@ DEFAULT_SETTINGS = {
 # Keys of the default settings, used for iterations: [r1...r8]
 RELAY_INDEXES = DEFAULT_SETTINGS.keys()
 
-# Plugin's template
+# Plugin's templates
 TEMPLATES = [
     { "type": "navbar", "custom_bindings": False },
     { "type": "settings", "custom_bindings": False }
@@ -152,20 +152,20 @@ SWITCH_PERMISSION = {
     "default_groups": [ ADMIN_GROUP, USER_GROUP ]
 }
 
-# used by updateConfig
+# used by UPDATES_CONFIG
 GITHUB = {
     "user": "borisbu",
     "repo": "OctoRelay"
 }
 
-# used by updateConfig
+# used by UPDATES_CONFIG
 STABLE_CHANNEL = {
     "name": "Stable",
     "branch": "master",
     "commitish": [ "master" ]
 }
 
-# used by updateConfig
+# used by UPDATES_CONFIG
 PRE_RELEASE_CHANNEL = {
     "name": "Prerelease",
     "branch": "develop",
