@@ -183,3 +183,5 @@ updateConfig = {
     "stable_branch": stableChannel,
     "prerelease_branches": [ preReleaseChannel ]
 }
+
+pollingInterval = 0.3

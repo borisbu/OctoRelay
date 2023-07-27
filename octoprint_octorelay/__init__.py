@@ -7,7 +7,8 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings, relayIndexes, templates, assets, apiCommands, permissions, updateConfig
+from const import defaultSettings, relayIndexes, templates, assets
+from const import apiCommands, permissions, updateConfig, pollingInterval
 
 import flask
 import RPi.GPIO as GPIO
@@ -15,8 +16,6 @@ import os
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-
-POLLING_INTERVAL = 0.3
 
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
@@ -65,7 +64,7 @@ class OctoRelayPlugin(
                 GPIO.output(relay_pin, initial_value != inverted_output)
 
         self.update_ui()
-        self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
+        self.polling_timer = RepeatedTimer(pollingInterval, self.input_polling, daemon=True)
         self.polling_timer.start()
 
         self._logger.info("OctoRelay plugin started")

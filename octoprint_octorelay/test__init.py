@@ -21,7 +21,7 @@ sys.modules['octoprint.access.permissions'] = Mock(
 )
 
 from __init__ import OctoRelayPlugin
-from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
+from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
 
 class TestOctoRelayPlugin(unittest.TestCase):
     def setUp(self):
@@ -229,9 +229,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 __plugin_implementation__.process_at_command
         }
         self.assertEqual(__plugin_hooks__, expected)
-
-    def test_exposed_polling_interval(self):
-        self.assertEqual(POLLING_INTERVAL, 0.3)
 
     def test_on_shutdown(self):
         self.plugin_instance.polling_timer = Mock()
