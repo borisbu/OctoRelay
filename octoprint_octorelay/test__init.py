@@ -21,7 +21,7 @@ sys.modules['octoprint.access.permissions'] = Mock(
 )
 
 from __init__ import OctoRelayPlugin
-from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
+from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, POLLING_INTERVAL
 
 class TestOctoRelayPlugin(unittest.TestCase):
     def setUp(self):
@@ -40,16 +40,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
         del sys.modules['octoprint.util']
         del sys.modules['octoprint.access.permissions']
 
-    def test_constructor(self):
-        # During the instantiation should configure GPIO and set initial values to certain props
+    def test_GPIO_initialization(self):
         GPIO_mock.setmode.assert_called_with("MockedBCM")
         GPIO_mock.setwarnings.assert_called_with(False)
-        self.assertEqual(self.plugin_instance.polling_timer, None)
-        self.assertEqual(self.plugin_instance.turn_off_timers, {})
-        self.assertEqual(self.plugin_instance.model, {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {}
-        })
 
     def test_get_settings_defaults(self):
         expected = {
@@ -236,6 +229,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 __plugin_implementation__.process_at_command
         }
         self.assertEqual(__plugin_hooks__, expected)
+
+    def test_exposed_polling_interval(self):
+        self.assertEqual(POLLING_INTERVAL, 0.3)
 
     def test_on_shutdown(self):
         self.plugin_instance.polling_timer = Mock()

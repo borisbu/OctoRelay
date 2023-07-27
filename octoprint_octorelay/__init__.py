@@ -5,15 +5,17 @@ import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
+from octoprint.access import ADMIN_GROUP, USER_GROUP
 from octoprint.access.permissions import Permissions
-
-from const import DEFAULT_SETTINGS, RELAY_INDEXES, TEMPLATES, ASSETS
-from const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
-from const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 
 import flask
 import RPi.GPIO as GPIO
 import os
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+POLLING_INTERVAL = 0.3
 
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
@@ -27,36 +29,161 @@ class OctoRelayPlugin(
 ):
 
     def __init__(self):
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}
-        for index in RELAY_INDEXES:
+        for index in self.get_settings_defaults():
             self.model[index] = {}
 
     def get_settings_defaults(self):
-        return DEFAULT_SETTINGS
+        return {
+            "r1": {
+               "active": True,
+               "relay_pin": 4,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "Light",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            "r2": {
+               "active": True,
+               "relay_pin": 17,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
+               "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
+               "labelText": "Printer",
+               "confirmOff": True,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r3": {
+               "active": True,
+               "relay_pin": 18,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
+               "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
+               "labelText": "Fan",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            "r4": {
+               "active": True,
+               "relay_pin": 23,
+               "inverted_output": True,
+               "initial_value": True,
+               "cmdON": "sudo service webcamd start",
+               "cmdOFF": "sudo service webcamd stop",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+               "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
+               "labelText": "Webcam",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            "r5": {
+               "active": False,
+               "relay_pin": 24,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "ON",
+               "iconOff": "OFF",
+               "labelText": "R5",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r6": {
+               "active": False,
+               "relay_pin": 25,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "R6",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r7": {
+               "active": False,
+               "relay_pin": 8,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "R7",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            "r8": {
+               "active": False,
+               "relay_pin": 7,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+               "labelText": "R8",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+        }
 
     def get_template_configs(self):
-        return TEMPLATES
+        return [
+            { "type": "navbar", "custom_bindings": False },
+            { "type": "settings", "custom_bindings": False }
+        ]
 
     def get_assets(self):
-        return ASSETS
+        # Define your plugin's asset files to automatically include in the
+        # core UI here.
+        return { "js": [ "js/octorelay.js" ] }
 
     def on_after_startup(self):
 
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
+        settings = self.get_settings_defaults()
 
-        for index in RELAY_INDEXES:
-            settings = self._settings.get([index])
-            self._logger.debug("settings for {}: {}".format(index, settings))
+        for index in settings:
+            settings[index].update(self._settings.get([index]))
+            self._logger.debug("settings for {}: {}".format(index, settings[index]))
 
-            if settings['active']:
-                relay_pin = int(settings['relay_pin'])
-                initial_value = settings['initial_value']
-                inverted_output = settings['inverted_output']
+            if settings[index]['active']:
+                relay_pin = int(settings[index]['relay_pin'])
+                initial_value = settings[index]['initial_value']
+                inverted_output = settings[index]['inverted_output']
 
                 # Setting the default state of pin
                 GPIO.setup(relay_pin, GPIO.OUT)
@@ -77,13 +204,20 @@ class OctoRelayPlugin(
 
     def get_api_commands(self):
         return {
-            UPDATE_COMMAND: [ "pin" ],
-            GET_STATUS_COMMAND: [ "pin" ],
-            LIST_ALL_COMMAND: [],
+            "update": ["pin"],
+            "getStatus": ["pin"],
+            "listAllStatus": [],
         }
 
     def get_additional_permissions(self, *args, **kwargs):
-        return [ SWITCH_PERMISSION ]
+        return [{
+            "key": "SWITCH",
+            "name": "Relay switching",
+            "description": "Allows to switch GPIO pins and execute related OS commands.",
+            "roles": [ "switch" ],
+            "dangerous": False,
+            "default_groups": [ ADMIN_GROUP, USER_GROUP ]
+        }]
 
     def has_switch_permission(self):
         try:
@@ -95,17 +229,17 @@ class OctoRelayPlugin(
         self._logger.debug("on_api_command {}, some_parameter is {}".format(command, data))
 
         # API command to get relay statuses
-        if command == LIST_ALL_COMMAND:
+        if command == "listAllStatus":
             GPIO.setwarnings(False)
             activeRelays = []
-            for index in RELAY_INDEXES:
-                settings = self._settings.get([index], merged=True)
+            for key in self.get_settings_defaults():
+                settings = self._settings.get([key], merged=True)
                 if settings["active"]:
                     relay_pin = int(settings["relay_pin"])
                     inverted = settings['inverted_output']
                     GPIO.setup(relay_pin, GPIO.OUT)
                     relayData = {
-                        "id": index,
+                        "id": key,
                         "name": settings["labelText"],
                         "active": inverted != GPIO.input(relay_pin),
                     }
@@ -113,7 +247,7 @@ class OctoRelayPlugin(
             return flask.jsonify(activeRelays)
 
         # API command to get relay status
-        if command == GET_STATUS_COMMAND:
+        if command == "getStatus":
             settings = self._settings.get([data["pin"]], merged=True)
             relay_pin = int(settings["relay_pin"])
             inverted = settings['inverted_output']
@@ -122,7 +256,7 @@ class OctoRelayPlugin(
             relayState = inverted != GPIO.input(relay_pin)
             return flask.jsonify(status=relayState)
 
-        if command == UPDATE_COMMAND:
+        if command == "update":
             if not self.has_switch_permission():
                 return flask.abort(403)
             status = self.update_relay(data["pin"])
@@ -200,7 +334,7 @@ class OctoRelayPlugin(
                 self._logger.info("cancelled timer: {}".format(off_timer))
             except Exception:
                 self._logger.warn("could not cancel timer: {}".format(off_timer))
-        for index in RELAY_INDEXES:
+        for index in self.model:
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
@@ -214,7 +348,7 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def print_stopped(self):
-        for index in RELAY_INDEXES:
+        for index in self.model:
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
@@ -251,16 +385,17 @@ class OctoRelayPlugin(
         self._logger.info("pin: {} turned on".format(relay_pin))
 
     def update_ui(self):
-        for index in RELAY_INDEXES:
-            settings = self._settings.get([index])
+        settings = self.get_settings_defaults()
+        for index in settings:
+            settings[index].update(self._settings.get([index]))
 
-            labelText = settings["labelText"]
-            active = int(settings["active"])
-            relay_pin = int(settings["relay_pin"])
-            inverted = settings['inverted_output']
-            iconOn = settings['iconOn']
-            iconOff = settings['iconOff']
-            confirmOff = settings['confirmOff']
+            labelText = settings[index]["labelText"]
+            active = int(settings[index]["active"])
+            relay_pin = int(settings[index]["relay_pin"])
+            inverted = settings[index]['inverted_output']
+            iconOn = settings[index]['iconOn']
+            iconOff = settings[index]['iconOff']
+            confirmOff = settings[index]['confirmOff']
 
             # set the icon state
             GPIO.setup(relay_pin, GPIO.OUT)
@@ -279,7 +414,7 @@ class OctoRelayPlugin(
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
     def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
-        if command == AT_COMMAND:
+        if command == "OCTORELAY":
             index = parameters
             self.update_relay(index)
             return None
@@ -289,15 +424,28 @@ class OctoRelayPlugin(
             "octorelay": {
                 "displayName": "OctoRelay",
                 "displayVersion": self._plugin_version,
+                "type": "github_release",
                 "current": self._plugin_version,
-                **UPDATES_CONFIG
+                "user": "borisbu",
+                "repo": "OctoRelay",
+                "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+                "stable_branch": {
+                    "name": "Stable",
+                    "branch": "master",
+                    "commitish": [ "master" ]
+                },
+                "prerelease_branches": [{
+                    "name": "Prerelease",
+                    "branch": "develop",
+                    "commitish": [ "develop", "master" ]
+                }]
             }
         }
 
     # GPIO Polling thread
     def input_polling(self):
         self._logger.debug("input_polling")
-        for index in RELAY_INDEXES:
+        for index in self.model:
             if self.model[index]['active'] and GPIO.input(self.model[index]['relay_pin']) != self.model[index]['state']:
                 self._logger.debug("relay: {} has changed its pin state".format(index))
                 self.update_ui()
