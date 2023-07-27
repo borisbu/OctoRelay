@@ -211,7 +211,7 @@ class OctoRelayPlugin(
             "listAllStatus": [],
         }
     
-    def get_additional_permissions(self):
+    def get_additional_permissions(self, *args, **kwargs):
         return [{
             "key": "SWITCH",
             "name": "Relay switching",
@@ -237,8 +237,8 @@ class OctoRelayPlugin(
             for key in self.get_settings_defaults():
                 settings = self._settings.get([key], merged=True)
                 if settings["active"]:
-                    relay_pin = int(settings["relay_pin"])   
-                    inverted = settings['inverted_output']     
+                    relay_pin = int(settings["relay_pin"])
+                    inverted = settings['inverted_output']
                     GPIO.setup(relay_pin, GPIO.OUT)
                     relaydata = dict(
                         id=key,
