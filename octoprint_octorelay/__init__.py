@@ -8,7 +8,7 @@ from octoprint.util import RepeatedTimer
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 from octoprint.access.permissions import Permissions
 
-from const import defaultSettings, relayIndexes, templates, assets
+from const import defaultSettings, relayIndexes, templates, assets, apiCommands
 
 import flask
 import RPi.GPIO as GPIO
@@ -78,11 +78,7 @@ class OctoRelayPlugin(
         self._logger.info("--------------------------------------------")
 
     def get_api_commands(self):
-        return {
-            "update": ["pin"],
-            "getStatus": ["pin"],
-            "listAllStatus": [],
-        }
+        return apiCommands
 
     def get_additional_permissions(self, *args, **kwargs):
         return [{

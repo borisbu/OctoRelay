@@ -133,3 +133,10 @@ templates = [
 
 # Plugin's asset files to automatically include in the core UI
 assets = { "js": [ "js/octorelay.js" ] }
+
+# Accepted commands with their lists of mandatory parameters
+apiCommands = {
+    "update": [ "pin" ],
+    "getStatus": [ "pin" ],
+    "listAllStatus": [],
+}
