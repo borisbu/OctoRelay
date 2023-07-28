@@ -2,6 +2,18 @@
 
 ## Version 2
 
+### 2.2.4
+
+- Fixed UI/UX bug.
+  - Hover state made responsive, similar to native OctoPrint buttons.
+  - Emoji-based buttons are enlarged slightly in order to align with image-based ones.
+  - Buttons alignment and consistency improved:
+    - Each button is now `40x40px`,
+    - Each emoji on the button is now `1.25rem` which is `20px`,
+    - Each image on the button is expected to be `24x24px`.
+
+![UI Controls](https://github.com/borisbu/OctoRelay/assets/13189514/4e594ef9-0547-4a2b-95b3-5050971bc973)
+
 ### 2.2.3
 
 - Refactoring.
