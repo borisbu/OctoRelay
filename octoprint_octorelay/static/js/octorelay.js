@@ -45,7 +45,7 @@ $(() => {
                     height: "40px",
                     padding: "unset",
                     cursor: "pointer",
-                    "font-size": "1.23rem",
+                    "font-size": "1.25rem",
                     "text-decoration": "none",
                     "align-items": "center",
                     "justify-content": "center",
