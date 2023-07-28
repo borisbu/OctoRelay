@@ -3,13 +3,8 @@
 name: Release
 
 on:
-  # todo: replace with release event:
-  # release:
-  #  types: [ published, prereleased ]
-  push:
-    branches: [ develop ]
-  pull_request:
-    branches: [ develop ]
+  release:
+   types: [ published, prereleased ]
 
 jobs:
   build:
