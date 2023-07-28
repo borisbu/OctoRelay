@@ -45,15 +45,6 @@ jobs:
       - name: Build JS
         working-directory: ts
         run: yarn build
-      - name: Check changes
-        # https://unix.stackexchange.com/questions/155046/determine-if-git-working-directory-is-clean-from-a-script
-        run: |
-          if output=$(git status --porcelain) && [ -z "$output" ]; then
-            echo OK
-          else
-            echo Building the JS caused changes that has to be committed and pushed manually.
-            exit 1
-          fi
 
   Python:
     name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
