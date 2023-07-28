@@ -68,7 +68,9 @@ def get_version_from_git():
     for opts in [["--first-parent"], []]:
         try:
             p = subprocess.Popen(
-                ["git", "describe", "--long", "--always"] + opts,
+                # patched for non-annotated (lightweight) tags
+                # see https://raw.githubusercontent.com/jbweston/miniver/master/unannotated-tags.patch
+                ["git", "describe", "--long", "--always", "--tags"] + opts,
                 cwd=package_root,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
