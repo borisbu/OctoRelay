@@ -246,18 +246,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # First active relay having state not equal to the one stored in model should trigger UI update
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.model = {
-            "r1": { "active": False, "relay_pin": 4, "state": True },
-            "r2": { "active": True, "relay_pin": 17, "state": True },
-            "r3": { "active": True, "relay_pin": 18, "state": False }
+            "r1": { "active": False, "relay_pin": 4, "state": 1 },
+            "r2": { "active": True, "relay_pin": 17, "state": 1 },
+            "r3": { "active": True, "relay_pin": 18, "state": 0 }
         }
-        GPIO_mock.input = Mock(return_value=True)
+        GPIO_mock.input = Mock(return_value=1)
         self.plugin_instance.input_polling()
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
 
     def test_update_ui(self):
         # Should send message via plugin manager containing actual settings and the pins state
-        GPIO_mock.input = Mock(return_value=False)
+        GPIO_mock.input = Mock(return_value=0)
         cases = [
             { "inverted": True, "expectedIcon": "ON" },
             { "inverted": False, "expectedIcon": "OFF" }
@@ -277,9 +277,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
             for index in self.plugin_instance.get_settings_defaults():
                 expectedModel[index] = {
                     "relay_pin": 17,
-                    "state": False,
+                    "state": 0,
                     "labelText": "TEST",
-                    "active": True,
+                    "active": 1,
                     "iconText": case["expectedIcon"],
                     "confirmOff": False
                 }
@@ -465,7 +465,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_api_command(self, jsonMock, systemMock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
-        GPIO_mock.input = Mock(return_value=True)
+        GPIO_mock.input = Mock(return_value=1)
         cases = [
             {
                 "command": "listAllStatus",
