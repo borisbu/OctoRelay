@@ -262,7 +262,7 @@ class OctoRelayPlugin(
             self.model[index]['state'] = GPIO.input(relay_pin)
             self.model[index]['labelText'] = labelText
             self.model[index]['active'] = active
-            if inverted != self.model[index]['state']:
+            if inverted is not self.model[index]['state']:
                 self.model[index]['iconText'] = iconOn
                 self.model[index]['confirmOff'] = confirmOff
             else:
