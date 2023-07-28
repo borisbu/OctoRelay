@@ -1,13 +1,7 @@
 {% for n in range(1,9) %}
-    <div id="relaisr{{n}}" style="float: left; padding: 8px; font-size: 1.3em; display: none;">
-        <a
-            id="ralayIconr{{n}}"
-            title="relay {{n}}"
-            style="text-decoration:none; cursor:pointer;"
-        >
-            R{{n}}
-        </a>
-    </div>
+    <a id="relaisr{{n}}" title="relay {{n}}" role="button" style="display: none">
+        R{{n}}
+    </a>
 {% endfor %}
 
 <div id="octorelay-confirmation-dialog" class="modal hide fade">
