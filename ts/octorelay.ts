@@ -77,18 +77,28 @@ $(() => {
         dialog.modal("show");
       };
       for (const [key, value] of Object.entries(data)) {
-        const btn = $("#relais" + key);
+        const btn = $("#relais" + key).css({
+          display: "flex",
+          float: "left",
+          width: "40px",
+          height: "40px",
+          padding: "unset",
+          cursor: "pointer",
+          "font-size": "1.3em",
+          "text-decoration": "none",
+          "align-items": "center",
+          "justify-content": "center",
+        });
         if (value.active !== undefined) {
           btn.toggle(hasPermission && value.active === 1);
         }
-        const icon = $("#ralayIcon" + key);
         if (value.iconText !== undefined) {
-          icon.html(value.iconText);
+          btn.html(value.iconText);
         }
         if (value.labelText !== undefined) {
-          icon.attr("title", value.labelText);
+          btn.attr("title", value.labelText);
         }
-        icon.off("click").on("click", () => handleClick(key, value));
+        btn.off("click").on("click", () => handleClick(key, value));
       }
     };
   };
