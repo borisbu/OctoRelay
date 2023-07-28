@@ -107,7 +107,7 @@ class OctoRelayPlugin(
                     relayData = {
                         "id": index,
                         "name": settings["labelText"],
-                        "active": inverted is not GPIO.input(relay_pin),
+                        "active": inverted is not bool(GPIO.input(relay_pin)),
                     }
                     activeRelays.append(relayData)
             return flask.jsonify(activeRelays)
@@ -119,7 +119,7 @@ class OctoRelayPlugin(
             inverted = bool(settings['inverted_output'])
             GPIO.setwarnings(False)
             GPIO.setup(relay_pin, GPIO.OUT)
-            relayState = inverted is not GPIO.input(relay_pin)
+            relayState = inverted is not bool(GPIO.input(relay_pin))
             return flask.jsonify(status=relayState)
 
         if command == UPDATE_COMMAND:
@@ -141,7 +141,7 @@ class OctoRelayPlugin(
 
             GPIO.setup(relay_pin, GPIO.OUT)
             # XOR with inverted
-            relayState = inverted is not GPIO.input(relay_pin)
+            relayState = inverted is not bool(GPIO.input(relay_pin))
 
             self._logger.debug(f"OctoRelay before pin: {relay_pin}, inverted: {inverted}, relayState: {relayState}")
 
