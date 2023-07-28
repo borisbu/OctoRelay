@@ -2,6 +2,11 @@
 
 ## Version 2
 
+### 2.2.2
+
+- Another technical update.
+  - Simplified iteration through relay settings and eliminated some redundant method calls.
+
 ### 2.2.1
 
 - Technical update: no fixes or new features.
