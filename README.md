@@ -4,28 +4,30 @@
 [![CodeQL](https://github.com/borisbu/OctoRelay/actions/workflows/codeql.yml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/codeql.yml)
 [![Coverage Status](https://coveralls.io/repos/github/borisbu/OctoRelay/badge.svg?branch=master)](https://coveralls.io/github/borisbu/OctoRelay?branch=master)
 
-A plugin that adds buttons to the navigation bar to toggle GPIO pins on the Raspberry Pi.
-
-This Plugin was based on the [Octolight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)
+The plugin adds buttons to the navigation bar for toggling GPIO pins on the Raspberry Pi.
 
 ![WebUI interface](img/controls.jpg)
 
-I use it with a 4 relay board, and printed this case for it:
-https://www.thingiverse.com/thing:2975944
-
-![Relay Board](img/relay-raspberry.jpg)
-
-Just hooked up the GPIO pins with the relay board, and now I can turn the power of the printer,
-the fan and the light on and off with OctoPrint.
-
-![Raspberry Pi GPIO](img/rpi_gpio.png)
+> _I use it with a 4 relay board, and printed this
+> [case for it](https://www.thingiverse.com/thing:2975944)._
+> _Just hooked up the GPIO pins with the relay board, and now I can turn the
+> power of the printer, the fan and the light on and off with OctoPrint._
+> 
+> | ![Relay Board](img/relay-raspberry.jpg) | ![Raspberry Pi GPIO](img/rpi_gpio.png) |
+> |-----------------------------------------|----------------------------------------|
+> 
+> _This plugin was based on the [OctoLight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)_
+> 
+> — _Boris Burgstaller_
 
 ## Setup
 
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
 or manually using this URL:
 
-> https://github.com/borisbu/OctoRelay/archive/master.zip
+```
+https://github.com/borisbu/OctoRelay/archive/master.zip
+```
 
 In case you want to enable the plugin for user groups other than admins and users (operators), you need to 
 grant them the permission "Relay switching" in the "Access control" section of OctoPrint settings.
