@@ -23,11 +23,9 @@ jobs:
           node-version: 18.x
       - name: Cache node modules
         uses: actions/cache@v3
-        env:
-          cache-name: cache-yarn
         with:
           path: ${{ steps.yarnCache.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         working-directory: ts
         run: yarn install
@@ -81,11 +79,9 @@ jobs:
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache pip modules
         uses: actions/cache@v3
-        env:
-          cache-name: cache-pip
         with:
           path: ${{ steps.pipCache.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
+          key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
       - name: Install OctoPrint
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
         run: pip install octoprint~=${{ matrix.octoprint }}.0
