@@ -24,31 +24,16 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
     "#relaisr1",
   ],
   [
-    "#ralayIconr1",
-  ],
-  [
     "#relaisr2",
-  ],
-  [
-    "#ralayIconr2",
   ],
   [
     "#relaisr3",
   ],
   [
-    "#ralayIconr3",
-  ],
-  [
     "#relaisr4",
   ],
   [
-    "#ralayIconr4",
-  ],
-  [
     "#relaisr5",
-  ],
-  [
-    "#ralayIconr5",
   ],
 ]
 `;
@@ -74,6 +59,81 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   [
     "title",
     "R5",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .css() 1`] = `
+[
+  [
+    {
+      "align-items": "center",
+      "cursor": "pointer",
+      "display": "flex",
+      "float": "left",
+      "font-size": "1.25rem",
+      "height": "40px",
+      "justify-content": "center",
+      "padding": "unset",
+      "text-decoration": "none",
+      "width": "40px",
+    },
+  ],
+  [
+    {
+      "align-items": "center",
+      "cursor": "pointer",
+      "display": "flex",
+      "float": "left",
+      "font-size": "1.25rem",
+      "height": "40px",
+      "justify-content": "center",
+      "padding": "unset",
+      "text-decoration": "none",
+      "width": "40px",
+    },
+  ],
+  [
+    {
+      "align-items": "center",
+      "cursor": "pointer",
+      "display": "flex",
+      "float": "left",
+      "font-size": "1.25rem",
+      "height": "40px",
+      "justify-content": "center",
+      "padding": "unset",
+      "text-decoration": "none",
+      "width": "40px",
+    },
+  ],
+  [
+    {
+      "align-items": "center",
+      "cursor": "pointer",
+      "display": "flex",
+      "float": "left",
+      "font-size": "1.25rem",
+      "height": "40px",
+      "justify-content": "center",
+      "padding": "unset",
+      "text-decoration": "none",
+      "width": "40px",
+    },
+  ],
+  [
+    {
+      "align-items": "center",
+      "cursor": "pointer",
+      "display": "flex",
+      "float": "left",
+      "font-size": "1.25rem",
+      "height": "40px",
+      "justify-content": "center",
+      "padding": "unset",
+      "text-decoration": "none",
+      "width": "40px",
+    },
   ],
 ]
 `;
