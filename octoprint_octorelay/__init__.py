@@ -259,10 +259,10 @@ class OctoRelayPlugin(
             # set the icon state
             GPIO.setup(relay_pin, GPIO.OUT)
             self.model[index]['relay_pin'] = relay_pin
-            self.model[index]['state'] = GPIO.input(relay_pin)
+            self.model[index]['state'] = GPIO.input(relay_pin) # int
             self.model[index]['labelText'] = labelText
             self.model[index]['active'] = active
-            if inverted is not self.model[index]['state']:
+            if inverted is not bool(self.model[index]['state']):
                 self.model[index]['iconText'] = iconOn
                 self.model[index]['confirmOff'] = confirmOff
             else:
