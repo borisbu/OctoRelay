@@ -1,0 +1,57 @@
+# https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Release
+
+on:
+  # todo: replace with release event:
+  # release:
+  #  types: [ published, prereleased ]
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    # todo add env for node, python, octoprint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get yarn cache dir
+      id: yarnCache
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - name: Get pip cache dir
+      id: pipCache
+      run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarnCache.outputs.dir }}
+        key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Cache pip modules
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pipCache.outputs.dir }}
+        key: ${{ runner.os }}-release-cache-pip
+    - name: Install OctoPrint
+      run: pip install octoprint~=1.9.0
+    - name: Build JS
+      working-directory: ts
+      run: yarn build
+    - name: Build distribution package
+      run: python setup.py sdist --formats=zip
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist
+
