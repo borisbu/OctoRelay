@@ -47,10 +47,6 @@ jobs:
         key: ${{ runner.os }}-release-cache-pip
     - name: Install OctoPrint
       run: pip install octoprint~=1.9.0
-    - name: Install Miniver
-      run: pip install miniver
-    - name: Versioning
-      run: miniver install octoprint_octorelay
     - name: Build JS
       working-directory: ts
       run: yarn build
