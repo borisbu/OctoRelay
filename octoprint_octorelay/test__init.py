@@ -44,7 +44,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # During the instantiation should configure GPIO and set initial values to certain props
         GPIO_mock.setmode.assert_called_with("MockedBCM")
         GPIO_mock.setwarnings.assert_called_with(False)
-        self.assertEqual(self.plugin_instance.polling_timer, None)
+        self.assertIsNone(self.plugin_instance.polling_timer)
         self.assertEqual(self.plugin_instance.turn_off_timers, {})
         self.assertEqual(self.plugin_instance.model, {
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
@@ -458,7 +458,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = case["mock"]
             actual = self.plugin_instance.has_switch_permission()
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
-            self.assertEqual(actual, case["expected"])
+            self.assertIs(actual, case["expected"])
 
     @patch('flask.jsonify')
     @patch('os.system')
@@ -576,7 +576,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_relay = Mock()
         actual = self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4")
         self.plugin_instance.update_relay.assert_called_with("r4")
-        self.assertEqual(actual, None)
+        self.assertIsNone(actual)
 
     def test_get_additional_permissions(self):
         expected = [{
