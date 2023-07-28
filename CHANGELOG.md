@@ -2,6 +2,12 @@
 
 ## Version 2
 
+### 2.2.3
+
+- Refactoring.
+  - Using `f"string"` syntax instead of `"".format()`.
+  - Strict handling of booleans. 
+
 ### 2.2.2
 
 - Another technical update.
