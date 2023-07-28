@@ -58,3 +58,21 @@ jobs:
         name: dist
         path: dist
 
+  integration:
+    name: Integration test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.7
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - name: Install OctoPrint
+        run: pip install octoprint~=1.9.0
+      - name: Install the distributed package
+        run: pip install dist/OctoRelay-*.zip
