@@ -8,7 +8,7 @@ A plugin that adds buttons to the navigation bar to toggle GPIO pins on the Rasp
 
 This Plugin was based on the [Octolight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)
 
-![WebUI interface](img/screenshot.png)
+![WebUI interface](img/controls.jpg)
 
 I use it with a 4 relay board, and printed this case for it:
 https://www.thingiverse.com/thing:2975944
