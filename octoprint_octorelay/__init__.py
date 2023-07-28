@@ -45,7 +45,6 @@ class OctoRelayPlugin(
         return ASSETS
 
     def on_after_startup(self):
-
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
         settings = DEFAULT_SETTINGS.copy()
