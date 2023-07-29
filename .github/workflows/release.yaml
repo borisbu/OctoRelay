@@ -4,7 +4,7 @@ name: Release
 
 on:
   release:
-   types: [ published ] # prereleased - triggers twice
+    types: [ published ]
 
 jobs:
   build:
