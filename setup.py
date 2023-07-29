@@ -1,10 +1,26 @@
 # coding=utf-8
 
+from setuptools import setup
+
+def get_version_and_cmdclass(pkg_path):
+    """Load version.py module without importing the whole package.
+
+    Template code from miniver
+    """
+    import os
+    from importlib.util import module_from_spec, spec_from_file_location
+
+    spec = spec_from_file_location("version", os.path.join(pkg_path, "_version.py"))
+    module = module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.__version__, module.get_cmdclass(pkg_path)
+
+miniver_version, cmdclass = get_version_and_cmdclass(r"octoprint_octorelay")
+
 ########################################################################################################################
 # Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-from setuptools import setup
 plugin_identifier = "octorelay"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
@@ -15,7 +31,7 @@ plugin_package = "octoprint_octorelay"
 plugin_name = "OctoRelay"
 
 # The plugin's version. Can be overwritten within OctoPrint's internal data via __plugin_version__ in the plugin module
-plugin_version = "2.2.4"
+plugin_version = miniver_version
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
@@ -78,6 +94,7 @@ setup_parameters = octoprint_setuptools.create_plugin_setup_parameters(
     package=plugin_package,
     name=plugin_name,
     version=plugin_version,
+    cmdclass=cmdclass, # miniver feature
     description=plugin_description,
     author=plugin_author,
     mail=plugin_author_email,
