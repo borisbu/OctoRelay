@@ -21,7 +21,6 @@ miniver_version, cmdclass = get_version_and_cmdclass(r"octoprint_octorelay")
 # Do not forget to adjust the following variables to your own plugin.
 
 # The plugin's identifier, has to be unique
-
 plugin_identifier = "octorelay"
 
 # The plugin's python package, should be "octoprint_<plugin identifier>", has to be unique
