@@ -15,6 +15,7 @@ jobs:
       PYTHON_VERSION: 3.11
       OCTOPRINT_VERSION: 1.9
     steps:
+    ### UI
     - name: Get yarn cache dir
       id: yarnCache
       run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -24,6 +25,18 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ env.NODE_VERSION }}
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarnCache.outputs.dir }}
+        key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Install UI dependencies
+      working-directory: ts
+      run: yarn install
+    - name: Build JS
+      working-directory: ts
+      run: yarn build
+    ### Python
     - name: Install Python
       uses: actions/setup-python@v4
       with:
@@ -31,14 +44,6 @@ jobs:
     - name: Get pip cache dir
       id: pipCache
       run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
-    - name: Cache node modules
-      uses: actions/cache@v3
-      with:
-        path: ${{ steps.yarnCache.outputs.dir }}
-        key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
-    - name: Install dependencies
-      working-directory: ts
-      run: yarn install
     - name: Cache pip modules
       uses: actions/cache@v3
       with:
@@ -48,9 +53,7 @@ jobs:
       run: pip install --upgrade wheel setuptools pip
     - name: Install OctoPrint
       run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
-    - name: Build JS
-      working-directory: ts
-      run: yarn build
+    ### Packing
     - name: Build distribution package
       run: python setup.py sdist --formats=zip
     - name: Upload artifact
