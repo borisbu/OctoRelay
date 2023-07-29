@@ -176,7 +176,7 @@ PRE_RELEASE_CHANNEL = {
 UPDATES_CONFIG = {
     **GITHUB,
     "type": "github_release",
-    "pip": f"https://github.com/{GITHUB['user']}/{GITHUB['repo']}/archive/{{target}}.zip",
+    "pip": f"https://github.com/{GITHUB['user']}/{GITHUB['repo']}/releases/download/{{target}}/release.zip",
     "stable_branch": STABLE_CHANNEL,
     "prerelease_branches": [ PRE_RELEASE_CHANNEL ]
 }
