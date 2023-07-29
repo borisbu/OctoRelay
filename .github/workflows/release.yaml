@@ -8,8 +8,11 @@ on:
 
 jobs:
   build:
-    # todo add env for node, python, octoprint
     runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 18.x
+      PYTHON_VERSION: 3.11
+      OCTOPRINT_VERSION: 1.9
     steps:
     - name: Get yarn cache dir
       id: yarnCache
@@ -19,11 +22,11 @@ jobs:
     - name: Install Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18.x
+        node-version: ${{ env.NODE_VERSION }}
     - name: Install Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.11
+        python-version: ${{ env.PYTHON_VERSION }}
     - name: Get pip cache dir
       id: pipCache
       run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
@@ -43,7 +46,7 @@ jobs:
     - name: Install distribution dependencies
       run: pip install --upgrade wheel setuptools pip
     - name: Install OctoPrint
-      run: pip install octoprint~=1.9.0
+      run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
     - name: Build JS
       working-directory: ts
       run: yarn build
@@ -56,21 +59,31 @@ jobs:
         path: dist
 
   integration:
-    name: Integration test
+    name: Integration test ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
     needs: build
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+        octoprint: [ "1.8", "1.9" ]
+        exclude:
+          # These versions are not compatible to each other:
+          - python: 3.11
+            octoprint: 1.8
+          - python: 3.10
+            octoprint: 1.8
     steps:
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7
+          python-version: ${{ matrix.python }}
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist
       - name: Install OctoPrint
-        run: pip install octoprint~=1.9.0
+        run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install the distributed package
         run: pip install dist/OctoRelay-*.zip
 
