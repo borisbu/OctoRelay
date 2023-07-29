@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    name: Build the distribution
     runs-on: ubuntu-latest
     env:
       NODE_VERSION: 18.x
