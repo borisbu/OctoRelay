@@ -59,7 +59,7 @@ jobs:
         path: dist
 
   integration:
-    name: Integration test ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
+    name: Integration test on Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
     needs: build
     runs-on: ubuntu-latest
     strategy:
