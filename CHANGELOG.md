@@ -2,6 +2,18 @@
 
 ## Version 2
 
+### 2.3.0
+
+- Changing the release type to distributable package.
+  - Plugin version is now set automatically from GitHub release using `miniver`.
+  - A workflow creates a packages and attaches it as the release's asset.
+  - Thus, redundant files are removed from the distribution.
+  - The latest release distribution URL has changed to:
+
+```    
+https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip
+```
+
 ### 2.2.4
 
 - Fixed UI/UX bug.
