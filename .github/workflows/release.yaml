@@ -33,6 +33,9 @@ jobs:
     - name: Install UI dependencies
       working-directory: ts
       run: yarn install
+    - name: Explicitly remove stub
+      working-directory: octoprint_octorelay/static/js
+      run: rm octorelay.js
     - name: Build JS
       working-directory: ts
       run: yarn build
