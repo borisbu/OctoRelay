@@ -15,12 +15,14 @@
   - Instead, there will be a warning button ⚠️ having instructions on further steps:
     1. Don't panic.
     2. Please proceed to "Software update" section of the OctoPrint settings.
-    3. Find the OctoRelay plugin showing `version: unknown` — this is expected.
+    3. Find the OctoRelay plugin showing `Installed: unknown` — this is expected.
     4. There also should be a button to UPDATE the plugin one more time.
     5. After that the plugin will be updated from the new distribution URL and the control buttons appear again.
   - Sorry for the inconvenience.
     - In case there is no button to update, use the "Force check for updates" function on the top.
     - As a last resort you can always use the URL mentioned above to reinstall the plugin manually.
+
+![Update button](https://user-images.githubusercontent.com/13189514/257075791-460da3a9-c814-4d5e-b577-31c739bd3e67.png)
 
 ## Version 2
 
