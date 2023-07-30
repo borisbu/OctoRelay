@@ -108,9 +108,10 @@ def get_version_from_git():
         p = subprocess.Popen(["git", "diff", "--quiet"], cwd=package_root)
     except OSError:
         labels.append("confused")  # This should never happen.
-    else:
-        if p.wait() == 1:
-            labels.append("dirty")
+    # patched for no "-dirty", JavaScript is being compiled during the release workflow, not committed
+    # else:
+    #    if p.wait() == 1:
+    #        labels.append("dirty")
 
     return Version(release, dev, labels)
 
