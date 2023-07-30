@@ -4,6 +4,8 @@
  *
  * PLEASE NOTE the new URL for installing the distributed package:
  * @link https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip
+ *
+ * The actual JavaScript is compiled from TypeScript during the execution of release workflow.
  */
 $(() => {
     const handleClick = () => {
