@@ -88,9 +88,9 @@ jobs:
           - octoprint: 1.7
             python: 3.11
           - octoprint: 1.8
-            python: 3.11
-          - octoprint: 1.8
             python: 3.10
+          - octoprint: 1.8
+            python: 3.11
     steps:
       - name: Install Python
         uses: actions/setup-python@v4
