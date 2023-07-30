@@ -56,8 +56,10 @@ jobs:
         octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9" ]
         exclude:
           # These versions are not compatible to each other:
-          - octoprint: 1.8
-          - python: [ "3.10", "3.11"]
+          - python: 3.11
+            octoprint: 1.8
+          - python: 3.10
+            octoprint: 1.8
     steps:
       - uses: actions/checkout@v3
       - name: Install Python
