@@ -38,13 +38,10 @@ $(() => {
         height: "40px",
         padding: "unset",
         cursor: "pointer",
-        color: "yellow",
         "font-size": "1.25rem",
         "text-decoration": "none",
         "align-items": "center",
         "justify-content": "center",
-        "background-color": "black",
-        "border-radius": "5px",
     })
         .html('<i class="fa fa-warning"></i>')
         .attr("title", "OctoRelay: important notice")
