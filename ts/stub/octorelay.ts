@@ -29,8 +29,8 @@ $(() => {
       );
     dialog
       .find(".btn-cancel")
-      .off("click")
       .text("Close")
+      .off("click")
       .on("click", () => {
         dialog.modal("hide");
       });
