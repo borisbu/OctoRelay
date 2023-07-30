@@ -127,12 +127,6 @@ DEFAULT_SETTINGS = {
 # Keys of the default settings, used for iterations: [r1...r8]
 RELAY_INDEXES = DEFAULT_SETTINGS.keys()
 
-# Plugin's templates
-TEMPLATES = [
-    { "type": "navbar", "custom_bindings": False },
-    { "type": "settings", "custom_bindings": False }
-]
-
 # Plugin's asset files to automatically include in the core UI
 ASSETS = { "js": [ "js/octorelay.js" ] }
 

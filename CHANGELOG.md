@@ -14,6 +14,12 @@
 https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip
 ```
 
+### 2.2.5
+
+- Hotfix: partial revert of changes from version 2.2.2.
+  - On some OctoPrint installations the values of plugin settings did not appear.
+  - It has been experimentally established that restoring the templates array as an inline return might fix this issue.
+
 ### 2.2.4
 
 - Fixed UI/UX bug.
