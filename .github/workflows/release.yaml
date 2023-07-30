@@ -1,0 +1,128 @@
+# https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Release
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build:
+    name: Build the distribution
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 18.x
+      PYTHON_VERSION: 3.11
+      OCTOPRINT_VERSION: 1.9
+    steps:
+    ### UI
+    - name: Get yarn cache dir
+      id: yarnCache
+      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.yarnCache.outputs.dir }}
+        key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
+    - name: Install UI dependencies
+      working-directory: ts
+      run: yarn install
+    - name: Explicitly remove stub
+      working-directory: octoprint_octorelay/static/js
+      run: rm octorelay.js
+    - name: Build JS
+      working-directory: ts
+      run: yarn build
+    ### Python
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: Get pip cache dir
+      id: pipCache
+      run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+    - name: Cache pip modules
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.pipCache.outputs.dir }}
+        key: ${{ runner.os }}-release-cache-pip
+    - name: Install distribution dependencies
+      run: pip install --upgrade wheel setuptools pip
+    - name: Install OctoPrint
+      run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
+    ### Packing
+    - name: Build distribution package
+      run: python setup.py sdist --formats=zip
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist
+        path: dist
+
+  integration:
+    name: Integration test on Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+        octoprint: [ "1.8", "1.9" ]
+        exclude:
+          # These versions are not compatible to each other:
+          - python: 3.11
+            octoprint: 1.8
+          - python: 3.10
+            octoprint: 1.8
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - name: Install OctoPrint
+        run: pip install octoprint~=${{ matrix.octoprint }}.0
+      - name: Install Wheel
+        # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
+        if: matrix.octoprint == '1.8'
+        run: pip install wheel
+      - name: Install the distributed package
+        run: pip install dist/OctoRelay-*.zip
+
+  attach:
+    name: Attaching asset to the release
+    runs-on: ubuntu-latest
+    needs:
+      - build
+      - integration
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+      - name: Rename to release.zip
+        run: cp dist/OctoRelay-*.zip release.zip
+      - name: Get release ID
+        id: get_release
+        uses: bruceadams/get-release@v1.3.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - name: Attach the asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: release.zip
+          asset_name: release.zip
+          asset_content_type: application/zip

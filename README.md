@@ -26,7 +26,7 @@ Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bu
 or manually using this URL:
 
 ```
-https://github.com/borisbu/OctoRelay/archive/master.zip
+https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip
 ```
 
 In case you want to enable the plugin for user groups other than admins and users (operators), you need to 

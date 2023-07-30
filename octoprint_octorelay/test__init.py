@@ -204,7 +204,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "current": "MockedVersion",
                 "user": "borisbu",
                 "repo": "OctoRelay",
-                "pip": "https://github.com/borisbu/OctoRelay/archive/{target}.zip",
+                "pip": "https://github.com/borisbu/OctoRelay/releases/download/{target}/release.zip",
                 "stable_branch": {
                     "name": "Stable",
                     "branch": "master",

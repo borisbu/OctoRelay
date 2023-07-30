@@ -11,7 +11,8 @@
   "scripts": {
     "lint": "eslint ./",
     "test": "tsc --noEmit && jest",
-    "build": "tsc -p ./tsconfig.build.json"
+    "build": "tsc -p ./tsconfig.build.json",
+    "stub": "tsc -p ./tsconfig.stub.json"
   },
   "dependencies": {},
   "devDependencies": {
