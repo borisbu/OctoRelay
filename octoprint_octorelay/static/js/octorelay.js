@@ -22,7 +22,7 @@ $(() => {
             "package instead of offering the installation from sources. " +
             "The URL for fetching updates has changed because of this. " +
             'However, there is no cause for concern: please go to "Software update" section of the OctoPrint ' +
-            "settings and update OctoRelay one more time. We apologize for the inconvenience. " +
+            "settings and update OctoRelay one more time. Sorry for the inconvenience. " +
             "As a last resort, you can always install it manually using the following URL: " +
             "https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip");
         dialog
