@@ -18,14 +18,14 @@ $(() => {
             "settings and update OctoRelay one more time. We apologize for the inconvenience. " +
             "As a last resort, you can always install it manually using the following URL: " +
             "https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip");
-        dialog.find(".btn-cancel").hide();
         dialog
-            .find(".btn-confirm")
+            .find(".btn-cancel")
             .off("click")
-            .text("OK")
+            .text("Close")
             .on("click", () => {
             dialog.modal("hide");
         });
+        dialog.find(".btn-confirm").hide();
         dialog.modal("show");
     };
     $("#relaisr1")
@@ -44,9 +44,9 @@ $(() => {
         "background-color": "black",
         "border-radius": "5px",
     })
-        .show()
         .html('<i class="fa fa-warning"></i>')
         .attr("title", "Click to read the important notice from OctoRelay")
         .off("click")
-        .on("click", handleClick);
+        .on("click", handleClick)
+        .show();
 });
