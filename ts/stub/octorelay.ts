@@ -13,6 +13,11 @@ $(() => {
     dialog.find(".modal-title").text("OctoRelay needs one more update");
     dialog
       .find("#octorelay-confirmation-text")
+      .css({
+        "font-weight": "normal",
+        "font-size": "1rem",
+        "word-wrap": "break-word",
+      })
       .text(
         "We switched to distributing the plugin in the form of a specially prepared installation " +
           "package instead of offering the installation from sources. " +
