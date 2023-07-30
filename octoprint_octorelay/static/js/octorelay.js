@@ -3,7 +3,7 @@
  * WARNING: This is a stub for those who installs the plugin from sources
  *
  * PLEASE NOTE the new URL for installing the distributed package:
- * @link https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip
+ * @link https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip
  *
  * The actual JavaScript is compiled from TypeScript during the execution of release workflow.
  */
@@ -24,7 +24,7 @@ $(() => {
             'However, there is no cause for concern: please proceed to the "Software update" section of the ' +
             "OctoPrint settings and update OctoRelay one more time. Sorry for the inconvenience. " +
             "As a last resort, you can always install it manually using the following URL: " +
-            "https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip");
+            "https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip");
         dialog
             .find(".btn-cancel")
             .text("Close")

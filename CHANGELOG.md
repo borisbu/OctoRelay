@@ -10,7 +10,7 @@
   - A workflow creates a package and then attaches it to the release assets.
   - Thus, redundant files are removed from the distribution.
   - The latest release distribution URL has changed to
-    `https://github.com/borisbu/OctoRelay/releases/download/latest/release.zip`.
+    `https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip`
   - Once you upgrade the plugin from v2 or v1 you will see that the control buttons are gone.
   - Instead, there will be a warning button ⚠️ having instructions on further steps:
     1. Don't panic.
