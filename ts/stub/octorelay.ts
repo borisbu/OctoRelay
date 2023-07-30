@@ -47,7 +47,7 @@ $(() => {
       "border-radius": "5px",
     })
     .html('<i class="fa fa-warning"></i>')
-    .attr("title", "Click to read the important notice from OctoRelay")
+    .attr("title", "OctoRelay: important notice")
     .off("click")
     .on("click", handleClick)
     .show();
