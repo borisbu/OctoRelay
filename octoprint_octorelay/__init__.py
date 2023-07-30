@@ -7,7 +7,7 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from octoprint_octorelay.const import DEFAULT_SETTINGS, RELAY_INDEXES, TEMPLATES, ASSETS
+from octoprint_octorelay.const import DEFAULT_SETTINGS, RELAY_INDEXES, ASSETS
 from octoprint_octorelay.const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
 from octoprint_octorelay.const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 
@@ -40,7 +40,10 @@ class OctoRelayPlugin(
         return DEFAULT_SETTINGS
 
     def get_template_configs(self):
-        return TEMPLATES
+        return [
+            { "type": "navbar", "custom_bindings": False },
+            { "type": "settings", "custom_bindings": False }
+        ]
 
     def get_assets(self):
         return ASSETS
@@ -313,3 +316,5 @@ __plugin_hooks__ = {
     "octoprint.comm.protocol.atcommand.sending":
         __plugin_implementation__.process_at_command
 }
+
+from octoprint_octorelay._version import __version__

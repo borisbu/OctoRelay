@@ -23,11 +23,9 @@ jobs:
           node-version: 18.x
       - name: Cache node modules
         uses: actions/cache@v3
-        env:
-          cache-name: cache-yarn
         with:
           path: ${{ steps.yarnCache.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
         working-directory: ts
         run: yarn install
@@ -47,15 +45,6 @@ jobs:
       - name: Build JS
         working-directory: ts
         run: yarn build
-      - name: Check changes
-        # https://unix.stackexchange.com/questions/155046/determine-if-git-working-directory-is-clean-from-a-script
-        run: |
-          if output=$(git status --porcelain) && [ -z "$output" ]; then
-            echo OK
-          else
-            echo Building the JS caused changes that has to be committed and pushed manually.
-            exit 1
-          fi
 
   Python:
     name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
@@ -81,11 +70,9 @@ jobs:
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache pip modules
         uses: actions/cache@v3
-        env:
-          cache-name: cache-pip
         with:
           path: ${{ steps.pipCache.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
+          key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
       - name: Install OctoPrint
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
         run: pip install octoprint~=${{ matrix.octoprint }}.0
@@ -105,8 +92,8 @@ jobs:
       - name: Report the coverage
         working-directory: octoprint_octorelay
         run: |
-          python -m coverage lcov --omit=test*
-          python -m coverage report --show-missing --omit=test*
+          python -m coverage lcov --omit=test*,_version*
+          python -m coverage report --show-missing --omit=test*,_version*
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true

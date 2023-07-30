@@ -1,6 +1,36 @@
 # Changelog
 
+## Version 3
+
+### 3.0.0
+
+- **Breaking changes**
+  - Changing the release type to a distributable package.
+  - Plugin version is now set automatically from a GitHub release using `miniver`.
+  - A workflow creates a package and then attaches it to the release assets.
+  - Thus, redundant files are removed from the distribution.
+  - The latest release distribution URL has changed to
+    `https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip`
+  - Once you upgrade the plugin from v2 or v1 you will see that the control buttons are gone.
+  - Instead, there will be a warning button ⚠️ having instructions on further steps:
+    1. Don't panic.
+    2. Please proceed to "Software update" section of the OctoPrint settings.
+    3. Find the OctoRelay plugin showing `Installed: unknown` — this is expected.
+    4. There also should be a button to UPDATE the plugin one more time.
+    5. After that the plugin will be updated from the new distribution URL and the control buttons appear again.
+  - Sorry for the inconvenience.
+    - In case there is no button to update, use the "Force check for updates" function on the top.
+    - As a last resort you can always use the URL mentioned above to reinstall the plugin manually.
+
+![Update button](https://user-images.githubusercontent.com/13189514/257075791-460da3a9-c814-4d5e-b577-31c739bd3e67.png)
+
 ## Version 2
+
+### 2.2.5
+
+- Hotfix: partial revert of changes from version 2.2.2.
+  - On some OctoPrint installations the values of plugin settings did not appear.
+  - It has been experimentally established that restoring the templates array as an inline return might fix this issue.
 
 ### 2.2.4
 
