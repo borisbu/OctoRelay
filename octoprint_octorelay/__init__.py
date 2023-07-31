@@ -12,7 +12,7 @@ from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
 from octoprint_octorelay.const import (
-    DEFAULT_SETTINGS, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
+    get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 )
 
@@ -40,13 +40,10 @@ class OctoRelayPlugin(
             self.model[index] = {}
 
     def get_settings_defaults(self):
-        return DEFAULT_SETTINGS
+        return get_default_settings()
 
     def get_template_configs(self):
-        return [
-            { "type": "navbar", "custom_bindings": False },
-            { "type": "settings", "custom_bindings": False }
-        ]
+        return get_templates()
 
     def get_assets(self):
         return ASSETS
@@ -54,7 +51,7 @@ class OctoRelayPlugin(
     def on_after_startup(self):
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = DEFAULT_SETTINGS.copy()
+        settings = get_default_settings()
 
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
@@ -254,7 +251,7 @@ class OctoRelayPlugin(
         self._logger.info(f"pin: {relay_pin} turned on")
 
     def update_ui(self):
-        settings = DEFAULT_SETTINGS.copy()
+        settings = get_default_settings()
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
 
