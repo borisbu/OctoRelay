@@ -11,9 +11,10 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from octoprint_octorelay.const import DEFAULT_SETTINGS, RELAY_INDEXES, ASSETS
-from octoprint_octorelay.const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
-from octoprint_octorelay.const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
+from octoprint_octorelay.const import (
+    DEFAULT_SETTINGS, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
+    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
+)
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
