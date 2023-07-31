@@ -95,7 +95,8 @@ class OctoRelayPlugin(
     def has_switch_permission(self):
         try:
             return Permissions.PLUGIN_OCTORELAY_SWITCH.can() # may raise UnknownPermission(key)
-        except Exception:
+        except Exception as exception:
+            self._logger.warn(f"Failed to check relay switching permission, {exception}")
             return False
 
     def on_api_command(self, command, data):
@@ -170,8 +171,8 @@ class OctoRelayPlugin(
                     os.system(cmdOFF)
             self.update_ui()
             return "ok"
-        except Exception as e:
-            self._logger.debug(e)
+        except Exception as exception:
+            self._logger.warn(exception)
             return "error"
 
     def on_event(self, event, payload):
@@ -199,8 +200,8 @@ class OctoRelayPlugin(
             try:
                 self.turn_off_timers[off_timer].cancel()
                 self._logger.info(f"cancelled timer: {off_timer}")
-            except Exception:
-                self._logger.warn(f"could not cancel timer: {off_timer}")
+            except Exception as exception:
+                self._logger.warn(f"could not cancel timer: {off_timer}, reason: {exception}")
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
 
