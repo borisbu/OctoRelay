@@ -15,6 +15,7 @@ import flask
 import RPi.GPIO as GPIO
 import os
 
+# pylint: disable=too-many-ancestors
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.StartupPlugin,
