@@ -1,7 +1,4 @@
 # pylint: disable=duplicate-code
-# pylint: disable=missing-module-docstring
-# pylint: disable=missing-class-docstring
-# pylint: disable=missing-function-docstring
 # pylint: disable=too-many-public-methods
 # pylint: disable=protected-access
 # pylint: disable=wrong-import-position
