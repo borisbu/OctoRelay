@@ -195,12 +195,12 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def print_started(self):
-        for off_timer in self.turn_off_timers:
+        for index, off_timer in self.turn_off_timers.items():
             try:
-                self.turn_off_timers[off_timer].cancel()
-                self._logger.info(f"cancelled timer: {off_timer}")
+                off_timer.cancel()
+                self._logger.info(f"cancelled timer: {index}")
             except Exception as exception:
-                self._logger.warn(f"could not cancel timer: {off_timer}, reason: {exception}")
+                self._logger.warn(f"could not cancel timer: {index}, reason: {exception}")
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
 
