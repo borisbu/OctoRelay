@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 # Plugin's default settings
