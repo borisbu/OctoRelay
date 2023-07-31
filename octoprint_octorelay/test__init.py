@@ -2,7 +2,7 @@
 
 import unittest
 import sys
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
