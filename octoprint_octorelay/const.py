@@ -10,7 +10,7 @@ DEFAULT_SETTINGS = {
         "cmdON": "",
         "cmdOFF": "",
         "iconOn": "&#128161;",
-        "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+        "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
         "labelText": "Light",
         "confirmOff": False,
         "autoONforPrint": True,
@@ -25,7 +25,10 @@ DEFAULT_SETTINGS = {
         "cmdON": "",
         "cmdOFF": "",
         "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
-        "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
+        "iconOff": (
+            """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" """
+            """style="filter: opacity(20%)">"""
+        ),
         "labelText": "Printer",
         "confirmOff": True,
         "autoONforPrint": False,
@@ -40,7 +43,9 @@ DEFAULT_SETTINGS = {
         "cmdON": "",
         "cmdOFF": "",
         "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
-        "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
+        "iconOff": (
+            """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">"""
+        ),
         "labelText": "Fan",
         "confirmOff": False,
         "autoONforPrint": True,
@@ -55,7 +60,10 @@ DEFAULT_SETTINGS = {
         "cmdON": "sudo service webcamd start",
         "cmdOFF": "sudo service webcamd stop",
         "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-        "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
+        "iconOff": (
+            """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+            """style="filter: opacity(20%)">"""
+        ),
         "labelText": "Webcam",
         "confirmOff": False,
         "autoONforPrint": True,
@@ -85,7 +93,7 @@ DEFAULT_SETTINGS = {
         "cmdON": "",
         "cmdOFF": "",
         "iconOn": "&#128161;",
-        "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+        "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
         "labelText": "R6",
         "confirmOff": False,
         "autoONforPrint": False,
@@ -100,7 +108,7 @@ DEFAULT_SETTINGS = {
         "cmdON": "",
         "cmdOFF": "",
         "iconOn": "&#128161;",
-        "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+        "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
         "labelText": "R7",
         "confirmOff": False,
         "autoONforPrint": False,
@@ -115,7 +123,7 @@ DEFAULT_SETTINGS = {
         "cmdON": "",
         "cmdOFF": "",
         "iconOn": "&#128161;",
-        "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+        "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
         "labelText": "R8",
         "confirmOff": False,
         "autoONforPrint": False,
