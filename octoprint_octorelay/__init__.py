@@ -284,7 +284,7 @@ class OctoRelayPlugin(
         if command == AT_COMMAND:
             index = parameters
             self.update_relay(index)
-            return None
+        return None # meaning no further actions required
 
     def get_update_information(self):
         return {
