@@ -279,6 +279,7 @@ class OctoRelayPlugin(
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
+    # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
         if command == AT_COMMAND:
             index = parameters
