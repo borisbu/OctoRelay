@@ -12,8 +12,8 @@ from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
 from octoprint_octorelay.const import (
-    DEFAULT_SETTINGS, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
-    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
+    RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL,
+    UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 )
 
 # pylint: disable=too-many-ancestors
@@ -40,7 +40,136 @@ class OctoRelayPlugin(
             self.model[index] = {}
 
     def get_settings_defaults(self):
-        return DEFAULT_SETTINGS
+        return {
+            RELAY_INDEXES[0]: {
+               "active": True,
+               "relay_pin": 4,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
+               "labelText": "Light",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            RELAY_INDEXES[1]: {
+               "active": True,
+               "relay_pin": 17,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
+               "iconOff": (
+                   """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" """
+                   """style="filter: opacity(20%)">"""
+               ),
+               "labelText": "Printer",
+               "confirmOff": True,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            RELAY_INDEXES[2]: {
+               "active": True,
+               "relay_pin": 18,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
+               "iconOff": (
+                   """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">"""
+               ),
+               "labelText": "Fan",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            RELAY_INDEXES[3]: {
+               "active": True,
+               "relay_pin": 23,
+               "inverted_output": True,
+               "initial_value": True,
+               "cmdON": "sudo service webcamd start",
+               "cmdOFF": "sudo service webcamd stop",
+               "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+               "iconOff": (
+                   """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+                   """style="filter: opacity(20%)">"""
+               ),
+               "labelText": "Webcam",
+               "confirmOff": False,
+               "autoONforPrint": True,
+               "autoOFFforPrint": True,
+               "autoOffDelay": 10,
+            },
+            RELAY_INDEXES[4]: {
+               "active": False,
+               "relay_pin": 24,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "ON",
+               "iconOff": "OFF",
+               "labelText": "R5",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            RELAY_INDEXES[5]: {
+               "active": False,
+               "relay_pin": 25,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
+               "labelText": "R6",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            RELAY_INDEXES[6]: {
+               "active": False,
+               "relay_pin": 8,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
+               "labelText": "R7",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+            RELAY_INDEXES[7]: {
+               "active": False,
+               "relay_pin": 7,
+               "inverted_output": True,
+               "initial_value": False,
+               "cmdON": "",
+               "cmdOFF": "",
+               "iconOn": "&#128161;",
+               "iconOff": """<div style="filter: grayscale(90%)">&#128161;</div>""",
+               "labelText": "R8",
+               "confirmOff": False,
+               "autoONforPrint": False,
+               "autoOFFforPrint": False,
+               "autoOffDelay": 0,
+            },
+        }
 
     def get_template_configs(self):
         return [
@@ -54,7 +183,7 @@ class OctoRelayPlugin(
     def on_after_startup(self):
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = DEFAULT_SETTINGS.copy()
+        settings = self.get_settings_defaults()
 
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
@@ -254,7 +383,7 @@ class OctoRelayPlugin(
         self._logger.info(f"pin: {relay_pin} turned on")
 
     def update_ui(self):
-        settings = DEFAULT_SETTINGS.copy()
+        settings = self.get_settings_defaults()
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
 
