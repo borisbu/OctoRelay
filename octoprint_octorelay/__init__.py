@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+import flask
+from RPi import GPIO
+import os
+
 import octoprint.plugin
 from octoprint.events import Events
 from octoprint.util import ResettableTimer
@@ -10,10 +14,6 @@ from octoprint.access.permissions import Permissions
 from octoprint_octorelay.const import DEFAULT_SETTINGS, RELAY_INDEXES, ASSETS
 from octoprint_octorelay.const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING_INTERVAL
 from octoprint_octorelay.const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
-
-import flask
-from RPi import GPIO
-import os
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
