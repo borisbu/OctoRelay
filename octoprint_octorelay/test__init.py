@@ -84,7 +84,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmdON": "",
                 "cmdOFF": "",
                 "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
-                "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" style="filter: opacity(20%)">""",
+                "iconOff": (
+                    """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" """
+                    """style="filter: opacity(20%)">"""
+                ),
                 "labelText": "Printer",
                 "confirmOff": True,
                 "autoONforPrint": False,
@@ -99,7 +102,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmdON": "",
                 "cmdOFF": "",
                 "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
-                "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">""",
+                "iconOff": (
+                    """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" """
+                    """style="filter: opacity(20%)">"""
+                ),
                 "labelText": "Fan",
                 "confirmOff": False,
                 "autoONforPrint": True,
@@ -114,7 +120,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmdON": "sudo service webcamd start",
                 "cmdOFF": "sudo service webcamd stop",
                 "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                "iconOff": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" style="filter: opacity(20%)">""",
+                "iconOff": (
+                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+                    """style="filter: opacity(20%)">"""
+                ),
                 "labelText": "Webcam",
                 "confirmOff": False,
                 "autoONforPrint": True,
