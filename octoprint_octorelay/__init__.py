@@ -130,11 +130,15 @@ class OctoRelayPlugin(
             relay_state = inverted is not bool(GPIO.input(relay_pin))
             return flask.jsonify(status=relay_state)
 
+        # API command to toggle the relay
         if command == UPDATE_COMMAND:
             if not self.has_switch_permission():
                 return flask.abort(403)
             status = self.update_relay(data["pin"])
             return flask.jsonify(status=status)
+
+        # Unknown command
+        return flask.abort(400)
 
     def update_relay(self, index):
         try:
