@@ -13,15 +13,15 @@ from octoprint.access import ADMIN_GROUP, USER_GROUP
 GPIO_mock = Mock()
 GPIO_mock.BCM = "MockedBCM"
 GPIO_mock.OUT = "MockedOUT"
-sys.modules['RPi.GPIO'] = GPIO_mock
+sys.modules["RPi.GPIO"] = GPIO_mock
 timerMock = Mock()
 utilMock = Mock(
     RepeatedTimer = Mock(return_value=timerMock),
     ResettableTimer = Mock(return_value=timerMock)
 )
-sys.modules['octoprint.util'] = utilMock
+sys.modules["octoprint.util"] = utilMock
 permissionsMock = Mock()
-sys.modules['octoprint.access.permissions'] = Mock(
+sys.modules["octoprint.access.permissions"] = Mock(
     Permissions=permissionsMock
 )
 
@@ -41,9 +41,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # Clean up
-        del sys.modules['RPi.GPIO']
-        del sys.modules['octoprint.util']
-        del sys.modules['octoprint.access.permissions']
+        del sys.modules["RPi.GPIO"]
+        del sys.modules["octoprint.util"]
+        del sys.modules["octoprint.access.permissions"]
 
     def test_constructor(self):
         # During the instantiation should configure GPIO and set initial values to certain props
@@ -303,7 +303,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "MockedIdentifier", expected_model
             )
 
-    @patch('os.system')
+    @patch("os.system")
     def test_turn_off_pin(self, system_mock):
         # Should set the pin state depending on inverted parameter and execute the supplied command
         self.plugin_instance.update_ui = Mock()
@@ -318,7 +318,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             GPIO_mock.setwarnings.assert_called_with(True)
             system_mock.assert_called_with("CommandMock")
 
-    @patch('os.system')
+    @patch("os.system")
     def test_turn_on_pin(self, system_mock):
         # Depending on relay type it should set its pin state and execute the supplied command
         cases = [
@@ -332,7 +332,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             GPIO_mock.setwarnings.assert_called_with(True)
             system_mock.assert_called_with("CommandMock")
 
-    @patch('octoprint.plugin')
+    @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
         # Should call the SettingsPlugin event handler with own instance and supplied argument
         self.plugin_instance.update_ui = Mock()
@@ -474,8 +474,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.assertIs(actual, case["expected"])
         self.plugin_instance._logger.warn.assert_called_with("Failed to check relay switching permission, Caught!")
 
-    @patch('flask.jsonify')
-    @patch('os.system')
+    @patch("flask.jsonify")
+    @patch("os.system")
     def test_on_api_command(self, jsonify_mock, system_mock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
@@ -562,7 +562,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if hasattr(case, "expectedStatus"):
                 jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
-    @patch('flask.abort')
+    @patch("flask.abort")
     def test_on_api_command__exception(self, abort_mock):
         # Should refuse to update the pin state in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
@@ -577,7 +577,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
 
-    @patch('flask.abort')
+    @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
         # Should respond with status code 400 (bad request) to unknown commands
         self.plugin_instance.on_api_command("command", {})
@@ -608,5 +608,5 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_additional_permissions()
         self.assertEqual(actual, expected)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
