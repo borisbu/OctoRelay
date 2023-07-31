@@ -135,9 +135,11 @@ attr-naming-style=snake_case
 bad-names=foo,
           bar,
           baz,
-          toto,
-          tutu,
-          tata
+          i,
+          e,
+          j,
+          n,
+          k
 
 # Bad variable names regexes, separated by a comma. If names match any regex,
 # they will always be refused
