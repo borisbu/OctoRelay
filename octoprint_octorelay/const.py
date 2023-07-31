@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
-# Plugin's default settings
+# Plugin's default settings, immutable getter
 def get_default_settings():
     return {
         "r1": {
@@ -138,6 +138,7 @@ def get_default_settings():
 # Keys of the default settings, used for iterations: [r1...r8]
 RELAY_INDEXES = get_default_settings().keys()
 
+# Plugin templates, immutable getter
 def get_templates():
     return [
         { "type": "navbar", "custom_bindings": False },
