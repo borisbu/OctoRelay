@@ -41,7 +41,7 @@ jobs:
         with:
           github-token: ${{ secrets.github_token }}
           flag-name: ui
-          parallel: true        
+          parallel: true
       - name: Build JS
         working-directory: ts
         run: yarn build
@@ -95,10 +95,12 @@ jobs:
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
-        run: pip install coverage
+        run: pip install coverage pylint
       - name: Test
         working-directory: octoprint_octorelay
         run: python -m coverage run -m unittest test__init.py
+      - name: Lint
+        run: pylint --rcfile=.pylintrc ./octoprint_octorelay
       - name: Report the coverage
         working-directory: octoprint_octorelay
         run: |
