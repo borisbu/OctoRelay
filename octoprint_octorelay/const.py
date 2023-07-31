@@ -138,11 +138,13 @@ def get_default_settings():
 # Keys of the default settings, used for iterations: [r1...r8]
 RELAY_INDEXES = get_default_settings().keys()
 
+TEMPLATES = [
+    { "type": "navbar", "custom_bindings": False },
+    { "type": "settings", "custom_bindings": False }
+]
+
 def get_templates():
-    return [
-        { "type": "navbar", "custom_bindings": False },
-        { "type": "settings", "custom_bindings": False }
-    ]
+    return TEMPLATES.copy()
 
 # Plugin's asset files to automatically include in the core UI
 ASSETS = { "js": [ "js/octorelay.js" ] }
