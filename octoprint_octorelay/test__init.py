@@ -2,7 +2,6 @@
 # pylint: disable=duplicate-code
 # pylint: disable=too-many-public-methods
 # pylint: disable=protected-access
-# pylint: disable=wrong-import-position
 
 import unittest
 import sys
@@ -26,8 +25,8 @@ sys.modules['octoprint.access.permissions'] = Mock(
     Permissions=permissionsMock
 )
 
-from octoprint_octorelay import OctoRelayPlugin
-from octoprint_octorelay import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
+# pylint: disable=wrong-import-position
+from octoprint_octorelay import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
 
 class TestOctoRelayPlugin(unittest.TestCase):
     def setUp(self):
