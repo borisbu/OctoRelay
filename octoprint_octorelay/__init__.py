@@ -189,7 +189,6 @@ class OctoRelayPlugin(
             # self.print_stopped()
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
-        return
 
     def on_settings_save(self, data):
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
