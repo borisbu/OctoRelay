@@ -280,7 +280,7 @@ class OctoRelayPlugin(
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
-    def process_at_command(self, comm_instance, phase, command, parameters, tags=None, *args, **kwargs):
+    def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
         if command == AT_COMMAND:
             index = parameters
             self.update_relay(index)
