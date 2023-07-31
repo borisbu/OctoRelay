@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # pylint: disable=duplicate-code
 # pylint: disable=too-many-public-methods
 # pylint: disable=protected-access
