@@ -112,12 +112,11 @@ class OctoRelayPlugin(
                     relay_pin = int(settings["relay_pin"])
                     inverted = bool(settings['inverted_output'])
                     GPIO.setup(relay_pin, GPIO.OUT)
-                    relay_data = {
+                    active_relays.append({
                         "id": index,
                         "name": settings["labelText"],
                         "active": inverted is not bool(GPIO.input(relay_pin)),
-                    }
-                    active_relays.append(relay_data)
+                    })
             return flask.jsonify(active_relays)
 
         # API command to get relay status
