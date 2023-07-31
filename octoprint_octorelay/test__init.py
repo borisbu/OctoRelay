@@ -191,6 +191,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_settings_defaults()
         self.assertEqual(actual, expected)
 
+    def test_get_settings_defaults__immutable(self):
+        # Check that the function returns new object each time
+        first = self.plugin_instance.get_settings_defaults()
+        first["r1"]["relay_pin"] = 14
+        second = self.plugin_instance.get_settings_defaults()
+        self.assertEqual(first["r1"]["relay_pin"], 14)
+        self.assertEqual(second["r1"]["relay_pin"], 4)
+
     def test_get_template_configs(self):
         expected = [
             { "type": "navbar", "custom_bindings": False },
@@ -198,6 +206,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ]
         actual = self.plugin_instance.get_template_configs()
         self.assertEqual(actual, expected)
+
+    def test_get_template_configs__immutable(self):
+        # Check that the function returns new object each time
+        first = self.plugin_instance.get_template_configs()
+        first[0]["type"] = "test"
+        second = self.plugin_instance.get_template_configs()
+        self.assertEqual(first[0]["type"], "test")
+        self.assertEqual(second[0]["type"], "navbar")
 
     def test_get_assets(self):
         expected = { "js": [ "js/octorelay.js" ] }
