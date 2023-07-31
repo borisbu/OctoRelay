@@ -25,6 +25,7 @@ sys.modules['octoprint.access.permissions'] = Mock(
 from __init__ import OctoRelayPlugin
 from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
 
+# pylint: disable=too-many-public-methods
 class TestOctoRelayPlugin(unittest.TestCase):
     def setUp(self):
         # Create an instance of the OctoRelayPlugin class
