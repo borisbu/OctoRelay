@@ -258,25 +258,22 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             settings[index].update(self._settings.get([index]))
 
-            label_text = settings[index]["labelText"]
-            active = int(settings[index]["active"]) # todo make it bool later
             relay_pin = int(settings[index]["relay_pin"])
             inverted = bool(settings[index]["inverted_output"])
-            icon_on = settings[index]["iconOn"]
-            icon_off = settings[index]["iconOff"]
-            confirm_off = bool(settings[index]["confirmOff"])
+            GPIO.setup(relay_pin, GPIO.OUT)
+            pin_state = GPIO.input(relay_pin) # int
+            relay_state = inverted is not bool(pin_state) # todo extract into some kind of driver later
 
             # set the icon state
-            GPIO.setup(relay_pin, GPIO.OUT)
             self.model[index]["relay_pin"] = relay_pin
-            self.model[index]["state"] = GPIO.input(relay_pin) # int
-            self.model[index]["labelText"] = label_text
-            self.model[index]["active"] = active
-            if inverted is not bool(self.model[index]["state"]):
-                self.model[index]["iconText"] = icon_on
-                self.model[index]["confirmOff"] = confirm_off
+            self.model[index]["state"] = pin_state # int
+            self.model[index]["labelText"] = settings[index]["labelText"]
+            self.model[index]["active"] = int(settings[index]["active"]) # todo make it bool later
+            if relay_state:
+                self.model[index]["iconText"] = settings[index]["iconOn"]
+                self.model[index]["confirmOff"] = bool(settings[index]["confirmOff"])
             else:
-                self.model[index]["iconText"] = icon_off
+                self.model[index]["iconText"] = settings[index]["iconOff"]
                 self.model[index]["confirmOff"] = False
 
         #self._logger.info(f"update ui with model {self.model}")
