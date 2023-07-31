@@ -172,7 +172,7 @@ class OctoRelayPlugin(
             self.update_ui()
             return "ok"
         except Exception as exception:
-            self._logger.warn(exception)
+            self._logger.warn(f"OctoRelay update_relay caught an exception: {exception}")
             return "error"
 
     def on_event(self, event, payload):

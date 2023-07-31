@@ -433,7 +433,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
         self.plugin_instance.print_started()
-        self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test")
+        self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test, reason: Caught!")
         self.plugin_instance.turn_on_pin.assert_not_called()
         self.plugin_instance.update_ui.assert_called_with()
 
@@ -480,6 +480,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             actual = self.plugin_instance.has_switch_permission()
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
             self.assertIs(actual, case["expected"])
+        self.plugin_instance._logger.warn.assert_called_with("Failed to check relay switching permission, Caught!")
 
     @patch('flask.jsonify')
     @patch('os.system')
@@ -591,6 +592,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._settings.get = Mock(side_effect=Exception("Caught!"))
         actual = self.plugin_instance.update_relay("r4")
         self.assertEqual(actual, "error")
+        self.plugin_instance._logger.warn.assert_called_with("OctoRelay update_relay caught an exception: Caught!")
 
     def test_process_at_command(self):
         # Should call update_relay() method with supplied parameter
