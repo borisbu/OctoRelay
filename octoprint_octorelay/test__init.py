@@ -277,7 +277,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "inverted": False, "expectedIcon": "OFF" }
         ]
         for case in cases:
-            settingValueMock = {
+            settings_return_mock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
@@ -286,10 +286,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "labelText": "TEST",
                 "confirmOff": False
             }
-            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
-            expectedModel = {}
+            self.plugin_instance._settings.get = Mock(return_value=settings_return_mock)
+            expected_model = {}
             for index in self.plugin_instance.get_settings_defaults():
-                expectedModel[index] = {
+                expected_model[index] = {
                     "relay_pin": 17,
                     "state": 0,
                     "labelText": "TEST",
@@ -301,11 +301,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
             for index in self.plugin_instance.get_settings_defaults():
                 self.plugin_instance._settings.get.assert_any_call([index])
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
-                "MockedIdentifier", expectedModel
+                "MockedIdentifier", expected_model
             )
 
     @patch('os.system')
-    def test_turn_off_pin(self, systemMock):
+    def test_turn_off_pin(self, system_mock):
         # Should set the pin state depending on inverted parameter and execute the supplied command
         self.plugin_instance.update_ui = Mock()
         cases = [
@@ -317,10 +317,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
             GPIO_mock.setup.assert_called_with(17, "MockedOUT")
             GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
             GPIO_mock.setwarnings.assert_called_with(True)
-            systemMock.assert_called_with("CommandMock")
+            system_mock.assert_called_with("CommandMock")
 
     @patch('os.system')
-    def test_turn_on_pin(self, systemMock):
+    def test_turn_on_pin(self, system_mock):
         # Depending on relay type it should set its pin state and execute the supplied command
         cases = [
             { "inverted": True, "expectedOutput": False},
@@ -331,14 +331,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             GPIO_mock.setup.assert_called_with(17, "MockedOUT")
             GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
             GPIO_mock.setwarnings.assert_called_with(True)
-            systemMock.assert_called_with("CommandMock")
+            system_mock.assert_called_with("CommandMock")
 
     @patch('octoprint.plugin')
-    def test_on_settings_save(self, octoprintPluginMock):
+    def test_on_settings_save(self, plugins_mock):
         # Should call the SettingsPlugin event handler with own instance and supplied argument
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.on_settings_save("MockedData")
-        octoprintPluginMock.SettingsPlugin.on_settings_save.assert_called_with(
+        plugins_mock.SettingsPlugin.on_settings_save.assert_called_with(
             self.plugin_instance, "MockedData"
         )
         self.plugin_instance.update_ui.assert_called_with()
@@ -368,13 +368,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "inverted": False, "initial": False, "expectedOutput": False }
         ]
         for case in cases:
-            settingValueMock = {
+            settings_return_mock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
                 "initial_value": case["initial"]
             }
-            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance._settings.get = Mock(return_value=settings_return_mock)
             self.plugin_instance.on_after_startup()
             GPIO_mock.setup.assert_called_with(17, "MockedOUT")
             GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
@@ -396,14 +396,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ]
         for case in cases:
             self.plugin_instance.turn_on_pin = Mock()
-            settingValueMock = {
+            settings_return_mock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
                 "autoONforPrint": case["autoOn"],
                 "cmdON": "CommandMock"
             }
-            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance._settings.get = Mock(return_value=settings_return_mock)
             self.plugin_instance.print_started()
             timerMock.cancel.assert_called_with()
             if case["expectedCall"]:
@@ -421,14 +421,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
         }
         self.plugin_instance.turn_on_pin = Mock()
-        settingValueMock = {
+        settings_return_mock = {
             "active": False,
             "relay_pin": 17,
             "inverted_output": False,
             "autoONforPrint": False,
             "cmdON": None
         }
-        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        self.plugin_instance._settings.get = Mock(return_value=settings_return_mock)
         self.plugin_instance.print_started()
         self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test, reason: Caught!")
         self.plugin_instance.turn_on_pin.assert_not_called()
@@ -445,7 +445,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         for case in cases:
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
-            settingValueMock = {
+            settings_return_mock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": False,
@@ -453,7 +453,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 300,
                 "cmdOFF": "CommandMock"
             }
-            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance._settings.get = Mock(return_value=settings_return_mock)
             self.plugin_instance.print_stopped()
             if case["expectedCall"]:
                 utilMock.ResettableTimer.assert_called_with(
@@ -481,7 +481,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch('flask.jsonify')
     @patch('os.system')
-    def test_on_api_command(self, jsonMock, systemMock):
+    def test_on_api_command(self, jsonify_mock, system_mock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         GPIO_mock.input = Mock(return_value=1)
@@ -547,7 +547,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ]
         for case in cases:
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
-            settingValueMock = {
+            settings_return_mock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
@@ -555,34 +555,34 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmdON": "CommandOnMock",
                 "cmdOFF": "CommandOffMock"
             }
-            self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+            self.plugin_instance._settings.get = Mock(return_value=settings_return_mock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
             if case["command"] != "listAllStatus":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if hasattr(case, "expectedJson"):
-                jsonMock.assert_called_with(case["expectedJson"])
+                jsonify_mock.assert_called_with(case["expectedJson"])
             if hasattr(case, "expectedOutput"):
                 GPIO_mock.output.assert_called_with("r4", case["expectedOutput"])
             if hasattr(case, "expectedCommand"):
-                systemMock.assert_called_with(case["expectedCommand"])
+                system_mock.assert_called_with(case["expectedCommand"])
             if hasattr(case, "expectedStatus"):
-                jsonMock.assert_called_with(status=case["expectedStatus"])
+                jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
     @patch('flask.abort')
-    def test_on_api_command__exception(self, abortMock):
+    def test_on_api_command__exception(self, abort_mock):
         # Should refuse to update the pin state in case of insufficient permissions
-        settingValueMock = {
+        setting_return_mock = {
             "active": True,
             "relay_pin": 17,
             "inverted_output": False,
             "cmdON": "CommandOnMock",
             "cmdOFF": "CommandOffMock"
         }
-        self.plugin_instance._settings.get = Mock(return_value=settingValueMock)
+        self.plugin_instance._settings.get = Mock(return_value=setting_return_mock)
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
         self.plugin_instance.on_api_command("update", { "pin": "r4" })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
-        abortMock.assert_called_with(403)
+        abort_mock.assert_called_with(403)
 
     def test_update_relay__exception(self):
         # Should catch possible exceptions within try-catch block
