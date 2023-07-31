@@ -2,6 +2,12 @@
 
 ## Version 3
 
+### 3.0.1
+
+- Refactoring: enforcing code style for Python using `pylint`.
+- Testing and clarifying the actual plugin compatibility with OctoPrint.
+  - Minimum supported version of OctoPrint is 1.5.3.
+
 ### 3.0.0
 
 - **Breaking changes**

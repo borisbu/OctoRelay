@@ -20,6 +20,11 @@ The plugin adds buttons to the navigation bar for toggling GPIO pins on the Rasp
 > 
 > — _Boris Burgstaller_
 
+## Requirements
+
+- Python: at least `3.7`,
+- OctoPrint: at least `1.5.3`.
+
 ## Setup
 
 Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bundledplugins/pluginmanager.html)
