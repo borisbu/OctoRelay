@@ -27,6 +27,8 @@ from __init__ import __plugin_pythoncompat__, __plugin_implementation__, __plugi
 
 # pylint: disable=too-many-public-methods
 class TestOctoRelayPlugin(unittest.TestCase):
+    # pylint: disable=protected-access
+
     def setUp(self):
         # Create an instance of the OctoRelayPlugin class
         self.plugin_instance = OctoRelayPlugin()
