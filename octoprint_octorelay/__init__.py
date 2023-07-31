@@ -16,6 +16,7 @@ import RPi.GPIO as GPIO
 import os
 
 # pylint: disable=too-many-ancestors
+# pylint: disable=too-many-instance-attributes
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.StartupPlugin,
