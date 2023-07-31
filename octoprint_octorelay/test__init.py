@@ -4,6 +4,7 @@
 # pylint: disable=missing-function-docstring
 # pylint: disable=too-many-public-methods
 # pylint: disable=protected-access
+# pylint: disable=wrong-import-position
 
 import unittest
 import sys
