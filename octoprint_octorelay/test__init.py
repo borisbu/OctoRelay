@@ -582,9 +582,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_process_at_command(self):
         # Should call update_relay() method with supplied parameter
         self.plugin_instance.update_relay = Mock()
-        actual = self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4")
+        self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4"))
         self.plugin_instance.update_relay.assert_called_with("r4")
-        self.assertIsNone(actual)
 
     def test_get_additional_permissions(self):
         expected = [{
