@@ -319,4 +319,5 @@ __plugin_hooks__ = {
         __plugin_implementation__.process_at_command
 }
 
+# pylint: disable=wrong-import-position
 from octoprint_octorelay._version import __version__
