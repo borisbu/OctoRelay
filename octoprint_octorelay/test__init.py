@@ -207,6 +207,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_template_configs()
         self.assertEqual(actual, expected)
 
+    def test_get_template_configs__immutable(self):
+        # Check that the function returns new object each time
+        first = self.plugin_instance.get_template_configs()
+        first[0]["type"] = "test"
+        second = self.plugin_instance.get_template_configs()
+        self.assertEqual(first[0]["type"], "test")
+        self.assertEqual(second[0]["type"], "navbar")
+
     def test_get_assets(self):
         expected = { "js": [ "js/octorelay.js" ] }
         actual = self.plugin_instance.get_assets()
