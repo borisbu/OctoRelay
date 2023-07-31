@@ -12,7 +12,7 @@ from octoprint_octorelay.const import SWITCH_PERMISSION, UPDATES_CONFIG, POLLING
 from octoprint_octorelay.const import UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 
 import flask
-import RPi.GPIO as GPIO
+from RPi import GPIO
 import os
 
 # pylint: disable=too-many-ancestors
