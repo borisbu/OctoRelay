@@ -83,7 +83,8 @@ class OctoRelayPlugin(
                "cmdOFF": "",
                "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
                "iconOff": (
-                   """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" style="filter: opacity(20%)">"""
+                   """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" """
+                   """style="filter: opacity(20%)">"""
                ),
                "labelText": "Fan",
                "confirmOff": False,
