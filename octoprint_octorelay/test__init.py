@@ -418,7 +418,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_started__exception(self):
         # Should handle a possible exception when cancelling the timer
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = { "test": Mock( cancel=Mock(side_effect=Exception) ) }
+        self.plugin_instance.turn_off_timers = {
+            "test": Mock(
+                cancel=Mock( side_effect=Exception("Caught!") )
+            )
+        }
         self.plugin_instance.turn_on_pin = Mock()
         settingValueMock = {
             "active": False,
@@ -469,7 +473,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             { "mock": Mock(return_value=True), "expected": True },
             { "mock": Mock(return_value=False), "expected": False },
-            { "mock": Mock(side_effect=Exception), "expected": False }
+            { "mock": Mock(side_effect=Exception("Caught!")), "expected": False }
         ]
         for case in cases:
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = case["mock"]
@@ -584,7 +588,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_update_relay__exception(self):
         # Should catch possible exceptions within try-catch block
-        self.plugin_instance._settings.get = Mock(side_effect=Exception)
+        self.plugin_instance._settings.get = Mock(side_effect=Exception("Caught!"))
         actual = self.plugin_instance.update_relay("r4")
         self.assertEqual(actual, "error")
 
