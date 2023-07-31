@@ -584,6 +584,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
 
+    @patch('flask.abort')
+    def test_on_api_command__unknown(self, abort_mock):
+        # Should respond with status code 400 (bad request) to unknown commands
+        self.plugin_instance.on_api_command("command", {})
+        abort_mock.assert_called_with(400)
+
     def test_update_relay__exception(self):
         # Should catch possible exceptions within try-catch block
         self.plugin_instance._settings.get = Mock(side_effect=Exception("Caught!"))
