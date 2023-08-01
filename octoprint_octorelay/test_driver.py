@@ -50,8 +50,8 @@ class TestRelayDriver(unittest.TestCase):
         cases = [
             { "mocked_state": 1, "inverted": False, "expected_pin_state": True },
             { "mocked_state": 0, "inverted": False, "expected_pin_state": False },
-            { "mocked_state": 1, "inverted": True, "expected_pin_state": True },
-            { "mocked_state": 0, "inverted": True, "expected_pin_state": False },
+            { "mocked_state": 1, "inverted": True, "expected_pin_state": False },
+            { "mocked_state": 0, "inverted": True, "expected_pin_state": True },
         ]
         for case in cases:
             GPIO_mock.input = Mock(return_value=case["mocked_state"])
