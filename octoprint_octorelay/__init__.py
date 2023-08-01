@@ -265,14 +265,17 @@ class OctoRelayPlugin(
             }
         }
 
-    # GPIO Polling thread
+    # Polling thread
     def input_polling(self):
         self._logger.debug("input_polling")
         for index in RELAY_INDEXES:
             # model::active is currently int, see update_ui()
             active = bool(self.model[index]["active"])
-            model_state = self.model[index]["state"] # int
-            actual_state = GPIO.input(self.model[index]["relay_pin"]) # int
+            model_state = bool(self.model[index]["state"]) # todo make state bool later
+            actual_state = Relay(
+                int(self.model[index]["relay_pin"]),
+                False # does not matter for pin state
+            ).get_pin_state()
             if active and actual_state != model_state:
                 self._logger.debug(f"relay: {index} has changed its pin state")
                 self.update_ui()
