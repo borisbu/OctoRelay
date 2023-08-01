@@ -134,29 +134,15 @@ class OctoRelayPlugin(
     def update_relay(self, index):
         try:
             settings = self._settings.get([index], merged=True)
-
-            relay_pin = int(settings["relay_pin"])
-            inverted = bool(settings["inverted_output"])
+            relay = Relay(
+                int(settings["relay_pin"]),
+                bool(settings["inverted_output"])
+            )
             cmd_on = settings["cmdON"]
             cmd_off = settings["cmdOFF"]
+            self._logger.debug(f"OctoRelay before update {relay}")
 
-            GPIO.setwarnings(False)
-
-            GPIO.setup(relay_pin, GPIO.OUT)
-            # XOR with inverted
-            relay_state = inverted is not bool(GPIO.input(relay_pin))
-
-            self._logger.debug(f"OctoRelay before pin: {relay_pin}, inverted: {inverted}, relay_state: {relay_state}")
-
-            # toggle state
-            relay_state = not relay_state
-
-            GPIO.setup(relay_pin, GPIO.OUT)
-            # XOR with inverted
-            GPIO.output(relay_pin, inverted is not relay_state)
-
-            GPIO.setwarnings(True)
-            if relay_state:
+            if relay.toggle(): # it returns the new state
                 if cmd_on:
                     self._logger.info(f"OctoRelay system command: {cmd_on}")
                     os.system(cmd_on)
