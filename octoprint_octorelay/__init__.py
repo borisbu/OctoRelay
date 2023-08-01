@@ -33,7 +33,6 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         GPIO.setmode(GPIO.BCM)
-        GPIO.setwarnings(False)
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}
