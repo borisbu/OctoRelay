@@ -98,7 +98,7 @@ jobs:
         run: pip install coverage pylint
       - name: Test
         working-directory: octoprint_octorelay
-        run: python -m coverage run -m unittest test__init.py
+        run: python -m coverage run -m unittest test*.py
       - name: Lint
         run: pylint --rcfile=.pylintrc ./octoprint_octorelay
       - name: Report the coverage
