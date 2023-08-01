@@ -76,7 +76,7 @@ describe("OctoRelayViewModel", () => {
     handler("octorelay", {
       r1: {
         relay_pin: 16,
-        state: 1,
+        pin_state: true,
         labelText: "Nozzle Light",
         active: 1,
         iconText: "<div>&#128161;</div>",
@@ -84,7 +84,7 @@ describe("OctoRelayViewModel", () => {
       },
       r2: {
         relay_pin: 12,
-        state: 1,
+        pin_state: true,
         labelText: "Printer",
         active: 1,
         iconText: '<img src="plugin/dashboard/static/img/printer-icon.png">',
@@ -92,7 +92,7 @@ describe("OctoRelayViewModel", () => {
       },
       r3: {
         relay_pin: 18,
-        state: 0,
+        pin_state: false,
         labelText: "Fan",
         active: 1,
         iconText: '<img src="plugin/dashboard/static/img/fan-icon.png">',
@@ -100,7 +100,7 @@ describe("OctoRelayViewModel", () => {
       },
       r4: {
         relay_pin: 20,
-        state: 1,
+        pin_state: true,
         labelText: "Chassis Light",
         active: 1,
         iconText: "<div>&#127774;</div>",
@@ -108,7 +108,7 @@ describe("OctoRelayViewModel", () => {
       },
       r5: {
         relay_pin: 24,
-        state: 0,
+        pin_state: false,
         labelText: "R5",
         active: 0,
         iconText: "ON",
@@ -183,7 +183,7 @@ describe("OctoRelayViewModel", () => {
       handler("octorelay", {
         r1: {
           relay_pin: 16,
-          state: 1,
+          pin_state: true,
           labelText: "Nozzle Light",
           active: 1,
           iconText: "<div>&#128161;</div>",

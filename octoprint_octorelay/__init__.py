@@ -231,12 +231,13 @@ class OctoRelayPlugin(
                 int(settings[index]["relay_pin"]),
                 bool(settings[index]["inverted_output"])
             )
+            pin_state = relay.get_pin_state()
             # set the icon state
             self.model[index]["relay_pin"] = relay.pin
-            self.model[index]["state"] = int(relay.get_pin_state()) # todo this is unused by UI but used by polling
+            self.model[index]["pin_state"] = pin_state # bool since v3.1
             self.model[index]["labelText"] = settings[index]["labelText"]
             self.model[index]["active"] = int(settings[index]["active"]) # todo make it bool later
-            if relay.is_closed(): # todo perhaps needs a cache
+            if relay.get_state_from_pin_state(pin_state):
                 self.model[index]["iconText"] = settings[index]["iconOn"]
                 self.model[index]["confirmOff"] = bool(settings[index]["confirmOff"])
             else:
@@ -269,12 +270,12 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             # model::active is currently int, see update_ui()
             active = bool(self.model[index]["active"])
-            model_state = bool(self.model[index]["state"]) # todo make state bool later
+            model_state = self.model[index]["pin_state"] # bool since v3.1
             actual_state = Relay(
                 int(self.model[index]["relay_pin"]),
                 False # does not matter for pin state
             ).get_pin_state()
-            if active and actual_state != model_state:
+            if active and (actual_state is not model_state):
                 self._logger.debug(f"relay: {index} has changed its pin state")
                 self.update_ui()
                 break

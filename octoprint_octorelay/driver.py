@@ -32,9 +32,13 @@ class Relay():
         GPIO.setwarnings(True)
         return state
 
+    def get_state_from_pin_state(self, pin_state: bool) -> bool:
+        """Returns the logical state of the relay having its pin state"""
+        return xor(self.inverted, pin_state)
+
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        return xor(self.inverted, self.get_pin_state())
+        return self.get_state_from_pin_state(self.get_pin_state())
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
