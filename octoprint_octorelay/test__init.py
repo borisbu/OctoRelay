@@ -332,6 +332,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
             GPIO_mock.setwarnings.assert_called_with(True)
             system_mock.assert_called_with("CommandMock")
+            self.plugin_instance.update_ui.assert_called_with()
 
     @patch("os.system")
     def test_turn_on_relay(self, system_mock):
