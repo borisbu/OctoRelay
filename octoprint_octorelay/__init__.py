@@ -139,15 +139,7 @@ class OctoRelayPlugin(
             cmd_on = settings["cmdON"]
             cmd_off = settings["cmdOFF"]
             self._logger.debug(f"OctoRelay before update {relay}")
-
-            if relay.toggle(): # it returns the new state
-                if cmd_on:
-                    self._logger.info(f"OctoRelay system command: {cmd_on}")
-                    os.system(cmd_on)
-            else:
-                if cmd_off:
-                    self._logger.info(f"OctoRelay system command: {cmd_off}")
-                    os.system(cmd_off)
+            self.run_system_command(cmd_on if relay.toggle() else cmd_off) # ternary choice based on new state
             self.update_ui()
             return "ok"
         except Exception as exception:
@@ -212,16 +204,18 @@ class OctoRelayPlugin(
 
     def turn_off_relay(self, pin: int, inverted: bool, cmd):
         Relay(pin, inverted).open()
-        if cmd:
-            os.system(cmd)
+        self.run_system_command(cmd)
         self._logger.info(f"pin: {pin} turned off")
         self.update_ui()
 
     def turn_on_relay(self, pin: int, inverted: bool, cmd):
         Relay(pin, inverted).close()
+        self.run_system_command(cmd)
+        self._logger.info(f"pin: {pin} turned on")
+
+    def run_system_command(self, cmd):
         if cmd:
             os.system(cmd)
-        self._logger.info(f"pin: {pin} turned on")
 
     def update_ui(self):
         settings = get_default_settings()
