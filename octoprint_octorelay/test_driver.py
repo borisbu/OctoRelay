@@ -25,7 +25,7 @@ class TestRelayDriver(unittest.TestCase):
     def test_serialization(self):
         relay = Relay(18, True)
         serialization = f"{relay}"
-        self.assertEqual(serialization, "Relay(pin=18,inverted=True)")
+        self.assertEqual(serialization, "Relay(pin=18,inverted=True,closed=True)")
 
     def test_close(self):
         cases = [

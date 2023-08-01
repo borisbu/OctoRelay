@@ -14,7 +14,7 @@ class Relay():
         self.inverted = inverted # marks the relay as normally closed
 
     def __repr__(self) -> str:
-        return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted})"
+        return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
 
     def close(self):
         """Activates the current flow through the relay."""
