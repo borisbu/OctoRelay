@@ -206,7 +206,7 @@ class OctoRelayPlugin(
         Relay(pin, inverted).open()
         self.run_system_command(cmd)
         self._logger.info(f"pin: {pin} turned off")
-        self.update_ui()
+        self.update_ui() # todo perhaps it's not needed due to having the polling thread
 
     def turn_on_relay(self, pin: int, inverted: bool, cmd):
         Relay(pin, inverted).close()
