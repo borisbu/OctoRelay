@@ -33,16 +33,16 @@ class Relay():
         """Returns the logical state of the relay."""
         return xor(self.inverted, self.get_pin_state())
 
-    def toggle(self, state: Optional[bool] = None) -> bool:
+    def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
-        Switches the relay state to the one specified as an optional argument.
+        Switches the relay state to the desired one specified as an optional argument.
         If the argument is not specified then switches based on the current state.
         Returns the new logical state of the relay.
         """
-        if state is None:
-            state = not self.is_closed()
+        if desired_state is None:
+            desired_state = not self.is_closed()
         GPIO.setwarnings(False)
         GPIO.setup(self.pin, GPIO.OUT)
-        GPIO.output(self.pin, xor(self.inverted, state))
+        GPIO.output(self.pin, xor(self.inverted, desired_state))
         GPIO.setwarnings(True)
-        return state
+        return desired_state
