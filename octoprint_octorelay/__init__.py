@@ -212,18 +212,18 @@ class OctoRelayPlugin(
                 self.turn_off_timers[index].start()
         self.update_ui()
 
-    def turn_off_relay(self, relay_pin: int, inverted: bool, cmd):
-        Relay(relay_pin, inverted).open()
+    def turn_off_relay(self, pin: int, inverted: bool, cmd):
+        Relay(pin, inverted).open()
         if cmd:
             os.system(cmd)
-        self._logger.info(f"pin: {relay_pin} turned off")
+        self._logger.info(f"pin: {pin} turned off")
         self.update_ui()
 
-    def turn_on_relay(self, relay_pin: int, inverted: bool, cmd):
-        Relay(relay_pin, inverted).close()
+    def turn_on_relay(self, pin: int, inverted: bool, cmd):
+        Relay(pin, inverted).close()
         if cmd:
             os.system(cmd)
-        self._logger.info(f"pin: {relay_pin} turned on")
+        self._logger.info(f"pin: {pin} turned on")
 
     def update_ui(self):
         settings = get_default_settings()
