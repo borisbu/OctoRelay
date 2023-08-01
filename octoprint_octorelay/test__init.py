@@ -4,26 +4,11 @@
 # pylint: disable=protected-access
 
 import unittest
-import sys
 from unittest.mock import Mock, patch
 from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
-# Patching required before importing OctoRelayPlugin class
-GPIO_mock = Mock()
-GPIO_mock.BCM = "MockedBCM"
-GPIO_mock.OUT = "MockedOUT"
-sys.modules["RPi.GPIO"] = GPIO_mock
-timerMock = Mock()
-utilMock = Mock(
-    RepeatedTimer = Mock(return_value=timerMock),
-    ResettableTimer = Mock(return_value=timerMock)
-)
-sys.modules["octoprint.util"] = utilMock
-permissionsMock = Mock()
-sys.modules["octoprint.access.permissions"] = Mock(
-    Permissions=permissionsMock
-)
+from octoprint_octorelay.common_mocks import GPIO_mock, timerMock, utilMock, permissionsMock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
@@ -37,13 +22,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger = Mock()
         self.plugin_instance._settings = Mock()
         self.plugin_instance._plugin_manager = Mock()
-
-    @classmethod
-    def tearDownClass(cls):
-        # Clean up
-        del sys.modules["RPi.GPIO"]
-        del sys.modules["octoprint.util"]
-        del sys.modules["octoprint.access.permissions"]
 
     def test_constructor(self):
         # During the instantiation should configure GPIO and set initial values to certain props
