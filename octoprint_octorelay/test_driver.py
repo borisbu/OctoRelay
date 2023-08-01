@@ -60,3 +60,18 @@ class TestRelayDriver(unittest.TestCase):
             GPIO_mock.setwarnings.assert_any_call(False)
             GPIO_mock.setwarnings.assert_called_with(True)
             GPIO_mock.input.assert_called_with(18)
+
+    def test_is_closed(self):
+        cases = [
+            { "mocked_state": 1, "inverted": False, "expected_relay_state": True },
+            { "mocked_state": 0, "inverted": False, "expected_relay_state": False },
+            { "mocked_state": 1, "inverted": True, "expected_relay_state": False },
+            { "mocked_state": 0, "inverted": True, "expected_relay_state": True },
+        ]
+        for case in cases:
+            GPIO_mock.input = Mock(return_value=case["mocked_state"])
+            relay = Relay(18, case["inverted"])
+            self.assertEqual(relay.is_closed(), case["expected_relay_state"])
+            GPIO_mock.setwarnings.assert_any_call(False)
+            GPIO_mock.setwarnings.assert_called_with(True)
+            GPIO_mock.input.assert_called_with(18)
