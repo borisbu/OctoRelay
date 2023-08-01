@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import unittest
 import sys
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 GPIO_mock = Mock()
 GPIO_mock.OUT = "MockedOUT"
