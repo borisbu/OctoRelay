@@ -3,7 +3,13 @@ import unittest
 import sys
 from unittest.mock import Mock
 
-GPIO_mock = sys.modules["RPi.GPIO"] # mocked in test__init.py
+if "RPi.GPIO" in sys.modules:
+    GPIO_mock = sys.modules["RPi.GPIO"]
+else:
+    GPIO_mock = Mock()
+    GPIO_mock.BCM = "MockedBCM"
+    GPIO_mock.OUT = "MockedOUT"
+    sys.modules["RPi.GPIO"] = GPIO_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay
