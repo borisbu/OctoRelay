@@ -43,8 +43,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._plugin_manager = Mock()
 
     def test_constructor(self):
-        # During the instantiation should configure GPIO and set initial values to certain props
-        GPIO_mock.setmode.assert_called_with("MockedBCM")
+        # During the instantiation should set initial values to certain props
         self.assertIsNone(self.plugin_instance.polling_timer)
         self.assertEqual(self.plugin_instance.turn_off_timers, {})
         self.assertEqual(self.plugin_instance.model, {

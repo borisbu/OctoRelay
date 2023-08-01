@@ -3,7 +3,6 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 import flask
-from RPi import GPIO
 
 import octoprint.plugin
 from octoprint.events import Events
@@ -32,7 +31,6 @@ class OctoRelayPlugin(
 
     def __init__(self):
         # pylint: disable=super-init-not-called
-        GPIO.setmode(GPIO.BCM)
         self.polling_timer = None
         self.turn_off_timers = {}
         self.model = {}

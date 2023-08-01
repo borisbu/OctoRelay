@@ -16,6 +16,7 @@ from octoprint_octorelay.driver import Relay
 
 class TestRelayDriver(unittest.TestCase):
     def test_constructor(self):
+        GPIO_mock.setmode.assert_called_with("MockedBCM")
         relay = Relay(18, True)
         self.assertIsInstance(relay, Relay)
         self.assertEqual(relay.pin, 18)
