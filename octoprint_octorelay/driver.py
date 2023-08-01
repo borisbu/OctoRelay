@@ -15,17 +15,11 @@ class Relay():
 
     def close(self):
         """Activates the current flow through the relay."""
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        GPIO.output(self.pin, xor(self.inverted, True))
-        GPIO.setwarnings(True)
+        self.toggle(True)
 
     def open(self):
         """Deactivates the current flow through the relay."""
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        GPIO.output(self.pin, xor(self.inverted, False))
-        GPIO.setwarnings(True)
+        self.toggle(False)
 
     def get_pin_state(self) -> bool:
         """Returns the logical state of the pin controlling the relay."""
@@ -43,7 +37,7 @@ class Relay():
         """
         Switches the relay state to the one specified as an optional argument.
         If the argument is not specified then switches based on the current state.
-        Returns the new logic state of the relay.
+        Returns the new logical state of the relay.
         """
         if state is None:
             state = not self.is_closed()
