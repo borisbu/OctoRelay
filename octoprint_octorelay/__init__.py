@@ -58,14 +58,10 @@ class OctoRelayPlugin(
             self._logger.debug(f"settings for {index}: {settings[index]}")
 
             if settings[index]["active"]:
-                relay_pin = int(settings[index]["relay_pin"])
-                initial_value = bool(settings[index]["initial_value"])
-                inverted_output = bool(settings[index]["inverted_output"])
-
-                # Setting the default state of pin
-                GPIO.setup(relay_pin, GPIO.OUT)
-                # XOR with inverted
-                GPIO.output(relay_pin, initial_value is not inverted_output)
+                Relay(
+                    int(settings[index]["relay_pin"]),
+                    bool(settings[index]["inverted_output"])
+                ).toggle( bool(settings[index]["initial_value"]) )
 
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
