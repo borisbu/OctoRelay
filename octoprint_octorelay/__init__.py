@@ -213,20 +213,14 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def turn_off_pin(self, relay_pin: int, inverted: bool, cmd):
-        GPIO.setup(relay_pin, GPIO.OUT)
-        # XOR with inverted
-        GPIO.output(relay_pin, inverted is not False)
-        GPIO.setwarnings(True)
+        Relay(relay_pin, inverted).open()
         if cmd:
             os.system(cmd)
         self._logger.info(f"pin: {relay_pin} turned off")
         self.update_ui()
 
     def turn_on_pin(self, relay_pin: int, inverted: bool, cmd):
-        GPIO.setup(relay_pin, GPIO.OUT)
-        # XOR with inverted
-        GPIO.output(relay_pin, inverted is False)
-        GPIO.setwarnings(True)
+        Relay(relay_pin, inverted).close()
         if cmd:
             os.system(cmd)
         self._logger.info(f"pin: {relay_pin} turned on")
