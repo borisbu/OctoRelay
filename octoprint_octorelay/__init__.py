@@ -273,7 +273,7 @@ class OctoRelayPlugin(
             model_state = self.model[index]["pin_state"] # bool since v3.1
             actual_state = Relay(
                 int(self.model[index]["relay_pin"]),
-                False # does not matter for pin state
+                None # does not matter for only reading the pin state
             ).get_pin_state()
             if active and (actual_state is not model_state):
                 self._logger.debug(f"relay: {index} has changed its pin state")
