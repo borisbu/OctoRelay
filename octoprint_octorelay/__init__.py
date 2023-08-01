@@ -115,12 +115,11 @@ class OctoRelayPlugin(
         # API command to get relay status
         if command == GET_STATUS_COMMAND:
             settings = self._settings.get([data["pin"]], merged=True)
-            relay_pin = int(settings["relay_pin"])
-            inverted = bool(settings["inverted_output"])
-            GPIO.setwarnings(False)
-            GPIO.setup(relay_pin, GPIO.OUT)
-            relay_state = inverted is not bool(GPIO.input(relay_pin))
-            return flask.jsonify(status=relay_state)
+            relay = Relay(
+                int(settings["relay_pin"]),
+                bool(settings["inverted_output"])
+            )
+            return flask.jsonify(status=relay.is_closed())
 
         # API command to toggle the relay
         if command == UPDATE_COMMAND:
