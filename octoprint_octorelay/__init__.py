@@ -192,7 +192,7 @@ class OctoRelayPlugin(
             active = bool(settings["active"])
             if auto_on and active:
                 self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
-                self.turn_on_pin(relay_pin, inverted, cmd_on)
+                self.turn_on_relay(relay_pin, inverted, cmd_on)
         self.update_ui()
 
     def print_stopped(self):
@@ -208,18 +208,18 @@ class OctoRelayPlugin(
             if auto_off and active:
                 self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
                 self.turn_off_timers[index] = ResettableTimer(
-                    delay, self.turn_off_pin, [relay_pin, inverted, cmd_off])
+                    delay, self.turn_off_relay, [relay_pin, inverted, cmd_off])
                 self.turn_off_timers[index].start()
         self.update_ui()
 
-    def turn_off_pin(self, relay_pin: int, inverted: bool, cmd):
+    def turn_off_relay(self, relay_pin: int, inverted: bool, cmd):
         Relay(relay_pin, inverted).open()
         if cmd:
             os.system(cmd)
         self._logger.info(f"pin: {relay_pin} turned off")
         self.update_ui()
 
-    def turn_on_pin(self, relay_pin: int, inverted: bool, cmd):
+    def turn_on_relay(self, relay_pin: int, inverted: bool, cmd):
         Relay(relay_pin, inverted).close()
         if cmd:
             os.system(cmd)
