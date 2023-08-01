@@ -18,6 +18,7 @@ from octoprint_octorelay.driver import Relay
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
+# pylint: disable=too-many-public-methods
 class OctoRelayPlugin(
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.StartupPlugin,
