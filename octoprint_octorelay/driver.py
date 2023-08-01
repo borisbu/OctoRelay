@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from RPi import GPIO
 
-def xor(left: bool, right: bool):
+def xor(left: bool, right: bool) -> bool:
     return left is not right
 
 class Relay():
@@ -13,21 +13,21 @@ class Relay():
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted})"
 
     def close(self):
-        """Activates the current flow through the relay"""
+        """Activates the current flow through the relay."""
         GPIO.setwarnings(False)
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, xor(self.inverted, True))
         GPIO.setwarnings(True)
 
     def open(self):
-        """Deactivates the current flow through the relay"""
+        """Deactivates the current flow through the relay."""
         GPIO.setwarnings(False)
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, xor(self.inverted, False))
         GPIO.setwarnings(True)
 
     def get_pin_state(self) -> bool:
-        """Returns the logical state of the pin controlling the relay"""
+        """Returns the logical state of the pin controlling the relay."""
         GPIO.setwarnings(False)
         GPIO.setup(self.pin, GPIO.OUT)
         state = bool(GPIO.input(self.pin))
@@ -35,13 +35,14 @@ class Relay():
         return state
 
     def is_closed(self) -> bool:
-        """Returns the logical state of the relay"""
+        """Returns the logical state of the relay."""
         return xor(self.inverted, self.get_pin_state())
 
-    def toggle(self):
-        """Switches the relay state"""
+    def toggle(self) -> bool:
+        """Switches the relay state. Returns the new logic state of the relay, similar to is_closed()."""
         state = not self.is_closed()
         GPIO.setwarnings(False)
         GPIO.setup(self.pin, GPIO.OUT)
         GPIO.output(self.pin, xor(self.inverted, state))
         GPIO.setwarnings(True)
+        return state
