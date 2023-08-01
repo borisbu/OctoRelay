@@ -9,7 +9,7 @@ class Relay():
     def __init__(self, pin: int, inverted: bool):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
-        print(GPIO) # todo remove
+        print(GPIO, GPIO.OUT, GPIO.setup) # todo remove
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted})"
