@@ -15,6 +15,7 @@ from octoprint_octorelay.const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
 )
+from octoprint_octorelay.driver import Relay
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
