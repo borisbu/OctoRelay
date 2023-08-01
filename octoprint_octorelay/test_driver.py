@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 import unittest
+import sys
 from unittest.mock import Mock
 
-from octoprint_octorelay.common_mocks import GPIO_mock
+GPIO_mock = Mock()
+GPIO_mock.OUT = "MockedOUT"
+sys.modules["RPi.GPIO"] = GPIO_mock
 
 print(GPIO_mock)
 
