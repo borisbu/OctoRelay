@@ -233,7 +233,7 @@ class OctoRelayPlugin(
             )
             # set the icon state
             self.model[index]["relay_pin"] = relay.pin
-            self.model[index]["state"] = int(relay.get_pin_state()) # int
+            self.model[index]["state"] = int(relay.get_pin_state()) # todo this is unused by UI but used by polling
             self.model[index]["labelText"] = settings[index]["labelText"]
             self.model[index]["active"] = int(settings[index]["active"]) # todo make it bool later
             if relay.is_closed(): # todo perhaps needs a cache
