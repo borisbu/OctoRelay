@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from typing import Optional
 from RPi import GPIO
 
 def xor(left: bool, right: bool) -> bool:
@@ -38,7 +39,7 @@ class Relay():
         """Returns the logical state of the relay."""
         return xor(self.inverted, self.get_pin_state())
 
-    def toggle(self, state: bool | None = None) -> bool:
+    def toggle(self, state: Optional[bool] = None) -> bool:
         """
         Switches the relay state to the one specified as an optional argument.
         If the argument is not specified then switches based on the current state.
