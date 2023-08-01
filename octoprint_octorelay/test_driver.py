@@ -33,3 +33,15 @@ class TestRelayDriver(unittest.TestCase):
             GPIO_mock.output.assert_called_with(18, case["expected_pin_state"])
             GPIO_mock.setwarnings.assert_any_call(False)
             GPIO_mock.setwarnings.assert_called_with(True)
+
+    def test_open(self):
+        cases = [
+            { "relay": Relay(18, False), "expected_pin_state": False },
+            { "relay": Relay(18, True), "expected_pin_state": True }
+        ]
+        for case in cases:
+            case["relay"].open()
+            GPIO_mock.setup.assert_called_with("MockedOUT")
+            GPIO_mock.output.assert_called_with(18, case["expected_pin_state"])
+            GPIO_mock.setwarnings.assert_any_call(False)
+            GPIO_mock.setwarnings.assert_called_with(True)
