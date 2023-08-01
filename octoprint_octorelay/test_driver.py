@@ -12,5 +12,7 @@ from octoprint_octorelay.driver import Relay
 
 class TestRelayDriver(unittest.TestCase):
     def test_constructor(self):
-        relay = Relay(18, False)
+        relay = Relay(18, True)
         self.assertIsInstance(relay, Relay)
+        self.assertEqual(relay.pin, 18)
+        self.assertTrue(relay.inverted)
