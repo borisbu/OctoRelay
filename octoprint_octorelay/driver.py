@@ -2,7 +2,7 @@
 from typing import Optional
 from RPi import GPIO
 
-# The driver operated BCM mode of pins enumeration
+# The driver operates BCM mode of pins enumeration
 GPIO.setmode(GPIO.BCM)
 
 def xor(left: bool, right: bool) -> bool:
