@@ -97,12 +97,12 @@ jobs:
       - name: Prepare testing environment
         run: pip install coverage pylint
       - name: Test
-        working-directory: octoprint_octorelay
+        working-directory: tests
         run: python -m coverage run -m unittest test*.py
       - name: Lint
         run: pylint --rcfile=.pylintrc ./octoprint_octorelay
       - name: Report the coverage
-        working-directory: octoprint_octorelay
+        working-directory: tests
         run: |
           python -m coverage lcov --omit=test*,_version*
           python -m coverage report --show-missing --omit=test*,_version*
@@ -113,7 +113,7 @@ jobs:
           github-token: ${{ secrets.github_token }}
           flag-name: python-${{ matrix.python }}-octoprint-${{ matrix.octoprint }}
           parallel: true
-          file: ./octoprint_octorelay/coverage.lcov
+          file: ./tests/coverage.lcov
 
   finish:
     needs: [UI, Python]
