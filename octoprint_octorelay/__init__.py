@@ -233,7 +233,7 @@ class OctoRelayPlugin(
             self.model[index]["inverted_output"] = relay.inverted
             self.model[index]["relay_state"] = relay_state # bool since v3.1
             self.model[index]["labelText"] = settings[index]["labelText"]
-            self.model[index]["active"] = int(settings[index]["active"]) # todo make it bool later
+            self.model[index]["active"] = bool(settings[index]["active"])
             if relay_state:
                 self.model[index]["iconText"] = settings[index]["iconOn"]
                 self.model[index]["confirmOff"] = bool(settings[index]["confirmOff"])
@@ -265,8 +265,7 @@ class OctoRelayPlugin(
     def input_polling(self):
         self._logger.debug("input_polling")
         for index in RELAY_INDEXES:
-            # model::active is currently int, see update_ui()
-            active = bool(self.model[index]["active"])
+            active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
             actual_state = Relay(
                 self.model[index]["relay_pin"],
