@@ -41,8 +41,8 @@ class OctoRelayPlugin(
 	def get_settings_version(self):
 		return SETTINGS_VERSION
 
-    def get_settings_defaults(self): 
-        return get_default_settings()
+	def get_settings_defaults(self):
+		return get_default_settings()
 
     def get_template_configs(self):
         return get_templates()
