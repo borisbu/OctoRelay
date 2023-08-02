@@ -28,6 +28,8 @@ permissionsMock = Mock()
 sys.modules["octoprint.access.permissions"] = Mock(
     Permissions=permissionsMock
 )
+migrationsMock = Mock()
+sys.modules["octoprint_octorelay.migrations"] = migrationsMock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
@@ -199,12 +201,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_on_settings_migrate(self):
         # Should run the migrations
-        # todo find a way to mock migrate()
         self.plugin_instance._settings.get = Mock(return_value={})
         self.plugin_instance.on_settings_migrate(1, None)
         self.plugin_instance._logger.info.assert_any_call(
             "OctoRelay performs the migration of its settings from v0 to v1"
         )
+        migrationsMock.migrate.assert_called_with(0, self.plugin_instance._settings, self.plugin_instance._logger)
         self.plugin_instance._logger.info.assert_called_with("OctoRelay finished the migration of settings to v1")
 
     def test_get_template_configs(self):

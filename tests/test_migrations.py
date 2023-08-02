@@ -3,6 +3,9 @@ import unittest
 import sys
 from unittest.mock import Mock
 
+if "octoprint_octorelay.migrations" in sys.modules:
+    del sys.modules["octoprint_octorelay.migrations"]
+
 if "RPi.GPIO" in sys.modules:
     GPIO_mock = sys.modules["RPi.GPIO"]
 else:
