@@ -4,7 +4,8 @@ interface RelayInfo {
   iconText: string;
   labelText: string;
   relay_pin: number;
-  state: 1 | 0;
+  inverted_output: boolean;
+  relay_state: boolean;
 }
 
 type OwnMessage = Record<`r${number}`, RelayInfo>;
