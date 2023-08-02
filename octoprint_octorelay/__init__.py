@@ -216,6 +216,7 @@ class OctoRelayPlugin(
 
     def run_system_command(self, cmd):
         if cmd:
+            self._logger.info(f"OctoRelay runs system command: {cmd}")
             os.system(cmd)
 
     def update_ui(self):

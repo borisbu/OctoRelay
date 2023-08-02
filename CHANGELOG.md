@@ -6,6 +6,7 @@
 
 - Operating GPIO and obtaining relay state was extracted into the Relay driver.
 - Executing OS commands was extracted into a dedicated method.
+- Moved tests out of the distribution.
 - Changed the payload produced by `update_ui()`:
   - ~~`state (int)`~~ — the pin state, removed
   - `inverted_output (bool)` — added
