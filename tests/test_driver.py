@@ -83,3 +83,6 @@ class TestRelayDriver(unittest.TestCase):
             GPIO_mock.input.assert_called_with(18)
             GPIO_mock.setup.assert_called_with(18, "MockedOUT")
             GPIO_mock.output.assert_called_with(18, case["expected_pin_state"])
+
+if __name__ == "__main__":
+    unittest.main()

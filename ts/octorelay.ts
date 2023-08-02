@@ -1,5 +1,5 @@
 interface RelayInfo {
-  active: 1 | 0;
+  active: boolean;
   confirmOff: boolean;
   iconText: string;
   labelText: string;
@@ -91,7 +91,7 @@ $(() => {
           "justify-content": "center",
         });
         if (value.active !== undefined) {
-          btn.toggle(hasPermission && value.active === 1);
+          btn.toggle(hasPermission && value.active);
         }
         if (value.iconText !== undefined) {
           btn.html(value.iconText);
