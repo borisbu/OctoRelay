@@ -52,11 +52,12 @@ class OctoRelayPlugin(
             # First 4 relays used to have active=True
             self._logger.info("OctoRelay migrates to settings v1")
             for index in ["r1", "r2", "r3", "r4"]:
-                stored_active = self._settings.get([index, "active"])
-                self._logger.debug(f"relay {index}.active is {stored_active}")
-                if stored_active is None:
-                    self._logger.debug("changing it to True")
-                    self._settings.set([index, "active"], True)
+                stored = self._settings.get([index])
+                self._logger.debug(f"relay {index} stored settings: {stored}")
+                if "active" not in stored:
+                    self._logger.debug("setting active=True for it")
+                    override = { **stored, "active": True }
+                    self._settings.set([index], override)
         self._logger.info(f"OctoRelay finished the migration of settings to v{target}")
 
     def get_template_configs(self):
