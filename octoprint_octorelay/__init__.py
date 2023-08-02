@@ -38,7 +38,7 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             self.model[index] = {}
 
-	def get_settings_version(self):
+    def get_settings_version(self):
         return SETTINGS_VERSION
 
     def get_settings_defaults(self):
