@@ -55,7 +55,7 @@ class OctoRelayPlugin(
                 stored = self._settings.get([index])
                 self._logger.debug(f"relay {index} stored settings: {stored}")
                 if "active" not in stored:
-                    self._logger.debug("setting active=True for it")
+                    self._logger.debug("inserting active=True into it")
                     override = { **stored, "active": True }
                     self._settings.set([index], override)
         self._logger.info(f"OctoRelay finished the migration of settings to v{target}")
