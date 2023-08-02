@@ -1,12 +1,4 @@
 # -*- coding: utf-8 -*-
-def migrate(current: int, settings, logger):
-    # List of migration functions beginning from the one needed to migrate from v0 to v1
-    migrations = [ to_v1 ]
-    # Current version number corresponds to the list index to begin migrations from
-    jobs = migrations[current::]
-    for job in jobs:
-        job(settings, logger)
-
 def to_v1(settings, logger):
     # First 4 relays used to have active=True
     logger.info("OctoRelay migrates to settings v1")
@@ -17,3 +9,12 @@ def to_v1(settings, logger):
             logger.debug("inserting active=True into it")
             override = { **stored, "active": True }
             settings.set([index], override)
+
+# List of migration functions beginning from the one needed to migrate from v0 to v1
+migrators = [ to_v1 ]
+
+def migrate(current: int, settings, logger):
+    # Current version number corresponds to the list index to begin migrations from
+    jobs = migrators[current::]
+    for job in jobs:
+        job(settings, logger)
