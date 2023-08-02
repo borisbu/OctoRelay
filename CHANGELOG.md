@@ -2,6 +2,11 @@
 
 ## Version 3
 
+### 3.1.1
+
+- Changed the payload produced by `update_ui()` method:
+  - `active` — type ~~`(int)`~~ changed to `(bool)`. 
+
 ### 3.1.0
 
 - Operating GPIO and obtaining relay state was extracted into the Relay driver.
