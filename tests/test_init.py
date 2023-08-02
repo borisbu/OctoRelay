@@ -197,6 +197,23 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(first["r1"]["relay_pin"], 14)
         self.assertEqual(second["r1"]["relay_pin"], 4)
 
+    def test_on_settings_migrate(self):
+        # Should modify settings according to the target version
+        self.plugin_instance._settings.get = Mock(return_value={
+            "relay_pin": 17,
+        })
+        self.plugin_instance.on_settings_migrate(1, None)
+        self.plugin_instance._logger.info.assert_any_call(
+            "OctoRelay performs the migration of its settings from v0 to v1"
+        )
+        self.plugin_instance._logger.info.assert_any_call("OctoRelay migrates to settings v1")
+        for index in ["r1", "r2", "r3", "r4"]:
+            self.plugin_instance._settings.set.assert_any_call([index], {
+                "relay_pin": 17,
+                "active": True
+            })
+        self.plugin_instance._logger.info.assert_called_with("OctoRelay finished the migration of settings to v1")
+
     def test_get_template_configs(self):
         expected = [
             { "type": "navbar", "custom_bindings": False },
