@@ -15,6 +15,7 @@ from octoprint_octorelay.const import (
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION
 )
 from octoprint_octorelay.driver import Relay
+from octoprint_octorelay.migrations import migrate
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -45,19 +46,9 @@ class OctoRelayPlugin(
         return get_default_settings()
 
     def on_settings_migrate(self, target: int, current):
-        if current is None:
-            current = 0
+        current = current or 0
         self._logger.info(f"OctoRelay performs the migration of its settings from v{current} to v{target}")
-        if current < 1:
-            # First 4 relays used to have active=True
-            self._logger.info("OctoRelay migrates to settings v1")
-            for index in ["r1", "r2", "r3", "r4"]:
-                stored = self._settings.get([index])
-                self._logger.debug(f"relay {index} stored settings: {stored}")
-                if "active" not in stored:
-                    self._logger.debug("inserting active=True into it")
-                    override = { **stored, "active": True }
-                    self._settings.set([index], override)
+        migrate(current, self._settings, self._logger)
         self._logger.info(f"OctoRelay finished the migration of settings to v{target}")
 
     def get_template_configs(self):
