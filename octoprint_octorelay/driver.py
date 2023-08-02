@@ -24,21 +24,13 @@ class Relay():
         """Deactivates the current flow through the relay."""
         self.toggle(False)
 
-    def get_pin_state(self) -> bool:
-        """Returns the logical state of the pin controlling the relay."""
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        state = bool(GPIO.input(self.pin))
-        GPIO.setwarnings(True)
-        return state
-
-    def get_state_from_pin_state(self, pin_state: bool) -> bool:
-        """Returns the logical state of the relay having its pin state"""
-        return xor(self.inverted, pin_state)
-
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        return self.get_state_from_pin_state(self.get_pin_state())
+        GPIO.setwarnings(False)
+        GPIO.setup(self.pin, GPIO.OUT)
+        pin_state = bool(GPIO.input(self.pin))
+        GPIO.setwarnings(True)
+        return xor(self.inverted, pin_state)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """

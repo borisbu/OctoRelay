@@ -271,9 +271,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # First active relay having state not equal to the one stored in model should trigger UI update
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.model = {
-            "r1": { "active": 0, "relay_pin": 4, "pin_state": True },
-            "r2": { "active": 1, "relay_pin": 17, "pin_state": True },
-            "r3": { "active": 1, "relay_pin": 18, "pin_state": False }
+            "r1": { "active": 0, "relay_pin": 4, "inverted_output": False, "relay_state": True },
+            "r2": { "active": 1, "relay_pin": 17, "inverted_output": False, "relay_state": True },
+            "r3": { "active": 1, "relay_pin": 18, "inverted_output": False, "relay_state": False }
         }
         GPIO_mock.input = Mock(return_value=1)
         self.plugin_instance.input_polling()
@@ -281,7 +281,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
 
     def test_update_ui(self):
-        # Should send message via plugin manager containing actual settings and the pins state
+        # Should send message via plugin manager containing actual settings and the relay state
         GPIO_mock.input = Mock(return_value=0)
         cases = [
             { "inverted": True, "expectedIcon": "ON" },
@@ -301,7 +301,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             for index in self.plugin_instance.get_settings_defaults():
                 expected_model[index] = {
                     "relay_pin": 17,
-                    "pin_state": False,
+                    "inverted_output": case["inverted"],
+                    "relay_state": case["inverted"],
                     "labelText": "TEST",
                     "active": 1,
                     "iconText": case["expectedIcon"],
