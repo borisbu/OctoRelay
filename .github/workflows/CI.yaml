@@ -99,8 +99,6 @@ jobs:
       - name: Test
         working-directory: tests
         run: python -m coverage run -m unittest test*.py
-      - name: Lint
-        run: pylint --rcfile=.pylintrc ./octoprint_octorelay
       - name: Report the coverage
         working-directory: tests
         run: |
@@ -114,6 +112,8 @@ jobs:
           flag-name: python-${{ matrix.python }}-octoprint-${{ matrix.octoprint }}
           parallel: true
           file: ./tests/coverage.lcov
+      - name: Lint
+        run: pylint --rcfile=.pylintrc ./octoprint_octorelay
 
   finish:
     needs: [UI, Python]
