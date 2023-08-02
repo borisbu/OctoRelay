@@ -54,7 +54,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_get_settings_defaults(self):
         expected = {
             "r1": {
-                "active": True,
+                "active": False,
                 "relay_pin": 4,
                 "inverted_output": True,
                 "initial_value": False,
@@ -69,7 +69,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 10,
             },
             "r2": {
-                "active": True,
+                "active": False,
                 "relay_pin": 17,
                 "inverted_output": True,
                 "initial_value": False,
@@ -87,7 +87,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 0,
             },
             "r3": {
-                "active": True,
+                "active": False,
                 "relay_pin": 18,
                 "inverted_output": True,
                 "initial_value": False,
@@ -105,7 +105,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 10,
             },
             "r4": {
-                "active": True,
+                "active": False,
                 "relay_pin": 23,
                 "inverted_output": True,
                 "initial_value": True,
