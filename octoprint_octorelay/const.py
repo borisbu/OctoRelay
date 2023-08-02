@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
+# Versioning of the plugin's default settings described below
+SETTINGS_VERSION = 1
+
 # Plugin's default settings, immutable getter
+# Warning: every change to these settings requires:
+# - to increase the SETTINGS_VERSION above
+# - and migration to preserve user's previous configuration intact
 def get_default_settings():
     return {
         "r1": {

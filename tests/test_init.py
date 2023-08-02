@@ -51,6 +51,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "r5": {}, "r6": {}, "r7": {}, "r8": {}
         })
 
+    def test_get_settings_version(self):
+        self.assertEqual(self.plugin_instance.get_settings_version(), 1)
+
     def test_get_settings_defaults(self):
         expected = {
             "r1": {

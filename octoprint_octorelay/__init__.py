@@ -12,7 +12,7 @@ from octoprint.access.permissions import Permissions
 
 from octoprint_octorelay.const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
-    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
+    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION
 )
 from octoprint_octorelay.driver import Relay
 
@@ -37,6 +37,9 @@ class OctoRelayPlugin(
         self.model = {}
         for index in RELAY_INDEXES:
             self.model[index] = {}
+
+	def get_settings_version(self):
+		return SETTINGS_VERSION
 
     def get_settings_defaults(self):
         return get_default_settings()
