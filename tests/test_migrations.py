@@ -28,7 +28,6 @@ class TestMigrations(unittest.TestCase):
         )
         logger = Mock()
         to_v1(settings, logger)
-        logger.info.assert_any_call("OctoRelay migrates to settings v1")
         for index in ["r1", "r2", "r3", "r4"]:
             settings.set.assert_any_call([index], {
                 "relay_pin": 17,

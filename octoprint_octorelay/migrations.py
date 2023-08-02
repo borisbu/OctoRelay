@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 def to_v1(settings, logger):
     # First 4 relays used to have active=True
-    logger.info("OctoRelay migrates to settings v1")
     for index in ["r1", "r2", "r3", "r4"]:
         stored = settings.get([index])
         logger.debug(f"relay {index} stored settings: {stored}")
@@ -16,5 +15,6 @@ migrators = [ to_v1 ]
 def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from
     jobs = migrators[current::]
-    for job in jobs:
+    for index, job in enumerate(jobs):
+        logger.info(f"OctoRelay migrates to settings v{index + 1}")
         job(settings, logger)
