@@ -13,6 +13,7 @@ else:
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay
+del sys.modules["octoprint_octorelay"] # avoid keeping __init__.py imported in this test
 
 class TestRelayDriver(unittest.TestCase):
     def test_constructor(self):
