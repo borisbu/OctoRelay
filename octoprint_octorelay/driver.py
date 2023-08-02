@@ -9,7 +9,7 @@ def xor(left: bool, right: bool) -> bool:
     return left is not right
 
 class Relay():
-    def __init__(self, pin: int, inverted: Optional[bool]):
+    def __init__(self, pin: int, inverted: bool):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed, None - when only going to read its pin state
 
