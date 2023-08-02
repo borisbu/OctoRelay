@@ -2,6 +2,11 @@
 
 ## Version 3
 
+### 3.1.1
+
+- Changed the payload produced by `update_ui()` method:
+  - `active` — type ~~`(int)`~~ changed to `(bool)`.
+
 ### 3.1.0
 
 - Operating GPIO and obtaining relay state was extracted into the Relay driver.
@@ -65,7 +70,7 @@
 
 - Refactoring.
   - Using `f"string"` syntax instead of `"".format()`.
-  - Strict handling of booleans. 
+  - Strict handling of booleans.
 
 ### 2.2.2
 
@@ -108,7 +113,7 @@
 - Fixed incorrect description of OS Command setting in the documentation.
 - Plugin executable code now has `99%` test coverage.
   - All following contributions, features and fixes should take this into account.
-  
+
 
 ### 2.0.0
 
