@@ -2,6 +2,15 @@
 
 ## Version 3
 
+### 3.1.0
+
+- Operating GPIO and obtaining relay state was extracted into the Relay driver.
+- Executing OS commands was extracted into a dedicated method.
+- Changed the payload produced by `update_ui()`:
+  - ~~`state (int)`~~ — the pin state, removed
+  - `inverted_output (bool)` — added
+  - `relay_state (bool)` — added.
+
 ### 3.0.1
 
 - Fixed issue on partial saving of the plugin settings.
