@@ -513,15 +513,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("flask.jsonify")
     @patch("os.system")
-    def test_on_api_command(self, jsonify_mock, system_mock):
+    def test_on_api_command(self, system_mock, jsonify_mock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
-        GPIO_mock.input = Mock(return_value=1)
         cases = [
             {
                 "command": "listAllStatus",
                 "data": None,
-                "inverted": True,
+                "closed": False,
                 "expectedJson": [
                     { "id": "r1", "name": "TEST", "active": False },
                     { "id": "r2", "name": "TEST", "active": False },
@@ -536,7 +535,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             {
                 "command": "listAllStatus",
                 "data": None,
-                "inverted": False,
+                "closed": True,
                 "expectedJson": [
                     { "id": "r1", "name": "TEST", "active": True },
                     { "id": "r2", "name": "TEST", "active": True },
@@ -551,38 +550,40 @@ class TestOctoRelayPlugin(unittest.TestCase):
             {
                 "command": "getStatus",
                 "data": { "pin": "r4" },
-                "inverted": True,
+                "closed": False,
                 "expectedStatus": False
             },
             {
                 "command": "getStatus",
                 "data": { "pin": "r4" },
-                "inverted": False,
+                "closed": True,
                 "expectedStatus": True
             },
             {
                 "command": "update",
                 "data": { "pin": "r4" },
-                "inverted": True,
+                "closed": False,
                 "expectedStatus": "ok",
-                "expectedOutput": True,
+                "expectedToggle": True,
                 "expectedCommand": "CommandOnMock"
             },
             {
                 "command": "update",
                 "data": { "pin": "r4" },
-                "inverted": False,
+                "closed": True,
                 "expectedStatus": "ok",
-                "expectedOutput": False,
+                "expectedToggle": False,
                 "expectedCommand": "CommandOffMock"
             }
         ]
         for case in cases:
+            relayMock.is_closed = Mock(return_value=case["closed"])
+            relayMock.toggle = Mock(return_value=not case["closed"])
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
             self.plugin_instance._settings.get = Mock(return_value={
                 "active": True,
                 "relay_pin": 17,
-                "inverted_output": case["inverted"],
+                "inverted_output": False,
                 "labelText": "TEST",
                 "cmdON": "CommandOnMock",
                 "cmdOFF": "CommandOffMock"
@@ -590,13 +591,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.on_api_command(case["command"], case["data"])
             if case["command"] != "listAllStatus":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
-            if hasattr(case, "expectedJson"):
+            if "expectedJson" in case:
                 jsonify_mock.assert_called_with(case["expectedJson"])
-            if hasattr(case, "expectedOutput"):
-                GPIO_mock.output.assert_called_with("r4", case["expectedOutput"])
-            if hasattr(case, "expectedCommand"):
+            if "expectedToggle" in case:
+                relayMock.toggle.assert_called_with()
+            if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
-            if hasattr(case, "expectedStatus"):
+            if "expectedStatus" in case:
                 jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
     @patch("flask.abort")
