@@ -33,6 +33,7 @@ def v1(settings, logger):
                 after[replacements[key]] = value
             else:
                 after[key] = value
+        logger.debug(f"replacing it with: {after}")
         settings.set([index], after)
 
 # List of migration functions starting from v0->v1
