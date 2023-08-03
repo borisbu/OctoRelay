@@ -395,7 +395,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedMethod"].assert_called_with()
 
     def test_on_after_startup(self):
-        # Depending on actual settings should set the pins state, update UI and start polling
+        # Depending on actual settings should set the relay state, update UI and start polling
         self.plugin_instance.update_ui = Mock()
         cases = [
             { "inverted": True, "initial": True, "expectedOutput": False },
@@ -411,8 +411,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "initial_value": case["initial"]
             })
             self.plugin_instance.on_after_startup()
-            GPIO_mock.setup.assert_called_with(17, "MockedOUT")
-            GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
+            relayConstructorMock.assert_called_with(17, case["inverted"])
+            relayMock.toggle.assert_called_with(case["initial"])
             self.plugin_instance.update_ui.assert_called_with()
             utilMock.RepeatedTimer.assert_called_with(
                 0.3, self.plugin_instance.input_polling, daemon = True
