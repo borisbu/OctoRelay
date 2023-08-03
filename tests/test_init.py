@@ -30,6 +30,11 @@ sys.modules["octoprint.access.permissions"] = Mock(
 )
 migrationsMock = Mock()
 sys.modules["octoprint_octorelay.migrations"] = migrationsMock
+relayMock = Mock()
+relayConstructorMock = Mock(return_value=relayMock)
+sys.modules["octoprint_octorelay.driver"] = Mock(
+    Relay=relayConstructorMock
+)
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
@@ -290,8 +295,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "r2": { "active": True, "relay_pin": 17, "inverted_output": False, "relay_state": True },
             "r3": { "active": True, "relay_pin": 18, "inverted_output": False, "relay_state": False }
         }
-        GPIO_mock.input = Mock(return_value=1)
+        relayMock.is_closed = Mock(return_value=True)
         self.plugin_instance.input_polling()
+        relayConstructorMock.assert_any_call(4, False)
+        relayConstructorMock.assert_any_call(17, False)
+        relayConstructorMock.assert_any_call(18, False)
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
 
