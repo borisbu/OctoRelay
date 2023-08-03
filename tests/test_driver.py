@@ -6,13 +6,10 @@ from unittest.mock import Mock
 if "octoprint_octorelay.driver" in sys.modules:
     del sys.modules["octoprint_octorelay.driver"]
 
-if "RPi.GPIO" in sys.modules:
-    GPIO_mock = sys.modules["RPi.GPIO"]
-else:
-    GPIO_mock = Mock()
-    GPIO_mock.BCM = "MockedBCM"
-    GPIO_mock.OUT = "MockedOUT"
-    sys.modules["RPi.GPIO"] = GPIO_mock
+GPIO_mock = Mock()
+GPIO_mock.BCM = "MockedBCM"
+GPIO_mock.OUT = "MockedOUT"
+sys.modules["RPi.GPIO"] = GPIO_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay

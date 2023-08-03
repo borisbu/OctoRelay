@@ -7,13 +7,7 @@ from unittest.mock import Mock
 if "octoprint_octorelay.migrations" in sys.modules:
     del sys.modules["octoprint_octorelay.migrations"]
 
-if "RPi.GPIO" in sys.modules:
-    GPIO_mock = sys.modules["RPi.GPIO"]
-else:
-    GPIO_mock = Mock()
-    GPIO_mock.BCM = "MockedBCM"
-    GPIO_mock.OUT = "MockedOUT"
-    sys.modules["RPi.GPIO"] = GPIO_mock
+sys.modules["RPi.GPIO"] = Mock()
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.const import SETTINGS_VERSION

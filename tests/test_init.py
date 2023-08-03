@@ -10,13 +10,8 @@ from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 # Patching required before importing OctoRelayPlugin class
-if "RPi.GPIO" in sys.modules:
-    GPIO_mock = sys.modules["RPi.GPIO"]
-else:
-    GPIO_mock = Mock()
-    GPIO_mock.BCM = "MockedBCM"
-    GPIO_mock.OUT = "MockedOUT"
-    sys.modules["RPi.GPIO"] = GPIO_mock
+if "RPi.GPIO" not in sys.modules:
+    sys.modules["RPi.GPIO"] = Mock()
 
 timerMock = Mock()
 utilMock = Mock(
