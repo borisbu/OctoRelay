@@ -66,129 +66,129 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "relay_pin": 4,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": "&#128161;",
-                "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                "labelText": "Light",
-                "confirmOff": False,
-                "autoONforPrint": True,
-                "autoOFFforPrint": True,
-                "autoOffDelay": 10,
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": "&#128161;",
+                "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+                "label_text": "Light",
+                "confirm_off": False,
+                "auto_on_before_print": True,
+                "auto_off_after_print": True,
+                "auto_off_delay": 10,
             },
             "r2": {
                 "active": False,
                 "relay_pin": 17,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
-                "iconOff": (
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
+                "icon_off": (
                     """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg" """
                     """style="filter: opacity(20%)">"""
                 ),
-                "labelText": "Printer",
-                "confirmOff": True,
-                "autoONforPrint": False,
-                "autoOFFforPrint": False,
-                "autoOffDelay": 0,
+                "label_text": "Printer",
+                "confirm_off": True,
+                "auto_on_before_print": False,
+                "auto_off_after_print": False,
+                "auto_off_delay": 0,
             },
             "r3": {
                 "active": False,
                 "relay_pin": 18,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
-                "iconOff": (
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
+                "icon_off": (
                     """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" """
                     """style="filter: opacity(20%)">"""
                 ),
-                "labelText": "Fan",
-                "confirmOff": False,
-                "autoONforPrint": True,
-                "autoOFFforPrint": True,
-                "autoOffDelay": 10,
+                "label_text": "Fan",
+                "confirm_off": False,
+                "auto_on_before_print": True,
+                "auto_off_after_print": True,
+                "auto_off_delay": 10,
             },
             "r4": {
                 "active": False,
                 "relay_pin": 23,
                 "inverted_output": True,
                 "initial_value": True,
-                "cmdON": "sudo service webcamd start",
-                "cmdOFF": "sudo service webcamd stop",
-                "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                "iconOff": (
+                "cmd_on": "sudo service webcamd start",
+                "cmd_off": "sudo service webcamd stop",
+                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                "icon_off": (
                     """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
                     """style="filter: opacity(20%)">"""
                 ),
-                "labelText": "Webcam",
-                "confirmOff": False,
-                "autoONforPrint": True,
-                "autoOFFforPrint": True,
-                "autoOffDelay": 10,
+                "label_text": "Webcam",
+                "confirm_off": False,
+                "auto_on_before_print": True,
+                "auto_off_after_print": True,
+                "auto_off_delay": 10,
             },
             "r5": {
                 "active": False,
                 "relay_pin": 24,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": "ON",
-                "iconOff": "OFF",
-                "labelText": "R5",
-                "confirmOff": False,
-                "autoONforPrint": False,
-                "autoOFFforPrint": False,
-                "autoOffDelay": 0,
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": "ON",
+                "icon_off": "OFF",
+                "label_text": "R5",
+                "confirm_off": False,
+                "auto_on_before_print": False,
+                "auto_off_after_print": False,
+                "auto_off_delay": 0,
             },
             "r6": {
                 "active": False,
                 "relay_pin": 25,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": "&#128161;",
-                "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                "labelText": "R6",
-                "confirmOff": False,
-                "autoONforPrint": False,
-                "autoOFFforPrint": False,
-                "autoOffDelay": 0,
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": "&#128161;",
+                "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+                "label_text": "R6",
+                "confirm_off": False,
+                "auto_on_before_print": False,
+                "auto_off_after_print": False,
+                "auto_off_delay": 0,
             },
             "r7": {
                 "active": False,
                 "relay_pin": 8,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": "&#128161;",
-                "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                "labelText": "R7",
-                "confirmOff": False,
-                "autoONforPrint": False,
-                "autoOFFforPrint": False,
-                "autoOffDelay": 0,
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": "&#128161;",
+                "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+                "label_text": "R7",
+                "confirm_off": False,
+                "auto_on_before_print": False,
+                "auto_off_after_print": False,
+                "auto_off_delay": 0,
             },
             "r8": {
                 "active": False,
                 "relay_pin": 7,
                 "inverted_output": True,
                 "initial_value": False,
-                "cmdON": "",
-                "cmdOFF": "",
-                "iconOn": "&#128161;",
-                "iconOff": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
-                "labelText": "R8",
-                "confirmOff": False,
-                "autoONforPrint": False,
-                "autoOFFforPrint": False,
-                "autoOffDelay": 0,
+                "cmd_on": "",
+                "cmd_off": "",
+                "icon_on": "&#128161;",
+                "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
+                "label_text": "R8",
+                "confirm_off": False,
+                "auto_on_before_print": False,
+                "auto_off_after_print": False,
+                "auto_off_delay": 0,
             },
         }
         actual = self.plugin_instance.get_settings_defaults()
@@ -315,10 +315,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "active": True,
                 "relay_pin": relayMock.pin,
                 "inverted_output": False,
-                "iconOn": "ON",
-                "iconOff": "OFF",
-                "labelText": "TEST",
-                "confirmOff": False
+                "icon_on": "ON",
+                "icon_off": "OFF",
+                "label_text": "TEST",
+                "confirm_off": False
             })
             expected_model = {}
             for index in self.plugin_instance.get_settings_defaults():
@@ -326,10 +326,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "relay_pin": 17,
                     "inverted_output": False,
                     "relay_state": case["closed"],
-                    "labelText": "TEST",
+                    "label_text": "TEST",
                     "active": True,
-                    "iconText": case["expectedIcon"],
-                    "confirmOff": False
+                    "icon_html": case["expectedIcon"],
+                    "confirm_off": False
                 }
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)
@@ -433,8 +433,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
-                "autoONforPrint": case["autoOn"],
-                "cmdON": "CommandMock"
+                "auto_on_before_print": case["autoOn"],
+                "cmd_on": "CommandMock"
             })
             self.plugin_instance.print_started()
             timerMock.cancel.assert_called_with()
@@ -457,8 +457,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "active": False,
             "relay_pin": 17,
             "inverted_output": False,
-            "autoONforPrint": False,
-            "cmdON": None
+            "auto_on_before_print": False,
+            "cmd_on": None
         })
         self.plugin_instance.print_started()
         self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test, reason: Caught!")
@@ -480,9 +480,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": False,
-                "autoOFFforPrint": case["autoOff"],
-                "autoOffDelay": 300,
-                "cmdOFF": "CommandMock"
+                "auto_off_after_print": case["autoOff"],
+                "auto_off_delay": 300,
+                "cmd_off": "CommandMock"
             })
             self.plugin_instance.print_stopped()
             if case["expectedCall"]:
@@ -582,9 +582,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": False,
-                "labelText": "TEST",
-                "cmdON": "CommandOnMock",
-                "cmdOFF": "CommandOffMock"
+                "label_text": "TEST",
+                "cmd_on": "CommandOnMock",
+                "cmd_off": "CommandOffMock"
             })
             self.plugin_instance.on_api_command(case["command"], case["data"])
             if case["command"] != "listAllStatus":
@@ -605,8 +605,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "active": True,
             "relay_pin": 17,
             "inverted_output": False,
-            "cmdON": "CommandOnMock",
-            "cmdOFF": "CommandOffMock"
+            "cmd_on": "CommandOnMock",
+            "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
         self.plugin_instance.on_api_command("update", { "pin": "r4" })
