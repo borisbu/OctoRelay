@@ -13,7 +13,7 @@ sys.modules["RPi.GPIO"] = Mock()
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.const import SETTINGS_VERSION
-from octoprint_octorelay.migrations import migrators, migrate, v0
+from octoprint_octorelay.migrations import migrators, migrate, v0, v1
 
 # avoid keeping other modules automatically imported by this test
 del sys.modules["octoprint_octorelay"]
@@ -35,6 +35,50 @@ class TestMigrations(unittest.TestCase):
             settings.set.assert_any_call([index], {
                 "relay_pin": 17,
                 "active": True
+            })
+
+    def test_v1(self):
+        # Should rename camel case settings to snake one
+        settings = Mock(
+            get = Mock(return_value={
+                "active": False,
+                "relay_pin": 23,
+                "inverted_output": True,
+                "initial_value": True,
+                "cmdON": "sudo service webcamd start",
+                "cmdOFF": "sudo service webcamd stop",
+                "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                "iconOff": (
+                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+                    """style="filter: opacity(20%)">"""
+                ),
+                "labelText": "Webcam",
+                "confirmOff": False,
+                "autoONforPrint": True,
+                "autoOFFforPrint": True,
+                "autoOffDelay": 10,
+            })
+        )
+        logger = Mock()
+        v1(settings, logger)
+        for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]:
+            settings.set.assert_any_call([index], {
+                "active": False,
+                "relay_pin": 23,
+                "inverted_output": True,
+                "initial_value": True,
+                "cmd_on": "sudo service webcamd start",
+                "cmd_off": "sudo service webcamd stop",
+                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                "icon_off": (
+                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+                    """style="filter: opacity(20%)">"""
+                ),
+                "label_text": "Webcam",
+                "confirm_off": False,
+                "auto_on_before_print": True,
+                "auto_off_after_print": True,
+                "auto_off_delay": 10,
             })
 
     def test_migrate(self):

@@ -27,7 +27,7 @@ def v1(settings, logger):
         before = settings.get([index])
         after = {}
         logger.debug(f"relay {index} stored settings: {before}")
-        for key, value in before:
+        for key, value in before.items():
             if key in replacements:
                 after[replacements[key]] = value
             else:
