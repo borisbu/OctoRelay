@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# pylint: disable=duplicate-code
 import unittest
 import sys
 from unittest.mock import Mock
@@ -16,7 +17,7 @@ else:
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.const import SETTINGS_VERSION
-from octoprint_octorelay.migrations import migrators, migrate, to_v1
+from octoprint_octorelay.migrations import migrators, migrate, v0
 del sys.modules["octoprint_octorelay"] # avoid keeping __init__.py imported in this test
 
 class TestMigrations(unittest.TestCase):
@@ -24,13 +25,13 @@ class TestMigrations(unittest.TestCase):
         # Sould match the settings version
         self.assertEqual(len(migrators), SETTINGS_VERSION)
 
-    def test_to_v1(self):
+    def test_v0(self):
         # Should set first 4 relays active=True if active is not set
         settings = Mock(
             get = Mock(return_value={"relay_pin": 17})
         )
         logger = Mock()
-        to_v1(settings, logger)
+        v0(settings, logger)
         for index in ["r1", "r2", "r3", "r4"]:
             settings.set.assert_any_call([index], {
                 "relay_pin": 17,

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-def to_v1(settings, logger):
+def v0(settings, logger):
+    """Migration from v0 to v1"""
     # First 4 relays used to have active=True
     for index in ["r1", "r2", "r3", "r4"]:
         stored = settings.get([index])
@@ -9,8 +10,8 @@ def to_v1(settings, logger):
             override = { **stored, "active": True }
             settings.set([index], override)
 
-# List of migration functions beginning from the one needed to migrate from v0 to v1
-migrators = [ to_v1 ]
+# List of migration functions starting from v0->v1
+migrators = [ v0 ]
 
 def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from
