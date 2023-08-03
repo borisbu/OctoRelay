@@ -25,12 +25,13 @@ def v1(settings, logger):
     }
     for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]:
         before = settings.get([index])
+        after = {}
         logger.debug(f"relay {index} stored settings: {before}")
-        after = { **before }
-        for src, dest in replacements.items():
-            after[dest] = before[src]
-            if src in after:
-                del after[src]
+        for key, value in before:
+            if key in replacements:
+                after[replacements[key]] = value
+            else:
+                after[key] = value
         settings.set([index], after)
 
 # List of migration functions starting from v0->v1
