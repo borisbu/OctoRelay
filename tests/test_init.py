@@ -343,7 +343,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("os.system")
     def test_turn_off_relay(self, system_mock):
-        # Should set the pin state depending on inverted parameter and execute the supplied command
+        # Should turn the relay off and execute the supplied command
         self.plugin_instance.update_ui = Mock()
         cases = [
             { "inverted": True, "expectedOutput": True },
@@ -351,24 +351,22 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ]
         for case in cases:
             self.plugin_instance.turn_off_relay(17, case["inverted"], "CommandMock")
-            GPIO_mock.setup.assert_called_with(17, "MockedOUT")
-            GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
-            GPIO_mock.setwarnings.assert_called_with(True)
+            relayConstructorMock.assert_called_with(17, case["inverted"])
+            relayMock.open.assert_called_with()
             system_mock.assert_called_with("CommandMock")
             self.plugin_instance.update_ui.assert_called_with()
 
     @patch("os.system")
     def test_turn_on_relay(self, system_mock):
-        # Depending on relay type it should set its pin state and execute the supplied command
+        # Should turn the relay on and execute the supplied command
         cases = [
             { "inverted": True, "expectedOutput": False},
             { "inverted": False, "expectedOutput": True },
         ]
         for case in cases:
             self.plugin_instance.turn_on_relay(17, case["inverted"], "CommandMock")
-            GPIO_mock.setup.assert_called_with(17, "MockedOUT")
-            GPIO_mock.output.assert_called_with(17, case["expectedOutput"])
-            GPIO_mock.setwarnings.assert_called_with(True)
+            relayConstructorMock.assert_called_with(17, case["inverted"])
+            relayMock.close.assert_called_with()
             system_mock.assert_called_with("CommandMock")
 
     @patch("octoprint.plugin")
