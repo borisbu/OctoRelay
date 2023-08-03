@@ -1,8 +1,8 @@
 interface RelayInfo {
   active: boolean;
-  confirmOff: boolean;
-  iconText: string;
-  labelText: string;
+  confirm_off: boolean;
+  icon_html: string;
+  label_text: string;
   relay_pin: number;
   inverted_output: boolean;
   relay_state: boolean;
@@ -54,15 +54,15 @@ $(() => {
       const handleClick = (key: string, value: RelayInfo) => {
         const command = () =>
           OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
-        if (!value.confirmOff) {
+        if (!value.confirm_off) {
           return command();
         }
         const dialog = $("#octorelay-confirmation-dialog");
-        dialog.find(".modal-title").text("Turning " + value.labelText + " off");
+        dialog.find(".modal-title").text("Turning " + value.label_text + " off");
         dialog
           .find("#octorelay-confirmation-text")
           .text(
-            "Are you sure you want to turn the " + value.labelText + " off?"
+            "Are you sure you want to turn the " + value.label_text + " off?"
           );
         dialog
           .find(".btn-cancel")
@@ -93,11 +93,11 @@ $(() => {
         if (value.active !== undefined) {
           btn.toggle(hasPermission && value.active);
         }
-        if (value.iconText !== undefined) {
-          btn.html(value.iconText);
+        if (value.icon_html !== undefined) {
+          btn.html(value.icon_html);
         }
-        if (value.labelText !== undefined) {
-          btn.attr("title", value.labelText);
+        if (value.label_text !== undefined) {
+          btn.attr("title", value.label_text);
         }
         btn.off("click").on("click", () => handleClick(key, value));
       }
