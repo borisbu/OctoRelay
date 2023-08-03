@@ -3,12 +3,12 @@ def v0(settings, logger):
     """Migration from v0 to v1"""
     # First 4 relays used to have active=True
     for index in ["r1", "r2", "r3", "r4"]:
-        stored = settings.get([index])
-        logger.debug(f"relay {index} stored settings: {stored}")
-        if "active" not in stored:
+        before = settings.get([index])
+        logger.debug(f"relay {index} stored settings: {before}")
+        if "active" not in before:
             logger.debug("inserting active=True into it")
-            override = { **stored, "active": True }
-            settings.set([index], override)
+            after = { **before, "active": True }
+            settings.set([index], after)
 
 # List of migration functions starting from v0->v1
 migrators = [ v0 ]
