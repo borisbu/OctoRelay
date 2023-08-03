@@ -3,20 +3,18 @@ import unittest
 import sys
 from unittest.mock import Mock
 
-if "octoprint_octorelay.driver" in sys.modules:
-    del sys.modules["octoprint_octorelay.driver"]
-
-if "RPi.GPIO" in sys.modules:
-    GPIO_mock = sys.modules["RPi.GPIO"]
-else:
-    GPIO_mock = Mock()
-    GPIO_mock.BCM = "MockedBCM"
-    GPIO_mock.OUT = "MockedOUT"
-    sys.modules["RPi.GPIO"] = GPIO_mock
+# Mocks used for assertions
+GPIO_mock = Mock()
+GPIO_mock.BCM = "MockedBCM"
+GPIO_mock.OUT = "MockedOUT"
+sys.modules["RPi.GPIO"] = GPIO_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay
-del sys.modules["octoprint_octorelay"] # avoid keeping __init__.py imported in this test
+
+# avoid keeping other modules automatically imported by this test
+del sys.modules["octoprint_octorelay"]
+del sys.modules["octoprint_octorelay.migrations"]
 
 class TestRelayDriver(unittest.TestCase):
     def test_constructor(self):
