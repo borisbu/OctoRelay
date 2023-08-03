@@ -113,7 +113,7 @@ jobs:
           parallel: true
           file: ./tests/coverage.lcov
       - name: Lint
-        run: pylint --rcfile=.pylintrc ./octoprint_octorelay
+        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
 
   finish:
     needs: [UI, Python]

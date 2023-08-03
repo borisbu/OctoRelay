@@ -2,6 +2,14 @@
 
 ## Version 3
 
+### 3.2.0
+
+- This release fixes a UX bug for new installations found and reported by [@kds69](https://github.com/kds69).
+  - When installing the plugin first time first 4 relays used to be activated by default having sample configuration.
+  - From now on all relays are deactivated by default to prevent unexpected side effects.
+- For existing installations this release introduces a new feature — the plugin settings migration.
+  - This update will migrate the existing plugin settings and preserve the activity state of the fist 4 relays.
+
 ### 3.1.1
 
 - Changed the payload produced by `update_ui()` method:

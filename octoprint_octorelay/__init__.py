@@ -12,9 +12,10 @@ from octoprint.access.permissions import Permissions
 
 from octoprint_octorelay.const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
-    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND
+    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION
 )
 from octoprint_octorelay.driver import Relay
+from octoprint_octorelay.migrations import migrate
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -38,8 +39,17 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             self.model[index] = {}
 
+    def get_settings_version(self):
+        return SETTINGS_VERSION
+
     def get_settings_defaults(self):
         return get_default_settings()
+
+    def on_settings_migrate(self, target: int, current):
+        current = current or 0
+        self._logger.info(f"OctoRelay performs the migration of its settings from v{current} to v{target}")
+        migrate(current, self._settings, self._logger)
+        self._logger.info(f"OctoRelay finished the migration of settings to v{target}")
 
     def get_template_configs(self):
         return get_templates()
