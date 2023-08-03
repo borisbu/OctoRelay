@@ -12,6 +12,7 @@ def v0(settings, logger):
 
 def v1(settings, logger):
     """Migration from v1 to v2"""
+    # Some settings were named in camelCase
     replacements = {
         "labelText": "label_text",
         "cmdON": "cmd_on",
