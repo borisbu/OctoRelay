@@ -12,18 +12,22 @@ from octoprint.access import ADMIN_GROUP, USER_GROUP
 # Patching required before importing OctoRelayPlugin class
 sys.modules["RPi.GPIO"] = Mock()
 
+# Mocks used for assertions
 timerMock = Mock()
 utilMock = Mock(
     RepeatedTimer = Mock(return_value=timerMock),
     ResettableTimer = Mock(return_value=timerMock)
 )
 sys.modules["octoprint.util"] = utilMock
+
 permissionsMock = Mock()
 sys.modules["octoprint.access.permissions"] = Mock(
     Permissions=permissionsMock
 )
+
 migrationsMock = Mock()
 sys.modules["octoprint_octorelay.migrations"] = migrationsMock
+
 relayMock = Mock()
 relayConstructorMock = Mock(return_value=relayMock)
 sys.modules["octoprint_octorelay.driver"] = Mock(
