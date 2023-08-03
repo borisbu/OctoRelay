@@ -58,7 +58,9 @@ $(() => {
           return command();
         }
         const dialog = $("#octorelay-confirmation-dialog");
-        dialog.find(".modal-title").text("Turning " + value.label_text + " off");
+        dialog
+          .find(".modal-title")
+          .text("Turning " + value.label_text + " off");
         dialog
           .find("#octorelay-confirmation-text")
           .text(
