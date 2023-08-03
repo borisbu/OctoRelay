@@ -572,7 +572,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "data": { "pin": "r4" },
                 "closed": True,
                 "expectedStatus": "ok",
-                "expectedToggle": False,
+                "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             }
         ]
