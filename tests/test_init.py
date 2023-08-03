@@ -28,6 +28,8 @@ permissionsMock = Mock()
 sys.modules["octoprint.access.permissions"] = Mock(
     Permissions=permissionsMock
 )
+migrationsMock = Mock()
+sys.modules["octoprint_octorelay.migrations"] = migrationsMock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
@@ -51,10 +53,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "r5": {}, "r6": {}, "r7": {}, "r8": {}
         })
 
+    def test_get_settings_version(self):
+        self.assertEqual(self.plugin_instance.get_settings_version(), 1)
+
     def test_get_settings_defaults(self):
         expected = {
             "r1": {
-                "active": True,
+                "active": False,
                 "relay_pin": 4,
                 "inverted_output": True,
                 "initial_value": False,
@@ -69,7 +74,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 10,
             },
             "r2": {
-                "active": True,
+                "active": False,
                 "relay_pin": 17,
                 "inverted_output": True,
                 "initial_value": False,
@@ -87,7 +92,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 0,
             },
             "r3": {
-                "active": True,
+                "active": False,
                 "relay_pin": 18,
                 "inverted_output": True,
                 "initial_value": False,
@@ -105,7 +110,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "autoOffDelay": 10,
             },
             "r4": {
-                "active": True,
+                "active": False,
                 "relay_pin": 23,
                 "inverted_output": True,
                 "initial_value": True,
@@ -193,6 +198,16 @@ class TestOctoRelayPlugin(unittest.TestCase):
         second = self.plugin_instance.get_settings_defaults()
         self.assertEqual(first["r1"]["relay_pin"], 14)
         self.assertEqual(second["r1"]["relay_pin"], 4)
+
+    def test_on_settings_migrate(self):
+        # Should run the migrations
+        self.plugin_instance._settings.get = Mock(return_value={})
+        self.plugin_instance.on_settings_migrate(1, None)
+        self.plugin_instance._logger.info.assert_any_call(
+            "OctoRelay performs the migration of its settings from v0 to v1"
+        )
+        migrationsMock.migrate.assert_called_with(0, self.plugin_instance._settings, self.plugin_instance._logger)
+        self.plugin_instance._logger.info.assert_called_with("OctoRelay finished the migration of settings to v1")
 
     def test_get_template_configs(self):
         expected = [

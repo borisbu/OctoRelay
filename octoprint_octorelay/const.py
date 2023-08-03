@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
+# Versioning of the plugin's default settings described below
+SETTINGS_VERSION = 1
+
 # Plugin's default settings, immutable getter
+# Warning: every change to these settings requires:
+# - to increase the SETTINGS_VERSION above
+# - and migration to preserve user's previous configuration intact
 def get_default_settings():
     return {
         "r1": {
-            "active": True,
+            "active": False,
             "relay_pin": 4,
             "inverted_output": True,
             "initial_value": False,
@@ -20,7 +26,7 @@ def get_default_settings():
             "autoOffDelay": 10,
         },
         "r2": {
-            "active": True,
+            "active": False,
             "relay_pin": 17,
             "inverted_output": True,
             "initial_value": False,
@@ -38,7 +44,7 @@ def get_default_settings():
             "autoOffDelay": 0,
         },
         "r3": {
-            "active": True,
+            "active": False,
             "relay_pin": 18,
             "inverted_output": True,
             "initial_value": False,
@@ -56,7 +62,7 @@ def get_default_settings():
             "autoOffDelay": 10,
         },
         "r4": {
-            "active": True,
+            "active": False,
             "relay_pin": 23,
             "inverted_output": True,
             "initial_value": True,

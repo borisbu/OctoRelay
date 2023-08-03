@@ -12,12 +12,12 @@ The plugin adds buttons to the navigation bar for toggling GPIO pins on the Rasp
 > [case for it](https://www.thingiverse.com/thing:2975944)._
 > _Just hooked up the GPIO pins with the relay board, and now I can turn the
 > power of the printer, the fan and the light on and off with OctoPrint._
-> 
+>
 > | ![Relay Board](img/relay-raspberry.jpg) | ![Raspberry Pi GPIO](img/rpi_gpio.png) |
 > |-----------------------------------------|----------------------------------------|
-> 
+>
 > _This plugin was based on the [OctoLight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)_
-> 
+>
 > — _Boris Burgstaller_
 
 ## Requirements
@@ -34,8 +34,10 @@ or manually using this URL:
 https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip
 ```
 
-In case you want to enable the plugin for user groups other than admins and users (operators), you need to 
+In case you want to enable the plugin for user groups other than admins and users (operators), you need to
 grant them the permission "Relay switching" in the "Access control" section of OctoPrint settings.
+
+After installing the plugin you need to configure it in order to see the control buttons in the navigation bar.
 
 ## Configuration
 
