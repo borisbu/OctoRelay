@@ -305,16 +305,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_update_ui(self):
         # Should send message via plugin manager containing actual settings and the relay state
-        GPIO_mock.input = Mock(return_value=0)
         cases = [
-            { "inverted": True, "expectedIcon": "ON" },
-            { "inverted": False, "expectedIcon": "OFF" }
+            { "closed": True, "expectedIcon": "ON" },
+            { "closed": False, "expectedIcon": "OFF" }
         ]
         for case in cases:
+            relayMock.pin = 17
+            relayMock.inverted = False
+            relayMock.is_closed = Mock(return_value=case["closed"])
             self.plugin_instance._settings.get = Mock(return_value={
                 "active": True,
-                "relay_pin": 17,
-                "inverted_output": case["inverted"],
+                "relay_pin": relayMock.pin,
+                "inverted_output": False,
                 "iconOn": "ON",
                 "iconOff": "OFF",
                 "labelText": "TEST",
@@ -324,14 +326,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
             for index in self.plugin_instance.get_settings_defaults():
                 expected_model[index] = {
                     "relay_pin": 17,
-                    "inverted_output": case["inverted"],
-                    "relay_state": case["inverted"],
+                    "inverted_output": False,
+                    "relay_state": case["closed"],
                     "labelText": "TEST",
                     "active": True,
                     "iconText": case["expectedIcon"],
                     "confirmOff": False
                 }
             self.plugin_instance.update_ui()
+            relayConstructorMock.assert_called_with(17, False)
             for index in self.plugin_instance.get_settings_defaults():
                 self.plugin_instance._settings.get.assert_any_call([index])
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
