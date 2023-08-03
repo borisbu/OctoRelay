@@ -2,7 +2,7 @@
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 1
+SETTINGS_VERSION = 2
 
 # Plugin's default settings, immutable getter
 # Warning: every change to these settings requires:
