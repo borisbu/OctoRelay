@@ -8,7 +8,7 @@
   - When installing the plugin first time first 4 relays used to be activated by default having sample configuration.
   - From now on all relays are deactivated by default to prevent unexpected side effects.
 - For existing installations this release introduces a new feature — the plugin settings migration.
-  - This release will migrate the existing plugin settings and preserve the activity state of the fist 4 relays.
+  - This update will migrate the existing plugin settings and preserve the activity state of the fist 4 relays.
 
 ### 3.1.1
 
