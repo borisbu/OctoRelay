@@ -8,7 +8,7 @@ from unittest.mock import Mock
 if "octoprint_octorelay.migrations" in sys.modules:
     del sys.modules["octoprint_octorelay.migrations"]
 
-# Mocks used for assertions
+# Mocking required before the further import
 sys.modules["RPi.GPIO"] = Mock()
 
 # pylint: disable=wrong-import-position
