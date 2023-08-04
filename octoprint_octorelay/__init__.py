@@ -167,7 +167,7 @@ class OctoRelayPlugin(
             self.print_stopped()
         elif event == Events.PRINT_FAILED:
             self.print_stopped()
-        elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"):
+        elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             if event == Events.CONNECTIONS_AUTOREFRESHED:
                 self._printer.connect()
         #elif event == Events.PRINT_CANCELLING:
