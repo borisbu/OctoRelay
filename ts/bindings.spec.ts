@@ -25,7 +25,7 @@ describe("Knockout bindings", () => {
     "confirm_off"
   ];
 
-  test("document loaded", () => {
+  test("Settings template should have bindings to the correctly named settings", () => {
     const elements = Array.from(document.querySelectorAll("[data-bind]"));
     expect(elements.length).toBeGreaterThan(0);
     for (const element of elements) {
