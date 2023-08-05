@@ -10,12 +10,12 @@ from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
-from octoprint_octorelay.const import (
+from .const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION
 )
-from octoprint_octorelay.driver import Relay
-from octoprint_octorelay.migrations import migrate
+from .driver import Relay
+from .migrations import migrate
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -299,4 +299,4 @@ __plugin_hooks__ = {
 }
 
 # pylint: disable=wrong-import-position
-from octoprint_octorelay._version import __version__
+from ._version import __version__
