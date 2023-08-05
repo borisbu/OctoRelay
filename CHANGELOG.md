@@ -2,6 +2,11 @@
 
 ## Version 3
 
+### 3.2.1
+
+- A minor technical refactoring.
+  - Using relative imports in the plugin class file.
+
 ### 3.2.0
 
 - This release fixes a UX bug for new installations found and reported by [@kds69](https://github.com/kds69).
