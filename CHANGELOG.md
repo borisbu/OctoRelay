@@ -23,7 +23,7 @@
 
 - New feature: AutoConnect.
   - After turning the printer relay ON the plugin will initiate the connection to printer automatically.
-  - The feature is only availble to users of OctoPrint starting version 1.9.0.
+  - The feature is only available to users of OctoPrint starting version 1.9.0.
 
 ### 3.2.1
 
