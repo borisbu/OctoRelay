@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
 
@@ -8,7 +7,7 @@ describe("Knockout bindings", () => {
     "utf-8"
   );
   const document = JSDOM.fragment(html);
-  const settingRegex = /^settings\.plugins\.octorelay\.r\{\{n\}\}.(\w+)$/;
+  const settingRegex = /^settings\.plugins\.octorelay\.r{{n}}.(\w+)$/;
   const relaySettings = [
     "active",
     "relay_pin",
@@ -22,7 +21,7 @@ describe("Knockout bindings", () => {
     "auto_off_delay",
     "icon_on",
     "icon_off",
-    "confirm_off"
+    "confirm_off",
   ];
 
   test("Settings template should have bindings to the correctly named settings", () => {
