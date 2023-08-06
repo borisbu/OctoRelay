@@ -5,7 +5,7 @@
 ### 3.3.1
 
 - Refactoring: consistent naming for the plugin settings.
-  - This update will migrate the existing plugin settings.
+  - This update will migrate the relay settings in existing configuration.
 
 | Before            | After                  |
 |-------------------|------------------------|
