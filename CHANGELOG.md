@@ -2,11 +2,28 @@
 
 ## Version 3
 
+### 3.3.1
+
+- Refactoring: consistent naming for the plugin settings.
+  - This update will migrate the relay settings in existing configuration.
+
+| Before            | After                  |
+|-------------------|------------------------|
+| `labelText`       | `label_text`           |
+| `cmdON`           | `cmd_on`               |
+| `cmdOFF`          | `cmd_off`              |
+| `autoONforPrint`  | `auto_on_before_print` |
+| `autoOFFforPrint` | `auto_off_after_print` |
+| `autoOffDelay`    | `auto_off_delay`       |
+| `iconOn`          | `icon_on`              |
+| `iconOff`         | `icon_off`             |
+| `confirmOff`      | `confirm_off`          | 
+
 ### 3.3.0
 
 - New feature: AutoConnect.
   - After turning the printer relay ON the plugin will initiate the connection to printer automatically.
-  - The feature is only availble to users of OctoPrint starting version 1.9.0.
+  - The feature is only available to users of OctoPrint starting version 1.9.0.
 
 ### 3.2.1
 
@@ -16,7 +33,7 @@
 ### 3.2.0
 
 - This release fixes a UX bug for new installations found and reported by [@kds69](https://github.com/kds69).
-  - When installing the plugin first time first 4 relays used to be activated by default having sample configuration.
+  - When installing the plugin first time, first 4 relays used to be activated by default having sample configuration.
   - From now on all relays are deactivated by default to prevent unexpected side effects.
 - For existing installations this release introduces a new feature — the plugin settings migration.
   - This update will migrate the existing plugin settings and preserve the activity state of the fist 4 relays.
