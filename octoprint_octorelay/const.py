@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
-class Events:
-    STARTUP = "STARTUP"
-    PRINTING_STARTED = "PRINTING_STARTED"
-    PRINTING_STOPPED = "PRINTING_STOPPED"
+# Internal events
+STARTUP = "STARTUP"
+PRINTING_STARTED = "PRINTING_STARTED"
+PRINTING_STOPPED = "PRINTING_STOPPED"
 
 # Versioning of the plugin's default settings described below
 SETTINGS_VERSION = 2
@@ -26,15 +26,15 @@ def get_default_settings():
             "label_text": "Light",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": True,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": False,
                     "delay": 10,
                 },
@@ -54,15 +54,15 @@ def get_default_settings():
             "label_text": "Printer",
             "confirm_off": True,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": None,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": None,
                     "delay": 0,
                 },
@@ -82,15 +82,15 @@ def get_default_settings():
             "label_text": "Fan",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": True,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": False,
                     "delay": 10,
                 },
@@ -110,15 +110,15 @@ def get_default_settings():
             "label_text": "Webcam",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": True,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": True,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": False,
                     "delay": 10,
                 },
@@ -135,15 +135,15 @@ def get_default_settings():
             "label_text": "R5",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": None,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": None,
                     "delay": 0,
                 },
@@ -160,15 +160,15 @@ def get_default_settings():
             "label_text": "R6",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": None,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": None,
                     "delay": 0,
                 },
@@ -185,15 +185,15 @@ def get_default_settings():
             "label_text": "R7",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": None,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": None,
                     "delay": 0,
                 },
@@ -210,15 +210,15 @@ def get_default_settings():
             "label_text": "R8",
             "confirm_off": False,
             "rules": {
-                Events.STARTUP: {
+                STARTUP: {
                     "state": False,
                     "delay": 0,
                 },
-                Events.PRINTING_STARTED: {
+                PRINTING_STARTED: {
                     "state": None,
                     "delay": 0,
                 },
-                Events.PRINTING_STOPPED: {
+                PRINTING_STOPPED: {
                     "state": None,
                     "delay": 0,
                 },
