@@ -116,7 +116,7 @@ class OctoRelayPlugin(
                     )
                     active_relays.append({
                         "id": index,
-                        "name": settings["labelText"],
+                        "name": settings["label_text"],
                         "active": relay.is_closed(),
                     })
             return flask.jsonify(active_relays)
@@ -147,8 +147,8 @@ class OctoRelayPlugin(
                 int(settings["relay_pin"]),
                 bool(settings["inverted_output"])
             )
-            cmd_on = settings["cmdON"]
-            cmd_off = settings["cmdOFF"]
+            cmd_on = settings["cmd_on"]
+            cmd_off = settings["cmd_off"]
             self._logger.debug(f"OctoRelay before update {relay}")
             self.run_system_command(cmd_on if relay.toggle() else cmd_off) # ternary choice based on new state
             self.update_ui()
@@ -191,8 +191,8 @@ class OctoRelayPlugin(
 
             relay_pin = int(settings["relay_pin"])
             inverted = bool(settings["inverted_output"])
-            auto_on = bool(settings["autoONforPrint"])
-            cmd_on = settings["cmdON"]
+            auto_on = bool(settings["auto_on_before_print"])
+            cmd_on = settings["cmd_on"]
             active = bool(settings["active"])
             if auto_on and active:
                 self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
@@ -205,9 +205,9 @@ class OctoRelayPlugin(
 
             relay_pin = int(settings["relay_pin"])
             inverted = bool(settings["inverted_output"])
-            auto_off = bool(settings["autoOFFforPrint"])
-            delay = int(settings["autoOffDelay"])
-            cmd_off = settings["cmdOFF"]
+            auto_off = bool(settings["auto_off_after_print"])
+            delay = int(settings["auto_off_delay"])
+            cmd_off = settings["cmd_off"]
             active = bool(settings["active"])
             if auto_off and active:
                 self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
@@ -245,14 +245,14 @@ class OctoRelayPlugin(
             self.model[index]["relay_pin"] = relay.pin
             self.model[index]["inverted_output"] = relay.inverted
             self.model[index]["relay_state"] = relay_state # bool since v3.1
-            self.model[index]["labelText"] = settings[index]["labelText"]
+            self.model[index]["label_text"] = settings[index]["label_text"]
             self.model[index]["active"] = bool(settings[index]["active"])
             if relay_state:
-                self.model[index]["iconText"] = settings[index]["iconOn"]
-                self.model[index]["confirmOff"] = bool(settings[index]["confirmOff"])
+                self.model[index]["icon_html"] = settings[index]["icon_on"]
+                self.model[index]["confirm_off"] = bool(settings[index]["confirm_off"])
             else:
-                self.model[index]["iconText"] = settings[index]["iconOff"]
-                self.model[index]["confirmOff"] = False
+                self.model[index]["icon_html"] = settings[index]["icon_off"]
+                self.model[index]["confirm_off"] = False
 
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)

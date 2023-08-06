@@ -9,7 +9,7 @@
                 {{ _('Active') }}
                 <span
                     class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r{{n}}.active, text: settings.plugins.octorelay.r{{n}}.labelText"
+                    data-bind="hidden: settings.plugins.octorelay.r{{n}}.active, text: settings.plugins.octorelay.r{{n}}.label_text"
                     style="line-height: initial; vertical-align: unset;"
                 ></span>
             </label>
@@ -18,7 +18,7 @@
             <label class="control-label">{{ _('Label') }}</label>
             <div class="controls">
                 <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.labelText">
+                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.label_text">
                 </label>
             </div>
             <label class="control-label">{{ _('GPIO Number') }}</label>
@@ -32,39 +32,39 @@
             <label class="control-label">{{ _('OS Command ON') }}</label>
             <div class="controls">
                 <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmdON">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_on">
                 </label>
             </div>
             <label class="control-label">{{ _('OS Command OFF') }}</label>
             <div class="controls">
                 <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmdOFF">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_off">
                 </label>
             </div>
             <label class="control-label">{{ _('Icon ON') }}</label>
             <div class="controls">
                 <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.iconOn">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.icon_on">
                     <div
                         style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r{{n}}.iconOn"
+                        data-bind="html: settings.plugins.octorelay.r{{n}}.icon_on"
                     ></div>
                 </label>
             </div>
             <label class="control-label">{{ _('Icon OFF') }}</label>
             <div class="controls">
                 <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.iconOff">
+                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.icon_off">
                     <div
                         style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r{{n}}.iconOff"
+                        data-bind="html: settings.plugins.octorelay.r{{n}}.icon_off"
                     ></div>
                 </label>
             </div>
             <label class="control-label">{{ _('Confirmation') }}</label>
             <div class="controls">
                 <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.confirmOff">
+                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.confirm_off">
                     {{ _('Warning on turning OFF') }}
                 </label>
             </div>
@@ -75,21 +75,21 @@
                     {{ _('ON initially on boot') }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.autoONforPrint">
+                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_on_before_print">
                     {{ _('ON before printing') }}
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.autoOFFforPrint">
+                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
                     {{ _('OFF after printing') }}
                 </label>
             </div>
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r{{n}}.autoOFFforPrint">
+            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
                 {{ _('Delay') }}
             </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r{{n}}.autoOFFforPrint">
+            <div class="controls" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
                 <label class="text">
                     <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.autoOffDelay">
+                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.auto_off_delay">
                         <span class="add-on">seconds</span>
                     </div>
                     <span class="help-block">{{ _('The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.') }}</span>
