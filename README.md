@@ -24,6 +24,7 @@ The plugin adds buttons to the navigation bar for toggling GPIO pins on the Rasp
 
 - Python: at least `3.7`,
 - OctoPrint: at least `1.5.3`.
+  - For [AutoConnect feature](https://github.com/borisbu/OctoRelay/blob/master/CHANGELOG.md#330): at least `1.9.0`.
 
 ## Setup
 
