@@ -335,7 +335,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)
             for index in self.plugin_instance.get_settings_defaults():
-                self.plugin_instance._settings.get.assert_any_call([index])
+                self.plugin_instance._settings.get.assert_any_call([index], merged=True)
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
                 "MockedIdentifier", expected_model
             )
