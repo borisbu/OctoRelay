@@ -12,7 +12,8 @@ from octoprint.access.permissions import Permissions
 
 from .const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
-    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION
+    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
+    STARTUP
 )
 from .driver import Relay
 from .migrations import migrate
@@ -69,7 +70,9 @@ class OctoRelayPlugin(
                 Relay(
                     int(settings["relay_pin"]),
                     bool(settings["inverted_output"])
-                ).toggle(bool(settings["initial_value"]))
+                ).toggle(
+                    bool(settings["rules"][STARTUP]["state"])
+                )
 
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)

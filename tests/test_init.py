@@ -75,7 +75,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": True,
@@ -103,7 +102,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": None,
@@ -131,7 +129,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": True,
@@ -159,7 +156,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": True,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": True,
@@ -184,7 +180,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": None,
@@ -209,7 +204,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": None,
@@ -234,7 +228,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": None,
@@ -259,7 +252,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "rules": {
                     "STARTUP": {
                         "state": False,
-                        "delay": 0,
                     },
                     "PRINTING_STARTED": {
                         "state": None,
@@ -493,7 +485,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
-                "initial_value": case["initial"]
+                "rules": {
+                    "STARTUP": { "state": case["initial"] }
+                }
             })
             self.plugin_instance.on_after_startup()
             relayConstructorMock.assert_called_with(17, case["inverted"])
