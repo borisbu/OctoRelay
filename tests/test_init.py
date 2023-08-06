@@ -46,6 +46,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger = Mock()
         self.plugin_instance._settings = Mock()
         self.plugin_instance._plugin_manager = Mock()
+        self.plugin_instance._printer = Mock()
 
     def test_constructor(self):
         # During the instantiation should set initial values to certain props
@@ -386,8 +387,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
             { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
             { "event": Events.PRINT_DONE, "expectedMethod": self.plugin_instance.print_stopped },
-            { "event": Events.PRINT_FAILED, "expectedMethod": self.plugin_instance.print_stopped }
+            { "event": Events.PRINT_FAILED, "expectedMethod": self.plugin_instance.print_stopped },
+
         ]
+        if hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
+            cases.append({
+                "event": Events.CONNECTIONS_AUTOREFRESHED,
+                "expectedMethod": self.plugin_instance._printer.connect
+            })
         for case in cases:
             self.plugin_instance.on_event(case["event"], "MockedPayload")
             case["expectedMethod"].assert_called_with()
