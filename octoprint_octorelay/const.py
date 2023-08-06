@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
-class Events {
+class Events: {
     STARTUP = "STARTUP"
     PRINTING_STARTED = "PRINTING_STARTED"
     PRINTING_STOPPED = "PRINTING_STOPPED"
