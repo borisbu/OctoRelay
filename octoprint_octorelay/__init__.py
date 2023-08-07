@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 import flask
+from typing import Optional
 
 import octoprint.plugin
 from octoprint.events import Events
@@ -181,7 +182,7 @@ class OctoRelayPlugin(
 
     # todo: should update ui?
     # todo: reuse by update_relay()
-    def toggle_relay(self, index, target: bool):
+    def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True)
         pin = int(settings["relay_pin"])
         inverted = bool(settings["inverted_output"])

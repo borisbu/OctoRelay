@@ -420,9 +420,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "target": True, "inverted": True, "expectedCommand": "CommandON" },
             { "target": False, "inverted": False, "expectedCommand": "CommandOFF" },
             { "target": False, "inverted": True, "expectedCommand": "CommandOFF" },
+            { "target": None, "inverted": False, "expectedCommand": "CommandOFF" },
+            { "target": None, "inverted": True, "expectedCommand": "CommandON" }
         ]
         for case in cases:
-            relayMock.toggle = Mock(return_value=case["target"])
+            relayMock.toggle = Mock(
+                return_value=case["inverted"] if case["target"] is None else case["target"]
+            )
             self.plugin_instance._settings.get = Mock(return_value={
                 "active": True,
                 "relay_pin": 17,
