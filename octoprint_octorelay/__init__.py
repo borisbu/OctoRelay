@@ -13,7 +13,7 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED
 )
 from .driver import Relay
 from .migrations import migrate
@@ -194,7 +194,6 @@ class OctoRelayPlugin(
                     })
                     timer.start()
 
-    # this should replace turn_on_relay
     # should update ui?
     def toggle_relay(self, index, target: bool):
         settings = self._settings.get([index], merged=True)
@@ -222,19 +221,16 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
             relay_pin = int(settings["relay_pin"])
-            inverted = bool(settings["inverted_output"])
-            auto_on = bool(settings["auto_on_before_print"])
-            cmd_on = settings["cmd_on"]
+            auto_on = settings["rules"][PRINTING_STARTED]["state"] is True
             active = bool(settings["active"])
             if auto_on and active:
                 self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
-                self.turn_on_relay(relay_pin, inverted, cmd_on)
+                self.toggle_relay(index, True)
         self.update_ui()
 
     def print_stopped(self):
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
-
             relay_pin = int(settings["relay_pin"])
             auto_off = settings["rules"][PRINTING_STOPPED]["state"] is False
             delay = int(settings["rules"][PRINTING_STOPPED]["delay"])
@@ -245,11 +241,6 @@ class OctoRelayPlugin(
                 self.timers.append({ "subject": index, "timer": timer})
                 timer.start()
         self.update_ui()
-
-    def turn_on_relay(self, pin: int, inverted: bool, cmd):
-        Relay(pin, inverted).close()
-        self.run_system_command(cmd)
-        self._logger.info(f"pin: {pin} turned on")
 
     def run_system_command(self, cmd):
         if cmd:

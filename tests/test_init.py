@@ -434,19 +434,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with("CommandON" if case["target"] else "CommandOFF")
 
-    @patch("os.system")
-    def test_turn_on_relay(self, system_mock):
-        # Should turn the relay on and execute the supplied command
-        cases = [
-            { "inverted": True, "expectedOutput": False},
-            { "inverted": False, "expectedOutput": True },
-        ]
-        for case in cases:
-            self.plugin_instance.turn_on_relay(17, case["inverted"], "CommandMock")
-            relayConstructorMock.assert_called_with(17, case["inverted"])
-            relayMock.close.assert_called_with()
-            system_mock.assert_called_with("CommandMock")
-
     @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
         # Should call the SettingsPlugin event handler with own instance and supplied argument
@@ -510,26 +497,30 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
         cases = [
-            { "autoOn": True, "inverted": True, "expectedCall": True},
-            { "autoOn": True, "inverted": False, "expectedCall": True },
-            { "autoOn": False, "inverted": True, "expectedCall": False },
-            { "autoOn": False, "inverted": False, "expectedCall": False }
+            { "state": True, "inverted": True, "expectedCall": True},
+            { "state": True, "inverted": False, "expectedCall": True },
+            { "state": None, "inverted": True, "expectedCall": False },
+            { "state": None, "inverted": False, "expectedCall": False }
         ]
         for case in cases:
-            self.plugin_instance.turn_on_relay = Mock()
+            self.plugin_instance.toggle_relay = Mock()
             self.plugin_instance._settings.get = Mock(return_value={
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
-                "auto_on_before_print": case["autoOn"],
+                "rules": {
+                    "PRINTING_STARTED": {
+                        "state": case["state"]
+                    }
+                },
                 "cmd_on": "CommandMock"
             })
             self.plugin_instance.print_started()
             timerMock.cancel.assert_called_with()
             if case["expectedCall"]:
-                self.plugin_instance.turn_on_relay.assert_called_with(17, case["inverted"], "CommandMock")
+                self.plugin_instance.toggle_relay.assert_called_with("r8", True)
             else:
-                self.plugin_instance.turn_on_relay.assert_not_called()
+                self.plugin_instance.toggle_relay.assert_not_called()
             self.plugin_instance.update_ui.assert_called_with()
 
     def test_print_started__exception(self):
@@ -541,17 +532,21 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
         }]
-        self.plugin_instance.turn_on_relay = Mock()
+        self.plugin_instance.toggle_relay = Mock()
         self.plugin_instance._settings.get = Mock(return_value={
             "active": False,
             "relay_pin": 17,
             "inverted_output": False,
-            "auto_on_before_print": False,
+            "rules": {
+                "PRINTING_STARTED": {
+                    "state": None
+                }
+            },
             "cmd_on": None
         })
         self.plugin_instance.print_started()
         self.plugin_instance._logger.warn.assert_called_with("failed to cancel timer 0 for r4, reason: Caught!")
-        self.plugin_instance.turn_on_relay.assert_not_called()
+        self.plugin_instance.toggle_relay.assert_not_called()
         self.plugin_instance.update_ui.assert_called_with()
 
     def test_print_stopped(self):
