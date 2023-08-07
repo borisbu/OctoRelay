@@ -161,17 +161,23 @@ class OctoRelayPlugin(
 
     def on_event(self, event, payload):
         self._logger.debug(f"Got event: {event}")
-        match event:
-            case Events.CLIENT_OPENED:
-                self.update_ui()
-            case Events.PRINT_STARTED:
-                self.handle_plugin_event(PRINTING_STARTED)
-            case Events.PRINT_DONE | Events.PRINT_FAILED:
-                self.handle_plugin_event(PRINTING_STOPPED)
-            case _ if hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
-                if event == Events.CONNECTIONS_AUTOREFRESHED:
-                    self._printer.connect()
+        if event == Events.CLIENT_OPENED:
+            self.update_ui()
+        elif event == Events.PRINT_STARTED:
+            self.print_started()
+        elif event == Events.PRINT_DONE:
+            self.print_stopped()
+        elif event == Events.PRINT_FAILED:
+            self.print_stopped()
+        elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
+            if event == Events.CONNECTIONS_AUTOREFRESHED:
+                self._printer.connect()
+        #elif event == Events.PRINT_CANCELLING:
+            # self.print_stopped()
+        #elif event == Events.PRINT_CANCELLED:
+            # self.print_stopped()
 
+    # this should replace print_started and print_stopped
     # this should be called from on_after_startup
     def handle_plugin_event(self, event):
         self.cancel_timers() # todo: which ones?
@@ -209,6 +215,32 @@ class OctoRelayPlugin(
             except Exception as exception:
                 self._logger.warn(f"failed to cancel timer {index} for {entry['subject']}, reason: {exception}")
             self.timers.pop(index)
+
+    def print_started(self):
+        self.cancel_timers()
+        for index in RELAY_INDEXES:
+            settings = self._settings.get([index], merged=True)
+            relay_pin = int(settings["relay_pin"])
+            auto_on = settings["rules"][PRINTING_STARTED]["state"] is True
+            active = bool(settings["active"])
+            if auto_on and active:
+                self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
+                self.toggle_relay(index, True)
+        self.update_ui()
+
+    def print_stopped(self):
+        for index in RELAY_INDEXES:
+            settings = self._settings.get([index], merged=True)
+            relay_pin = int(settings["relay_pin"])
+            auto_off = settings["rules"][PRINTING_STOPPED]["state"] is False
+            delay = int(settings["rules"][PRINTING_STOPPED]["delay"])
+            active = bool(settings["active"])
+            if auto_off and active:
+                self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
+                timer = ResettableTimer(delay, self.toggle_relay, [index, False])
+                self.timers.append({ "subject": index, "timer": timer})
+                timer.start()
+        self.update_ui()
 
     def run_system_command(self, cmd):
         if cmd:
