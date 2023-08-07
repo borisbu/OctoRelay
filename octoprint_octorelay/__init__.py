@@ -164,11 +164,11 @@ class OctoRelayPlugin(
         if event == Events.CLIENT_OPENED:
             self.update_ui()
         elif event == Events.PRINT_STARTED:
-            self.print_started()
+            self.handle_plugin_event(PRINTING_STARTED)
         elif event == Events.PRINT_DONE:
-            self.print_stopped()
+            self.handle_plugin_event(PRINTING_STOPPED)
         elif event == Events.PRINT_FAILED:
-            self.print_stopped()
+            self.handle_plugin_event(PRINTING_STOPPED)
         elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             if event == Events.CONNECTIONS_AUTOREFRESHED:
                 self._printer.connect()
@@ -215,32 +215,6 @@ class OctoRelayPlugin(
             except Exception as exception:
                 self._logger.warn(f"failed to cancel timer {index} for {entry['subject']}, reason: {exception}")
             self.timers.pop(index)
-
-    def print_started(self):
-        self.cancel_timers()
-        for index in RELAY_INDEXES:
-            settings = self._settings.get([index], merged=True)
-            relay_pin = int(settings["relay_pin"])
-            auto_on = settings["rules"][PRINTING_STARTED]["state"] is True
-            active = bool(settings["active"])
-            if auto_on and active:
-                self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
-                self.toggle_relay(index, True)
-        self.update_ui()
-
-    def print_stopped(self):
-        for index in RELAY_INDEXES:
-            settings = self._settings.get([index], merged=True)
-            relay_pin = int(settings["relay_pin"])
-            auto_off = settings["rules"][PRINTING_STOPPED]["state"] is False
-            delay = int(settings["rules"][PRINTING_STOPPED]["delay"])
-            active = bool(settings["active"])
-            if auto_off and active:
-                self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
-                timer = ResettableTimer(delay, self.toggle_relay, [index, False])
-                self.timers.append({ "subject": index, "timer": timer})
-                timer.start()
-        self.update_ui()
 
     def run_system_command(self, cmd):
         if cmd:
