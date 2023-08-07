@@ -413,19 +413,26 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
 
     @patch("os.system")
-    def test_turn_off_relay(self, system_mock):
+    def test_toggle_relay(self, system_mock):
         # Should turn the relay off and execute the supplied command
-        self.plugin_instance.update_ui = Mock()
         cases = [
-            { "inverted": True, "expectedOutput": True },
-            { "inverted": False, "expectedOutput": False }
+            { "target": True, "inverted": False },
+            { "target": True, "inverted": True },
+            { "target": False, "inverted": False },
+            { "target": False, "inverted": True },
         ]
         for case in cases:
-            self.plugin_instance.turn_off_relay(17, case["inverted"], "CommandMock")
+            self.plugin_instance._settings.get = Mock(return_value={
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": case["inverted"],
+                "cmd_on": "CommandON",
+                "cmd_off": "CommandOFF"
+            })
+            self.plugin_instance.toggle_relay("r4", case["target"])
             relayConstructorMock.assert_called_with(17, case["inverted"])
-            relayMock.open.assert_called_with()
-            system_mock.assert_called_with("CommandMock")
-            self.plugin_instance.update_ui.assert_called_with()
+            relayMock.toggle.assert_called_with(case["target"])
+            system_mock.assert_called_with("CommandON" if case["target"] else "CommandOFF")
 
     @patch("os.system")
     def test_turn_on_relay(self, system_mock):
@@ -552,8 +559,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.timers = [{ "subject": "r4", "timer": timerMock }]
         cases = [
-            { "autoOff": True, "expectedCall": True },
-            { "autoOff": False, "expectedCall": False },
+            { "state": False, "expectedCall": True },
+            { "state": None, "expectedCall": False },
         ]
         for case in cases:
             utilMock.ResettableTimer.reset_mock()
@@ -562,14 +569,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": False,
-                "auto_off_after_print": case["autoOff"],
-                "auto_off_delay": 300,
+                "rules": {
+                    "PRINTING_STOPPED": {
+                        "state": case["state"],
+                        "delay": 300
+                    }
+                },
                 "cmd_off": "CommandMock"
             })
             self.plugin_instance.print_stopped()
             if case["expectedCall"]:
                 utilMock.ResettableTimer.assert_called_with(
-                    300, self.plugin_instance.turn_off_relay, [17, False, "CommandMock"]
+                    300, self.plugin_instance.toggle_relay, ["r8", False]
                 )
                 timerMock.start.assert_called_with()
             else:

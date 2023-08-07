@@ -13,7 +13,7 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP
+    STARTUP, PRINTING_STOPPED
 )
 from .driver import Relay
 from .migrations import migrate
@@ -184,17 +184,18 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
             if bool(settings["active"]):
-                target = bool(settings["rules"][event]["state"])
+                target = settings["rules"][event]["state"]
                 if target is not None:
                     delay = int(settings["rules"][event]["delay"])
-                    timer = ResettableTimer(delay, self.toggle_relay, [index, target])
+                    timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
                     self.timers.append({
                         "subject": index,
                         "timer": timer
                     })
                     timer.start()
 
-    # this should replace turn_off_relay and turn_on_relay
+    # this should replace turn_on_relay
+    # should update ui?
     def toggle_relay(self, index, target: bool):
         settings = self._settings.get([index], merged=True)
         pin = int(settings["relay_pin"])
@@ -235,23 +236,15 @@ class OctoRelayPlugin(
             settings = self._settings.get([index], merged=True)
 
             relay_pin = int(settings["relay_pin"])
-            inverted = bool(settings["inverted_output"])
-            auto_off = bool(settings["auto_off_after_print"])
-            delay = int(settings["auto_off_delay"])
-            cmd_off = settings["cmd_off"]
+            auto_off = settings["rules"][PRINTING_STOPPED]["state"] is False
+            delay = int(settings["rules"][PRINTING_STOPPED]["delay"])
             active = bool(settings["active"])
             if auto_off and active:
                 self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
-                timer = ResettableTimer(delay, self.turn_off_relay, [relay_pin, inverted, cmd_off])
+                timer = ResettableTimer(delay, self.toggle_relay, [index, False])
                 self.timers.append({ "subject": index, "timer": timer})
                 timer.start()
         self.update_ui()
-
-    def turn_off_relay(self, pin: int, inverted: bool, cmd):
-        Relay(pin, inverted).open()
-        self.run_system_command(cmd)
-        self._logger.info(f"pin: {pin} turned off")
-        self.update_ui() # todo perhaps it's not needed due to having the polling thread
 
     def turn_on_relay(self, pin: int, inverted: bool, cmd):
         Relay(pin, inverted).close()
