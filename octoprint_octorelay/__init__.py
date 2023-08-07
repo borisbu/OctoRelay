@@ -61,23 +61,10 @@ class OctoRelayPlugin(
     def on_after_startup(self):
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-
-        for index in RELAY_INDEXES:
-            settings = self._settings.get([index], merged=True)
-            self._logger.debug(f"settings for {index}: {settings}")
-
-            if settings["active"]:
-                Relay(
-                    int(settings["relay_pin"]),
-                    bool(settings["inverted_output"])
-                ).toggle(
-                    bool(settings["rules"][STARTUP]["state"])
-                )
-
+        self.handle_plugin_event(STARTUP)
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
         self.polling_timer.start()
-
         self._logger.info("OctoRelay plugin started")
         self._logger.info("--------------------------------------------")
 
@@ -177,7 +164,7 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
-    # todo: this should be called from on_after_startup
+    # todo: this should be called from update_relay (command)
     def handle_plugin_event(self, event):
         self.cancel_timers() # todo: which ones?
         for index in RELAY_INDEXES:

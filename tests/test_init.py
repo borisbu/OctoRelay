@@ -483,29 +483,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_after_startup(self):
         # Depending on actual settings should set the relay state, update UI and start polling
         self.plugin_instance.update_ui = Mock()
-        cases = [
-            { "inverted": True, "initial": True, "expectedOutput": False },
-            { "inverted": True, "initial": False, "expectedOutput": True },
-            { "inverted": False, "initial": True, "expectedOutput": True },
-            { "inverted": False, "initial": False, "expectedOutput": False }
-        ]
-        for case in cases:
-            self.plugin_instance._settings.get = Mock(return_value={
-                "active": True,
-                "relay_pin": 17,
-                "inverted_output": case["inverted"],
-                "rules": {
-                    "STARTUP": { "state": case["initial"] }
-                }
-            })
-            self.plugin_instance.on_after_startup()
-            relayConstructorMock.assert_called_with(17, case["inverted"])
-            relayMock.toggle.assert_called_with(case["initial"])
-            self.plugin_instance.update_ui.assert_called_with()
-            utilMock.RepeatedTimer.assert_called_with(
-                0.3, self.plugin_instance.input_polling, daemon = True
-            )
-            timerMock.start.assert_called_with()
+        self.plugin_instance.handle_plugin_event = Mock()
+        self.plugin_instance.on_after_startup()
+        self.plugin_instance.handle_plugin_event.assert_called_with("STARTUP")
+        self.plugin_instance.update_ui.assert_called_with()
+        utilMock.RepeatedTimer.assert_called_with(
+            0.3, self.plugin_instance.input_polling, daemon = True
+        )
+        timerMock.start.assert_called_with()
 
     def test_handle_plugin_event(self):
         # For relays configured with autoON should call turn_on_relay method and update UI
