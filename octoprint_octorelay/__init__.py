@@ -123,21 +123,13 @@ class OctoRelayPlugin(
         if command == UPDATE_COMMAND:
             if not self.has_switch_permission():
                 return flask.abort(403)
-            status = self.update_relay(data["pin"])
-            return flask.jsonify(status=status)
-
-        # Unknown command
-        return flask.abort(400)
-
-    # todo move to command handler
-    def update_relay(self, index):
-        try:
+            index = data["pin"]
+            if index not in RELAY_INDEXES:
+                self._logger.warn(f"Invalid relay index supplied {index}")
+                return flask.jsonify(status="error")
             self.toggle_relay(index)
-            self.update_ui()
-            return "ok"
-        except Exception as exception:
-            self._logger.warn(f"OctoRelay update_relay caught an exception: {exception}")
-            return "error"
+            return flask.jsonify(status="ok")
+        return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
         self._logger.debug(f"Got event: {event}")
@@ -228,7 +220,8 @@ class OctoRelayPlugin(
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
         if command == AT_COMMAND:
             index = parameters
-            self.update_relay(index)
+            if index in RELAY_INDEXES:
+                self.toggle_relay(index)
         return None # meaning no further actions required
 
     def get_update_information(self):

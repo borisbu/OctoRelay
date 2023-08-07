@@ -670,18 +670,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.on_api_command("command", {})
         abort_mock.assert_called_with(400)
 
-    def test_update_relay__exception(self):
-        # Should catch possible exceptions within try-catch block
-        self.plugin_instance._settings.get = Mock(side_effect=Exception("Caught!"))
-        actual = self.plugin_instance.update_relay("r4")
-        self.assertEqual(actual, "error")
-        self.plugin_instance._logger.warn.assert_called_with("OctoRelay update_relay caught an exception: Caught!")
-
     def test_process_at_command(self):
-        # Should call update_relay() method with supplied parameter
-        self.plugin_instance.update_relay = Mock()
+        # Should call toggle_relay() method with supplied parameter
+        self.plugin_instance.toggle_relay = Mock()
         self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4"))
-        self.plugin_instance.update_relay.assert_called_with("r4")
+        self.plugin_instance.toggle_relay.assert_called_with("r4")
 
     def test_get_additional_permissions(self):
         expected = [{
