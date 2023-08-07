@@ -177,6 +177,27 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
+    # this should replace print_started and print_stopped
+    # this should be called from on_after_startup
+    # todo implement timer cancellation similar to print_started
+    def handle_plugin_event(self, event):
+        for index in RELAY_INDEXES:
+            settings = self._settings.get([index], merged=True)
+            if bool(settings["active"]):
+                target = bool(settings["rules"][event]["state"])
+                if target is not None:
+                    delay = int(settings["rules"][event]["delay"])
+                    self.timers[index] = ResettableTimer(delay, self.toggle_relay, [index, target])
+
+    # this should replace turn_off_relay and turn_on_relay
+    def toggle_relay(self, index, target: bool):
+        settings = self._settings.get([index], merged=True)
+        pin = int(settings["relay_pin"])
+        inverted = bool(settings["inverted_output"])
+        cmd = settings["cmd_on" if target else "cmd_off"]
+        Relay(pin, inverted).toggle(target)
+        self.run_system_command(cmd)
+
     def on_settings_save(self, data):
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
