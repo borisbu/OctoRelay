@@ -501,16 +501,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # For relays configured with autoON should call turn_on_relay method and update UI
         self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
         cases = [
-            { "event": "PRINTING_STARTED", "state": True, "inverted": True, "expectedCall": True },
-            { "event": "PRINTING_STARTED", "state": True, "inverted": False, "expectedCall": True },
-            { "event": "PRINTING_STARTED", "state": None, "inverted": True, "expectedCall": False },
-            { "event": "PRINTING_STARTED", "state": None, "inverted": False, "expectedCall": False },
-            { "event": "PRINTING_STOPPED", "state": False, "inverted": True, "expectedCall": True },
-            { "event": "PRINTING_STOPPED", "state": False, "inverted": False, "expectedCall": True },
-            { "event": "PRINTING_STOPPED", "state": None, "inverted": True, "expectedCall": False },
-            { "event": "PRINTING_STOPPED", "state": None, "inverted": False, "expectedCall": False },
-            # todo add False cases for both
-            # todo add STARTUP event cases
+            { "event": "PRINTING_STARTED", "state": True, "expectedCall": True },
+            { "event": "PRINTING_STARTED", "state": False, "expectedCall": True },
+            { "event": "PRINTING_STARTED", "state": None, "expectedCall": False },
+            { "event": "PRINTING_STOPPED", "state": True, "expectedCall": True },
+            { "event": "PRINTING_STOPPED", "state": False, "expectedCall": True },
+            { "event": "PRINTING_STOPPED", "state": None, "expectedCall": False },
+            { "event": "STARTUP", "state": True, "expectedCall": True },
+            { "event": "STARTUP", "state": False, "expectedCall": True },
+            { "event": "STARTUP", "state": None, "expectedCall": False },
         ]
         for case in cases:
             utilMock.ResettableTimer.reset_mock()
@@ -518,8 +517,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.toggle_relay = Mock()
             self.plugin_instance._settings.get = Mock(return_value={
                 "active": True,
-                "relay_pin": 17,
-                "inverted_output": case["inverted"],
                 "rules": {
                     case["event"]: {
                         "state": case["state"],
