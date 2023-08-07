@@ -36,8 +36,12 @@ def v1(settings, logger):
         logger.debug(f"replacing it with: {after}")
         settings.set([index], after)
 
+def v2(settings, logger):
+    """Migration from v2 to v3"""
+    # todo implement
+
 # List of migration functions starting from v0->v1
-migrators = [ v0, v1 ]
+migrators = [ v0, v1, v2 ]
 
 def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from

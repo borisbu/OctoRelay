@@ -7,7 +7,7 @@ PRINTING_STARTED = "PRINTING_STARTED"
 PRINTING_STOPPED = "PRINTING_STOPPED"
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 2
+SETTINGS_VERSION = 3
 
 # Plugin's default settings, immutable getter
 # Warning: every change to these settings requires:
