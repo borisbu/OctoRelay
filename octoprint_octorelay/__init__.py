@@ -35,7 +35,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.turn_off_timers = {}
+        self.timers = {} # relayIndex: ResettableTimer
         self.model = {}
         for index in RELAY_INDEXES:
             self.model[index] = {}
@@ -182,15 +182,14 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def print_started(self):
-        for index, off_timer in self.turn_off_timers.items():
+        for index, timer in self.timers.items():
             try:
-                off_timer.cancel()
+                timer.cancel()
                 self._logger.info(f"cancelled timer: {index}")
             except Exception as exception:
                 self._logger.warn(f"could not cancel timer: {index}, reason: {exception}")
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
-
             relay_pin = int(settings["relay_pin"])
             inverted = bool(settings["inverted_output"])
             auto_on = bool(settings["auto_on_before_print"])
@@ -213,9 +212,9 @@ class OctoRelayPlugin(
             active = bool(settings["active"])
             if auto_off and active:
                 self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
-                self.turn_off_timers[index] = ResettableTimer(
+                self.timers[index] = ResettableTimer(
                     delay, self.turn_off_relay, [relay_pin, inverted, cmd_off])
-                self.turn_off_timers[index].start()
+                self.timers[index].start()
         self.update_ui()
 
     def turn_off_relay(self, pin: int, inverted: bool, cmd):

@@ -51,7 +51,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_constructor(self):
         # During the instantiation should set initial values to certain props
         self.assertIsNone(self.plugin_instance.polling_timer)
-        self.assertEqual(self.plugin_instance.turn_off_timers, {})
+        self.assertEqual(self.plugin_instance.timers, {})
         self.assertEqual(self.plugin_instance.model, {
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
             "r5": {}, "r6": {}, "r7": {}, "r8": {}
@@ -501,7 +501,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_started(self):
         # For relays configured with autoON should call turn_on_relay method and update UI
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = { "test": timerMock }
+        self.plugin_instance.timers = { "test": timerMock }
         cases = [
             { "autoOn": True, "inverted": True, "expectedCall": True},
             { "autoOn": True, "inverted": False, "expectedCall": True },
@@ -528,7 +528,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_started__exception(self):
         # Should handle a possible exception when cancelling the timer
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = {
+        self.plugin_instance.timers = {
             "test": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
@@ -549,7 +549,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_stopped(self):
         # For relays with autoOff feature should set timer to turn its pin off
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = { "r4": timerMock }
+        self.plugin_instance.timers = { "r4": timerMock }
         cases = [
             { "autoOff": True, "expectedCall": True },
             { "autoOff": False, "expectedCall": False },
