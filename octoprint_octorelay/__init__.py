@@ -185,8 +185,8 @@ class OctoRelayPlugin(
         settings = self._settings.get([index], merged=True)
         pin = int(settings["relay_pin"])
         inverted = bool(settings["inverted_output"])
-        cmd = settings["cmd_on" if target else "cmd_off"]
-        Relay(pin, inverted).toggle(target)
+        relay = Relay(pin, inverted)
+        cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
         self.run_system_command(cmd)
 
     def on_settings_save(self, data):
