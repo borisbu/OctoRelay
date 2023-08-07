@@ -130,17 +130,10 @@ class OctoRelayPlugin(
         # Unknown command
         return flask.abort(400)
 
+    # todo move to command handler
     def update_relay(self, index):
         try:
-            settings = self._settings.get([index], merged=True)
-            relay = Relay(
-                int(settings["relay_pin"]),
-                bool(settings["inverted_output"])
-            )
-            cmd_on = settings["cmd_on"]
-            cmd_off = settings["cmd_off"]
-            self._logger.debug(f"OctoRelay before update {relay}")
-            self.run_system_command(cmd_on if relay.toggle() else cmd_off) # ternary choice based on new state
+            self.toggle_relay(index)
             self.update_ui()
             return "ok"
         except Exception as exception:
@@ -181,7 +174,6 @@ class OctoRelayPlugin(
                     timer.start()
 
     # todo: should update ui?
-    # todo: reuse by update_relay()
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True)
         pin = int(settings["relay_pin"])

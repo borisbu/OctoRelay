@@ -646,7 +646,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if "expectedJson" in case:
                 jsonify_mock.assert_called_with(case["expectedJson"])
             if "expectedToggle" in case:
-                relayMock.toggle.assert_called_with()
+                relayMock.toggle.assert_called_with(None)
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
             if "expectedStatus" in case:
