@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-
+from typing import Optional
 import os
 import flask
-from typing import Optional
 
 import octoprint.plugin
 from octoprint.events import Events
