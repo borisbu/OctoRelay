@@ -35,7 +35,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.timers = {} # relayIndex: ResettableTimer
+        self.timers = [] # of { subject: relayIndex, timer: ResettableTimer }
         self.model = {}
         for index in RELAY_INDEXES:
             self.model[index] = {}
@@ -187,7 +187,12 @@ class OctoRelayPlugin(
                 target = bool(settings["rules"][event]["state"])
                 if target is not None:
                     delay = int(settings["rules"][event]["delay"])
-                    self.timers[index] = ResettableTimer(delay, self.toggle_relay, [index, target])
+                    timer = ResettableTimer(delay, self.toggle_relay, [index, target])
+                    self.timers.append({
+                        "subject": index,
+                        "timer": timer
+                    })
+                    timer.start()
 
     # this should replace turn_off_relay and turn_on_relay
     def toggle_relay(self, index, target: bool):
@@ -203,12 +208,13 @@ class OctoRelayPlugin(
         self.update_ui()
 
     def print_started(self):
-        for index, timer in self.timers.items():
+        for index, entry in enumerate(self.timers):
             try:
-                timer.cancel()
-                self._logger.info(f"cancelled timer: {index}")
+                entry["timer"].cancel()
+                self._logger.info(f"cancelled timer {index} for relay {entry['subject']}")
             except Exception as exception:
-                self._logger.warn(f"could not cancel timer: {index}, reason: {exception}")
+                self._logger.warn(f"failed to cancel timer {index} for {entry['subject']}, reason: {exception}")
+            self.timers.pop(index)
         for index in RELAY_INDEXES:
             settings = self._settings.get([index], merged=True)
             relay_pin = int(settings["relay_pin"])
@@ -233,9 +239,9 @@ class OctoRelayPlugin(
             active = bool(settings["active"])
             if auto_off and active:
                 self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
-                self.timers[index] = ResettableTimer(
-                    delay, self.turn_off_relay, [relay_pin, inverted, cmd_off])
-                self.timers[index].start()
+                timer = ResettableTimer(delay, self.turn_off_relay, [relay_pin, inverted, cmd_off])
+                self.timers.append({ "subject": index, "timer": timer})
+                timer.start()
         self.update_ui()
 
     def turn_off_relay(self, pin: int, inverted: bool, cmd):

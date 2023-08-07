@@ -51,7 +51,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_constructor(self):
         # During the instantiation should set initial values to certain props
         self.assertIsNone(self.plugin_instance.polling_timer)
-        self.assertEqual(self.plugin_instance.timers, {})
+        self.assertEqual(self.plugin_instance.timers, [])
         self.assertEqual(self.plugin_instance.model, {
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
             "r5": {}, "r6": {}, "r7": {}, "r8": {}
@@ -501,7 +501,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_started(self):
         # For relays configured with autoON should call turn_on_relay method and update UI
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.timers = { "test": timerMock }
+        self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
         cases = [
             { "autoOn": True, "inverted": True, "expectedCall": True},
             { "autoOn": True, "inverted": False, "expectedCall": True },
@@ -528,11 +528,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_print_started__exception(self):
         # Should handle a possible exception when cancelling the timer
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.timers = {
-            "test": Mock(
+        self.plugin_instance.timers = [{
+            "subject": "r4",
+            "timer": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
-        }
+        }]
         self.plugin_instance.turn_on_relay = Mock()
         self.plugin_instance._settings.get = Mock(return_value={
             "active": False,
@@ -542,14 +543,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": None
         })
         self.plugin_instance.print_started()
-        self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test, reason: Caught!")
+        self.plugin_instance._logger.warn.assert_called_with("failed to cancel timer 0 for r4, reason: Caught!")
         self.plugin_instance.turn_on_relay.assert_not_called()
         self.plugin_instance.update_ui.assert_called_with()
 
     def test_print_stopped(self):
         # For relays with autoOff feature should set timer to turn its pin off
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.timers = { "r4": timerMock }
+        self.plugin_instance.timers = [{ "subject": "r4", "timer": timerMock }]
         cases = [
             { "autoOff": True, "expectedCall": True },
             { "autoOff": False, "expectedCall": False },
