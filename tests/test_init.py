@@ -447,23 +447,38 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_event(self):
         # Depending on certain event type should call a corresponding method
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.print_started = Mock()
-        self.plugin_instance.print_stopped = Mock()
+        self.plugin_instance.handle_plugin_event = Mock()
         cases = [
-            { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
-            { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
-            { "event": Events.PRINT_DONE, "expectedMethod": self.plugin_instance.print_stopped },
-            { "event": Events.PRINT_FAILED, "expectedMethod": self.plugin_instance.print_stopped },
-
+            {
+                "event": Events.CLIENT_OPENED,
+                "expectedMethod": self.plugin_instance.update_ui,
+                "expectedParams": []
+            },
+            {
+                "event": Events.PRINT_STARTED,
+                "expectedMethod": self.plugin_instance.handle_plugin_event,
+                "expectedParams": ["PRINTING_STARTED"]
+            },
+            {
+                "event": Events.PRINT_DONE,
+                "expectedMethod": self.plugin_instance.handle_plugin_event,
+                "expectedParams": ["PRINTING_STOPPED"]
+            },
+            {
+                "event": Events.PRINT_FAILED,
+                "expectedMethod": self.plugin_instance.handle_plugin_event,
+                "expectedParams": ["PRINTING_STOPPED"]
+            },
         ]
         if hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             cases.append({
                 "event": Events.CONNECTIONS_AUTOREFRESHED,
-                "expectedMethod": self.plugin_instance._printer.connect
+                "expectedMethod": self.plugin_instance._printer.connect,
+                "expectedParams": []
             })
         for case in cases:
             self.plugin_instance.on_event(case["event"], "MockedPayload")
-            case["expectedMethod"].assert_called_with()
+            case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
     def test_on_after_startup(self):
         # Depending on actual settings should set the relay state, update UI and start polling
@@ -492,96 +507,57 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
             timerMock.start.assert_called_with()
 
-    def test_print_started(self):
+    def test_handle_plugin_event(self):
         # For relays configured with autoON should call turn_on_relay method and update UI
-        self.plugin_instance.update_ui = Mock()
         self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
         cases = [
-            { "state": True, "inverted": True, "expectedCall": True},
-            { "state": True, "inverted": False, "expectedCall": True },
-            { "state": None, "inverted": True, "expectedCall": False },
-            { "state": None, "inverted": False, "expectedCall": False }
+            { "event": "PRINTING_STARTED", "state": True, "inverted": True, "expectedCall": True },
+            { "event": "PRINTING_STARTED", "state": True, "inverted": False, "expectedCall": True },
+            { "event": "PRINTING_STARTED", "state": None, "inverted": True, "expectedCall": False },
+            { "event": "PRINTING_STARTED", "state": None, "inverted": False, "expectedCall": False },
+            { "event": "PRINTING_STOPPED", "state": False, "inverted": True, "expectedCall": True },
+            { "event": "PRINTING_STOPPED", "state": False, "inverted": False, "expectedCall": True },
+            { "event": "PRINTING_STOPPED", "state": None, "inverted": True, "expectedCall": False },
+            { "event": "PRINTING_STOPPED", "state": None, "inverted": False, "expectedCall": False },
+            # todo add False cases for both
+            # todo add STARTUP event cases
         ]
         for case in cases:
+            utilMock.ResettableTimer.reset_mock()
+            timerMock.start.reset_mock()
             self.plugin_instance.toggle_relay = Mock()
             self.plugin_instance._settings.get = Mock(return_value={
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": case["inverted"],
                 "rules": {
-                    "PRINTING_STARTED": {
-                        "state": case["state"]
+                    case["event"]: {
+                        "state": case["state"],
+                        "delay": 300,
                     }
                 },
-                "cmd_on": "CommandMock"
             })
-            self.plugin_instance.print_started()
-            timerMock.cancel.assert_called_with()
+            self.plugin_instance.handle_plugin_event(case["event"])
+            timerMock.cancel.assert_called_with() # todo move to another test?
             if case["expectedCall"]:
-                self.plugin_instance.toggle_relay.assert_called_with("r8", True)
+                utilMock.ResettableTimer.assert_called_with(
+                    300, self.plugin_instance.toggle_relay, ["r8", case["state"]]
+                )
+                timerMock.start.assert_called_with()
             else:
-                self.plugin_instance.toggle_relay.assert_not_called()
-            self.plugin_instance.update_ui.assert_called_with()
+                utilMock.ResettableTimer.assert_not_called()
+                timerMock.start.assert_not_called()
 
-    def test_print_started__exception(self):
+    def test_cancel_timers__exception(self):
         # Should handle a possible exception when cancelling the timer
-        self.plugin_instance.update_ui = Mock()
         self.plugin_instance.timers = [{
             "subject": "r4",
             "timer": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
         }]
-        self.plugin_instance.toggle_relay = Mock()
-        self.plugin_instance._settings.get = Mock(return_value={
-            "active": False,
-            "relay_pin": 17,
-            "inverted_output": False,
-            "rules": {
-                "PRINTING_STARTED": {
-                    "state": None
-                }
-            },
-            "cmd_on": None
-        })
-        self.plugin_instance.print_started()
+        self.plugin_instance.cancel_timers()
         self.plugin_instance._logger.warn.assert_called_with("failed to cancel timer 0 for r4, reason: Caught!")
-        self.plugin_instance.toggle_relay.assert_not_called()
-        self.plugin_instance.update_ui.assert_called_with()
-
-    def test_print_stopped(self):
-        # For relays with autoOff feature should set timer to turn its pin off
-        self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.timers = [{ "subject": "r4", "timer": timerMock }]
-        cases = [
-            { "state": False, "expectedCall": True },
-            { "state": None, "expectedCall": False },
-        ]
-        for case in cases:
-            utilMock.ResettableTimer.reset_mock()
-            timerMock.start.reset_mock()
-            self.plugin_instance._settings.get = Mock(return_value={
-                "active": True,
-                "relay_pin": 17,
-                "inverted_output": False,
-                "rules": {
-                    "PRINTING_STOPPED": {
-                        "state": case["state"],
-                        "delay": 300
-                    }
-                },
-                "cmd_off": "CommandMock"
-            })
-            self.plugin_instance.print_stopped()
-            if case["expectedCall"]:
-                utilMock.ResettableTimer.assert_called_with(
-                    300, self.plugin_instance.toggle_relay, ["r8", False]
-                )
-                timerMock.start.assert_called_with()
-            else:
-                utilMock.ResettableTimer.assert_not_called()
-                timerMock.start.assert_not_called()
-            self.plugin_instance.update_ui.assert_called_with()
 
     def test_has_switch_permission(self):
         # Should proxy the permission and handle a possible exception
