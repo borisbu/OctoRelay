@@ -177,8 +177,7 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
-    # this should replace print_started and print_stopped
-    # this should be called from on_after_startup
+    # todo: this should be called from on_after_startup
     def handle_plugin_event(self, event):
         self.cancel_timers() # todo: which ones?
         for index in RELAY_INDEXES:
@@ -194,7 +193,7 @@ class OctoRelayPlugin(
                     })
                     timer.start()
 
-    # should update ui?
+    # todo: should update ui?
     def toggle_relay(self, index, target: bool):
         settings = self._settings.get([index], merged=True)
         pin = int(settings["relay_pin"])
@@ -207,6 +206,7 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
+    # todo: all of them?
     def cancel_timers(self):
         for index, entry in enumerate(self.timers):
             try:
