@@ -164,7 +164,6 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
-    # todo: this should be called from update_relay (command)
     def handle_plugin_event(self, event):
         self.cancel_timers() # todo: which ones?
         for index in RELAY_INDEXES:
@@ -181,6 +180,7 @@ class OctoRelayPlugin(
                     timer.start()
 
     # todo: should update ui?
+    # todo: reuse by update_relay()
     def toggle_relay(self, index, target: bool):
         settings = self._settings.get([index], merged=True)
         pin = int(settings["relay_pin"])
