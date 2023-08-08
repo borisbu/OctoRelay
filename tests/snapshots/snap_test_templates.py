@@ -7,7 +7,55 @@ from snapshottest import Snapshot
 
 snapshots = Snapshot()
 
-snapshots['TestTemplates::test_settings settings'] = '''<form class="form-horizontal">
+snapshots['TestTemplates::test_templates octorelay_navbar.jinja2'] = '''
+    <a id="relaisr1" title="relay 1" role="button" style="display: none">
+        R1
+    </a>
+
+    <a id="relaisr2" title="relay 2" role="button" style="display: none">
+        R2
+    </a>
+
+    <a id="relaisr3" title="relay 3" role="button" style="display: none">
+        R3
+    </a>
+
+    <a id="relaisr4" title="relay 4" role="button" style="display: none">
+        R4
+    </a>
+
+    <a id="relaisr5" title="relay 5" role="button" style="display: none">
+        R5
+    </a>
+
+    <a id="relaisr6" title="relay 6" role="button" style="display: none">
+        R6
+    </a>
+
+    <a id="relaisr7" title="relay 7" role="button" style="display: none">
+        R7
+    </a>
+
+    <a id="relaisr8" title="relay 8" role="button" style="display: none">
+        R8
+    </a>
+
+
+<div id="octorelay-confirmation-dialog" class="modal hide fade">
+    <div class="modal-header">
+        <a href="#" class="close" data-dismiss="modal" aria-hidden="true">&times;</a>
+        <h3 class="modal-title">Turning the relay off</h3>
+    </div>
+    <div class="modal-body">
+        <h4 id="octorelay-confirmation-text">Are you sure?</h4>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-cancel" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <button class="btn btn-danger btn-confirm">Confirm</button>
+    </div>
+</div>'''
+
+snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form class="form-horizontal">
     <h3>OctoRelay Settings</h3>
     
     <div class="control-group">
