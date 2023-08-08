@@ -11,7 +11,7 @@ class TestTemplates(TestCase):
         html = template.render({
             "_": lambda value: value
         })
-        self.assertMatchSnapshot(html, 'settings')
+        self.assertMatchSnapshot(html, "settings")
 
 if __name__ == "__main__":
     unittest.main()
