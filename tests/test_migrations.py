@@ -82,57 +82,78 @@ class TestMigrations(unittest.TestCase):
             })
 
     def test_v2(self):
-        settings = Mock(
-            get=Mock(return_value={
-                "active": False,
-                "relay_pin": 23,
-                "inverted_output": True,
-                "initial_value": True,
-                "cmd_on": "sudo service webcamd start",
-                "cmd_off": "sudo service webcamd stop",
-                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                "icon_off": (
-                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
-                    """style="filter: opacity(20%)">"""
-                ),
-                "label_text": "Webcam",
-                "confirm_off": False,
-                "auto_on_before_print": True,
-                "auto_off_after_print": True,
-                "auto_off_delay": 10,
-            })
-        )
-        logger = Mock()
-        v2(settings, logger)
-        for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]:
-            settings.set.assert_any_call([index], {
-                "active": False,
-                "relay_pin": 23,
-                "inverted_output": True,
-                "cmd_on": "sudo service webcamd start",
-                "cmd_off": "sudo service webcamd stop",
-                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                "icon_off": (
-                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
-                    """style="filter: opacity(20%)">"""
-                ),
-                "label_text": "Webcam",
-                "confirm_off": False,
-                "rules": {
-                    "STARTUP": {
-                        "state": True,
-                        "delay": 0
-                    },
-                    "PRINTING_STARTED": {
-                        "state": True,
-                        "delay": 0
-                    },
-                    "PRINTING_STOPPED": {
-                        "state": False,
-                        "delay": 10
+        cases = [
+            {
+                "feed": {
+                    "initial_value": True,
+                    "auto_on_before_print": True,
+                    "auto_off_after_print": True,
+                    "auto_off_delay": 10,
+                },
+                "expected_startup_state": True,
+                "expected_printing_started_state": True,
+                "expected_printing_stopped_state": False,
+            }, {
+                "feed": {
+                    "initial_value": False,
+                    "auto_on_before_print": False,
+                    "auto_off_after_print": False,
+                    "auto_off_delay": 0,
+                },
+                "expected_startup_state": False,
+                "expected_printing_started_state": None,
+                "expected_printing_stopped_state": None,
+            }
+        ]
+        for case in cases:
+            settings = Mock(
+                get=Mock(return_value={
+                    "active": False,
+                    "relay_pin": 23,
+                    "inverted_output": True,
+                    "cmd_on": "sudo service webcamd start",
+                    "cmd_off": "sudo service webcamd stop",
+                    "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                    "icon_off": (
+                        """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+                        """style="filter: opacity(20%)">"""
+                    ),
+                    "label_text": "Webcam",
+                    "confirm_off": False,
+                    **case["feed"]
+                })
+            )
+            logger = Mock()
+            v2(settings, logger)
+            for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]:
+                settings.set.assert_any_call([index], {
+                    "active": False,
+                    "relay_pin": 23,
+                    "inverted_output": True,
+                    "cmd_on": "sudo service webcamd start",
+                    "cmd_off": "sudo service webcamd stop",
+                    "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
+                    "icon_off": (
+                        """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
+                        """style="filter: opacity(20%)">"""
+                    ),
+                    "label_text": "Webcam",
+                    "confirm_off": False,
+                    "rules": {
+                        "STARTUP": {
+                            "state": case["expected_startup_state"],
+                            "delay": 0
+                        },
+                        "PRINTING_STARTED": {
+                            "state": case["expected_printing_started_state"],
+                            "delay": 0
+                        },
+                        "PRINTING_STOPPED": {
+                            "state": case["expected_printing_stopped_state"],
+                            "delay": case["feed"]["auto_off_delay"]
+                        }
                     }
-                }
-            })
+                })
 
     def test_migrate(self):
         # Should call all migrations
