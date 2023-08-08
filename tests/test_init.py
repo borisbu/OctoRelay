@@ -631,6 +631,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedStatus": "ok",
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
+            },
+            {
+                "command": "update",
+                "data": { "pin": "invalid" },
+                "closed": True,
+                "expectedStatus": "error",
             }
         ]
         for case in cases:
@@ -646,7 +652,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOffMock"
             })
             self.plugin_instance.on_api_command(case["command"], case["data"])
-            if case["command"] != "listAllStatus":
+            if case["command"] != "listAllStatus" and case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedJson" in case:
                 jsonify_mock.assert_called_with(case["expectedJson"])
