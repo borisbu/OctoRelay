@@ -35,7 +35,9 @@ sys.modules["octoprint_octorelay.driver"] = Mock(
 )
 
 # pylint: disable=wrong-import-position
-from octoprint_octorelay import OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__
+from octoprint_octorelay import (
+    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES
+)
 
 class TestOctoRelayPlugin(unittest.TestCase):
     def setUp(self):
@@ -313,13 +315,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayMock.inverted = False
             relayMock.is_closed = Mock(return_value=case["closed"])
             self.plugin_instance._settings.get = Mock(return_value={
-                "active": True,
-                "relay_pin": relayMock.pin,
-                "inverted_output": False,
-                "icon_on": "ON",
-                "icon_off": "OFF",
-                "label_text": "TEST",
-                "confirm_off": False
+                index: {
+                    "active": True,
+                    "relay_pin": relayMock.pin,
+                    "inverted_output": False,
+                    "icon_on": "ON",
+                    "icon_off": "OFF",
+                    "label_text": "TEST",
+                    "confirm_off": False
+                } for index in RELAY_INDEXES
             })
             expected_model = {}
             for index in self.plugin_instance.get_settings_defaults():
@@ -335,7 +339,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)
             for index in self.plugin_instance.get_settings_defaults():
-                self.plugin_instance._settings.get.assert_any_call([index], merged=True)
+                self.plugin_instance._settings.get.assert_any_call([], merged=True)
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
                 "MockedIdentifier", expected_model
             )
@@ -410,10 +414,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ]
         for case in cases:
             self.plugin_instance._settings.get = Mock(return_value={
-                "active": True,
-                "relay_pin": 17,
-                "inverted_output": case["inverted"],
-                "initial_value": case["initial"]
+                index: {
+                    "active": True,
+                    "relay_pin": 17,
+                    "inverted_output": case["inverted"],
+                    "initial_value": case["initial"]
+                } for index in RELAY_INDEXES
             })
             self.plugin_instance.on_after_startup()
             relayConstructorMock.assert_called_with(17, case["inverted"])
@@ -437,11 +443,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
         for case in cases:
             self.plugin_instance.turn_on_relay = Mock()
             self.plugin_instance._settings.get = Mock(return_value={
-                "active": True,
-                "relay_pin": 17,
-                "inverted_output": case["inverted"],
-                "auto_on_before_print": case["autoOn"],
-                "cmd_on": "CommandMock"
+                index: {
+                    "active": True,
+                    "relay_pin": 17,
+                    "inverted_output": case["inverted"],
+                    "auto_on_before_print": case["autoOn"],
+                    "cmd_on": "CommandMock"
+                } for index in RELAY_INDEXES
             })
             self.plugin_instance.print_started()
             timerMock.cancel.assert_called_with()
@@ -461,11 +469,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         self.plugin_instance.turn_on_relay = Mock()
         self.plugin_instance._settings.get = Mock(return_value={
-            "active": False,
-            "relay_pin": 17,
-            "inverted_output": False,
-            "auto_on_before_print": False,
-            "cmd_on": None
+            index: {
+                "active": False,
+                "relay_pin": 17,
+                "inverted_output": False,
+                "auto_on_before_print": False,
+                "cmd_on": None
+            } for index in RELAY_INDEXES
         })
         self.plugin_instance.print_started()
         self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test, reason: Caught!")
@@ -484,12 +494,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
             self.plugin_instance._settings.get = Mock(return_value={
-                "active": True,
-                "relay_pin": 17,
-                "inverted_output": False,
-                "auto_off_after_print": case["autoOff"],
-                "auto_off_delay": 300,
-                "cmd_off": "CommandMock"
+                index: {
+                    "active": True,
+                    "relay_pin": 17,
+                    "inverted_output": False,
+                    "auto_off_after_print": case["autoOff"],
+                    "auto_off_delay": 300,
+                    "cmd_off": "CommandMock"
+                } for index in RELAY_INDEXES
             })
             self.plugin_instance.print_stopped()
             if case["expectedCall"]:
@@ -585,14 +597,20 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayMock.is_closed = Mock(return_value=case["closed"])
             relayMock.toggle = Mock(return_value=not case["closed"])
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
-            self.plugin_instance._settings.get = Mock(return_value={
+            relay_settings_mock = {
                 "active": True,
                 "relay_pin": 17,
                 "inverted_output": False,
                 "label_text": "TEST",
                 "cmd_on": "CommandOnMock",
                 "cmd_off": "CommandOffMock"
-            })
+            }
+            if case["command"] == "listAllStatus":
+                self.plugin_instance._settings.get = Mock(return_value={
+                    index: relay_settings_mock for index in RELAY_INDEXES
+                })
+            else:
+                self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
             if case["command"] != "listAllStatus":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
