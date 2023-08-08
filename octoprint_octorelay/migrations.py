@@ -2,8 +2,8 @@
 def v0(settings, logger):
     """Migration from v0 to v1"""
     # First 4 relays used to have active=True
-    for index in ["r1", "r2", "r3", "r4"]:
-        before = settings.get([index])
+    for index in ["r1", "r2", "r3", "r4"]: # no references to constants
+        before = settings.get([index]) # without defaults
         logger.debug(f"relay {index} stored settings: {before}")
         if "active" not in before:
             logger.debug("inserting active=True into it")
@@ -24,8 +24,8 @@ def v1(settings, logger):
         "iconOff": "icon_off",
         "confirmOff": "confirm_off"
     }
-    for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]:
-        before = settings.get([index])
+    for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]: # no references to constants
+        before = settings.get([index]) # without defaults
         after = {}
         logger.debug(f"relay {index} stored settings: {before}")
         for key, value in before.items():
@@ -38,7 +38,33 @@ def v1(settings, logger):
 
 def v2(settings, logger):
     """Migration from v2 to v3"""
-    # todo implement
+    # There were fields listed in the "removed" const that become rules
+    removed = ["initial_value", "auto_on_before_print", "auto_off_after_print", "auto_off_delay"]
+    for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]: # no references to constants
+        before = settings.get([index]) # without defaults
+        logger.debug(f"relay {index} stored settings: {before}")
+        after = {
+            **before,
+            "rules": { # no references to constants
+                "STARTUP": {
+                    "state": before.get("initial_value"),
+                    "delay": 0
+                },
+                "PRINTING_STARTED": {
+                    "state": True if bool(before.get("auto_on_before_print")) else None,
+                    "delay": 0
+                },
+                "PRINTING_STOPPED": {
+                    "state": False if bool(before.get("auto_off_after_print")) else None,
+                    "delay": before.get("auto_off_delay")
+                }
+            }
+        }
+        for key in removed:
+            if key in after:
+                del after[key]
+        logger.debug(f"replacing it with: {after}")
+        settings.set([index], after)
 
 # List of migration functions starting from v0->v1
 migrators = [ v0, v1, v2 ]

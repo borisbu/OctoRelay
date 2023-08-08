@@ -28,6 +28,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": True,
@@ -55,6 +56,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": None,
@@ -82,6 +84,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": True,
@@ -109,6 +112,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": True,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": True,
@@ -133,6 +137,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": None,
@@ -157,6 +162,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": None,
@@ -181,6 +187,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": None,
@@ -205,6 +212,7 @@ def get_default_settings():
             "rules": {
                 STARTUP: {
                     "state": False,
+                    "delay": 0,
                 },
                 PRINTING_STARTED: {
                     "state": None,
