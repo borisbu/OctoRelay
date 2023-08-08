@@ -95,7 +95,7 @@ jobs:
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
-        run: pip install coverage pylint
+        run: pip install coverage pylint snapshottest
       - name: Test
         working-directory: tests
         run: python -m coverage run -m unittest test*.py
