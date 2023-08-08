@@ -42,27 +42,25 @@ def v2(settings, logger):
     removed = ["initial_value", "auto_on_before_print", "auto_off_after_print", "auto_off_delay"]
     for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]: # no references to constants
         before = settings.get([index]) # without defaults
+        after = {}
         logger.debug(f"relay {index} stored settings: {before}")
-        after = {
-            **before,
-            "rules": { # no references to constants
-                "STARTUP": {
-                    "state": before.get("initial_value"),
-                    "delay": 0
-                },
-                "PRINTING_STARTED": {
-                    "state": True if bool(before.get("auto_on_before_print")) else None,
-                    "delay": 0
-                },
-                "PRINTING_STOPPED": {
-                    "state": False if bool(before.get("auto_off_after_print")) else None,
-                    "delay": before.get("auto_off_delay")
-                }
+        for key, value in before.items():
+            if key not in removed:
+                after[key] = value
+        after["rules"] = { # no references to constants
+            "STARTUP": {
+                "state": before.get("initial_value"),
+                "delay": 0
+            },
+            "PRINTING_STARTED": {
+                "state": True if bool(before.get("auto_on_before_print")) else None,
+                "delay": 0
+            },
+            "PRINTING_STOPPED": {
+                "state": False if bool(before.get("auto_off_after_print")) else None,
+                "delay": before.get("auto_off_delay")
             }
         }
-        for key in removed:
-            if key in after:
-                del after[key]
         logger.debug(f"replacing it with: {after}")
         settings.set([index], after)
 
