@@ -60,17 +60,16 @@ class OctoRelayPlugin(
     def on_after_startup(self):
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = get_default_settings()
 
         for index in RELAY_INDEXES:
-            settings[index].update(self._settings.get([index]))
-            self._logger.debug(f"settings for {index}: {settings[index]}")
+            settings = self._settings.get([index], merged=True)
+            self._logger.debug(f"settings for {index}: {settings}")
 
-            if settings[index]["active"]:
+            if settings["active"]:
                 Relay(
-                    int(settings[index]["relay_pin"]),
-                    bool(settings[index]["inverted_output"])
-                ).toggle( bool(settings[index]["initial_value"]) )
+                    int(settings["relay_pin"]),
+                    bool(settings["inverted_output"])
+                ).toggle(bool(settings["initial_value"]))
 
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
@@ -233,25 +232,24 @@ class OctoRelayPlugin(
             os.system(cmd)
 
     def update_ui(self):
-        settings = get_default_settings()
         for index in RELAY_INDEXES:
-            settings[index].update(self._settings.get([index]))
+            settings = self._settings.get([index], merged=True)
             relay = Relay(
-                int(settings[index]["relay_pin"]),
-                bool(settings[index]["inverted_output"])
+                int(settings["relay_pin"]),
+                bool(settings["inverted_output"])
             )
             relay_state = relay.is_closed()
             # set the icon state
             self.model[index]["relay_pin"] = relay.pin
             self.model[index]["inverted_output"] = relay.inverted
             self.model[index]["relay_state"] = relay_state # bool since v3.1
-            self.model[index]["label_text"] = settings[index]["label_text"]
-            self.model[index]["active"] = bool(settings[index]["active"])
+            self.model[index]["label_text"] = settings["label_text"]
+            self.model[index]["active"] = bool(settings["active"])
             if relay_state:
-                self.model[index]["icon_html"] = settings[index]["icon_on"]
-                self.model[index]["confirm_off"] = bool(settings[index]["confirm_off"])
+                self.model[index]["icon_html"] = settings["icon_on"]
+                self.model[index]["confirm_off"] = bool(settings["confirm_off"])
             else:
-                self.model[index]["icon_html"] = settings[index]["icon_off"]
+                self.model[index]["icon_html"] = settings["icon_off"]
                 self.model[index]["confirm_off"] = False
 
         #self._logger.info(f"update ui with model {self.model}")
