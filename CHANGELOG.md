@@ -2,6 +2,10 @@
 
 ## Version 3
 
+### 3.3.2
+
+- Refactoring: using `merged=True` option for consistent retrieval of the relay settings.
+
 ### 3.3.1
 
 - Refactoring: consistent naming for the plugin settings.
@@ -17,7 +21,7 @@
 | `autoOffDelay`    | `auto_off_delay`       |
 | `iconOn`          | `icon_on`              |
 | `iconOff`         | `icon_off`             |
-| `confirmOff`      | `confirm_off`          | 
+| `confirmOff`      | `confirm_off`          |
 
 ### 3.3.0
 
