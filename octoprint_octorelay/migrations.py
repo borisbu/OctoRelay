@@ -41,7 +41,7 @@ def v2(settings, logger):
     # There were fields listed in the "removed" const that become rules
     removed = ["initial_value", "auto_on_before_print", "auto_off_after_print", "auto_off_delay"]
     for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]: # no references to constants
-        before = settings.get([index]) # without defaults
+        before = settings.get([index], merged=True) # including defaults
         after = {}
         logger.debug(f"relay {index} stored settings: {before}")
         for key, value in before.items():
@@ -49,16 +49,16 @@ def v2(settings, logger):
                 after[key] = value
         after["rules"] = { # no references to constants
             "STARTUP": {
-                "state": before.get("initial_value"),
+                "state": bool(before["initial_value"]),
                 "delay": 0
             },
             "PRINTING_STARTED": {
-                "state": True if bool(before.get("auto_on_before_print")) else None,
+                "state": True if bool(before["auto_on_before_print"]) else None,
                 "delay": 0
             },
             "PRINTING_STOPPED": {
-                "state": False if bool(before.get("auto_off_after_print")) else None,
-                "delay": before.get("auto_off_delay")
+                "state": False if bool(before["auto_off_after_print"]) else None,
+                "delay": int(before["auto_off_delay"])
             }
         }
         logger.debug(f"replacing it with: {after}")
