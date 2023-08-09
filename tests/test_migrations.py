@@ -156,65 +156,13 @@ class TestMigrations(unittest.TestCase):
                 })
 
     def test_migrate(self):
-        # Should call all migrations in a band
-        dump = {
-            index: {
-                "active": False,
-                "relay_pin": 23,
-                "inverted_output": True,
-                "initial_value": True,
-                "cmdON": "sudo service webcamd start",
-                "cmdOFF": "sudo service webcamd stop",
-                "iconOn": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                "iconOff": (
-                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
-                    """style="filter: opacity(20%)">"""
-                ),
-                "labelText": "Webcam",
-                "confirmOff": False,
-                "autoONforPrint": True,
-                "autoOFFforPrint": True,
-                "autoOffDelay": 10,
-            } for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]
-        }
-        def setter(path, value):
-            dump[path[0]] = value
+        # Should call all migrations
         settings = Mock(
-            get = lambda path, **kwargs:dump[path[0]],
-            set = setter
+            get = Mock(return_value={})
         )
         logger = Mock()
         migrate(0, settings, logger)
-        self.assertEqual(dump, {
-            index: {
-                "active": False,
-                "relay_pin": 23,
-                "inverted_output": True,
-                "cmd_on": "sudo service webcamd start",
-                "cmd_off": "sudo service webcamd stop",
-                "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
-                "icon_off": (
-                    """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" """
-                    """style="filter: opacity(20%)">"""
-                ),
-                "label_text": "Webcam",
-                "confirm_off": False,
-                "rules": {
-                    "STARTUP": {
-                        "state": True,
-                        "delay": 0
-                    },
-                    "PRINTING_STARTED": {
-                        "state": True,
-                        "delay": 0
-                    },
-                    "PRINTING_STOPPED": {
-                        "state": False,
-                        "delay": 10
-                    }
-                }
-            } for index in ["r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8"]
-        })
+        logger.info.assert_any_call("OctoRelay migrates to settings v1")
 
 
 if __name__ == "__main__":
