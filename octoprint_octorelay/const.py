@@ -6,6 +6,10 @@ STARTUP = "STARTUP"
 PRINTING_STARTED = "PRINTING_STARTED"
 PRINTING_STOPPED = "PRINTING_STOPPED"
 
+# Task cancellation exceptions
+# { eventHappened: [ events which postponed timers should NOT be cancelled ]
+CANCELLATION_EXCEPTIONS = {}
+
 # Versioning of the plugin's default settings described below
 SETTINGS_VERSION = 3
 

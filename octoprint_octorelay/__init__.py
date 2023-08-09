@@ -13,7 +13,7 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS
 )
 from .driver import Relay
 from .migrations import migrate
@@ -153,7 +153,7 @@ class OctoRelayPlugin(
             if bool(settings[index]["active"]):
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
-                    self.cancel_tasks(index) # todo: specific events?
+                    self.cancel_tasks(index, event)
                     delay = int(settings[index]["rules"][event]["delay"])
                     timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
                     self.tasks.append({
@@ -175,9 +175,10 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, index: str):
+    def cancel_tasks(self, index: str, requestor: str):
+        exceptions = CANCELLATION_EXCEPTIONS[requestor] if requestor in CANCELLATION_EXCEPTIONS else []
         def handler(entry):
-            if index == entry["subject"]: # todo: all of types of events?
+            if index == entry["subject"] and entry["owner"] not in exceptions:
                 try:
                     entry["timer"].cancel()
                     self._logger.info(f"cancelled timer {entry['owner']} for relay {entry['subject']}")
