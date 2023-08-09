@@ -523,7 +523,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_plugin_event(self):
         # Should follow the rule on handling the event by toggling the relay if "state" is not None
         self.plugin_instance.tasks = [{"subject": "r4", "timer": timerMock}]
-        self.plugin_instance.cancel_timers = Mock()
+        self.plugin_instance.cancel_tasks = Mock()
         cases = [
             { "event": "PRINTING_STARTED", "state": True, "expectedCall": True },
             { "event": "PRINTING_STARTED", "state": False, "expectedCall": True },
@@ -552,7 +552,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
-            self.plugin_instance.cancel_timers.assert_called_with()
+            self.plugin_instance.cancel_tasks.assert_called_with()
             if case["expectedCall"]:
                 utilMock.ResettableTimer.assert_called_with(
                     300, self.plugin_instance.toggle_relay, ["r8", case["state"]]
@@ -570,15 +570,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
 
-    def test_cancel_timers__exception(self):
-        # Should handle a possible exception when cancelling the timer
+    def test_cancel_tasks__exception(self):
+        # Should handle a possible exception when cancelling a timer
         self.plugin_instance.tasks = [{
             "subject": "r4",
             "timer": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
         }]
-        self.plugin_instance.cancel_timers()
+        self.plugin_instance.cancel_tasks()
         self.plugin_instance._logger.warn.assert_called_with("failed to cancel timer 0 for r4, reason: Caught!")
 
     def test_has_switch_permission(self):

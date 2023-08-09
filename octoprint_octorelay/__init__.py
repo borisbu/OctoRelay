@@ -148,7 +148,7 @@ class OctoRelayPlugin(
             # self.print_stopped()
 
     def handle_plugin_event(self, event):
-        self.cancel_timers() # todo: which ones?
+        self.cancel_tasks() # todo: which ones?
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
             if bool(settings[index]["active"]):
@@ -176,7 +176,7 @@ class OctoRelayPlugin(
         self.update_ui()
 
     # todo: all of them?
-    def cancel_timers(self):
+    def cancel_tasks(self):
         for index, entry in enumerate(self.tasks):
             try:
                 entry["timer"].cancel()
