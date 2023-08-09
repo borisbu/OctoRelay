@@ -163,7 +163,6 @@ class OctoRelayPlugin(
                     })
                     timer.start()
 
-    # todo: should update ui?
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
         pin = int(settings["relay_pin"])
