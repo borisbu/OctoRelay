@@ -175,9 +175,9 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, relay: str):
+    def cancel_tasks(self, index: str):
         def handler(entry):
-            if relay == entry["subject"]: # todo: all of types of events?
+            if index == entry["subject"]: # todo: all of types of events?
                 try:
                     entry["timer"].cancel()
                     self._logger.info(f"cancelled timer {entry['reason']} for relay {entry['subject']}")
@@ -185,8 +185,8 @@ class OctoRelayPlugin(
                     self._logger.warn(
                         f"failed to cancel timer {entry['reason']} for {entry['subject']}, reason: {exception}"
                     )
-                return False
-            return True
+                return False # exclude
+            return True # include
         self.tasks = list(filter(handler, self.tasks))
 
     def run_system_command(self, cmd):
