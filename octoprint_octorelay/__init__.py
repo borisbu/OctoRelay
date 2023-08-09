@@ -35,7 +35,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.timers = [] # of { subject: relayIndex, timer: ResettableTimer }
+        self.timers = [] # of { subject: relayIndex, reason: pluginEvent, timer: ResettableTimer }
         self.model = {}
         for index in RELAY_INDEXES:
             self.model[index] = {}
@@ -160,6 +160,7 @@ class OctoRelayPlugin(
                     timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
                     self.timers.append({
                         "subject": index,
+                        "reason": event,
                         "timer": timer
                     })
                     timer.start()

@@ -523,6 +523,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_plugin_event(self):
         # Should follow the rule on handling the event by toggling the relay if "state" is not None
         self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
+        self.plugin_instance.cancel_timers = Mock()
         cases = [
             { "event": "PRINTING_STARTED", "state": True, "expectedCall": True },
             { "event": "PRINTING_STARTED", "state": False, "expectedCall": True },
@@ -535,6 +536,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": "STARTUP", "state": None, "expectedCall": False },
         ]
         for case in cases:
+            self.plugin_instance.timers = []
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
             self.plugin_instance.toggle_relay = Mock()
@@ -550,12 +552,20 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
-            timerMock.cancel.assert_called_with() # todo move to another test?
+            self.plugin_instance.cancel_timers.assert_called_with()
             if case["expectedCall"]:
                 utilMock.ResettableTimer.assert_called_with(
                     300, self.plugin_instance.toggle_relay, ["r8", case["state"]]
                 )
                 timerMock.start.assert_called_with()
+                self.assertEqual(
+                    self.plugin_instance.timers,
+                    list(map(lambda index, reason=case["event"]: {
+                        "subject": index,
+                        "reason": reason,
+                        "timer": timerMock
+                    }, RELAY_INDEXES))
+                )
             else:
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
