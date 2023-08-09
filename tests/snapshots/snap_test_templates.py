@@ -127,36 +127,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r1.auto_off_after_print">
                 Delay
             </label>
@@ -241,36 +280,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r2.auto_off_after_print">
                 Delay
             </label>
@@ -355,36 +433,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r3.auto_off_after_print">
                 Delay
             </label>
@@ -469,36 +586,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r4.auto_off_after_print">
                 Delay
             </label>
@@ -583,36 +739,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r5.auto_off_after_print">
                 Delay
             </label>
@@ -697,36 +892,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r6.auto_off_after_print">
                 Delay
             </label>
@@ -811,36 +1045,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r7.auto_off_after_print">
                 Delay
             </label>
@@ -925,36 +1198,75 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
 
 
-            <label class="control-label">Startup</label>
+            
+            <label class="control-label">STARTUP</label>
             <div class="controls">
                 <div class="btn-group">
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
                         ON
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === false }">
                         <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
                         OFF
                     </label>
+                    
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === null }">
                         <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
-                        no action
+                        skip
                     </label>
+                    
                 </div>
             </div>
-
-
-            <label class="control-label">Auto ON/OFF</label>
+            
+            <label class="control-label">PRINTING_STARTED</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.auto_on_before_print">
-                    ON before printing
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.auto_off_after_print">
-                    OFF after printing
-                </label>
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state" />
+                        skip
+                    </label>
+                    
+                </div>
             </div>
+            
+            <label class="control-label">PRINTING_STOPPED</label>
+            <div class="controls">
+                <div class="btn-group">
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state" />
+                        ON
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state" />
+                        OFF
+                    </label>
+                    
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state" />
+                        skip
+                    </label>
+                    
+                </div>
+            </div>
+            
+
+
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r8.auto_off_after_print">
                 Delay
             </label>
