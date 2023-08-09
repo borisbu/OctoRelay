@@ -560,9 +560,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 timerMock.start.assert_called_with()
                 self.assertEqual(
                     self.plugin_instance.tasks,
-                    list(map(lambda index, reason=case["event"]: {
+                    list(map(lambda index, owner=case["event"]: {
                         "subject": index,
-                        "reason": reason,
+                        "owner": owner,
                         "timer": timerMock
                     }, RELAY_INDEXES))
                 )
@@ -575,11 +575,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
         timerMock.mock_reset()
         self.plugin_instance.tasks = [{
             "subject": "r4",
-            "reason": "PRINTING_STOPPED",
+            "owner": "PRINTING_STOPPED",
             "timer": timerMock
         }, {
             "subject": "r4",
-            "reason": "STARTUP",
+            "owner": "STARTUP",
             "timer": timerMock
         }]
         self.plugin_instance.cancel_tasks("r4")
@@ -590,7 +590,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should handle a possible exception when cancelling a timer
         self.plugin_instance.tasks = [{
             "subject": "r4",
-            "reason": "PRINTING_STOPPED",
+            "owner": "PRINTING_STOPPED",
             "timer": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
