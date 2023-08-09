@@ -125,12 +125,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.auto_on_before_print">
                     ON before printing
@@ -222,12 +239,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.auto_on_before_print">
                     ON before printing
@@ -319,12 +353,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.auto_on_before_print">
                     ON before printing
@@ -416,12 +467,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.auto_on_before_print">
                     ON before printing
@@ -513,12 +581,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.auto_on_before_print">
                     ON before printing
@@ -610,12 +695,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.auto_on_before_print">
                     ON before printing
@@ -707,12 +809,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.auto_on_before_print">
                     ON before printing
@@ -804,12 +923,29 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     Warning on turning OFF
                 </label>
             </div>
+
+
+            <label class="control-label">Startup</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">Auto ON/OFF</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.initial_value">
-                    ON initially on boot
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.auto_on_before_print">
                     ON before printing

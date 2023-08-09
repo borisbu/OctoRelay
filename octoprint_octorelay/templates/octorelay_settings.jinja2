@@ -68,12 +68,29 @@
                     {{ _('Warning on turning OFF') }}
                 </label>
             </div>
+
+
+            <label class="control-label">{{ _('Startup') }}</label>
+            <div class="controls">
+                <div class="btn-group" >
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state() === true }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state" />
+                        ON
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state() === false }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state" />
+                        OFF
+                    </label>
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state() === null }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state" />
+                        no action
+                    </label>
+                </div>
+            </div>
+
+
             <label class="control-label">{{ _('Auto ON/OFF') }}</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.initial_value">
-                    {{ _('ON initially on boot') }}
-                </label>
                 <label class="checkbox">
                     <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_on_before_print">
                     {{ _('ON before printing') }}
