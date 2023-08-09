@@ -81,22 +81,15 @@
                     </label>
                     {% endfor %}
                 </div>
+                <div class="input-prepend input-append" data-bind="hidden: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state() === null">
+                    <span class="add-on">{{ _('Delay') }}</span>
+                    <input type="number" min="0" max="86400" class="input-mini" data-bind="value: settings.plugins.octorelay.r{{n}}.rules.{{event}}.delay">
+                    <span class="add-on">{{ _('s') }}</span>
+                </div>
             </div>
             {% endfor %}
 
 
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
-                {{ _('Delay') }}
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.auto_off_delay">
-                        <span class="add-on">seconds</span>
-                    </div>
-                    <span class="help-block">{{ _('The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.') }}</span>
-                </label>
-            </div>
         </div>
     </div>
     {% endfor %}
