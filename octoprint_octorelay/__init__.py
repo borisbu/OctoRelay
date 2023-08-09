@@ -96,23 +96,23 @@ class OctoRelayPlugin(
         # API command to get relay statuses
         if command == LIST_ALL_COMMAND:
             active_relays = []
+            settings = self._settings.get([], merged=True) # expensive
             for index in RELAY_INDEXES:
-                settings = self._settings.get([index], merged=True)
-                if settings["active"]:
+                if settings[index]["active"]:
                     relay = Relay(
-                        int(settings["relay_pin"]),
-                        bool(settings["inverted_output"])
+                        int(settings[index]["relay_pin"]),
+                        bool(settings[index]["inverted_output"])
                     )
                     active_relays.append({
                         "id": index,
-                        "name": settings["label_text"],
+                        "name": settings[index]["label_text"],
                         "active": relay.is_closed(),
                     })
             return flask.jsonify(active_relays)
 
         # API command to get relay status
         if command == GET_STATUS_COMMAND:
-            settings = self._settings.get([data["pin"]], merged=True)
+            settings = self._settings.get([data["pin"]], merged=True) # expensive
             relay = Relay(
                 int(settings["relay_pin"]),
                 bool(settings["inverted_output"])
@@ -151,12 +151,12 @@ class OctoRelayPlugin(
 
     def handle_plugin_event(self, event):
         self.cancel_timers() # todo: which ones?
+        settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
-            settings = self._settings.get([index], merged=True)
-            if bool(settings["active"]):
-                target = settings["rules"][event]["state"]
+            if bool(settings[index]["active"]):
+                target = settings[index]["rules"][event]["state"]
                 if target is not None:
-                    delay = int(settings["rules"][event]["delay"])
+                    delay = int(settings[index]["rules"][event]["delay"])
                     timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
                     self.timers.append({
                         "subject": index,
@@ -166,7 +166,7 @@ class OctoRelayPlugin(
 
     # todo: should update ui?
     def toggle_relay(self, index, target: Optional[bool] = None):
-        settings = self._settings.get([index], merged=True)
+        settings = self._settings.get([index], merged=True) # expensive
         pin = int(settings["relay_pin"])
         inverted = bool(settings["inverted_output"])
         relay = Relay(pin, inverted)
@@ -193,26 +193,25 @@ class OctoRelayPlugin(
             os.system(cmd)
 
     def update_ui(self):
+        settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
-            settings = self._settings.get([index], merged=True)
             relay = Relay(
-                int(settings["relay_pin"]),
-                bool(settings["inverted_output"])
+                int(settings[index]["relay_pin"]),
+                bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed()
             # set the icon state
             self.model[index]["relay_pin"] = relay.pin
             self.model[index]["inverted_output"] = relay.inverted
             self.model[index]["relay_state"] = relay_state # bool since v3.1
-            self.model[index]["label_text"] = settings["label_text"]
-            self.model[index]["active"] = bool(settings["active"])
+            self.model[index]["label_text"] = settings[index]["label_text"]
+            self.model[index]["active"] = bool(settings[index]["active"])
             if relay_state:
-                self.model[index]["icon_html"] = settings["icon_on"]
-                self.model[index]["confirm_off"] = bool(settings["confirm_off"])
+                self.model[index]["icon_html"] = settings[index]["icon_on"]
+                self.model[index]["confirm_off"] = bool(settings[index]["confirm_off"])
             else:
-                self.model[index]["icon_html"] = settings["icon_off"]
+                self.model[index]["icon_html"] = settings[index]["icon_off"]
                 self.model[index]["confirm_off"] = False
-
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
