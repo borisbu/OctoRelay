@@ -11,7 +11,7 @@ from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
 from .const import (
-    get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
+    get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
     STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS
 )
@@ -54,18 +54,7 @@ class OctoRelayPlugin(
         return get_templates()
 
     def get_template_vars(self):
-        return {
-            "events": {
-                STARTUP: "on Startup",
-                PRINTING_STARTED: "on Printing Started",
-                PRINTING_STOPPED: "on Printing Stopped"
-            },
-            "tristate": {
-                "true": "ON",
-                "false": "OFF",
-                "null": "skip"
-            }
-        }
+        return get_ui_vars()
 
     def get_assets(self):
         return ASSETS

@@ -128,7 +128,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -150,7 +150,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -172,7 +172,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -281,7 +281,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -303,7 +303,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -325,7 +325,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -434,7 +434,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -456,7 +456,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -478,7 +478,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -587,7 +587,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -609,7 +609,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -631,7 +631,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -740,7 +740,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -762,7 +762,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -784,7 +784,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -893,7 +893,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -915,7 +915,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -937,7 +937,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -1046,7 +1046,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -1068,7 +1068,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -1090,7 +1090,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -1199,7 +1199,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
 
             
-            <label class="control-label">STARTUP</label>
+            <label class="control-label">on Startup</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -1221,7 +1221,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STARTED</label>
+            <label class="control-label">on Printing Started</label>
             <div class="controls">
                 <div class="btn-group">
                     
@@ -1243,7 +1243,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
             </div>
             
-            <label class="control-label">PRINTING_STOPPED</label>
+            <label class="control-label">on Printing Stopped</label>
             <div class="controls">
                 <div class="btn-group">
                     

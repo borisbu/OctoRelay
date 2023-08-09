@@ -2,6 +2,7 @@
 import unittest
 from snapshottest import TestCase
 from jinja2 import Environment, FileSystemLoader
+from octoprint_octorelay.const import get_ui_vars
 
 environment = Environment(loader=FileSystemLoader("../octoprint_octorelay/templates/"))
 
@@ -11,10 +12,12 @@ class TestTemplates(TestCase):
             "octorelay_settings.jinja2",
             "octorelay_navbar.jinja2"
         ]
+        vars = get_ui_vars()
         for file in files:
             template = environment.get_template(file)
             html = template.render({
-                "_": lambda value: value
+                "_": lambda value: value,
+                **{ "plugin_octorelay_" + key: value for key, value in vars.items() }
             })
             self.assertMatchSnapshot(html, file)
 

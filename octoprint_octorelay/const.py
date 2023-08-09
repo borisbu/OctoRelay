@@ -240,6 +240,21 @@ def get_templates():
         { "type": "settings", "custom_bindings": False }
     ]
 
+# these are available in templates with prefix: plugin_octorelay_
+def get_ui_vars():
+    return {
+        "events": {
+            STARTUP: "on Startup",
+            PRINTING_STARTED: "on Printing Started",
+            PRINTING_STOPPED: "on Printing Stopped"
+        },
+        "tristate": {
+            "true": "ON",
+            "false": "OFF",
+            "null": "skip"
+        }
+    }
+
 # Plugin's asset files to automatically include in the core UI
 ASSETS = { "js": [ "js/octorelay.js" ] }
 
