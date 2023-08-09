@@ -129,7 +129,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
                         ON
@@ -243,7 +243,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
                         ON
@@ -357,7 +357,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
                         ON
@@ -471,7 +471,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
                         ON
@@ -585,7 +585,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
                         ON
@@ -699,7 +699,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
                         ON
@@ -813,7 +813,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
                         ON
@@ -927,7 +927,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
             <label class="control-label">Startup</label>
             <div class="controls">
-                <div class="btn-group" >
+                <div class="btn-group">
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === true }">
                         <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
                         ON
