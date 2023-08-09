@@ -36,9 +36,7 @@ class OctoRelayPlugin(
         # pylint: disable=super-init-not-called
         self.polling_timer = None
         self.tasks = [] # of { subject: relayIndex, reason: pluginEvent, timer: ResettableTimer }
-        self.model = {}
-        for index in RELAY_INDEXES:
-            self.model[index] = {}
+        self.model = { index: {} for index in RELAY_INDEXES }
 
     def get_settings_version(self):
         return SETTINGS_VERSION
