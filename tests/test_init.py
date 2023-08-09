@@ -53,7 +53,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_constructor(self):
         # During the instantiation should set initial values to certain props
         self.assertIsNone(self.plugin_instance.polling_timer)
-        self.assertEqual(self.plugin_instance.timers, [])
+        self.assertEqual(self.plugin_instance.tasks, [])
         self.assertEqual(self.plugin_instance.model, {
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
             "r5": {}, "r6": {}, "r7": {}, "r8": {}
@@ -522,7 +522,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_handle_plugin_event(self):
         # Should follow the rule on handling the event by toggling the relay if "state" is not None
-        self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
+        self.plugin_instance.tasks = [{"subject": "r4", "timer": timerMock}]
         self.plugin_instance.cancel_timers = Mock()
         cases = [
             { "event": "PRINTING_STARTED", "state": True, "expectedCall": True },
@@ -536,7 +536,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": "STARTUP", "state": None, "expectedCall": False },
         ]
         for case in cases:
-            self.plugin_instance.timers = []
+            self.plugin_instance.tasks = []
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
             self.plugin_instance.toggle_relay = Mock()
@@ -559,7 +559,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 )
                 timerMock.start.assert_called_with()
                 self.assertEqual(
-                    self.plugin_instance.timers,
+                    self.plugin_instance.tasks,
                     list(map(lambda index, reason=case["event"]: {
                         "subject": index,
                         "reason": reason,
@@ -572,7 +572,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_cancel_timers__exception(self):
         # Should handle a possible exception when cancelling the timer
-        self.plugin_instance.timers = [{
+        self.plugin_instance.tasks = [{
             "subject": "r4",
             "timer": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )

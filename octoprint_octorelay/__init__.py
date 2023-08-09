@@ -35,7 +35,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.timers = [] # of { subject: relayIndex, reason: pluginEvent, timer: ResettableTimer }
+        self.tasks = [] # of { subject: relayIndex, reason: pluginEvent, timer: ResettableTimer }
         self.model = {}
         for index in RELAY_INDEXES:
             self.model[index] = {}
@@ -158,7 +158,7 @@ class OctoRelayPlugin(
                 if target is not None:
                     delay = int(settings[index]["rules"][event]["delay"])
                     timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
-                    self.timers.append({
+                    self.tasks.append({
                         "subject": index,
                         "reason": event,
                         "timer": timer
@@ -180,13 +180,13 @@ class OctoRelayPlugin(
 
     # todo: all of them?
     def cancel_timers(self):
-        for index, entry in enumerate(self.timers):
+        for index, entry in enumerate(self.tasks):
             try:
                 entry["timer"].cancel()
                 self._logger.info(f"cancelled timer {index} for relay {entry['subject']}")
             except Exception as exception:
                 self._logger.warn(f"failed to cancel timer {index} for {entry['subject']}, reason: {exception}")
-            self.timers.pop(index)
+            self.tasks.pop(index)
 
     def run_system_command(self, cmd):
         if cmd:
