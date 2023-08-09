@@ -70,30 +70,21 @@
             </div>
 
 
-            <label class="control-label">{{ _('Startup') }}</label>
+            {% for event in ["STARTUP", "PRINTING_STARTED", "PRINTING_STOPPED"] %}
+            <label class="control-label">{{ _(event) }}</label>
             <div class="controls">
                 <div class="btn-group">
                     {% for value in ["true", "false", "null"] %}
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state() === {{value}} }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: settings.plugins.octorelay.r{{n}}.rules.STARTUP.state" />
+                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state() === {{value}} }">
+                        <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state" />
                         {{"ON" if value == "true" else "OFF" if value == "false" else "skip"}}
                     </label>
                     {% endfor %}
                 </div>
             </div>
+            {% endfor %}
 
 
-            <label class="control-label">{{ _('Auto ON/OFF') }}</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_on_before_print">
-                    {{ _('ON before printing') }}
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
-                    {{ _('OFF after printing') }}
-                </label>
-            </div>
             <label class="control-label" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
                 {{ _('Delay') }}
             </label>
