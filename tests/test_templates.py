@@ -12,12 +12,12 @@ class TestTemplates(TestCase):
             "octorelay_settings.jinja2",
             "octorelay_navbar.jinja2"
         ]
-        vars = get_ui_vars()
+        ui_vars = get_ui_vars()
         for file in files:
             template = environment.get_template(file)
             html = template.render({
                 "_": lambda value: value,
-                **{ "plugin_octorelay_" + key: value for key, value in vars.items() }
+                **{ "plugin_octorelay_" + key: value for key, value in ui_vars.items() }
             })
             self.assertMatchSnapshot(html, file)
 
