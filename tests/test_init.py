@@ -60,9 +60,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
         })
 
     def test_get_settings_version(self):
+        # Should return the current version of settings defaults
         self.assertEqual(self.plugin_instance.get_settings_version(), 3)
 
     def test_get_settings_defaults(self):
+        # Should return the plugin default settings
         expected = {
             "r1": {
                 "active": False,
@@ -296,6 +298,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger.info.assert_called_with("OctoRelay finished the migration of settings to v1")
 
     def test_get_template_configs(self):
+        # Should return the plugin template configurations
         expected = [
             { "type": "navbar", "custom_bindings": False },
             { "type": "settings", "custom_bindings": False }
@@ -312,16 +315,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(second[0]["type"], "navbar")
 
     def test_get_assets(self):
+        # Should return the plugin assets configutation
         expected = { "js": [ "js/octorelay.js" ] }
         actual = self.plugin_instance.get_assets()
         self.assertEqual(actual, expected)
 
     def test_get_api_commands(self):
+        # Should return the list of available plugin commands
         expected = { "update": [ "pin" ], "getStatus": [ "pin" ], "listAllStatus": [] }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
     def test_get_update_information(self):
+        # Should return the update strategy configuration
         expected = {
             "octorelay": {
                 "displayName": "OctoRelay",
@@ -347,12 +353,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_python_compatibility(self):
+        # Should be the current Python compability string
         self.assertEqual(__plugin_pythoncompat__, ">=3.7,<4")
 
     def test_exposed_implementation(self):
+        # Should be an instance of the plugin class
         self.assertIsInstance(__plugin_implementation__, OctoRelayPlugin)
 
     def test_exposed_hooks(self):
+        # Should be an object having handlers associated to the certain OctoPrint hooks
         expected = {
             "octoprint.plugin.softwareupdate.check_config":
                 __plugin_implementation__.get_update_information,
@@ -364,6 +373,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(__plugin_hooks__, expected)
 
     def test_on_shutdown(self):
+        # Should stop the polling timer
         self.plugin_instance.polling_timer = Mock()
         self.plugin_instance.on_shutdown()
         self.plugin_instance.polling_timer.cancel.assert_called_with()
@@ -426,12 +436,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("os.system")
     def test_toggle_relay(self, system_mock):
-        # Should turn the relay off and execute the supplied command
+        # Should toggle the relay and execute a command matching its new state
         cases = [
             { "target": True, "inverted": False, "expectedCommand": "CommandON" },
             { "target": True, "inverted": True, "expectedCommand": "CommandON" },
             { "target": False, "inverted": False, "expectedCommand": "CommandOFF" },
             { "target": False, "inverted": True, "expectedCommand": "CommandOFF" },
+            # in these cases the resulting relay state is mocked with the "inverted" value:
             { "target": None, "inverted": False, "expectedCommand": "CommandOFF" },
             { "target": None, "inverted": True, "expectedCommand": "CommandON" }
         ]
@@ -498,7 +509,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
     def test_on_after_startup(self):
-        # Depending on actual settings should set the relay state, update UI and start polling
+        # Should trigger STARTUP event handler, update UI and start polling
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.handle_plugin_event = Mock()
         self.plugin_instance.on_after_startup()
@@ -510,7 +521,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         timerMock.start.assert_called_with()
 
     def test_handle_plugin_event(self):
-        # For relays configured with autoON should call turn_on_relay method and update UI
+        # Should follow the rule on handling the event by toggling the relay if "state" is not None
         self.plugin_instance.timers = [{"subject": "r4", "timer": timerMock}]
         cases = [
             { "event": "PRINTING_STARTED", "state": True, "expectedCall": True },
@@ -697,12 +708,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
         abort_mock.assert_called_with(400)
 
     def test_process_at_command(self):
-        # Should call toggle_relay() method with supplied parameter
+        # Should toggle the relay having index supplied as a parameter
         self.plugin_instance.toggle_relay = Mock()
         self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4"))
         self.plugin_instance.toggle_relay.assert_called_with("r4")
 
     def test_get_additional_permissions(self):
+        # Should return the list of the plugin custom permissions
         expected = [{
             "key": "SWITCH",
             "name": "Relay switching",
