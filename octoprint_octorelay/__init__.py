@@ -53,6 +53,20 @@ class OctoRelayPlugin(
     def get_template_configs(self):
         return get_templates()
 
+    def get_template_vars(self):
+        return {
+            "events": {
+                STARTUP: "on Startup",
+                PRINTING_STARTED: "on Printing Started",
+                PRINTING_STOPPED: "on Printing Stopped"
+            },
+            "tristate": {
+                "true": "ON",
+                "false": "OFF",
+                "null": "skip"
+            }
+        }
+
     def get_assets(self):
         return ASSETS
 

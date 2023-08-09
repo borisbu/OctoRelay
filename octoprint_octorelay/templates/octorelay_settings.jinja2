@@ -70,14 +70,14 @@
             </div>
 
 
-            {% for event in ["STARTUP", "PRINTING_STARTED", "PRINTING_STOPPED"] %}
-            <label class="control-label">{{ _(event) }}</label>
+            {% for event, label in plugin_octorelay_events.items() %}
+            <label class="control-label">{{ _(label) }}</label>
             <div class="controls">
                 <div class="btn-group">
-                    {% for value in ["true", "false", "null"] %}
+                    {% for value, caption in plugin_octorelay_tristate.items() %}
                     <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state() === {{value}} }">
                         <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state" />
-                        {{"ON" if value == "true" else "OFF" if value == "false" else "skip"}}
+                        {{ _(caption) }}
                     </label>
                     {% endfor %}
                 </div>
