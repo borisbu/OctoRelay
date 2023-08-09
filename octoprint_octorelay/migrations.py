@@ -47,17 +47,26 @@ def v2(settings, logger):
         for key, value in before.items():
             if key not in removed:
                 after[key] = value
+        initial_value = before.get("initial_value")
+        if initial_value is None:
+            initial_value = index == "r4" # v2 default: true for r4
+        auto_on_before_print = before.get("auto_on_before_print")
+        if auto_on_before_print is None:
+            auto_on_before_print = index in ["r1", "r3", "r4"] # v2 default, true for these ones
+        auto_off_after_print = before.get("auto_off_after_print")
+        if auto_off_after_print is None:
+            auto_off_after_print = index in ["r1", "r3", "r4"] # v2 default, true for these ones
         after["rules"] = { # no references to constants
             "STARTUP": {
-                "state": before.get("initial_value"),
+                "state": bool(initial_value),
                 "delay": 0
             },
             "PRINTING_STARTED": {
-                "state": True if bool(before.get("auto_on_before_print")) else None,
+                "state": True if bool(auto_on_before_print) else None,
                 "delay": 0
             },
             "PRINTING_STOPPED": {
-                "state": False if bool(before.get("auto_off_after_print")) else None,
+                "state": False if bool(auto_off_after_print) else None,
                 "delay": before.get("auto_off_delay")
             }
         }
