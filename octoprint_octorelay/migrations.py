@@ -80,5 +80,5 @@ def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from
     jobs = migrators[current::]
     for index, job in enumerate(jobs):
-        logger.info(f"OctoRelay migrates to settings v{index + 1}")
+        logger.info(f"OctoRelay migrates to settings v{current + index + 1}")
         job(settings, logger)
