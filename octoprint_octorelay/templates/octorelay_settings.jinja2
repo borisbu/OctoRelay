@@ -14,13 +14,17 @@
                 ></span>
             </label>
         </div>
-        <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active">
+    </div>
+    <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active">
+        <div class="control-group">
             <label class="control-label">{{ _('Label') }}</label>
             <div class="controls">
                 <label class="text">
                     <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.label_text">
                 </label>
             </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{ _('GPIO Number') }}</label>
             <div class="controls">
                 <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
@@ -29,18 +33,24 @@
                     {{ _('Inverted output') }}
                 </label>
             </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{ _('OS Command ON') }}</label>
             <div class="controls">
                 <label class="text">
                     <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_on">
                 </label>
             </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{ _('OS Command OFF') }}</label>
             <div class="controls">
                 <label class="text">
                     <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_off">
                 </label>
             </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{ _('Icon ON') }}</label>
             <div class="controls">
                 <label class="text">
@@ -51,6 +61,8 @@
                     ></div>
                 </label>
             </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{ _('Icon OFF') }}</label>
             <div class="controls">
                 <label class="text">
@@ -61,6 +73,8 @@
                     ></div>
                 </label>
             </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">{{ _('Confirmation') }}</label>
             <div class="controls">
                 <label class="checkbox">
@@ -68,9 +82,10 @@
                     {{ _('Warning on turning OFF') }}
                 </label>
             </div>
+        </div>
 
-
-            {% for event, label in plugin_octorelay_events.items() %}
+        {% for event, label in plugin_octorelay_events.items() %}
+        <div class="control-group">
             <label class="control-label">{{ _(label) }}</label>
             <div class="controls">
                 <div class="btn-group">
@@ -87,10 +102,9 @@
                     <span class="add-on">{{ _('s') }}</span>
                 </div>
             </div>
-            {% endfor %}
-
-
         </div>
+        {% endfor %}
+
     </div>
     {% endfor %}
 </form>
