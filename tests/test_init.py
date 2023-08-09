@@ -570,10 +570,23 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
 
+    def test_cancel_tasks(self):
+        # Should clear the tasks queue and cancel its timers
+        timerMock.mock_reset()
+        self.plugin_instance.tasks = [{
+            "subject": "r4",
+            "reason": "PRINTING_STOPPED",
+            "timer": timerMock
+        }]
+        self.plugin_instance.cancel_tasks()
+        self.assertEqual(self.plugin_instance.tasks, [])
+        timerMock.cancel.assert_called_with()
+
     def test_cancel_tasks__exception(self):
         # Should handle a possible exception when cancelling a timer
         self.plugin_instance.tasks = [{
             "subject": "r4",
+            "reason": "PRINTING_STOPPED",
             "timer": Mock(
                 cancel=Mock( side_effect=Exception("Caught!") )
             )
