@@ -101,7 +101,7 @@ class OctoRelayPlugin(
             for index in RELAY_INDEXES:
                 if settings[index]["active"]:
                     relay = Relay(
-                        int(settings[index]["relay_pin"]),
+                        int(settings[index]["relay_pin"] or 0),
                         bool(settings[index]["inverted_output"])
                     )
                     active_relays.append({
@@ -115,7 +115,7 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND:
             settings = self._settings.get([data["pin"]], merged=True) # expensive
             relay = Relay(
-                int(settings["relay_pin"]),
+                int(settings["relay_pin"] or 0),
                 bool(settings["inverted_output"])
             )
             return flask.jsonify(status=relay.is_closed())
@@ -157,7 +157,7 @@ class OctoRelayPlugin(
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     self.cancel_tasks(index, event)
-                    delay = int(settings[index]["rules"][event]["delay"])
+                    delay = int(settings[index]["rules"][event]["delay"] or 0)
                     timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
                     self.tasks.append({
                         "subject": index,
@@ -168,7 +168,7 @@ class OctoRelayPlugin(
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
-        pin = int(settings["relay_pin"])
+        pin = int(settings["relay_pin"] or 0)
         inverted = bool(settings["inverted_output"])
         relay = Relay(pin, inverted)
         cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
@@ -202,7 +202,7 @@ class OctoRelayPlugin(
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
             relay = Relay(
-                int(settings[index]["relay_pin"]),
+                int(settings[index]["relay_pin"] or 0),
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed()
