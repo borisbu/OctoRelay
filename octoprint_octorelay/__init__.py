@@ -175,6 +175,7 @@ class OctoRelayPlugin(
         pin = int(settings["relay_pin"] or 0)
         inverted = bool(settings["inverted_output"])
         relay = Relay(pin, inverted)
+        self._logger.debug(f"Toggling relay {index} on pin {pin}")
         cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
         self.run_system_command(cmd)
 
