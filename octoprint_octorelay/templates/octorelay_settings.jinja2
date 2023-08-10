@@ -3,8 +3,8 @@
 
     <ul class="nav nav-pills">
         {% for n in range(1,9) %}
-        <li data-bind="css: { active: 1 === {{n}} }">
-            <a href="#relay_settings_{{n}}" data-bind="text: settings.plugins.octorelay.r{{n}}.label_text() || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
+        <li data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}">
+            <a href="#relay_settings_{{n}}" data-bind="text: label_text() || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
         </li>
         {% endfor %}
     </ul>
@@ -12,34 +12,34 @@
 
     <div class="tab-content">
         {% for n in range(1,9) %}
-        <div id="relay_settings_{{n}}" class="tab-pane" data-bind="css: { active: 1 === {{n}} }">
+        <div id="relay_settings_{{n}}" class="tab-pane" data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}">
             <div class="control-group">
                 <label class="control-label">{{ _('Relay') }} {{n}}</label>
                 <div class="controls">
                     <label class="checkbox">
-                        <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.active">
+                        <input type="checkbox" data-bind="checked: active">
                         {{ _('Active') }}
                     </label>
-                    <span class="help-block" data-bind="hidden: settings.plugins.octorelay.r{{n}}.active">
+                    <span class="help-block" data-bind="hidden: active">
                         {{ _('All operations on this relay are disabled') }}
                     </span>
                 </div>
             </div>
-            <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active">
+            <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">{{ _('Label') }}</label>
                     <div class="controls">
                         <label class="text">
-                            <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.label_text">
+                            <input type="text" class="input-small" data-bind="value: label_text">
                         </label>
                     </div>
                 </div>
                 <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
-                        <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
+                        <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
                         <label class="checkbox">
-                            <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.inverted_output">
+                            <input type="checkbox" data-bind="checked: inverted_output">
                             {{ _('Inverted output') }}
                         </label>
                     </div>
@@ -48,7 +48,7 @@
                     <label class="control-label">{{ _('OS Command ON') }}</label>
                     <div class="controls">
                         <label class="text">
-                            <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_on">
+                            <input type="text" class="input-large" data-bind="value: cmd_on">
                         </label>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
                     <label class="control-label">{{ _('OS Command OFF') }}</label>
                     <div class="controls">
                         <label class="text">
-                            <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_off">
+                            <input type="text" class="input-large" data-bind="value: cmd_off">
                         </label>
                     </div>
                 </div>
@@ -64,10 +64,10 @@
                     <label class="control-label">{{ _('Icon ON') }}</label>
                     <div class="controls">
                         <label class="text">
-                            <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.icon_on">
+                            <input type="text" class="input-large" data-bind="value: icon_on">
                             <div
                                     style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                                    data-bind="html: settings.plugins.octorelay.r{{n}}.icon_on"
+                                    data-bind="html: icon_on"
                             ></div>
                         </label>
                     </div>
@@ -76,10 +76,10 @@
                     <label class="control-label">{{ _('Icon OFF') }}</label>
                     <div class="controls">
                         <label class="text">
-                            <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.icon_off">
+                            <input type="text" class="input-large" data-bind="value: icon_off">
                             <div
                                     style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                                    data-bind="html: settings.plugins.octorelay.r{{n}}.icon_off"
+                                    data-bind="html: icon_off"
                             ></div>
                         </label>
                     </div>
@@ -88,7 +88,7 @@
                     <label class="control-label">{{ _('Confirmation') }}</label>
                     <div class="controls">
                         <label class="checkbox">
-                            <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.confirm_off">
+                            <input type="checkbox" data-bind="checked: confirm_off">
                             {{ _('Warning on turning OFF') }}
                         </label>
                     </div>
@@ -100,15 +100,15 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, caption in plugin_octorelay_tristate.items() %}
-                            <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state() === {{value}} }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state" />
+                            <label class="btn btn-default" data-bind="css: { active: rules.{{event}}.state() === {{value}} }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: rules.{{event}}.state" />
                                 {{ _(caption) }}
                             </label>
                             {% endfor %}
                         </div>
-                        <div class="input-prepend input-append" data-bind="hidden: settings.plugins.octorelay.r{{n}}.rules.{{event}}.state() === null">
+                        <div class="input-prepend input-append" data-bind="hidden: rules.{{event}}.state() === null">
                             <span class="add-on">{{ _('Delay') }}</span>
-                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: settings.plugins.octorelay.r{{n}}.rules.{{event}}.delay">
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: rules.{{event}}.delay">
                             <span class="add-on">{{ _('s') }}</span>
                         </div>
                     </div>
