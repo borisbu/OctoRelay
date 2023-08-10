@@ -45,15 +45,6 @@
 
                 {% for state in ["on", "off"] %}
                 <div class="control-group">
-                    <label class="control-label">{{ _('OS Command') }} {{ _(state.upper()) }}</label>
-                    <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: cmd_{{state}}">
-                    </div>
-                </div>
-                {% endfor %}
-
-                {% for state in ["on", "off"] %}
-                <div class="control-group">
                     <label class="control-label">{{ _('Icon') }} {{ _(state.upper()) }}</label>
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_{{state}}">
@@ -92,6 +83,15 @@
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">{{ _('s') }}</span>
                         </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% for state in ["on", "off"] %}
+                <div class="control-group">
+                    <label class="control-label">{{ _('OS Command') }} {{ _(state.upper()) }}</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_{{state}}">
                     </div>
                 </div>
                 {% endfor %}
