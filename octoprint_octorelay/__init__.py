@@ -13,7 +13,7 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, TURNED_ON
 )
 from .driver import Relay
 from .migrations import migrate
@@ -179,8 +179,11 @@ class OctoRelayPlugin(
             f"Toggling relay {index} on pin {pin}" if target is None else
             f"Turning the relay {index} {'ON' if target else 'OFF'} (pin {pin})"
         )
-        cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
+        state = relay.toggle(target)
+        cmd = settings["cmd_on" if state else "cmd_off"]
         self.run_system_command(cmd)
+        if state:
+            self.handle_plugin_event(TURNED_ON)
 
     def on_settings_save(self, data):
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
