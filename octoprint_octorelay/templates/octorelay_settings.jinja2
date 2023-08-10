@@ -73,12 +73,16 @@
                 {% endfor %}
 
                 <div class="control-group">
-                    <label class="control-label">{{ _('Confirmation') }}</label>
+                    <label class="control-label">{{ _('Warn when turning OFF') }}</label>
                     <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" data-bind="checked: confirm_off">
-                            {{ _('Warning on turning OFF') }}
-                        </label>
+                        <div class="btn-group">
+                            {% for value, option in plugin_octorelay_boolean.items() %}
+                            <label class="btn" data-bind="css: { 'active btn-{{option.color}}': confirm_off() === {{value}}, 'btn-default': confirm_off() !== {{value}} }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: confirm_off" />
+                                {{ _(option.caption) }}
+                            </label>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
 
