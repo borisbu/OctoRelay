@@ -1,10 +1,10 @@
 <form class="form-horizontal">
     <h3>OctoRelay Settings</h3>
-    
+
     <ul class="nav nav-pills">
         {% for n in range(1,9) %}
         <li data-bind="css: { active: 1 === {{n}} }">
-            <a href="#relay{{n}}" data-bind="text: settings.plugins.octorelay.r{{n}}.label_text || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
+            <a href="#relay{{n}}" data-bind="text: settings.plugins.octorelay.r{{n}}.label_text() || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
         </li>
         {% endfor %}
     </ul>
