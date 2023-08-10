@@ -65,11 +65,15 @@ Each relay has the following settings *(in order of appearance)*:
 
 ## Operation
 
-You can toggle the relays ON and OFF by:
+You can toggle the relays ON and OFF the following ways:
 
-- Clicking the configured buttons on the navigation bar;
-- Or sending GCODE command `@OCTORELAY r#`,
-  - where `#` is relay index from `1` to `8`.
+- By clicking the control buttons on the navigation bar.
+- By sending GCODE command `@OCTORELAY r#`.
+  - Where `#` is relay index from `1` to `8`.
+- Or by querying [OctoRelay API](https://docs.octoprint.org/en/master/api/).
+  - Using path: `/api/plugin/octorelay`.
+  - With JSON payload `{ "pin": "r#", "command": "update" }`.
+  - Where `#` is relay index from `1` to `8`.
 
 ## Updates
 
