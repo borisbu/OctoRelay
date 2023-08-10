@@ -14,12 +14,16 @@
         {% for n in range(1,9) %}
         <div id="relay_settings_{{n}}" class="tab-pane" data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}">
             <div class="control-group">
-                <label class="control-label">{{ _('Relay') }} {{n}}</label>
+                <label class="control-label">{{ _('Active') }}</label>
                 <div class="controls">
-                    <label class="checkbox">
-                        <input type="checkbox" data-bind="checked: active">
-                        {{ _('Active') }}
-                    </label>
+                    <div class="btn-group">
+                        {% for value, option in plugin_octorelay_boolean.items() %}
+                        <label class="btn" data-bind="css: { 'active btn-{{option.color}}': active() === {{value}}, 'btn-default': active() !== {{value}} }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: active" />
+                            {{ _(option.caption) }}
+                        </label>
+                        {% endfor %}
+                    </div>
                     <span class="help-block" data-bind="hidden: active">
                         {{ _('All operations on this relay are disabled') }}
                     </span>
@@ -36,10 +40,22 @@
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
                         <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
-                        <label class="checkbox">
-                            <input type="checkbox" data-bind="checked: inverted_output">
-                            {{ _('Inverted output') }}
-                        </label>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">{{ _('Inverted output') }}</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            {% for value, option in plugin_octorelay_boolean.items() %}
+                            <label class="btn" data-bind="css: { 'active btn-{{option.color}}': inverted_output() === {{value}}, 'btn-default': inverted_output() !== {{value}} }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: inverted_output" />
+                                {{ _(option.caption) }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <span class="help-block">
+                            {{ _('For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.') }}
+                        </span>
                     </div>
                 </div>
 

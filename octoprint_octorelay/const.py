@@ -248,6 +248,10 @@ def get_ui_vars():
             PRINTING_STARTED: "on Printing Started",
             PRINTING_STOPPED: "on Printing Stopped"
         },
+        "boolean": {
+            "true": { "caption": "YES", "color": "info" },
+            "false": { "caption": "NO", "color": "default" }
+        },
         "tristate": {
             "true": { "caption": "ON", "color": "success" },
             "false": { "caption": "OFF", "color": "danger" },
