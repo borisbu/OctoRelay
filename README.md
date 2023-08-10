@@ -44,8 +44,8 @@ After installing the plugin you need to configure it in order to see the control
 
 ![Settings panel](img/settings.png)
 
-Currently, OctoRelay supports up to 8 relays.
-Each one has the following settings *(in order of appearance)*:
+Currently, OctoRelay supports up to 8 relays represented by the tabs on the top of the settings screen.
+Each relay has the following settings *(in order of appearance)*:
 
 | Setting               | Description                                                |
 |-----------------------|------------------------------------------------------------|
