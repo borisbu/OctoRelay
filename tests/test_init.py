@@ -306,6 +306,27 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_template_configs()
         self.assertEqual(actual, expected)
 
+    def test_get_template_vars(self):
+        # Should return the variables needed for the settings template
+        expected = {
+            "events": {
+                "STARTUP": "on Startup",
+                "PRINTING_STARTED": "on Printing Started",
+                "PRINTING_STOPPED": "on Printing Stopped"
+            },
+            "boolean": {
+                "true": { "caption": "YES", "color": "info" },
+                "false": { "caption": "NO", "color": "default" }
+            },
+            "tristate": {
+                "true": { "caption": "ON", "color": "success" },
+                "false": { "caption": "OFF", "color": "danger" },
+                "null": { "caption": "skip", "color": "default" },
+            }
+        }
+        actual = self.plugin_instance.get_template_vars()
+        self.assertEqual(actual, expected)
+
     def test_get_template_configs__immutable(self):
         # Check that the function returns new object each time
         first = self.plugin_instance.get_template_configs()
