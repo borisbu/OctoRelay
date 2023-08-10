@@ -95,20 +95,20 @@
                 </div>
 
                 {% for event, label in plugin_octorelay_events.items() %}
-                <div class="control-group">
+                <div class="control-group" data-bind="using: rules.{{event}}">
                     <label class="control-label">{{ _(label) }}</label>
                     <div class="controls">
                         <div class="btn-group">
-                            {% for value, caption in plugin_octorelay_tristate.items() %}
-                            <label class="btn btn-default" data-bind="css: { active: rules.{{event}}.state() === {{value}} }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: rules.{{event}}.state" />
-                                {{ _(caption) }}
+                            {% for value, state in plugin_octorelay_tristate.items() %}
+                            <label class="btn" data-bind="css: { 'active btn-{{state.color}}': state() === {{value}}, 'btn-default': state() !== {{value}} }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: state" />
+                                {{ _(state.caption) }}
                             </label>
                             {% endfor %}
                         </div>
-                        <div class="input-prepend input-append" data-bind="hidden: rules.{{event}}.state() === null">
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
                             <span class="add-on">{{ _('Delay') }}</span>
-                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: rules.{{event}}.delay">
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">{{ _('s') }}</span>
                         </div>
                     </div>

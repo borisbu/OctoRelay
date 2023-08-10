@@ -249,9 +249,9 @@ def get_ui_vars():
             PRINTING_STOPPED: "on Printing Stopped"
         },
         "tristate": {
-            "true": "ON",
-            "false": "OFF",
-            "null": "skip"
+            "true": { "caption": "ON", "color": "success" },
+            "false": { "caption": "OFF", "color": "danger" },
+            "null": { "caption": "skip", "color": "default" },
         }
     }
 
