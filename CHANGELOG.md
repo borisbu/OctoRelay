@@ -5,7 +5,7 @@
 ### 3.4.0
 
 - New feature: event-based automation.
-  - In the new UI you can not specify the desired relay state for three events:
+  - In the new UI you can now specify the desired relay state for three events:
     - on Startup,
     - on Printing Started
     - on Printing Stopped.
