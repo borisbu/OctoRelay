@@ -9,7 +9,7 @@
     - on Startup,
     - on Printing Started
     - on Printing Stopped.
-  - Such actions can be configured to be skipped or postponed.
+  - Relay switching actions can also be skipped or postponed.
   - In particular, it enables you to turn something ON after printing, which
     was not possible before.
 - This update will migrate the relay settings in existing configuration.
