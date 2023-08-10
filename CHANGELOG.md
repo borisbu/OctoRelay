@@ -2,6 +2,29 @@
 
 ## Version 3
 
+### 3.4.0
+
+- New feature: event-based automation.
+  - In the new UI you can now specify the desired relay state for three events:
+    - on Startup,
+    - on Printing Started
+    - on Printing Stopped.
+  - Relay switching actions can also be skipped or postponed.
+  - In particular, it enables you to turn something ON after printing, which
+    was not possible before.
+- This update will migrate the relay settings in existing configuration.
+- New UI offers radio buttons instead of checkboxes and distributes the relay
+  settings across tabs.
+
+![UI](https://user-images.githubusercontent.com/13189514/259849257-9199e3f1-50f3-4ef9-9245-6c04e544db7d.png)
+
+| Before                 | After                          | Type           |
+|------------------------|--------------------------------|----------------|
+| `initial_value`        | `rules.STARTUP.state`          | `bool or None` | 
+| `auto_on_before_print` | `rules.PRINTING_STARTED.state` | `bool or None` |
+| `auto_off_after_print` | `rules.PRINTING_STOPPED.state` | `bool or None` |
+| `auto_off_delay`       | `rules.PRINTING_STOPPED.delay` | `int`          |
+
 ### 3.3.2
 
 - Refactoring: using `merged=True` option for consistent retrieval of the relay settings.

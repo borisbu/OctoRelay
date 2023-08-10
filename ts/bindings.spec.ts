@@ -7,21 +7,21 @@ describe("Knockout bindings", () => {
     "utf-8"
   );
   const document = JSDOM.fragment(html);
-  const settingRegex = /^settings\.plugins\.octorelay\.r{{n}}.(\w+)$/;
+  const usingContexts = [
+    "settings.plugins.octorelay.r{{n}}",
+    "rules.{{event}}",
+  ];
+  const settingRegex = /([\w\{}]+).*$/;
   const relaySettings = [
     "active",
     "relay_pin",
     "inverted_output",
-    "initial_value",
     "label_text",
-    "cmd_on",
-    "cmd_off",
-    "auto_on_before_print",
-    "auto_off_after_print",
-    "auto_off_delay",
-    "icon_on",
-    "icon_off",
+    "cmd_{{state}}", // on/off added programmatically
+    "icon_{{state}}", // on/off added programmatically
     "confirm_off",
+    "state",
+    "delay",
   ];
 
   test("Settings template should have bindings to the correctly named settings", () => {
@@ -31,7 +31,14 @@ describe("Knockout bindings", () => {
       const bindings = element.getAttribute("data-bind")?.split(",") || [];
       expect(bindings.length).toBeGreaterThan(0);
       for (const binding of bindings) {
-        const [{}, address] = binding.trim().split(":");
+        const [keyword, address] = binding.trim().split(":");
+        if (["checkedValue", "css"].includes(keyword)) {
+          continue;
+        }
+        if (keyword === "using") {
+          expect(usingContexts.includes(address.trim())).toBeTruthy();
+          continue;
+        }
         expect(settingRegex.test(address.trim())).toBeTruthy();
         const match = address.trim().match(settingRegex);
         const relaySetting = match?.[1];
