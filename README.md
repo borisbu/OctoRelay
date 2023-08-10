@@ -59,7 +59,7 @@ Each one has the following settings *(in order of appearance)*:
 | on Startup            | The state to switch the relay to when OctoPrint started    |
 | on Printing Started   | The state to switch the relay to when started printing     |
 | on Printing Stopped   | The state to switch the relay to when stopped printing     |
-| delay                 | Postpones the action for *X* seconds                       |
+| delay                 | Postpones the action for the time specified in seconds     |
 | **Side effects:**     | Additional actions in certain cases                        |
 | OS Command *(ON/OFF)* | An optional command to run when the relay state changes    |
 
