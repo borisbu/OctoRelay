@@ -715,6 +715,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
         ]
         for case in cases:
+            self.plugin_instance.update_ui.mock_reset()
             relayMock.is_closed = Mock(return_value=case["closed"])
             relayMock.toggle = Mock(return_value=not case["closed"])
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
@@ -739,6 +740,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 jsonify_mock.assert_called_with(case["expectedJson"])
             if "expectedToggle" in case:
                 relayMock.toggle.assert_called_with(None)
+                self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
             if "expectedStatus" in case:
