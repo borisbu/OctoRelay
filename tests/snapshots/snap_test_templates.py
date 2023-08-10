@@ -61,55 +61,105 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
     <ul class="nav nav-pills">
         
         <li data-bind="css: { active: 1 === 1 }, using: settings.plugins.octorelay.r1">
-            <a href="#relay_settings_1" data-bind="text: label_text() || \'Relay 1\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_1"
+                data-bind="text: label_text() || \'Relay 1\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 2 }, using: settings.plugins.octorelay.r2">
-            <a href="#relay_settings_2" data-bind="text: label_text() || \'Relay 2\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_2"
+                data-bind="text: label_text() || \'Relay 2\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 3 }, using: settings.plugins.octorelay.r3">
-            <a href="#relay_settings_3" data-bind="text: label_text() || \'Relay 3\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_3"
+                data-bind="text: label_text() || \'Relay 3\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 4 }, using: settings.plugins.octorelay.r4">
-            <a href="#relay_settings_4" data-bind="text: label_text() || \'Relay 4\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_4"
+                data-bind="text: label_text() || \'Relay 4\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 5 }, using: settings.plugins.octorelay.r5">
-            <a href="#relay_settings_5" data-bind="text: label_text() || \'Relay 5\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_5"
+                data-bind="text: label_text() || \'Relay 5\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 6 }, using: settings.plugins.octorelay.r6">
-            <a href="#relay_settings_6" data-bind="text: label_text() || \'Relay 6\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_6"
+                data-bind="text: label_text() || \'Relay 6\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 7 }, using: settings.plugins.octorelay.r7">
-            <a href="#relay_settings_7" data-bind="text: label_text() || \'Relay 7\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_7"
+                data-bind="text: label_text() || \'Relay 7\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
         <li data-bind="css: { active: 1 === 8 }, using: settings.plugins.octorelay.r8">
-            <a href="#relay_settings_8" data-bind="text: label_text() || \'Relay 8\'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_8"
+                data-bind="text: label_text() || \'Relay 8\'"
+                data-toggle="tab"
+            ></a>
         </li>
         
     </ul>
 
-
     <div class="tab-content">
         
-        <div id="relay_settings_1" class="tab-pane" data-bind="css: { active: 1 === 1 }, using: settings.plugins.octorelay.r1">
+        <div
+            id="relay_settings_1"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 1 }, using: settings.plugins.octorelay.r1"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -119,6 +169,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -126,24 +177,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input1" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input1"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -160,8 +234,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -171,8 +245,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -183,13 +257,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -203,24 +291,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -232,24 +338,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -261,24 +385,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -305,19 +447,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_2" class="tab-pane" data-bind="css: { active: 1 === 2 }, using: settings.plugins.octorelay.r2">
+        <div
+            id="relay_settings_2"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 2 }, using: settings.plugins.octorelay.r2"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -327,6 +488,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -334,24 +496,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input2" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input2"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -368,8 +553,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -379,8 +564,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -391,13 +576,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -411,24 +610,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -440,24 +657,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -469,24 +704,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -513,19 +766,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_3" class="tab-pane" data-bind="css: { active: 1 === 3 }, using: settings.plugins.octorelay.r3">
+        <div
+            id="relay_settings_3"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 3 }, using: settings.plugins.octorelay.r3"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -535,6 +807,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -542,24 +815,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input3" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input3"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -576,8 +872,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -587,8 +883,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -599,13 +895,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -619,24 +929,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -648,24 +976,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -677,24 +1023,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -721,19 +1085,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_4" class="tab-pane" data-bind="css: { active: 1 === 4 }, using: settings.plugins.octorelay.r4">
+        <div
+            id="relay_settings_4"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 4 }, using: settings.plugins.octorelay.r4"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -743,6 +1126,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -750,24 +1134,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input4" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input4"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -784,8 +1191,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -795,8 +1202,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -807,13 +1214,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -827,24 +1248,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -856,24 +1295,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -885,24 +1342,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -929,19 +1404,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_5" class="tab-pane" data-bind="css: { active: 1 === 5 }, using: settings.plugins.octorelay.r5">
+        <div
+            id="relay_settings_5"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 5 }, using: settings.plugins.octorelay.r5"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -951,6 +1445,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -958,24 +1453,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input5" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input5"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -992,8 +1510,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -1003,8 +1521,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -1015,13 +1533,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -1035,24 +1567,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1064,24 +1614,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1093,24 +1661,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1137,19 +1723,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_6" class="tab-pane" data-bind="css: { active: 1 === 6 }, using: settings.plugins.octorelay.r6">
+        <div
+            id="relay_settings_6"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 6 }, using: settings.plugins.octorelay.r6"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -1159,6 +1764,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -1166,24 +1772,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input6" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input6"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -1200,8 +1829,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -1211,8 +1840,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -1223,13 +1852,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -1243,24 +1886,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1272,24 +1933,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1301,24 +1980,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1345,19 +2042,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_7" class="tab-pane" data-bind="css: { active: 1 === 7 }, using: settings.plugins.octorelay.r7">
+        <div
+            id="relay_settings_7"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 7 }, using: settings.plugins.octorelay.r7"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -1367,6 +2083,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -1374,24 +2091,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input7" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input7"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -1408,8 +2148,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -1419,8 +2159,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -1431,13 +2171,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -1451,24 +2205,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1480,24 +2252,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1509,24 +2299,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1553,19 +2361,38 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
             </div>
         </div>
         
-        <div id="relay_settings_8" class="tab-pane" data-bind="css: { active: 1 === 8 }, using: settings.plugins.octorelay.r8">
+        <div
+            id="relay_settings_8"
+            class="tab-pane"
+            data-bind="css: { active: 1 === 8 }, using: settings.plugins.octorelay.r8"
+        >
+
             <div class="control-group">
                 <label class="control-label">Active</label>
                 <div class="controls">
                     <div class="btn-group">
                         
-                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: true, checked: active"
+                            />
                             YES
                         </label>
                         
-                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: false, checked: active"
+                            />
                             NO
                         </label>
                         
@@ -1575,6 +2402,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">Label</label>
@@ -1582,24 +2410,47 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
-                        <input id="relay_pin-input8" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input8"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: inverted_output"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: inverted_output"
+                                />
                                 NO
                             </label>
                             
@@ -1616,8 +2467,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_on">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_on"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_on"
                         ></div>
                     </div>
                 </div>
@@ -1627,8 +2478,8 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_off">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_off"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_off"
                         ></div>
                     </div>
                 </div>
@@ -1639,13 +2490,27 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: true, checked: confirm_off"
+                                />
                                 YES
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: false, checked: confirm_off"
+                                />
                                 NO
                             </label>
                             
@@ -1659,24 +2524,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1688,24 +2571,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1717,24 +2618,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
-                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: true, checked: state"
+                                />
                                 ON
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
-                                OFF
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
                             </label>
                             
-                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
-                                skip
+                            <label
+                                class="btn"
+                                data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
                             </label>
                             
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
-                            <span class="add-on">Delay</span>
+                            <span class="add-on">delay</span>
                             <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
                             <span class="add-on">s</span>
                         </div>
@@ -1762,5 +2681,4 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         </div>
         
     </div>
-
 </form>'''
