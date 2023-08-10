@@ -4,7 +4,7 @@
     <ul class="nav nav-pills">
         {% for n in range(1,9) %}
         <li data-bind="css: { active: 1 === {{n}} }">
-            <a href="#relay{{n}}" data-bind="text: settings.plugins.octorelay.r{{n}}.label_text() || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
+            <a href="#relay_settings_{{n}}" data-bind="text: settings.plugins.octorelay.r{{n}}.label_text() || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
         </li>
         {% endfor %}
     </ul>
@@ -12,7 +12,7 @@
 
     <div class="tab-content">
         {% for n in range(1,9) %}
-        <div id="relay{{n}}" class="tab-pane" data-bind="css: { active: 1 === {{n}} }">
+        <div id="relay_settings_{{n}}" class="tab-pane" data-bind="css: { active: 1 === {{n}} }">
             <div class="control-group">
                 <label class="control-label">{{ _('Relay') }} {{n}}</label>
                 <div class="controls">
