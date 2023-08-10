@@ -254,8 +254,8 @@ def get_ui_vars():
         },
         "tristate": {
             "true": { "caption": "ON", "color": "success" },
-            "false": { "caption": "OFF", "color": "danger" },
             "null": { "caption": "skip", "color": "default" },
+            "false": { "caption": "OFF", "color": "danger" }
         }
     }
 
