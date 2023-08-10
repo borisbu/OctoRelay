@@ -4,22 +4,37 @@
     <ul class="nav nav-pills">
         {% for n in range(1,9) %}
         <li data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}">
-            <a href="#relay_settings_{{n}}" data-bind="text: label_text() || '{{ _('Relay') }} {{n}}'" data-toggle="tab"></a>
+            <a
+                href="#relay_settings_{{n}}"
+                data-bind="text: label_text() || '{{ _('Relay') }} {{n}}'"
+                data-toggle="tab"
+            ></a>
         </li>
         {% endfor %}
     </ul>
 
-
     <div class="tab-content">
         {% for n in range(1,9) %}
-        <div id="relay_settings_{{n}}" class="tab-pane" data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}">
+        <div
+            id="relay_settings_{{n}}"
+            class="tab-pane"
+            data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
+        >
+
             <div class="control-group">
                 <label class="control-label">{{ _('Active') }}</label>
                 <div class="controls">
                     <div class="btn-group">
                         {% for value, option in plugin_octorelay_boolean.items() %}
-                        <label class="btn" data-bind="css: { 'active btn-{{option.color}}': active() === {{value}}, 'btn-default': active() !== {{value}} }">
-                            <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: active" />
+                        <label
+                            class="btn"
+                            data-bind="css: { 'active btn-{{option.color}}': active() === {{value}}, 'btn-default': active() !== {{value}} }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: {{value}}, checked: active"
+                            />
                             {{ _(option.caption) }}
                         </label>
                         {% endfor %}
@@ -29,6 +44,7 @@
                     </span>
                 </div>
             </div>
+
             <div data-bind="visible: active">
                 <div class="control-group">
                     <label class="control-label">{{ _('Label') }}</label>
@@ -36,19 +52,35 @@
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
-                        <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                        <input
+                            id="relay_pin-input{{n}}"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
                     </div>
                 </div>
+
                 <div class="control-group">
                     <label class="control-label">{{ _('Inverted output') }}</label>
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
-                            <label class="btn" data-bind="css: { 'active btn-{{option.color}}': inverted_output() === {{value}}, 'btn-default': inverted_output() !== {{value}} }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: inverted_output" />
+                            <label
+                                class="btn"
+                                data-bind="css: { 'active btn-{{option.color}}': inverted_output() === {{value}}, 'btn-default': inverted_output() !== {{value}} }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: {{value}}, checked: inverted_output"
+                                />
                                 {{ _(option.caption) }}
                             </label>
                             {% endfor %}
@@ -65,8 +97,8 @@
                     <div class="controls">
                         <input type="text" class="input-large" data-bind="value: icon_{{state}}">
                         <div
-                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                                data-bind="html: icon_{{state}}"
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_{{state}}"
                         ></div>
                     </div>
                 </div>
@@ -77,8 +109,15 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
-                            <label class="btn" data-bind="css: { 'active btn-{{option.color}}': confirm_off() === {{value}}, 'btn-default': confirm_off() !== {{value}} }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: confirm_off" />
+                            <label
+                                class="btn"
+                                data-bind="css: { 'active btn-{{option.color}}': confirm_off() === {{value}}, 'btn-default': confirm_off() !== {{value}} }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: {{value}}, checked: confirm_off"
+                                />
                                 {{ _(option.caption) }}
                             </label>
                             {% endfor %}
@@ -92,8 +131,14 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, state in plugin_octorelay_tristate.items() %}
-                            <label class="btn" data-bind="css: { 'active btn-{{state.color}}': state() === {{value}}, 'btn-default': state() !== {{value}} }">
-                                <input type="radio" style="display:none" data-bind="checkedValue: {{value}}, checked: state" />
+                            <label
+                                class="btn"
+                                data-bind="css: { 'active btn-{{state.color}}': state() === {{value}}, 'btn-default': state() !== {{value}} }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: {{value}}, checked: state"
+                                />
                                 {{ _(state.caption) }}
                             </label>
                             {% endfor %}
@@ -120,5 +165,4 @@
         </div>
         {% endfor %}
     </div>
-
 </form>
