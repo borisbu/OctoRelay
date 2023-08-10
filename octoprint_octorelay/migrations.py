@@ -67,7 +67,7 @@ def v2(settings, logger):
             },
             "PRINTING_STOPPED": {
                 "state": False if bool(auto_off_after_print) else None,
-                "delay": before.get("auto_off_delay")
+                "delay": int(before.get("auto_off_delay") or 0)
             }
         }
         logger.debug(f"replacing it with: {after}")
