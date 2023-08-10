@@ -159,13 +159,16 @@ class OctoRelayPlugin(
                 if target is not None:
                     self.cancel_tasks(index, event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
-                    timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
-                    self.tasks.append({
-                        "subject": index,
-                        "owner": event,
-                        "timer": timer
-                    })
-                    timer.start()
+                    if delay == 0:
+                        self.toggle_relay(index, bool(target))
+                    else:
+                        timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
+                        self.tasks.append({
+                            "subject": index,
+                            "owner": event,
+                            "timer": timer
+                        })
+                        timer.start()
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
