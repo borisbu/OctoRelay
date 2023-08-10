@@ -246,7 +246,7 @@ class OctoRelayPlugin(
 
     # Polling thread
     def input_polling(self):
-        self._logger.debug("input_polling")
+        # self._logger.debug("input_polling") # in case your log file is too small
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
