@@ -546,15 +546,17 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.tasks = [{"subject": "r4", "timer": timerMock}]
         self.plugin_instance.cancel_tasks = Mock()
         cases = [
-            { "event": "PRINTING_STARTED", "state": True, "expectedCall": True },
-            { "event": "PRINTING_STARTED", "state": False, "expectedCall": True },
-            { "event": "PRINTING_STARTED", "state": None, "expectedCall": False },
-            { "event": "PRINTING_STOPPED", "state": True, "expectedCall": True },
-            { "event": "PRINTING_STOPPED", "state": False, "expectedCall": True },
-            { "event": "PRINTING_STOPPED", "state": None, "expectedCall": False },
-            { "event": "STARTUP", "state": True, "expectedCall": True },
-            { "event": "STARTUP", "state": False, "expectedCall": True },
-            { "event": "STARTUP", "state": None, "expectedCall": False },
+            { "event": "PRINTING_STARTED", "state": True, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STARTED", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STARTED", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "PRINTING_STOPPED", "state": True, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STOPPED", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STOPPED", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 300 },
+            { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "STARTUP", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 0 },
+            { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 0 },
         ]
         for case in cases:
             self.plugin_instance.tasks = []
@@ -567,7 +569,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "rules": {
                         case["event"]: {
                             "state": case["state"],
-                            "delay": 300,
+                            "delay": case["delay"],
                         }
                     },
                 } for index in RELAY_INDEXES
@@ -575,21 +577,25 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.handle_plugin_event(case["event"])
             self.plugin_instance.cancel_tasks.assert_called_with("r8", case["event"])
             if case["expectedCall"]:
-                utilMock.ResettableTimer.assert_called_with(
-                    300, self.plugin_instance.toggle_relay, ["r8", case["state"]]
-                )
-                timerMock.start.assert_called_with()
-                self.assertEqual(
-                    self.plugin_instance.tasks,
-                    list(map(lambda index, owner=case["event"]: {
-                        "subject": index,
-                        "owner": owner,
-                        "timer": timerMock
-                    }, RELAY_INDEXES))
-                )
+                if case["delay"] == 0:
+                    self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
+                else:
+                    utilMock.ResettableTimer.assert_called_with(
+                        case["delay"], self.plugin_instance.toggle_relay, ["r8", case["state"]]
+                    )
+                    timerMock.start.assert_called_with()
+                    self.assertEqual(
+                        self.plugin_instance.tasks,
+                        list(map(lambda index, owner=case["event"]: {
+                            "subject": index,
+                            "owner": owner,
+                            "timer": timerMock
+                        }, RELAY_INDEXES))
+                    )
             else:
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
+                self.plugin_instance.toggle_relay.assert_not_called()
 
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
