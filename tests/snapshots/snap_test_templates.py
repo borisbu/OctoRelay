@@ -57,1229 +57,1710 @@ snapshots['TestTemplates::test_templates octorelay_navbar.jinja2'] = '''
 
 snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form class="form-horizontal">
     <h3>OctoRelay Settings</h3>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 1</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r1.active, text: settings.plugins.octorelay.r1.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r1.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r1.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input1" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r1.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r1.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r1.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r1.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r1.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r1.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r1.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r1.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
+
+    <ul class="nav nav-pills">
+        
+        <li data-bind="css: { active: 1 === 1 }, using: settings.plugins.octorelay.r1">
+            <a href="#relay_settings_1" data-bind="text: label_text() || \'Relay 1\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 2 }, using: settings.plugins.octorelay.r2">
+            <a href="#relay_settings_2" data-bind="text: label_text() || \'Relay 2\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 3 }, using: settings.plugins.octorelay.r3">
+            <a href="#relay_settings_3" data-bind="text: label_text() || \'Relay 3\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 4 }, using: settings.plugins.octorelay.r4">
+            <a href="#relay_settings_4" data-bind="text: label_text() || \'Relay 4\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 5 }, using: settings.plugins.octorelay.r5">
+            <a href="#relay_settings_5" data-bind="text: label_text() || \'Relay 5\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 6 }, using: settings.plugins.octorelay.r6">
+            <a href="#relay_settings_6" data-bind="text: label_text() || \'Relay 6\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 7 }, using: settings.plugins.octorelay.r7">
+            <a href="#relay_settings_7" data-bind="text: label_text() || \'Relay 7\'" data-toggle="tab"></a>
+        </li>
+        
+        <li data-bind="css: { active: 1 === 8 }, using: settings.plugins.octorelay.r8">
+            <a href="#relay_settings_8" data-bind="text: label_text() || \'Relay 8\'" data-toggle="tab"></a>
+        </li>
+        
+    </ul>
 
 
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r1.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r1.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r1.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r1.auto_off_delay">
-                        <span class="add-on">seconds</span>
+    <div class="tab-content">
+        
+        <div id="relay_settings_1" class="tab-pane" data-bind="css: { active: 1 === 1 }, using: settings.plugins.octorelay.r1">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 2</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r2.active, text: settings.plugins.octorelay.r2.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r2.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r2.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input2" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r2.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r2.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r2.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r2.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r2.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r2.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r2.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r2.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
                 </div>
             </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r2.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r2.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r2.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r2.auto_off_delay">
-                        <span class="add-on">seconds</span>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 3</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r3.active, text: settings.plugins.octorelay.r3.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r3.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r3.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input3" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r3.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r3.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r3.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r3.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r3.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r3.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r3.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r3.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
                 </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r3.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r3.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r3.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r3.auto_off_delay">
-                        <span class="add-on">seconds</span>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input1" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 4</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r4.active, text: settings.plugins.octorelay.r4.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r4.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r4.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input4" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r4.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r4.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r4.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r4.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r4.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r4.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r4.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r4.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
                 </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r4.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r4.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r4.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r4.auto_off_delay">
-                        <span class="add-on">seconds</span>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 5</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r5.active, text: settings.plugins.octorelay.r5.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r5.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r5.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input5" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r5.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r5.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r5.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r5.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r5.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r5.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r5.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r5.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
                 </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r5.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
 
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r5.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r5.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r5.auto_off_delay">
-                        <span class="add-on">seconds</span>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 6</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r6.active, text: settings.plugins.octorelay.r6.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r6.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r6.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input6" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r6.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r6.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r6.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r6.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r6.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r6.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r6.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r6.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
                 </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r6.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r6.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r6.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r6.auto_off_delay">
-                        <span class="add-on">seconds</span>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 7</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r7.active, text: settings.plugins.octorelay.r7.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r7.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r7.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input7" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r7.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r7.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r7.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r7.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r7.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r7.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r7.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r7.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
                 </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r7.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
+                
 
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r7.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r7.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r7.auto_off_delay">
-                        <span class="add-on">seconds</span>
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
-            </div>
-        </div>
-    </div>
-    
-    <div class="control-group">
-        <label class="control-label">Relay 8</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.active">
-                Active
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r8.active, text: settings.plugins.octorelay.r8.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r8.active">
-            <label class="control-label">Label</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r8.label_text">
-                </label>
-            </div>
-            <label class="control-label">GPIO Number</label>
-            <div class="controls">
-                <input id="relay_pin-input8" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r8.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.inverted_output">
-                    Inverted output
-                </label>
-            </div>
-            <label class="control-label">OS Command ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r8.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">OS Command OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r8.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">Icon ON</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r8.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r8.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Icon OFF</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r8.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r8.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">Confirmation</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r8.confirm_off">
-                    Warning on turning OFF
-                </label>
-            </div>
-
-
-            
-            <label class="control-label">on Startup</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.STARTUP.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.STARTUP.state" />
-                        skip
-                    </label>
-                    
                 </div>
-            </div>
-            
-            <label class="control-label">on Printing Started</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.PRINTING_STARTED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
-            <label class="control-label">on Printing Stopped</label>
-            <div class="controls">
-                <div class="btn-group">
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state() === true }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: true, checked: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state" />
-                        ON
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state() === false }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: false, checked: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state" />
-                        OFF
-                    </label>
-                    
-                    <label class="btn btn-default" data-bind="css: { active: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state() === null }">
-                        <input type="radio" style="display:none" data-bind="checkedValue: null, checked: settings.plugins.octorelay.r8.rules.PRINTING_STOPPED.state" />
-                        skip
-                    </label>
-                    
-                </div>
-            </div>
-            
 
-
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r8.auto_off_after_print">
-                Delay
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r8.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r8.auto_off_delay">
-                        <span class="add-on">seconds</span>
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
                     </div>
-                    <span class="help-block">The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.</span>
-                </label>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
             </div>
         </div>
+        
+        <div id="relay_settings_2" class="tab-pane" data-bind="css: { active: 1 === 2 }, using: settings.plugins.octorelay.r2">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input2" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="relay_settings_3" class="tab-pane" data-bind="css: { active: 1 === 3 }, using: settings.plugins.octorelay.r3">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input3" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="relay_settings_4" class="tab-pane" data-bind="css: { active: 1 === 4 }, using: settings.plugins.octorelay.r4">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input4" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="relay_settings_5" class="tab-pane" data-bind="css: { active: 1 === 5 }, using: settings.plugins.octorelay.r5">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input5" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="relay_settings_6" class="tab-pane" data-bind="css: { active: 1 === 6 }, using: settings.plugins.octorelay.r6">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input6" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="relay_settings_7" class="tab-pane" data-bind="css: { active: 1 === 7 }, using: settings.plugins.octorelay.r7">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input7" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
+        <div id="relay_settings_8" class="tab-pane" data-bind="css: { active: 1 === 8 }, using: settings.plugins.octorelay.r8">
+            <div class="control-group">
+                <label class="control-label">Active</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        
+                        <label class="btn" data-bind="css: { \'active btn-info\': active() === true, \'btn-default\': active() !== true }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: true, checked: active" />
+                            YES
+                        </label>
+                        
+                        <label class="btn" data-bind="css: { \'active btn-default\': active() === false, \'btn-default\': active() !== false }">
+                            <input type="radio" style="display:none" data-bind="checkedValue: false, checked: active" />
+                            NO
+                        </label>
+                        
+                    </div>
+                    <span class="help-block" data-bind="hidden: active">
+                        All operations on this relay are disabled
+                    </span>
+                </div>
+            </div>
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">Label</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">GPIO Number</label>
+                    <div class="controls">
+                        <input id="relay_pin-input8" type="number" min="1" max="27" class="input-small" data-bind="value: relay_pin">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label">Inverted output</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': inverted_output() === true, \'btn-default\': inverted_output() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: inverted_output" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': inverted_output() === false, \'btn-default\': inverted_output() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: inverted_output" />
+                                NO
+                            </label>
+                            
+                        </div>
+                        <span class="help-block">
+                            For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="control-group">
+                    <label class="control-label">Icon ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_on"
+                        ></div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">Icon OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_off">
+                        <div
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_off"
+                        ></div>
+                    </div>
+                </div>
+                
+
+                <div class="control-group">
+                    <label class="control-label">Warn when turning OFF</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-info\': confirm_off() === true, \'btn-default\': confirm_off() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: confirm_off" />
+                                YES
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': confirm_off() === false, \'btn-default\': confirm_off() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: confirm_off" />
+                                NO
+                            </label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="control-group" data-bind="using: rules.STARTUP">
+                    <label class="control-label">on Startup</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
+                    <label class="control-label">on Printing Started</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
+                    <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <label class="btn" data-bind="css: { \'active btn-success\': state() === true, \'btn-default\': state() !== true }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: true, checked: state" />
+                                ON
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-danger\': state() === false, \'btn-default\': state() !== false }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: false, checked: state" />
+                                OFF
+                            </label>
+                            
+                            <label class="btn" data-bind="css: { \'active btn-default\': state() === null, \'btn-default\': state() !== null }">
+                                <input type="radio" style="display:none" data-bind="checkedValue: null, checked: state" />
+                                skip
+                            </label>
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">Delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command ON</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">OS Command OFF</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_off">
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        
     </div>
-    
+
 </form>'''
