@@ -42,38 +42,29 @@
                         </label>
                     </div>
                 </div>
+
+                {% for state in ["on", "off"] %}
                 <div class="control-group">
-                    <label class="control-label">{{ _('OS Command ON') }}</label>
+                    <label class="control-label">{{ _('OS Command') }} {{ _(state.upper()) }}</label>
                     <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: cmd_on">
+                        <input type="text" class="input-large" data-bind="value: cmd_{{state}}">
                     </div>
                 </div>
+                {% endfor %}
+
+                {% for state in ["on", "off"] %}
                 <div class="control-group">
-                    <label class="control-label">{{ _('OS Command OFF') }}</label>
+                    <label class="control-label">{{ _('Icon') }} {{ _(state.upper()) }}</label>
                     <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: cmd_off">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label">{{ _('Icon ON') }}</label>
-                    <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: icon_on">
+                        <input type="text" class="input-large" data-bind="value: icon_{{state}}">
                         <div
-                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                            data-bind="html: icon_on"
+                                style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                                data-bind="html: icon_{{state}}"
                         ></div>
                     </div>
                 </div>
-                <div class="control-group">
-                    <label class="control-label">{{ _('Icon OFF') }}</label>
-                    <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: icon_off">
-                        <div
-                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                            data-bind="html: icon_off"
-                        ></div>
-                    </div>
-                </div>
+                {% endfor %}
+
                 <div class="control-group">
                     <label class="control-label">{{ _('Confirmation') }}</label>
                     <div class="controls">
