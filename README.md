@@ -53,13 +53,15 @@ Each one has the following settings *(in order of appearance)*:
 | Label                 | The HTML title of the icon in the navigation bar (hint)    |
 | GPIO Number           | The GPIO pin on the Raspberry Pi *(see the picture above)* |
 | Inverted output       | For normally closed relay: the relay is ON without power   |
+| Icon *(ON/OFF)*       | An HTML tag or emoji to display on the navigation bar      |
+| Warn when turning OFF | Enables a confirmation dialog when turning the relay OFF   |
+| **Events:**           | Behavior customization (automation)                        |
+| on Startup            | The state to switch the relay to when OctoPrint started    |
+| on Printing Started   | The state to switch the relay to when started printing     |
+| on Printing Stopped   | The state to switch the relay to when stopped printing     |
+| delay                 | Postpones the action for *X* seconds                       |
+| **Side effects:**     | Additional actions in certain cases                        |
 | OS Command *(ON/OFF)* | An optional command to run when the relay state changes    |
-| Icon *(ON/OFF)*       | An HTML tag to display on the navigation bar               |
-| Confirmation          | Enables a confirmation dialog when turning the relay OFF   |
-| ON initially on boot  | Turns the relay ON on start                                |
-| ON before printing    | Turns the relay ON when started printing                   |
-| OFF after printing    | Turns the relay OFF after finished printing                |
-| Delay                 | Postpones turning the relay OFF for *X* seconds            |
 
 ## Operation
 
