@@ -53,37 +53,48 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_constructor(self):
         # During the instantiation should set initial values to certain props
         self.assertIsNone(self.plugin_instance.polling_timer)
-        self.assertEqual(self.plugin_instance.turn_off_timers, {})
+        self.assertEqual(self.plugin_instance.tasks, [])
         self.assertEqual(self.plugin_instance.model, {
             "r1": {}, "r2": {}, "r3": {}, "r4": {},
             "r5": {}, "r6": {}, "r7": {}, "r8": {}
         })
 
     def test_get_settings_version(self):
-        self.assertEqual(self.plugin_instance.get_settings_version(), 2)
+        # Should return the current version of settings defaults
+        self.assertEqual(self.plugin_instance.get_settings_version(), 3)
 
     def test_get_settings_defaults(self):
+        # Should return the plugin default settings
         expected = {
             "r1": {
                 "active": False,
                 "relay_pin": 4,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": "&#128161;",
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "Light",
                 "confirm_off": False,
-                "auto_on_before_print": True,
-                "auto_off_after_print": True,
-                "auto_off_delay": 10,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": True,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": False,
+                        "delay": 10,
+                    },
+                },
             },
             "r2": {
                 "active": False,
                 "relay_pin": 17,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
@@ -93,15 +104,25 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Printer",
                 "confirm_off": True,
-                "auto_on_before_print": False,
-                "auto_off_after_print": False,
-                "auto_off_delay": 0,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                },
             },
             "r3": {
                 "active": False,
                 "relay_pin": 18,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
@@ -111,15 +132,25 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Fan",
                 "confirm_off": False,
-                "auto_on_before_print": True,
-                "auto_off_after_print": True,
-                "auto_off_delay": 10,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": True,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": False,
+                        "delay": 10,
+                    },
+                },
             },
             "r4": {
                 "active": False,
                 "relay_pin": 23,
                 "inverted_output": True,
-                "initial_value": True,
                 "cmd_on": "sudo service webcamd start",
                 "cmd_off": "sudo service webcamd stop",
                 "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
@@ -129,69 +160,120 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Webcam",
                 "confirm_off": False,
-                "auto_on_before_print": True,
-                "auto_off_after_print": True,
-                "auto_off_delay": 10,
+                "rules": {
+                    "STARTUP": {
+                        "state": True,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": True,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": False,
+                        "delay": 10,
+                    },
+                },
             },
             "r5": {
                 "active": False,
                 "relay_pin": 24,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": "ON",
                 "icon_off": "OFF",
                 "label_text": "R5",
                 "confirm_off": False,
-                "auto_on_before_print": False,
-                "auto_off_after_print": False,
-                "auto_off_delay": 0,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                },
             },
             "r6": {
                 "active": False,
                 "relay_pin": 25,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": "&#128161;",
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R6",
                 "confirm_off": False,
-                "auto_on_before_print": False,
-                "auto_off_after_print": False,
-                "auto_off_delay": 0,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                },
             },
             "r7": {
                 "active": False,
                 "relay_pin": 8,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": "&#128161;",
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R7",
                 "confirm_off": False,
-                "auto_on_before_print": False,
-                "auto_off_after_print": False,
-                "auto_off_delay": 0,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                },
             },
             "r8": {
                 "active": False,
                 "relay_pin": 7,
                 "inverted_output": True,
-                "initial_value": False,
                 "cmd_on": "",
                 "cmd_off": "",
                 "icon_on": "&#128161;",
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R8",
                 "confirm_off": False,
-                "auto_on_before_print": False,
-                "auto_off_after_print": False,
-                "auto_off_delay": 0,
+                "rules": {
+                    "STARTUP": {
+                        "state": False,
+                        "delay": 0,
+                    },
+                    "PRINTING_STARTED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                    "PRINTING_STOPPED": {
+                        "state": None,
+                        "delay": 0,
+                    },
+                },
             },
         }
         actual = self.plugin_instance.get_settings_defaults()
@@ -216,11 +298,33 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger.info.assert_called_with("OctoRelay finished the migration of settings to v1")
 
     def test_get_template_configs(self):
+        # Should return the plugin template configurations
         expected = [
             { "type": "navbar", "custom_bindings": False },
             { "type": "settings", "custom_bindings": False }
         ]
         actual = self.plugin_instance.get_template_configs()
+        self.assertEqual(actual, expected)
+
+    def test_get_template_vars(self):
+        # Should return the variables needed for the settings template
+        expected = {
+            "events": {
+                "STARTUP": "on Startup",
+                "PRINTING_STARTED": "on Printing Started",
+                "PRINTING_STOPPED": "on Printing Stopped"
+            },
+            "boolean": {
+                "true": { "caption": "YES", "color": "info" },
+                "false": { "caption": "NO", "color": "default" }
+            },
+            "tristate": {
+                "true": { "caption": "ON", "color": "success" },
+                "false": { "caption": "OFF", "color": "danger" },
+                "null": { "caption": "skip", "color": "default" },
+            }
+        }
+        actual = self.plugin_instance.get_template_vars()
         self.assertEqual(actual, expected)
 
     def test_get_template_configs__immutable(self):
@@ -232,16 +336,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(second[0]["type"], "navbar")
 
     def test_get_assets(self):
+        # Should return the plugin assets configutation
         expected = { "js": [ "js/octorelay.js" ] }
         actual = self.plugin_instance.get_assets()
         self.assertEqual(actual, expected)
 
     def test_get_api_commands(self):
+        # Should return the list of available plugin commands
         expected = { "update": [ "pin" ], "getStatus": [ "pin" ], "listAllStatus": [] }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
     def test_get_update_information(self):
+        # Should return the update strategy configuration
         expected = {
             "octorelay": {
                 "displayName": "OctoRelay",
@@ -267,12 +374,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_python_compatibility(self):
+        # Should be the current Python compability string
         self.assertEqual(__plugin_pythoncompat__, ">=3.7,<4")
 
     def test_exposed_implementation(self):
+        # Should be an instance of the plugin class
         self.assertIsInstance(__plugin_implementation__, OctoRelayPlugin)
 
     def test_exposed_hooks(self):
+        # Should be an object having handlers associated to the certain OctoPrint hooks
         expected = {
             "octoprint.plugin.softwareupdate.check_config":
                 __plugin_implementation__.get_update_information,
@@ -284,6 +394,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertEqual(__plugin_hooks__, expected)
 
     def test_on_shutdown(self):
+        # Should stop the polling timer
         self.plugin_instance.polling_timer = Mock()
         self.plugin_instance.on_shutdown()
         self.plugin_instance.polling_timer.cancel.assert_called_with()
@@ -345,32 +456,32 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
 
     @patch("os.system")
-    def test_turn_off_relay(self, system_mock):
-        # Should turn the relay off and execute the supplied command
-        self.plugin_instance.update_ui = Mock()
+    def test_toggle_relay(self, system_mock):
+        # Should toggle the relay and execute a command matching its new state
         cases = [
-            { "inverted": True, "expectedOutput": True },
-            { "inverted": False, "expectedOutput": False }
+            { "target": True, "inverted": False, "expectedCommand": "CommandON" },
+            { "target": True, "inverted": True, "expectedCommand": "CommandON" },
+            { "target": False, "inverted": False, "expectedCommand": "CommandOFF" },
+            { "target": False, "inverted": True, "expectedCommand": "CommandOFF" },
+            # in these cases the resulting relay state is mocked with the "inverted" value:
+            { "target": None, "inverted": False, "expectedCommand": "CommandOFF" },
+            { "target": None, "inverted": True, "expectedCommand": "CommandON" }
         ]
         for case in cases:
-            self.plugin_instance.turn_off_relay(17, case["inverted"], "CommandMock")
+            relayMock.toggle = Mock(
+                return_value=case["inverted"] if case["target"] is None else case["target"]
+            )
+            self.plugin_instance._settings.get = Mock(return_value={
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": case["inverted"],
+                "cmd_on": "CommandON",
+                "cmd_off": "CommandOFF"
+            })
+            self.plugin_instance.toggle_relay("r4", case["target"])
             relayConstructorMock.assert_called_with(17, case["inverted"])
-            relayMock.open.assert_called_with()
-            system_mock.assert_called_with("CommandMock")
-            self.plugin_instance.update_ui.assert_called_with()
-
-    @patch("os.system")
-    def test_turn_on_relay(self, system_mock):
-        # Should turn the relay on and execute the supplied command
-        cases = [
-            { "inverted": True, "expectedOutput": False},
-            { "inverted": False, "expectedOutput": True },
-        ]
-        for case in cases:
-            self.plugin_instance.turn_on_relay(17, case["inverted"], "CommandMock")
-            relayConstructorMock.assert_called_with(17, case["inverted"])
-            relayMock.close.assert_called_with()
-            system_mock.assert_called_with("CommandMock")
+            relayMock.toggle.assert_called_with(case["target"])
+            system_mock.assert_called_with(case["expectedCommand"])
 
     @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
@@ -385,134 +496,144 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_event(self):
         # Depending on certain event type should call a corresponding method
         self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.print_started = Mock()
-        self.plugin_instance.print_stopped = Mock()
+        self.plugin_instance.handle_plugin_event = Mock()
         cases = [
-            { "event": Events.CLIENT_OPENED, "expectedMethod": self.plugin_instance.update_ui },
-            { "event": Events.PRINT_STARTED, "expectedMethod": self.plugin_instance.print_started },
-            { "event": Events.PRINT_DONE, "expectedMethod": self.plugin_instance.print_stopped },
-            { "event": Events.PRINT_FAILED, "expectedMethod": self.plugin_instance.print_stopped },
-
+            {
+                "event": Events.CLIENT_OPENED,
+                "expectedMethod": self.plugin_instance.update_ui,
+                "expectedParams": []
+            },
+            {
+                "event": Events.PRINT_STARTED,
+                "expectedMethod": self.plugin_instance.handle_plugin_event,
+                "expectedParams": ["PRINTING_STARTED"]
+            },
+            {
+                "event": Events.PRINT_DONE,
+                "expectedMethod": self.plugin_instance.handle_plugin_event,
+                "expectedParams": ["PRINTING_STOPPED"]
+            },
+            {
+                "event": Events.PRINT_FAILED,
+                "expectedMethod": self.plugin_instance.handle_plugin_event,
+                "expectedParams": ["PRINTING_STOPPED"]
+            },
         ]
         if hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             cases.append({
                 "event": Events.CONNECTIONS_AUTOREFRESHED,
-                "expectedMethod": self.plugin_instance._printer.connect
+                "expectedMethod": self.plugin_instance._printer.connect,
+                "expectedParams": []
             })
         for case in cases:
             self.plugin_instance.on_event(case["event"], "MockedPayload")
-            case["expectedMethod"].assert_called_with()
+            case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
     def test_on_after_startup(self):
-        # Depending on actual settings should set the relay state, update UI and start polling
+        # Should trigger STARTUP event handler, update UI and start polling
         self.plugin_instance.update_ui = Mock()
-        cases = [
-            { "inverted": True, "initial": True, "expectedOutput": False },
-            { "inverted": True, "initial": False, "expectedOutput": True },
-            { "inverted": False, "initial": True, "expectedOutput": True },
-            { "inverted": False, "initial": False, "expectedOutput": False }
-        ]
-        for case in cases:
-            self.plugin_instance._settings.get = Mock(return_value={
-                index: {
-                    "active": True,
-                    "relay_pin": 17,
-                    "inverted_output": case["inverted"],
-                    "initial_value": case["initial"]
-                } for index in RELAY_INDEXES
-            })
-            self.plugin_instance.on_after_startup()
-            relayConstructorMock.assert_called_with(17, case["inverted"])
-            relayMock.toggle.assert_called_with(case["initial"])
-            self.plugin_instance.update_ui.assert_called_with()
-            utilMock.RepeatedTimer.assert_called_with(
-                0.3, self.plugin_instance.input_polling, daemon = True
-            )
-            timerMock.start.assert_called_with()
-
-    def test_print_started(self):
-        # For relays configured with autoON should call turn_on_relay method and update UI
-        self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = { "test": timerMock }
-        cases = [
-            { "autoOn": True, "inverted": True, "expectedCall": True},
-            { "autoOn": True, "inverted": False, "expectedCall": True },
-            { "autoOn": False, "inverted": True, "expectedCall": False },
-            { "autoOn": False, "inverted": False, "expectedCall": False }
-        ]
-        for case in cases:
-            self.plugin_instance.turn_on_relay = Mock()
-            self.plugin_instance._settings.get = Mock(return_value={
-                index: {
-                    "active": True,
-                    "relay_pin": 17,
-                    "inverted_output": case["inverted"],
-                    "auto_on_before_print": case["autoOn"],
-                    "cmd_on": "CommandMock"
-                } for index in RELAY_INDEXES
-            })
-            self.plugin_instance.print_started()
-            timerMock.cancel.assert_called_with()
-            if case["expectedCall"]:
-                self.plugin_instance.turn_on_relay.assert_called_with(17, case["inverted"], "CommandMock")
-            else:
-                self.plugin_instance.turn_on_relay.assert_not_called()
-            self.plugin_instance.update_ui.assert_called_with()
-
-    def test_print_started__exception(self):
-        # Should handle a possible exception when cancelling the timer
-        self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = {
-            "test": Mock(
-                cancel=Mock( side_effect=Exception("Caught!") )
-            )
-        }
-        self.plugin_instance.turn_on_relay = Mock()
-        self.plugin_instance._settings.get = Mock(return_value={
-            index: {
-                "active": False,
-                "relay_pin": 17,
-                "inverted_output": False,
-                "auto_on_before_print": False,
-                "cmd_on": None
-            } for index in RELAY_INDEXES
-        })
-        self.plugin_instance.print_started()
-        self.plugin_instance._logger.warn.assert_called_with("could not cancel timer: test, reason: Caught!")
-        self.plugin_instance.turn_on_relay.assert_not_called()
+        self.plugin_instance.handle_plugin_event = Mock()
+        self.plugin_instance.on_after_startup()
+        self.plugin_instance.handle_plugin_event.assert_called_with("STARTUP")
         self.plugin_instance.update_ui.assert_called_with()
+        utilMock.RepeatedTimer.assert_called_with(
+            0.3, self.plugin_instance.input_polling, daemon = True
+        )
+        timerMock.start.assert_called_with()
 
-    def test_print_stopped(self):
-        # For relays with autoOff feature should set timer to turn its pin off
-        self.plugin_instance.update_ui = Mock()
-        self.plugin_instance.turn_off_timers = { "r4": timerMock }
+    def test_handle_plugin_event(self):
+        # Should follow the rule on handling the event by toggling the relay if "state" is not None
+        self.plugin_instance.tasks = [{"subject": "r4", "timer": timerMock}]
+        self.plugin_instance.cancel_tasks = Mock()
         cases = [
-            { "autoOff": True, "expectedCall": True },
-            { "autoOff": False, "expectedCall": False },
+            { "event": "PRINTING_STARTED", "state": True, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STARTED", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STARTED", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "PRINTING_STOPPED", "state": True, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STOPPED", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "PRINTING_STOPPED", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 300 },
+            { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "STARTUP", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 0 },
+            { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 0 },
         ]
         for case in cases:
+            self.plugin_instance.tasks = []
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
+            self.plugin_instance.toggle_relay = Mock()
             self.plugin_instance._settings.get = Mock(return_value={
                 index: {
                     "active": True,
-                    "relay_pin": 17,
-                    "inverted_output": False,
-                    "auto_off_after_print": case["autoOff"],
-                    "auto_off_delay": 300,
-                    "cmd_off": "CommandMock"
+                    "rules": {
+                        case["event"]: {
+                            "state": case["state"],
+                            "delay": case["delay"],
+                        }
+                    },
                 } for index in RELAY_INDEXES
             })
-            self.plugin_instance.print_stopped()
+            self.plugin_instance.handle_plugin_event(case["event"])
+            self.plugin_instance.cancel_tasks.assert_called_with("r8", case["event"])
             if case["expectedCall"]:
-                utilMock.ResettableTimer.assert_called_with(
-                    300, self.plugin_instance.turn_off_relay, [17, False, "CommandMock"]
-                )
-                timerMock.start.assert_called_with()
+                if case["delay"] == 0:
+                    self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
+                else:
+                    utilMock.ResettableTimer.assert_called_with(
+                        case["delay"], self.plugin_instance.toggle_relay, ["r8", case["state"]]
+                    )
+                    timerMock.start.assert_called_with()
+                    self.assertEqual(
+                        self.plugin_instance.tasks,
+                        list(map(lambda index, owner=case["event"]: {
+                            "subject": index,
+                            "owner": owner,
+                            "timer": timerMock
+                        }, RELAY_INDEXES))
+                    )
             else:
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
-            self.plugin_instance.update_ui.assert_called_with()
+                self.plugin_instance.toggle_relay.assert_not_called()
+
+    def test_cancel_tasks(self):
+        # Should remove the tasks for the certain relay and cancel its timer
+        timerMock.mock_reset()
+        self.plugin_instance.tasks = [{
+            "subject": "r4",
+            "owner": "PRINTING_STOPPED",
+            "timer": timerMock
+        }, {
+            "subject": "r6",
+            "owner": "PRINTING_STOPPED",
+            "timer": timerMock
+        }, {
+            "subject": "r4",
+            "owner": "STARTUP",
+            "timer": timerMock
+        }]
+        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
+        self.assertEqual(self.plugin_instance.tasks, [{
+            "subject": "r6",
+            "owner": "PRINTING_STOPPED",
+            "timer": timerMock
+        }])
+        timerMock.cancel.assert_called_with()
+
+    def test_cancel_tasks__exception(self):
+        # Should handle a possible exception when cancelling a timer
+        self.plugin_instance.tasks = [{
+            "subject": "r4",
+            "owner": "PRINTING_STOPPED",
+            "timer": Mock(
+                cancel=Mock( side_effect=Exception("Caught!") )
+            )
+        }]
+        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
+        self.plugin_instance._logger.warn.assert_called_with(
+            "failed to cancel timer PRINTING_STOPPED for r4, reason: Caught!"
+        )
 
     def test_has_switch_permission(self):
         # Should proxy the permission and handle a possible exception
@@ -591,9 +712,16 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedStatus": "ok",
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
+            },
+            {
+                "command": "update",
+                "data": { "pin": "invalid" },
+                "closed": True,
+                "expectedStatus": "error",
             }
         ]
         for case in cases:
+            self.plugin_instance.update_ui.mock_reset()
             relayMock.is_closed = Mock(return_value=case["closed"])
             relayMock.toggle = Mock(return_value=not case["closed"])
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
@@ -612,12 +740,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             else:
                 self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
-            if case["command"] != "listAllStatus":
+            if case["command"] != "listAllStatus" and case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedJson" in case:
                 jsonify_mock.assert_called_with(case["expectedJson"])
             if "expectedToggle" in case:
-                relayMock.toggle.assert_called_with()
+                relayMock.toggle.assert_called_with(None)
+                self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
             if "expectedStatus" in case:
@@ -644,20 +773,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.on_api_command("command", {})
         abort_mock.assert_called_with(400)
 
-    def test_update_relay__exception(self):
-        # Should catch possible exceptions within try-catch block
-        self.plugin_instance._settings.get = Mock(side_effect=Exception("Caught!"))
-        actual = self.plugin_instance.update_relay("r4")
-        self.assertEqual(actual, "error")
-        self.plugin_instance._logger.warn.assert_called_with("OctoRelay update_relay caught an exception: Caught!")
-
     def test_process_at_command(self):
-        # Should call update_relay() method with supplied parameter
-        self.plugin_instance.update_relay = Mock()
+        # Should toggle the relay having index supplied as a parameter
+        self.plugin_instance.toggle_relay = Mock()
         self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4"))
-        self.plugin_instance.update_relay.assert_called_with("r4")
+        self.plugin_instance.toggle_relay.assert_called_with("r4")
 
     def test_get_additional_permissions(self):
+        # Should return the list of the plugin custom permissions
         expected = [{
             "key": "SWITCH",
             "name": "Relay switching",

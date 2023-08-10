@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-
+from typing import Optional
 import os
 import flask
 
@@ -11,8 +11,9 @@ from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
 from .const import (
-    get_default_settings, get_templates, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
-    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION
+    get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
+    POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS
 )
 from .driver import Relay
 from .migrations import migrate
@@ -34,10 +35,8 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.turn_off_timers = {}
-        self.model = {}
-        for index in RELAY_INDEXES:
-            self.model[index] = {}
+        self.tasks = [] # of { subject: relayIndex, owner: pluginEvent, timer: ResettableTimer }
+        self.model = { index: {} for index in RELAY_INDEXES }
 
     def get_settings_version(self):
         return SETTINGS_VERSION
@@ -54,20 +53,16 @@ class OctoRelayPlugin(
     def get_template_configs(self):
         return get_templates()
 
+    def get_template_vars(self):
+        return get_ui_vars()
+
     def get_assets(self):
         return ASSETS
 
     def on_after_startup(self):
         self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
-        settings = self._settings.get([], merged=True) # expensive
-        for index in RELAY_INDEXES:
-            self._logger.debug(f"settings for {index}: {settings[index]}")
-            if settings[index]["active"]:
-                Relay(
-                    int(settings[index]["relay_pin"]),
-                    bool(settings[index]["inverted_output"])
-                ).toggle(bool(settings[index]["initial_value"]))
+        self.handle_plugin_event(STARTUP)
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
         self.polling_timer.start()
@@ -106,7 +101,7 @@ class OctoRelayPlugin(
             for index in RELAY_INDEXES:
                 if settings[index]["active"]:
                     relay = Relay(
-                        int(settings[index]["relay_pin"]),
+                        int(settings[index]["relay_pin"] or 0),
                         bool(settings[index]["inverted_output"])
                     )
                     active_relays.append({
@@ -120,7 +115,7 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND:
             settings = self._settings.get([data["pin"]], merged=True) # expensive
             relay = Relay(
-                int(settings["relay_pin"]),
+                int(settings["relay_pin"] or 0),
                 bool(settings["inverted_output"])
             )
             return flask.jsonify(status=relay.is_closed())
@@ -129,39 +124,25 @@ class OctoRelayPlugin(
         if command == UPDATE_COMMAND:
             if not self.has_switch_permission():
                 return flask.abort(403)
-            status = self.update_relay(data["pin"])
-            return flask.jsonify(status=status)
-
-        # Unknown command
-        return flask.abort(400)
-
-    def update_relay(self, index):
-        try:
-            settings = self._settings.get([index], merged=True) # expensive
-            relay = Relay(
-                int(settings["relay_pin"]),
-                bool(settings["inverted_output"])
-            )
-            cmd_on = settings["cmd_on"]
-            cmd_off = settings["cmd_off"]
-            self._logger.debug(f"OctoRelay before update {relay}")
-            self.run_system_command(cmd_on if relay.toggle() else cmd_off) # ternary choice based on new state
+            index = data["pin"]
+            if index not in RELAY_INDEXES:
+                self._logger.warn(f"Invalid relay index supplied {index}")
+                return flask.jsonify(status="error")
+            self.toggle_relay(index)
             self.update_ui()
-            return "ok"
-        except Exception as exception:
-            self._logger.warn(f"OctoRelay update_relay caught an exception: {exception}")
-            return "error"
+            return flask.jsonify(status="ok")
+        return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
         self._logger.debug(f"Got event: {event}")
         if event == Events.CLIENT_OPENED:
             self.update_ui()
         elif event == Events.PRINT_STARTED:
-            self.print_started()
+            self.handle_plugin_event(PRINTING_STARTED)
         elif event == Events.PRINT_DONE:
-            self.print_stopped()
+            self.handle_plugin_event(PRINTING_STOPPED)
         elif event == Events.PRINT_FAILED:
-            self.print_stopped()
+            self.handle_plugin_event(PRINTING_STOPPED)
         elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             if event == Events.CONNECTIONS_AUTOREFRESHED:
                 self._printer.connect()
@@ -170,55 +151,55 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
+    def handle_plugin_event(self, event):
+        settings = self._settings.get([], merged=True) # expensive
+        for index in RELAY_INDEXES:
+            if bool(settings[index]["active"]):
+                target = settings[index]["rules"][event]["state"]
+                if target is not None:
+                    self.cancel_tasks(index, event)
+                    delay = int(settings[index]["rules"][event]["delay"] or 0)
+                    if delay == 0:
+                        self.toggle_relay(index, bool(target))
+                    else:
+                        timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
+                        self.tasks.append({
+                            "subject": index,
+                            "owner": event,
+                            "timer": timer
+                        })
+                        timer.start()
+
+    def toggle_relay(self, index, target: Optional[bool] = None):
+        settings = self._settings.get([index], merged=True) # expensive
+        pin = int(settings["relay_pin"] or 0)
+        inverted = bool(settings["inverted_output"])
+        relay = Relay(pin, inverted)
+        self._logger.debug(
+            f"Toggling relay {index} on pin {pin}" if target is None else
+            f"Turning the relay {index} {'ON' if target else 'OFF'} (pin {pin})"
+        )
+        cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
+        self.run_system_command(cmd)
+
     def on_settings_save(self, data):
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def print_started(self):
-        for index, off_timer in self.turn_off_timers.items():
-            try:
-                off_timer.cancel()
-                self._logger.info(f"cancelled timer: {index}")
-            except Exception as exception:
-                self._logger.warn(f"could not cancel timer: {index}, reason: {exception}")
-        settings = self._settings.get([], merged=True) # expensive
-        for index in RELAY_INDEXES:
-            relay_pin = int(settings[index]["relay_pin"])
-            inverted = bool(settings[index]["inverted_output"])
-            auto_on = bool(settings[index]["auto_on_before_print"])
-            cmd_on = settings[index]["cmd_on"]
-            active = bool(settings[index]["active"])
-            if auto_on and active:
-                self._logger.debug(f"turning on pin: {relay_pin}, index: {index}")
-                self.turn_on_relay(relay_pin, inverted, cmd_on)
-        self.update_ui()
-
-    def print_stopped(self):
-        settings = self._settings.get([], merged=True) # expensive
-        for index in RELAY_INDEXES:
-            relay_pin = int(settings[index]["relay_pin"])
-            inverted = bool(settings[index]["inverted_output"])
-            auto_off = bool(settings[index]["auto_off_after_print"])
-            delay = int(settings[index]["auto_off_delay"])
-            cmd_off = settings[index]["cmd_off"]
-            active = bool(settings[index]["active"])
-            if auto_off and active:
-                self._logger.debug(f"turn off pin: {relay_pin} in {delay} seconds. index: {index}")
-                self.turn_off_timers[index] = ResettableTimer(
-                    delay, self.turn_off_relay, [relay_pin, inverted, cmd_off])
-                self.turn_off_timers[index].start()
-        self.update_ui()
-
-    def turn_off_relay(self, pin: int, inverted: bool, cmd):
-        Relay(pin, inverted).open()
-        self.run_system_command(cmd)
-        self._logger.info(f"pin: {pin} turned off")
-        self.update_ui() # todo perhaps it's not needed due to having the polling thread
-
-    def turn_on_relay(self, pin: int, inverted: bool, cmd):
-        Relay(pin, inverted).close()
-        self.run_system_command(cmd)
-        self._logger.info(f"pin: {pin} turned on")
+    def cancel_tasks(self, index: str, requestor: str):
+        exceptions = CANCELLATION_EXCEPTIONS[requestor] if requestor in CANCELLATION_EXCEPTIONS else []
+        def handler(entry):
+            if index == entry["subject"] and entry["owner"] not in exceptions:
+                try:
+                    entry["timer"].cancel()
+                    self._logger.info(f"cancelled timer {entry['owner']} for relay {entry['subject']}")
+                except Exception as exception:
+                    self._logger.warn(
+                        f"failed to cancel timer {entry['owner']} for {entry['subject']}, reason: {exception}"
+                    )
+                return False # exclude
+            return True # include
+        self.tasks = list(filter(handler, self.tasks))
 
     def run_system_command(self, cmd):
         if cmd:
@@ -229,7 +210,7 @@ class OctoRelayPlugin(
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
             relay = Relay(
-                int(settings[index]["relay_pin"]),
+                int(settings[index]["relay_pin"] or 0),
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed()
@@ -252,7 +233,8 @@ class OctoRelayPlugin(
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
         if command == AT_COMMAND:
             index = parameters
-            self.update_relay(index)
+            if index in RELAY_INDEXES:
+                self.toggle_relay(index)
         return None # meaning no further actions required
 
     def get_update_information(self):
@@ -267,7 +249,7 @@ class OctoRelayPlugin(
 
     # Polling thread
     def input_polling(self):
-        self._logger.debug("input_polling")
+        # self._logger.debug("input_polling") # in case your log file is too small
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1

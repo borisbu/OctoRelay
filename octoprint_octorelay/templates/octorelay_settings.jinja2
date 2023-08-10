@@ -1,101 +1,168 @@
 <form class="form-horizontal">
     <h3>OctoRelay Settings</h3>
-    {% for n in range(1,9) %}
-    <div class="control-group">
-        <label class="control-label">{{ _('Relay') }} {{n}}</label>
-        <div class="controls">
-            <label class="checkbox">
-                <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.active">
-                {{ _('Active') }}
-                <span
-                    class="help-inline"
-                    data-bind="hidden: settings.plugins.octorelay.r{{n}}.active, text: settings.plugins.octorelay.r{{n}}.label_text"
-                    style="line-height: initial; vertical-align: unset;"
-                ></span>
-            </label>
-        </div>
-        <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active">
-            <label class="control-label">{{ _('Label') }}</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.label_text">
-                </label>
-            </div>
-            <label class="control-label">{{ _('GPIO Number') }}</label>
-            <div class="controls">
-                <input id="relay_pin-input{{n}}" type="number" min="1" max="27" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.relay_pin">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.inverted_output">
-                    {{ _('Inverted output') }}
-                </label>
-            </div>
-            <label class="control-label">{{ _('OS Command ON') }}</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_on">
-                </label>
-            </div>
-            <label class="control-label">{{ _('OS Command OFF') }}</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.cmd_off">
-                </label>
-            </div>
-            <label class="control-label">{{ _('Icon ON') }}</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.icon_on">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r{{n}}.icon_on"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">{{ _('Icon OFF') }}</label>
-            <div class="controls">
-                <label class="text">
-                    <input type="text" class="input-large" data-bind="value: settings.plugins.octorelay.r{{n}}.icon_off">
-                    <div
-                        style="display: inline-block; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.3em;"
-                        data-bind="html: settings.plugins.octorelay.r{{n}}.icon_off"
-                    ></div>
-                </label>
-            </div>
-            <label class="control-label">{{ _('Confirmation') }}</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.confirm_off">
-                    {{ _('Warning on turning OFF') }}
-                </label>
-            </div>
-            <label class="control-label">{{ _('Auto ON/OFF') }}</label>
-            <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.initial_value">
-                    {{ _('ON initially on boot') }}
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_on_before_print">
-                    {{ _('ON before printing') }}
-                </label>
-                <label class="checkbox">
-                    <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
-                    {{ _('OFF after printing') }}
-                </label>
-            </div>
-            <label class="control-label" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
-                {{ _('Delay') }}
-            </label>
-            <div class="controls" data-bind="visible: settings.plugins.octorelay.r{{n}}.auto_off_after_print">
-                <label class="text">
-                    <div class="input-append">
-                        <input type="number" min="0" max="86400" class="input-small" data-bind="value: settings.plugins.octorelay.r{{n}}.auto_off_delay">
-                        <span class="add-on">seconds</span>
+
+    <ul class="nav nav-pills">
+        {% for n in range(1,9) %}
+        <li data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}">
+            <a
+                href="#relay_settings_{{n}}"
+                data-bind="text: label_text() || '{{ _('Relay') }} {{n}}'"
+                data-toggle="tab"
+            ></a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <div class="tab-content">
+        {% for n in range(1,9) %}
+        <div
+            id="relay_settings_{{n}}"
+            class="tab-pane"
+            data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
+        >
+
+            <div class="control-group">
+                <label class="control-label">{{ _('Active') }}</label>
+                <div class="controls">
+                    <div class="btn-group">
+                        {% for value, option in plugin_octorelay_boolean.items() %}
+                        <label
+                            class="btn"
+                            data-bind="css: { 'active btn-{{option.color}}': active() === {{value}}, 'btn-default': active() !== {{value}} }"
+                        >
+                            <input
+                                type="radio"
+                                style="display: none"
+                                data-bind="checkedValue: {{value}}, checked: active"
+                            />
+                            {{ _(option.caption) }}
+                        </label>
+                        {% endfor %}
                     </div>
-                    <span class="help-block">{{ _('The delay to turn the relay OFF. For example for a fan, that should run a little longer after the print.') }}</span>
-                </label>
+                    <span class="help-block" data-bind="hidden: active">
+                        {{ _('All operations on this relay are disabled') }}
+                    </span>
+                </div>
+            </div>
+
+            <div data-bind="visible: active">
+                <div class="control-group">
+                    <label class="control-label">{{ _('Label') }}</label>
+                    <div class="controls">
+                        <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">{{ _('GPIO Number') }}</label>
+                    <div class="controls">
+                        <input
+                            id="relay_pin-input{{n}}"
+                            type="number"
+                            min="1"
+                            max="27"
+                            class="input-small"
+                            data-bind="value: relay_pin"
+                        >
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">{{ _('Inverted output') }}</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            {% for value, option in plugin_octorelay_boolean.items() %}
+                            <label
+                                class="btn"
+                                data-bind="css: { 'active btn-{{option.color}}': inverted_output() === {{value}}, 'btn-default': inverted_output() !== {{value}} }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: {{value}}, checked: inverted_output"
+                                />
+                                {{ _(option.caption) }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <span class="help-block">
+                            {{ _('For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.') }}
+                        </span>
+                    </div>
+                </div>
+
+                {% for state in ["on", "off"] %}
+                <div class="control-group">
+                    <label class="control-label">{{ _('Icon') }} {{ _(state.upper()) }}</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: icon_{{state}}">
+                        <div
+                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
+                            data-bind="html: icon_{{state}}"
+                        ></div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="control-group">
+                    <label class="control-label">{{ _('Warn when turning OFF') }}</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            {% for value, option in plugin_octorelay_boolean.items() %}
+                            <label
+                                class="btn"
+                                data-bind="css: { 'active btn-{{option.color}}': confirm_off() === {{value}}, 'btn-default': confirm_off() !== {{value}} }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none"
+                                    data-bind="checkedValue: {{value}}, checked: confirm_off"
+                                />
+                                {{ _(option.caption) }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                {% for event, label in plugin_octorelay_events.items() %}
+                <div class="control-group" data-bind="using: rules.{{event}}">
+                    <label class="control-label">{{ _(label) }}</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            {% for value, state in plugin_octorelay_tristate.items() %}
+                            <label
+                                class="btn"
+                                data-bind="css: { 'active btn-{{state.color}}': state() === {{value}}, 'btn-default': state() !== {{value}} }"
+                            >
+                                <input
+                                    type="radio"
+                                    style="display: none" data-bind="checkedValue: {{value}}, checked: state"
+                                />
+                                {{ _(state.caption) }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">{{ _('delay') }}</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">{{ _('s') }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% for state in ["on", "off"] %}
+                <div class="control-group">
+                    <label class="control-label">{{ _('OS Command') }} {{ _(state.upper()) }}</label>
+                    <div class="controls">
+                        <input type="text" class="input-large" data-bind="value: cmd_{{state}}">
+                    </div>
+                </div>
+                {% endfor %}
+
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </form>

@@ -1,8 +1,17 @@
 # -*- coding: utf-8 -*-
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
+# Internal events
+STARTUP = "STARTUP"
+PRINTING_STARTED = "PRINTING_STARTED"
+PRINTING_STOPPED = "PRINTING_STOPPED"
+
+# Task cancellation exceptions
+# { eventHappened: [ events which postponed timers should NOT be cancelled ]
+CANCELLATION_EXCEPTIONS = {}
+
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 2
+SETTINGS_VERSION = 3
 
 # Plugin's default settings, immutable getter
 # Warning: every change to these settings requires:
@@ -14,22 +23,31 @@ def get_default_settings():
             "active": False,
             "relay_pin": 4,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": "&#128161;",
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "Light",
             "confirm_off": False,
-            "auto_on_before_print": True,
-            "auto_off_after_print": True,
-            "auto_off_delay": 10,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": True,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": False,
+                    "delay": 10,
+                },
+            },
         },
         "r2": {
             "active": False,
             "relay_pin": 17,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/3d-printer.svg">""",
@@ -39,15 +57,25 @@ def get_default_settings():
             ),
             "label_text": "Printer",
             "confirm_off": True,
-            "auto_on_before_print": False,
-            "auto_off_after_print": False,
-            "auto_off_delay": 0,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": None,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": None,
+                    "delay": 0,
+                },
+            },
         },
         "r3": {
             "active": False,
             "relay_pin": 18,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/fan.svg" >""",
@@ -57,15 +85,25 @@ def get_default_settings():
             ),
             "label_text": "Fan",
             "confirm_off": False,
-            "auto_on_before_print": True,
-            "auto_off_after_print": True,
-            "auto_off_delay": 10,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": True,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": False,
+                    "delay": 10,
+                },
+            },
         },
         "r4": {
             "active": False,
             "relay_pin": 23,
             "inverted_output": True,
-            "initial_value": True,
             "cmd_on": "sudo service webcamd start",
             "cmd_off": "sudo service webcamd stop",
             "icon_on": """<img width="24" height="24" src="/plugin/octorelay/static/img/webcam.svg" >""",
@@ -75,69 +113,120 @@ def get_default_settings():
             ),
             "label_text": "Webcam",
             "confirm_off": False,
-            "auto_on_before_print": True,
-            "auto_off_after_print": True,
-            "auto_off_delay": 10,
+            "rules": {
+                STARTUP: {
+                    "state": True,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": True,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": False,
+                    "delay": 10,
+                },
+            },
         },
         "r5": {
             "active": False,
             "relay_pin": 24,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": "ON",
             "icon_off": "OFF",
             "label_text": "R5",
             "confirm_off": False,
-            "auto_on_before_print": False,
-            "auto_off_after_print": False,
-            "auto_off_delay": 0,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": None,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": None,
+                    "delay": 0,
+                },
+            },
         },
         "r6": {
             "active": False,
             "relay_pin": 25,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": "&#128161;",
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R6",
             "confirm_off": False,
-            "auto_on_before_print": False,
-            "auto_off_after_print": False,
-            "auto_off_delay": 0,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": None,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": None,
+                    "delay": 0,
+                },
+            },
         },
         "r7": {
             "active": False,
             "relay_pin": 8,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": "&#128161;",
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R7",
             "confirm_off": False,
-            "auto_on_before_print": False,
-            "auto_off_after_print": False,
-            "auto_off_delay": 0,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": None,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": None,
+                    "delay": 0,
+                },
+            },
         },
         "r8": {
             "active": False,
             "relay_pin": 7,
             "inverted_output": True,
-            "initial_value": False,
             "cmd_on": "",
             "cmd_off": "",
             "icon_on": "&#128161;",
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R8",
             "confirm_off": False,
-            "auto_on_before_print": False,
-            "auto_off_after_print": False,
-            "auto_off_delay": 0,
+            "rules": {
+                STARTUP: {
+                    "state": False,
+                    "delay": 0,
+                },
+                PRINTING_STARTED: {
+                    "state": None,
+                    "delay": 0,
+                },
+                PRINTING_STOPPED: {
+                    "state": None,
+                    "delay": 0,
+                },
+            },
         },
     }
 
@@ -150,6 +239,25 @@ def get_templates():
         { "type": "navbar", "custom_bindings": False },
         { "type": "settings", "custom_bindings": False }
     ]
+
+# these are available in templates with prefix: plugin_octorelay_
+def get_ui_vars():
+    return {
+        "events": {
+            STARTUP: "on Startup",
+            PRINTING_STARTED: "on Printing Started",
+            PRINTING_STOPPED: "on Printing Stopped"
+        },
+        "boolean": {
+            "true": { "caption": "YES", "color": "info" },
+            "false": { "caption": "NO", "color": "default" }
+        },
+        "tristate": {
+            "true": { "caption": "ON", "color": "success" },
+            "null": { "caption": "skip", "color": "default" },
+            "false": { "caption": "OFF", "color": "danger" }
+        }
+    }
 
 # Plugin's asset files to automatically include in the core UI
 ASSETS = { "js": [ "js/octorelay.js" ] }
