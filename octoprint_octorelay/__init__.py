@@ -129,6 +129,7 @@ class OctoRelayPlugin(
                 self._logger.warn(f"Invalid relay index supplied {index}")
                 return flask.jsonify(status="error")
             self.toggle_relay(index)
+            self.update_ui()
             return flask.jsonify(status="ok")
         return flask.abort(400) # Unknown command
 
