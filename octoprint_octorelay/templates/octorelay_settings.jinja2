@@ -19,12 +19,10 @@
                     <label class="checkbox">
                         <input type="checkbox" data-bind="checked: settings.plugins.octorelay.r{{n}}.active">
                         {{ _('Active') }}
-                        <span
-                                class="help-inline"
-                                data-bind="hidden: settings.plugins.octorelay.r{{n}}.active, text: settings.plugins.octorelay.r{{n}}.label_text"
-                                style="line-height: initial; vertical-align: unset;"
-                        ></span>
                     </label>
+                    <span class="help-block" data-bind="hidden: settings.plugins.octorelay.r{{n}}.active">
+                        {{ _('All operations on this relay are disabled') }}
+                    </span>
                 </div>
             </div>
             <div data-bind="visible: settings.plugins.octorelay.r{{n}}.active">
