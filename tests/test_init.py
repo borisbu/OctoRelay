@@ -344,7 +344,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "events": {
                 "STARTUP": "on Startup",
                 "PRINTING_STARTED": "on Printing Started",
-                "PRINTING_STOPPED": "on Printing Stopped"
+                "PRINTING_STOPPED": "on Printing Stopped",
+                "TURNED_ON": "after Turned ON"
             },
             "boolean": {
                 "true": { "caption": "YES", "color": "info" },
