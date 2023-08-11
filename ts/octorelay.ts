@@ -80,28 +80,26 @@ $(() => {
         dialog.modal("show");
       };
       for (const [key, value] of Object.entries(data)) {
-        const btn = $("#relais" + key).css({
-          display: "flex",
-          float: "left",
-          width: "40px",
-          height: "40px",
-          padding: "unset",
-          cursor: "pointer",
-          "font-size": "1.25rem",
-          "text-decoration": "none",
-          "align-items": "center",
-          "justify-content": "center",
-        });
-        if (value.active !== undefined) {
-          btn.toggle(hasPermission && value.active);
-        }
-        if (value.icon_html !== undefined) {
-          btn.html(value.icon_html);
-        }
-        if (value.label_text !== undefined) {
-          btn.attr("title", value.label_text);
-        }
-        btn.off("click").on("click", () => handleClick(key, value));
+        $("#relais" + key)
+          .css({
+            display: "flex",
+            float: "left",
+            width: "40px",
+            height: "40px",
+            padding: "unset",
+            cursor: "pointer",
+            "font-size": "1.25rem",
+            "text-decoration": "none",
+            "align-items": "center",
+            "justify-content": "center",
+          })
+          .toggle(hasPermission && value.active)
+          .html(value.icon_html)
+          .attr("title", value.label_text)
+          .tooltip("destroy")
+          .tooltip({ placement: "bottom" })
+          .off("click")
+          .on("click", () => handleClick(key, value));
       }
     };
   };

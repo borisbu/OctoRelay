@@ -3,6 +3,14 @@
 interface JQuery {
   /** @see https://github.com/OctoPrint/OctoPrint/blob/1.9.0/src/octoprint/static/js/lib/bootstrap/bootstrap-modal.js */
   modal(option: "show" | "hide"): JQuery;
+  tooltip(
+    option:
+      | "destroy"
+      | "toggle"
+      | "hide"
+      | "show"
+      | { placement?: "top" | "bottom" | "left" | "right" }
+  );
 }
 
 interface ViewModel {
