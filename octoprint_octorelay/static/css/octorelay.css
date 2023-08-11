@@ -10,7 +10,7 @@
     font-family: monospace;
 }
 
-#settings_plugin_octorelay .input-prepend.tiny-text > .add-on {
+#settings_plugin_octorelay .input-prepend > .add-on.tiny {
     font-size: 0.45rem;
     font-weight: 600;
 }

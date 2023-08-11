@@ -84,8 +84,8 @@
                 <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
-                        <div class="input-prepend tiny-text">
-                            <span class="add-on">BCM</span>
+                        <div class="input-prepend">
+                            <span class="add-on tiny">BCM</span>
                             <input
                                 id="relay_pin-input{{n}}"
                                 type="number"
@@ -95,10 +95,11 @@
                                 data-bind="value: relay_pin"
                             >
                         </div>
-                        <a
-                            href="https://pinout.xyz/" target="_blank" style="vertical-align: middle; margin-left: 8px;">
-                            <i class="fa fa-info-circle"></i>
-                        </a>
+                        <span class="help-inline">
+                            <a href="https://pinout.xyz/" target="_blank">
+                                <i class="fa fa-info-circle"></i>
+                            </a>
+                        </span>
                     </div>
                 </div>
 
