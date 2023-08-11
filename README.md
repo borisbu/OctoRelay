@@ -62,7 +62,7 @@ Each relay has the following settings *(in order of appearance)*:
 | skip *(option)*     | No action should be taken                                  |                                 |
 | delay               | Postpones the action for the time specified in seconds     |
 | **Side effects:**   | Additional actions in certain cases                        |
-| Command *(ON/OFF)*  | An optional OS command to run when changing relay state    |
+| Command *(ON/OFF)*  | An optional OS command to run when toggling the relay      |
 
 ## Operation
 
