@@ -12,7 +12,7 @@ TURNED_ON = "TURNED_ON"
 CANCELLATION_EXCEPTIONS = {}
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 4
+SETTINGS_VERSION = 3
 
 # Plugin's default settings, immutable getter
 # Warning: every change to these settings requires:
