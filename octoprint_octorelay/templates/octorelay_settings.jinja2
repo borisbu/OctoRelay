@@ -17,26 +17,26 @@
         {% for n in range(1,9) %}
         <div
             id="relay_settings_{{n}}"
-            class="tab-pane"
-            data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
+            class="tab-pane fade"
+            data-bind="css: { 'active in': 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
         >
-
             <div class="control-group">
                 <label class="control-label">{{ _('Active') }}</label>
                 <div class="controls">
                     <div class="btn-group">
                         {% for value, option in plugin_octorelay_boolean.items() %}
-                        <label
-                            class="btn"
-                            data-bind="css: { 'active btn-{{option.color}}': active() === {{value}}, 'btn-default': active() !== {{value}} }"
-                        >
+                        <!--ko let: { classBinding: {
+                            'active btn-{{option.color}}': active() === {{value}},
+                            'btn-default': active() !== {{value}}
+                        } } -->
+                        <label class="btn" data-bind="css: classBinding">
                             <input
                                 type="radio"
-                                style="display: none"
                                 data-bind="checkedValue: {{value}}, checked: active"
                             />
                             {{ _(option.caption) }}
                         </label>
+                        <!--/ko-->
                         {% endfor %}
                     </div>
                     <span class="help-block" data-bind="hidden: active">
@@ -46,6 +46,14 @@
             </div>
 
             <div data-bind="visible: active">
+                {% for state, offset in {"on": 315, "off": 415}.items() %}
+                <div class="preview" style="left: {{offset}}px;" data-bind="html: icon_{{state}}"></div>
+                <div class="preview-caption" style="left: {{offset}}px">
+                    <span class="label">{{ _(state.upper()) }}</span>
+                    {{ _('preview') }}
+                </div>
+                {% endfor %}
+
                 <div class="control-group">
                     <label class="control-label">{{ _('Label') }}</label>
                     <div class="controls">
@@ -53,17 +61,44 @@
                     </div>
                 </div>
 
+                {% for state in ["on", "off"] %}
+                <div class="control-group">
+                    <label class="control-label">
+                        {{ _('Icon') }}
+                        <span class="label">{{ _(state.upper()) }}</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_{{state}}"
+                            >
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
                 <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
-                        <input
-                            id="relay_pin-input{{n}}"
-                            type="number"
-                            min="1"
-                            max="27"
-                            class="input-small"
-                            data-bind="value: relay_pin"
-                        >
+                        <div class="input-prepend">
+                            <span class="add-on tiny">BCM</span>
+                            <input
+                                id="relay_pin-input{{n}}"
+                                type="number"
+                                min="1"
+                                max="27"
+                                class="input-mini"
+                                data-bind="value: relay_pin"
+                            >
+                        </div>
+                        <span class="help-inline">
+                            <a href="https://pinout.xyz/" target="_blank" class="same-color">
+                                <i class="fa fa-info"></i>
+                            </a>
+                        </span>
                     </div>
                 </div>
 
@@ -72,54 +107,53 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
-                            <label
-                                class="btn"
-                                data-bind="css: { 'active btn-{{option.color}}': inverted_output() === {{value}}, 'btn-default': inverted_output() !== {{value}} }"
-                            >
+                            <!--ko let: { classBinding: {
+                                'active btn-{{option.color}}': inverted_output() === {{value}},
+                                'btn-default': inverted_output() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    style="display: none"
                                     data-bind="checkedValue: {{value}}, checked: inverted_output"
                                 />
                                 {{ _(option.caption) }}
                             </label>
+                            <!--/ko-->
                             {% endfor %}
                         </div>
-                        <span class="help-block">
-                            {{ _('For normally closed relays: the electrical circuit is closed without applying current and the relay connects the power to the load.') }}
+                        <span class="help-inline">
+                            {{ _('For normally closed relays') }}
+                            <a
+                                href="https://www.google.com/search?q=what+normally+closed+relay+is"
+                                target="_blank"
+                                class="same-color"
+                            >
+                                <i class="fa fa-info"></i>
+                            </a>
                         </span>
                     </div>
                 </div>
 
-                {% for state in ["on", "off"] %}
                 <div class="control-group">
-                    <label class="control-label">{{ _('Icon') }} {{ _(state.upper()) }}</label>
-                    <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: icon_{{state}}">
-                        <div
-                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                            data-bind="html: icon_{{state}}"
-                        ></div>
-                    </div>
-                </div>
-                {% endfor %}
-
-                <div class="control-group">
-                    <label class="control-label">{{ _('Warn when turning OFF') }}</label>
+                    <label class="control-label">
+                        {{ _('Warn if turning') }}
+                        <span class="label">{{ _('OFF') }}</span>
+                    </label>
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
-                            <label
-                                class="btn"
-                                data-bind="css: { 'active btn-{{option.color}}': confirm_off() === {{value}}, 'btn-default': confirm_off() !== {{value}} }"
-                            >
+                            <!--ko let: { classBinding: {
+                                'active btn-{{option.color}}': confirm_off() === {{value}},
+                                'btn-default': confirm_off() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    style="display: none"
                                     data-bind="checkedValue: {{value}}, checked: confirm_off"
                                 />
                                 {{ _(option.caption) }}
                             </label>
+                            <!--/ko-->
                             {% endfor %}
                         </div>
                     </div>
@@ -131,16 +165,18 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, state in plugin_octorelay_tristate.items() %}
-                            <label
-                                class="btn"
-                                data-bind="css: { 'active btn-{{state.color}}': state() === {{value}}, 'btn-default': state() !== {{value}} }"
-                            >
+                            <!--ko let: { classBinding: {
+                                'active btn-{{state.color}}': state() === {{value}},
+                                'btn-default': state() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    style="display: none" data-bind="checkedValue: {{value}}, checked: state"
+                                    data-bind="checkedValue: {{value}}, checked: state"
                                 />
                                 {{ _(state.caption) }}
                             </label>
+                            <!--/ko-->
                             {% endfor %}
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
@@ -154,9 +190,19 @@
 
                 {% for state in ["on", "off"] %}
                 <div class="control-group">
-                    <label class="control-label">{{ _('OS Command') }} {{ _(state.upper()) }}</label>
+                    <label class="control-label">
+                        {{ _('Command') }}
+                        <span class="label">{{ _(state.upper()) }}</span>
+                    </label>
                     <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: cmd_{{state}}">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-terminal fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: cmd_{{state}}"
+                            >
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
