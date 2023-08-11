@@ -19,6 +19,10 @@
     color: inherit;
 }
 
+#settings_plugin_octorelay .control-label span.label {
+    zoom: 0.85; /* not scale */
+}
+
 #settings_plugin_octorelay .fa-info {
     border: 2px solid currentColor;
     padding: 3px 8px;
