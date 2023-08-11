@@ -13,7 +13,7 @@
         {% endfor %}
     </ul>
 
-    <div class="tab-content" style="position: relative">
+    <div class="tab-content">
         {% for n in range(1,9) %}
         <div
             id="relay_settings_{{n}}"
@@ -31,7 +31,6 @@
                         >
                             <input
                                 type="radio"
-                                style="display: none"
                                 data-bind="checkedValue: {{value}}, checked: active"
                             />
                             {{ _(option.caption) }}
@@ -74,9 +73,8 @@
                             <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
                             <input
                                 type="text"
-                                class="input-xlarge"
+                                class="input-xlarge code"
                                 data-bind="value: icon_{{state}}"
-                                style="font-family: monospace"
                             >
                         </div>
                     </div>
@@ -86,8 +84,8 @@
                 <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on" style="font-size: 0.45rem; font-weight: 600;">BCM</span>
+                        <div class="input-prepend tiny-text">
+                            <span class="add-on">BCM</span>
                             <input
                                 id="relay_pin-input{{n}}"
                                 type="number"
@@ -115,7 +113,6 @@
                             >
                                 <input
                                     type="radio"
-                                    style="display: none"
                                     data-bind="checkedValue: {{value}}, checked: inverted_output"
                                 />
                                 {{ _(option.caption) }}
@@ -145,7 +142,6 @@
                             >
                                 <input
                                     type="radio"
-                                    style="display: none"
                                     data-bind="checkedValue: {{value}}, checked: confirm_off"
                                 />
                                 {{ _(option.caption) }}
@@ -167,7 +163,7 @@
                             >
                                 <input
                                     type="radio"
-                                    style="display: none" data-bind="checkedValue: {{value}}, checked: state"
+                                    data-bind="checkedValue: {{value}}, checked: state"
                                 />
                                 {{ _(state.caption) }}
                             </label>
@@ -193,8 +189,7 @@
                             <span class="add-on"><i class="fa fa-terminal fa-sm"></i></span>
                             <input
                                 type="text"
-                                class="input-xlarge"
-                                style="font-family: monospace;"
+                                class="input-xlarge code"
                                 data-bind="value: cmd_{{state}}"
                             >
                         </div>

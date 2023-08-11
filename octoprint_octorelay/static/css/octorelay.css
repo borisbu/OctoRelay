@@ -1,0 +1,16 @@
+#settings_plugin_octorelay .tab-content {
+    position: relative
+}
+
+#settings_plugin_octorelay .btn > input[type='radio'] {
+    display: none
+}
+
+#settings_plugin_octorelay input.code {
+    font-family: monospace;
+}
+
+#settings_plugin_octorelay .input-prepend.tiny-text > .add-on {
+    font-size: 0.45rem;
+    font-weight: 600;
+}
