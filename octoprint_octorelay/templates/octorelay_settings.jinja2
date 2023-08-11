@@ -17,8 +17,8 @@
         {% for n in range(1,9) %}
         <div
             id="relay_settings_{{n}}"
-            class="tab-pane"
-            data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
+            class="tab-pane fade"
+            data-bind="css: { 'active in': 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
         >
             <div class="control-group">
                 <label class="control-label">{{ _('Active') }}</label>
