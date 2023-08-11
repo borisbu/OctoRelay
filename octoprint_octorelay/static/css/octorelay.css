@@ -15,6 +15,18 @@
     font-weight: 600;
 }
 
+#settings_plugin_octorelay .help-inline a.same-color {
+    color: inherit;
+}
+
+#settings_plugin_octorelay .fa-info {
+    border: 2px solid currentColor;
+    padding: 3px 8px;
+    border-radius: 50%;
+    scale: 0.6;
+    transform-origin: left;
+}
+
 #settings_plugin_octorelay .preview {
     display: flex;
     width: 24px;
