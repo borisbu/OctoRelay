@@ -14,3 +14,33 @@
     font-size: 0.45rem;
     font-weight: 600;
 }
+
+#settings_plugin_octorelay .preview {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    line-height: unset;
+    font-size: 1.25rem;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    scale: 3;
+    transform-origin: top left;
+    border: 0.3px dashed #00000066;
+    box-sizing: content-box;
+}
+
+#settings_plugin_octorelay .preview-caption {
+    position: absolute;
+    top: 75px;
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.5ch;
+    white-space: nowrap;
+    scale: 0.75;
+    transform-origin: top;
+}
