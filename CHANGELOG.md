@@ -2,6 +2,13 @@
 
 ## Version 3
 
+### 3.5.0
+
+- A couple more improvements for the UI/UX.
+  - This version introduces a new asset — CSS file. 
+
+![UI](https://user-images.githubusercontent.com/13189514/260043096-38e10e10-1285-401f-bf1f-18aa9e397c25.png)
+
 ### 3.4.0
 
 - New feature: event-based automation.

@@ -1,0 +1,63 @@
+#settings_plugin_octorelay .tab-content {
+    position: relative
+}
+
+#settings_plugin_octorelay .btn > input[type='radio'] {
+    display: none
+}
+
+#settings_plugin_octorelay input.code {
+    font-family: monospace;
+}
+
+#settings_plugin_octorelay .input-prepend > .add-on.tiny {
+    font-size: 0.45rem;
+    font-weight: 600;
+}
+
+#settings_plugin_octorelay .help-inline a.same-color {
+    color: inherit;
+}
+
+#settings_plugin_octorelay .control-label span.label {
+    zoom: 0.85; /* not scale */
+}
+
+#settings_plugin_octorelay .fa-info {
+    border: 2px solid currentColor;
+    padding: 3px 8px;
+    border-radius: 50%;
+    scale: 0.6;
+    transform-origin: left;
+}
+
+#settings_plugin_octorelay .preview {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    overflow: hidden;
+    line-height: unset;
+    font-size: 1.25rem;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    scale: 3;
+    transform-origin: top left;
+    border: 0.3px dashed #00000066;
+    box-sizing: content-box;
+    border-radius: 2px;
+}
+
+#settings_plugin_octorelay .preview-caption {
+    position: absolute;
+    top: 75px;
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0.5ch;
+    white-space: nowrap;
+    scale: 0.75;
+    transform-origin: top;
+}
