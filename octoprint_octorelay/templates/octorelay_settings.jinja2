@@ -50,9 +50,9 @@
                     style="display: flex; width: 24px; height: 24px; overflow: hidden; line-height: unset; font-size: 1.25rem; align-items: center; justify-content: center; position: absolute; left: {{offset}}px; top: 0; scale: 3; transform-origin: top left; border: 0.3px dashed #00000066; box-sizing: content-box;"
                     data-bind="html: icon_{{state}}"
                 ></div>
-                <div style="position: absolute; top: 75px; left: {{offset}}px; width: 75px; text-align: center; white-space: nowrap; scale: 0.75; transform-origin: top;">
-                    {{ _('Preview') }}
+                <div style="position: absolute; top: 75px; left: {{offset}}px; width: 75px; display: flex; justify-content: center; align-items: baseline; gap: 0.5ch; white-space: nowrap; scale: 0.75; transform-origin: top;">
                     <span class="label">{{ _(state.upper()) }}</span>
+                    {{ _('preview') }}
                 </div>
                 {% endfor %}
 
