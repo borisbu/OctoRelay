@@ -294,7 +294,10 @@ def get_ui_vars():
     }
 
 # Plugin's asset files to automatically include in the core UI
-ASSETS = { "js": [ "js/octorelay.js" ] }
+ASSETS = {
+    "js": [ "js/octorelay.js" ],
+    "css": [ "css/octorelay.css" ]
+}
 
 # Public interface commands:
 UPDATE_COMMAND = "update"

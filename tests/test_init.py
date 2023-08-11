@@ -337,7 +337,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_assets(self):
         # Should return the plugin assets configutation
-        expected = { "js": [ "js/octorelay.js" ] }
+        expected = { "js": [ "js/octorelay.js" ], "css": [ "css/octorelay.css" ] }
         actual = self.plugin_instance.get_assets()
         self.assertEqual(actual, expected)
 
