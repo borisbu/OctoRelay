@@ -46,6 +46,7 @@
     transform-origin: top left;
     border: 0.3px dashed #00000066;
     box-sizing: content-box;
+    border-radius: 2px;
 }
 
 #settings_plugin_octorelay .preview-caption {
