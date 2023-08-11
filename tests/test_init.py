@@ -89,6 +89,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": False,
                         "delay": 10,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r2": {
@@ -117,6 +121,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r3": {
@@ -145,6 +153,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": False,
                         "delay": 10,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r4": {
@@ -173,6 +185,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": False,
                         "delay": 10,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r5": {
@@ -198,6 +214,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r6": {
@@ -223,6 +243,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r7": {
@@ -248,6 +272,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r8": {
@@ -273,6 +301,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
         }
