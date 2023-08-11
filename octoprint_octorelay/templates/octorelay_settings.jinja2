@@ -25,16 +25,18 @@
                 <div class="controls">
                     <div class="btn-group">
                         {% for value, option in plugin_octorelay_boolean.items() %}
-                        <label
-                            class="btn"
-                            data-bind="css: { 'active btn-{{option.color}}': active() === {{value}}, 'btn-default': active() !== {{value}} }"
-                        >
+                        <!--ko let: { classBinding: {
+                            'active btn-{{option.color}}': active() === {{value}},
+                            'btn-default': active() !== {{value}}
+                        } } -->
+                        <label class="btn" data-bind="css: classBinding">
                             <input
                                 type="radio"
                                 data-bind="checkedValue: {{value}}, checked: active"
                             />
                             {{ _(option.caption) }}
                         </label>
+                        <!--/ko-->
                         {% endfor %}
                     </div>
                     <span class="help-block" data-bind="hidden: active">
@@ -105,16 +107,18 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
-                            <label
-                                class="btn"
-                                data-bind="css: { 'active btn-{{option.color}}': inverted_output() === {{value}}, 'btn-default': inverted_output() !== {{value}} }"
-                            >
+                            <!--ko let: { classBinding: {
+                                'active btn-{{option.color}}': inverted_output() === {{value}},
+                                'btn-default': inverted_output() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: {{value}}, checked: inverted_output"
                                 />
                                 {{ _(option.caption) }}
                             </label>
+                            <!--/ko-->
                             {% endfor %}
                         </div>
                         <span class="help-inline">
@@ -138,16 +142,18 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
-                            <label
-                                class="btn"
-                                data-bind="css: { 'active btn-{{option.color}}': confirm_off() === {{value}}, 'btn-default': confirm_off() !== {{value}} }"
-                            >
+                            <!--ko let: { classBinding: {
+                                'active btn-{{option.color}}': confirm_off() === {{value}},
+                                'btn-default': confirm_off() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: {{value}}, checked: confirm_off"
                                 />
                                 {{ _(option.caption) }}
                             </label>
+                            <!--/ko-->
                             {% endfor %}
                         </div>
                     </div>
@@ -159,16 +165,18 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, state in plugin_octorelay_tristate.items() %}
-                            <label
-                                class="btn"
-                                data-bind="css: { 'active btn-{{state.color}}': state() === {{value}}, 'btn-default': state() !== {{value}} }"
-                            >
+                            <!--ko let: { classBinding: {
+                                'active btn-{{state.color}}': state() === {{value}},
+                                'btn-default': state() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: {{value}}, checked: state"
                                 />
                                 {{ _(state.caption) }}
                             </label>
+                            <!--/ko-->
                             {% endfor %}
                         </div>
                         <div class="input-prepend input-append" data-bind="hidden: state() === null">
