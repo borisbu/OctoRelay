@@ -13,14 +13,13 @@
         {% endfor %}
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" style="position: relative">
         {% for n in range(1,9) %}
         <div
             id="relay_settings_{{n}}"
             class="tab-pane"
             data-bind="css: { active: 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
         >
-
             <div class="control-group">
                 <label class="control-label">{{ _('Active') }}</label>
                 <div class="controls">
@@ -46,12 +45,39 @@
             </div>
 
             <div data-bind="visible: active">
+                {% for state, offset in {"on": 350, "off": 440}.items() %}
+                <div
+                    style="display: flex; width: 24px; height: 24px; overflow: hidden; line-height: unset; font-size: 1.25rem; align-items: center; justify-content: center; position: absolute; left: {{offset}}px; top: 0; scale: 3; transform-origin: top; border: 0.3px dashed #00000066; box-sizing: content-box;"
+                    data-bind="html: icon_{{state}}"
+                ></div>
+                {% endfor %}
+
                 <div class="control-group">
                     <label class="control-label">{{ _('Label') }}</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
                     </div>
                 </div>
+
+                {% for state in ["on", "off"] %}
+                <div class="control-group">
+                    <label class="control-label">
+                        {{ _('Icon') }}
+                        <span class="label">{{ _(state.upper()) }}</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge"
+                                data-bind="value: icon_{{state}}"
+                                style="font-family: monospace"
+                            >
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
 
                 <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
@@ -93,19 +119,6 @@
                         </span>
                     </div>
                 </div>
-
-                {% for state in ["on", "off"] %}
-                <div class="control-group">
-                    <label class="control-label">{{ _('Icon') }} {{ _(state.upper()) }}</label>
-                    <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: icon_{{state}}">
-                        <div
-                            style="display: inline-flex; width: 24px; height: 24px; margin-left: 8px; overflow: hidden; line-height: unset; vertical-align: middle; font-size: 1.25rem; align-items: center; justify-content: center;"
-                            data-bind="html: icon_{{state}}"
-                        ></div>
-                    </div>
-                </div>
-                {% endfor %}
 
                 <div class="control-group">
                     <label class="control-label">
