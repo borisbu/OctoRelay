@@ -156,7 +156,15 @@
                 <div class="control-group">
                     <label class="control-label">{{ _('OS Command') }} {{ _(state.upper()) }}</label>
                     <div class="controls">
-                        <input type="text" class="input-large" data-bind="value: cmd_{{state}}">
+                        <div class="input-prepend">
+                            <span class="add-on" style="font-family: monospace">$</span>
+                            <input
+                                type="text"
+                                class="input-xlarge"
+                                style="font-family: monospace;"
+                                data-bind="value: cmd_{{state}}"
+                            >
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
