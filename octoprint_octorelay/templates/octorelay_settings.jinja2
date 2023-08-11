@@ -105,7 +105,10 @@
                 {% endfor %}
 
                 <div class="control-group">
-                    <label class="control-label">{{ _('Warn when turning OFF') }}</label>
+                    <label class="control-label">
+                        {{ _('Warn when turning') }}
+                        <span class="label">{{ _('OFF') }}</span>
+                    </label>
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
