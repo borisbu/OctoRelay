@@ -9,6 +9,8 @@ PRINTING_STOPPED = "PRINTING_STOPPED"
 # Task cancellation exceptions
 # { eventHappened: [ events which postponed timers should NOT be cancelled ]
 CANCELLATION_EXCEPTIONS = {}
+# min seconds before the task can be cancelled
+PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
 # Versioning of the plugin's default settings described below
 SETTINGS_VERSION = 3

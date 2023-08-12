@@ -15,7 +15,7 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF
 )
 from .driver import Relay
 from .migrations import migrate
@@ -211,8 +211,10 @@ class OctoRelayPlugin(
             os.system(cmd)
 
     def get_upcoming_tasks(self, now = time.time()):
-        ADVANCE = 2 # rename and move to const
-        future_tasks = filter(lambda task: task["deadline"] > now + ADVANCE, self.tasks)
+        future_tasks = filter(
+            lambda task: task["deadline"] > now + PREEMPTIVE_CANCELLATION_CUTOFF,
+            self.tasks
+        )
         def reducer(agg, task):
             index = task["subject"]
             agg[index] = task if agg[index] is None or task["deadline"] < agg[index]["deadline"] else agg[index]
