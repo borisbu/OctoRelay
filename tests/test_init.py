@@ -5,7 +5,7 @@
 
 import unittest
 import sys
-from unittest.mock import Mock, patch, ANY
+from unittest.mock import Mock, patch
 from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
@@ -621,7 +621,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         )
         timerMock.reset_mock()
 
-    @patch('time.time', Mock(return_value=0))
+    @patch("time.time", Mock(return_value=0))
     def test_get_upcoming_tasks(self):
         remaining_r4 = Task("r4", False, "PRINTING_STARTED", 1000, Mock(), [])
         remaining_r6 = Task("r6", False, "PRINTING_STOPPED", 2000, Mock(), [])
