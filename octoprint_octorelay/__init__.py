@@ -228,7 +228,6 @@ class OctoRelayPlugin(
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed()
-
             self.model[index] = {
                 "relay_pin": relay.pin,
                 "inverted_output": relay.inverted,
