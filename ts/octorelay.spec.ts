@@ -10,7 +10,8 @@ describe("OctoRelayViewModel", () => {
     | "text"
     | "modal"
     | "css"
-    | "tooltip",
+    | "tooltip"
+    | "popover",
     jest.Mock
   > = {
     toggle: jest.fn(() => elementMock),
@@ -23,6 +24,7 @@ describe("OctoRelayViewModel", () => {
     modal: jest.fn(() => elementMock),
     css: jest.fn(() => elementMock),
     tooltip: jest.fn(() => elementMock),
+    popover: jest.fn(() => elementMock),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -84,6 +86,7 @@ describe("OctoRelayViewModel", () => {
         active: true,
         icon_html: "<div>&#128161;</div>",
         confirm_off: false,
+        upcoming: null,
       },
       r2: {
         relay_pin: 12,
@@ -93,6 +96,7 @@ describe("OctoRelayViewModel", () => {
         active: true,
         icon_html: '<img src="plugin/dashboard/static/img/printer-icon.png">',
         confirm_off: true,
+        upcoming: null,
       },
       r3: {
         relay_pin: 18,
@@ -102,6 +106,7 @@ describe("OctoRelayViewModel", () => {
         active: true,
         icon_html: '<img src="plugin/dashboard/static/img/fan-icon.png">',
         confirm_off: false,
+        upcoming: null,
       },
       r4: {
         relay_pin: 20,
@@ -111,6 +116,7 @@ describe("OctoRelayViewModel", () => {
         active: true,
         icon_html: "<div>&#127774;</div>",
         confirm_off: false,
+        upcoming: null,
       },
       r5: {
         relay_pin: 24,
@@ -120,6 +126,7 @@ describe("OctoRelayViewModel", () => {
         active: false,
         icon_html: "ON",
         confirm_off: false,
+        upcoming: null,
       },
     });
     expect(hasPermissionMock).toHaveBeenCalledWith({
@@ -131,6 +138,7 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
     expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");
     expect(elementMock.tooltip.mock.calls).toMatchSnapshot(".tooltip()");
+    expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
     expect(elementMock.off).toHaveBeenCalledTimes(5);
     expect(elementMock.off).toHaveBeenCalledWith("click");
     expect(elementMock.on).toHaveBeenCalledTimes(5);
@@ -197,6 +205,7 @@ describe("OctoRelayViewModel", () => {
           active: true,
           icon_html: "<div>&#128161;</div>",
           confirm_off: false,
+          upcoming: null,
         },
       });
       expect(hasPermissionMock).toHaveBeenCalledWith({
