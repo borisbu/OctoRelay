@@ -163,6 +163,7 @@ class OctoRelayPlugin(
                     if delay == 0:
                         self.toggle_relay(index, bool(target))
                     else:
+                        # https://github.com/OctoPrint/OctoPrint/blob/ed4a264/src/octoprint/util/__init__.py#L1319
                         timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
                         self.tasks.append({
                             "subject": index,
