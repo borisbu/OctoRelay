@@ -95,4 +95,5 @@
 
 #navbar_plugin_octorelay .popover-content .btn {
     outline: none;
+    margin-top: unset;
 }
