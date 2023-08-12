@@ -622,6 +622,50 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }])
         timerMock.cancel.assert_called_with()
 
+    def test_get_upcoming_tasks(self):
+        self.plugin_instance.tasks = [{
+            "subject": "r4",
+            "owner": "PRINTING_STOPPED",
+            "timer": timerMock,
+            "deadline": 2000 # should be overridden
+        }, {
+            "subject": "r6",
+            "owner": "PRINTING_STOPPED",
+            "timer": timerMock,
+            "deadline": 2000 # the only for this relay
+        }, {
+           "subject": "r4",
+           "owner": "PRINTING_STARTED",
+           "timer": timerMock,
+           "deadline": 1000 # closest
+        }, {
+            "subject": "r4",
+            "owner": "STARTUP",
+            "timer": timerMock,
+            "deadline": 300 # past
+        }]
+        actual = self.plugin_instance.get_upcoming_tasks(500)
+        self.assertEqual(actual, {
+            "r1": None,
+            "r2": None,
+            "r3": None,
+            "r4": {
+                 "subject": "r4",
+                 "owner": "PRINTING_STARTED",
+                 "timer": timerMock,
+                 "deadline": 1000
+            },
+            "r5": None,
+            "r6": {
+                "subject": "r6",
+                "owner": "PRINTING_STOPPED",
+                "timer": timerMock,
+                "deadline": 2000
+            },
+            "r7": None,
+            "r8": None
+        })
+
     def test_cancel_tasks__exception(self):
         # Should handle a possible exception when cancelling a timer
         self.plugin_instance.tasks = [{

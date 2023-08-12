@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from typing import Optional
+from functools import reduce
 import os
 import time
 import flask
@@ -191,14 +192,14 @@ class OctoRelayPlugin(
 
     def cancel_tasks(self, index: str, requestor: str):
         exceptions = CANCELLATION_EXCEPTIONS[requestor] if requestor in CANCELLATION_EXCEPTIONS else []
-        def handler(entry):
-            if index == entry["subject"] and entry["owner"] not in exceptions:
+        def handler(task):
+            if index == task["subject"] and task["owner"] not in exceptions:
                 try:
-                    entry["timer"].cancel()
-                    self._logger.info(f"cancelled timer {entry['owner']} for relay {entry['subject']}")
+                    task["timer"].cancel()
+                    self._logger.info(f"cancelled timer {task['owner']} for relay {task['subject']}")
                 except Exception as exception:
                     self._logger.warn(
-                        f"failed to cancel timer {entry['owner']} for {entry['subject']}, reason: {exception}"
+                        f"failed to cancel timer {task['owner']} for {task['subject']}, reason: {exception}"
                     )
                 return False # exclude
             return True # include
@@ -208,6 +209,19 @@ class OctoRelayPlugin(
         if cmd:
             self._logger.info(f"OctoRelay runs system command: {cmd}")
             os.system(cmd)
+
+    def get_upcoming_tasks(self, now = time.time()):
+        ADVANCE = 2 # rename and move to const
+        future_tasks = filter(lambda task: task["deadline"] > now + ADVANCE, self.tasks)
+        def reducer(agg, task):
+            index = task["subject"]
+            agg[index] = task if agg[index] is None or task["deadline"] < agg[index]["deadline"] else agg[index]
+            return agg
+        return reduce( # { r1: task, r2: None, ... }
+            reducer,
+            future_tasks,
+            { index: None for index in RELAY_INDEXES }
+        )
 
     def update_ui(self):
         settings = self._settings.get([], merged=True) # expensive
