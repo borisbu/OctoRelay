@@ -2,8 +2,8 @@
 from __future__ import absolute_import, unicode_literals
 from typing import Optional
 import os
-import flask
 import time
+import flask
 
 import octoprint.plugin
 from octoprint.events import Events
