@@ -74,3 +74,12 @@
     align-items: center;
     justify-content: center;
 }
+
+#navbar_plugin_octorelay .popover {
+    width: auto;
+}
+
+#navbar_plugin_octorelay .popover-content .btn {
+    margin-top: -1px;
+    outline: none;
+}
