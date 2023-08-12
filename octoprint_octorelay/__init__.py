@@ -3,6 +3,7 @@ from __future__ import absolute_import, unicode_literals
 from typing import Optional
 import os
 import flask
+import time
 
 import octoprint.plugin
 from octoprint.events import Events
@@ -35,7 +36,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.tasks = [] # of { subject: relayIndex, owner: pluginEvent, timer: ResettableTimer }
+        self.tasks = [] # of { subject, owner, timer, deadline }
         self.model = { index: {} for index in RELAY_INDEXES }
 
     def get_settings_version(self):
@@ -166,7 +167,8 @@ class OctoRelayPlugin(
                         self.tasks.append({
                             "subject": index,
                             "owner": event,
-                            "timer": timer
+                            "timer": timer,
+                            "deadline": time.time() + delay
                         })
                         timer.start()
 
