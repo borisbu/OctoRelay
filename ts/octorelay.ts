@@ -6,6 +6,11 @@ interface RelayInfo {
   relay_pin: number;
   inverted_output: boolean;
   relay_state: boolean;
+  upcoming: null | {
+    deadline: number;
+    owner: string;
+    state: boolean;
+  };
 }
 
 type OwnMessage = Record<`r${number}`, RelayInfo>;
@@ -80,7 +85,7 @@ $(() => {
         dialog.modal("show");
       };
       for (const [key, value] of Object.entries(data)) {
-        $("#relais" + key)
+        const btn = $("#relais" + key)
           .css({
             display: "flex",
             float: "left",
@@ -96,10 +101,26 @@ $(() => {
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
           .tooltip("destroy")
+          .popover("destroy")
           .attr("title", value.label_text)
-          .tooltip({ placement: "bottom" })
           .off("click")
           .on("click", () => handleClick(key, value));
+        if (value.upcoming) {
+          btn
+            .popover({
+              html: true,
+              placement: "bottom",
+              trigger: "manual",
+              content: `goes <span class="label">${
+                value.upcoming.state ? "ON" : "OFF"
+              }</span> at ${new Date(
+                value.upcoming.deadline
+              ).toLocaleTimeString()} <button class="btn btn-mini" type="button">Avoid</button>`,
+            })
+            .popover("show");
+        } else {
+          btn.tooltip({ placement: "bottom" });
+        }
       }
     };
   };

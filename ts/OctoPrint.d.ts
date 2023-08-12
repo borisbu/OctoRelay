@@ -11,6 +11,19 @@ interface JQuery {
       | "show"
       | { placement?: "top" | "bottom" | "left" | "right" }
   );
+  popover(
+    option:
+      | "destroy"
+      | "toggle"
+      | "hide"
+      | "show"
+      | {
+          html?: boolean;
+          placement?: "top" | "bottom" | "left" | "right";
+          trigger?: "click" | "hover" | "focus" | "manual";
+          content?: string;
+        }
+  );
 }
 
 interface ViewModel {
