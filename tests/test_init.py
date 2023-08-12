@@ -366,7 +366,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "prerelease_branches": [{
                     "name": "Prerelease",
                     "branch": "develop",
-                    "commitish": [ "develop", "master" ]
+                    # todo restore
+                    "commitish": [ "feat-87-cancel-task", "develop", "master" ]
                 }]
             }
         }
