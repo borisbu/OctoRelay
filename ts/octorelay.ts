@@ -124,7 +124,7 @@ $(() => {
                 value.upcoming.state ? "ON" : "OFF"
               }</span> <time datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">in ${formatDeadline(
                 value.upcoming.deadline
-              )}</time> <button class="btn btn-mini" type="button">Cancel</button>`,
+              )}</time><button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
         } else {
