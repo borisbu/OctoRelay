@@ -120,6 +120,26 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeAttr() 1`] = `
+[
+  [
+    "title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "title",
+  ],
+]
+`;
+
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
 [
   [

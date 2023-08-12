@@ -21,6 +21,7 @@ interface JQuery {
           html?: boolean;
           placement?: "top" | "bottom" | "left" | "right";
           trigger?: "click" | "hover" | "focus" | "manual";
+          title?: string;
           content?: string;
         }
   );

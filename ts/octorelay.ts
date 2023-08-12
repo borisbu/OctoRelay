@@ -88,9 +88,9 @@ $(() => {
         const btn = $("#relais" + key)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
+          .removeAttr("title")
           .tooltip("destroy")
           .popover("destroy")
-          .attr("title", value.label_text)
           .off("click")
           .on("click", () => handleClick(key, value));
         if (value.upcoming) {
@@ -99,6 +99,7 @@ $(() => {
               html: true,
               placement: "bottom",
               trigger: "manual",
+              title: `${value.label_text}<button type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
               content: `goes <span class="label">${
                 value.upcoming.state ? "ON" : "OFF"
               }</span> at ${new Date(
@@ -107,7 +108,7 @@ $(() => {
             })
             .popover("show");
         } else {
-          btn.tooltip({ placement: "bottom" });
+          btn.attr("title", value.label_text).tooltip({ placement: "bottom" });
         }
       }
     };
