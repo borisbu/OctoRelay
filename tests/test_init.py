@@ -601,15 +601,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
         timerMock.mock_reset()
+        remaining_task = Task("r6", False, "PRINTING_STOPPED", 0, Mock(), [])
         self.plugin_instance.tasks = [
             Task("r4", False, "PRINTING_STOPPED", 0, Mock(), []),
-            Task("r6", False, "PRINTING_STOPPED", 0, Mock(), []),
+            remaining_task,
             Task("r4", False, "STARTUP", 0, Mock(), [])
         ]
         self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
-        self.assertEqual(self.plugin_instance.tasks, [
-            Task("r6", False, "PRINTING_STOPPED", 0, Mock(), [])
-        ])
+        self.assertEqual(self.plugin_instance.tasks, [remaining_task])
         timerMock.cancel.assert_called_with()
 
     def test_cancel_tasks__exception(self):
