@@ -103,7 +103,7 @@ $(() => {
                 value.upcoming.state ? "ON" : "OFF"
               }</span> at ${new Date(
                 value.upcoming.deadline
-              ).toLocaleTimeString()} <button class="btn btn-mini" type="button">Avoid</button>`,
+              ).toLocaleTimeString()} <button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
         } else {

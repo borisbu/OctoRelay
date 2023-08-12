@@ -9,7 +9,6 @@ describe("OctoRelayViewModel", () => {
     | "find"
     | "text"
     | "modal"
-    | "css"
     | "tooltip"
     | "popover",
     jest.Mock
@@ -22,7 +21,6 @@ describe("OctoRelayViewModel", () => {
     find: jest.fn(() => elementMock),
     text: jest.fn(() => elementMock),
     modal: jest.fn(() => elementMock),
-    css: jest.fn(() => elementMock),
     tooltip: jest.fn(() => elementMock),
     popover: jest.fn(() => elementMock),
   };
@@ -133,7 +131,6 @@ describe("OctoRelayViewModel", () => {
       test: "I am PLUGIN_OCTORELAY_SWITCH",
     });
     expect(jQueryMock.mock.calls).toMatchSnapshot("$()");
-    expect(elementMock.css.mock.calls).toMatchSnapshot(".css()");
     expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
     expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");
