@@ -84,6 +84,25 @@ $(() => {
           });
         dialog.modal("show");
       };
+      const formatDeadline = (time: number): string => {
+        let unit = "second";
+        let timeLeft = (time - Date.now()) / 1000;
+        if (timeLeft >= 60) {
+          timeLeft /= 60;
+          unit = "minute";
+        }
+        if (timeLeft >= 60) {
+          timeLeft /= 60;
+          unit = "hour";
+        }
+        return new Intl.NumberFormat("en", {
+          style: "unit",
+          unitDisplay: "long",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+          unit,
+        }).format(timeLeft);
+      };
       for (const [key, value] of Object.entries(data)) {
         const btn = $("#relais" + key)
           .toggle(hasPermission && value.active)
@@ -102,9 +121,9 @@ $(() => {
               title: `${value.label_text}<button type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
               content: `goes <span class="label">${
                 value.upcoming.state ? "ON" : "OFF"
-              }</span> at ${new Date(
+              }</span> in ${formatDeadline(
                 value.upcoming.deadline
-              ).toLocaleTimeString()} <button class="btn btn-mini" type="button">Cancel</button>`,
+              )} <button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
         } else {
