@@ -79,8 +79,20 @@
     width: auto;
 }
 
+#navbar_plugin_octorelay .popover .popover-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+#navbar_plugin_octorelay .popover .popover-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
 #navbar_plugin_octorelay .popover-content .btn {
-    margin-top: -1px;
-    margin-left: 8px;
     outline: none;
 }
