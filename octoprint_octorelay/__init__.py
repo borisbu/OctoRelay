@@ -238,7 +238,8 @@ class OctoRelayPlugin(
                 "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
                 "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
                 "upcoming": None if upcoming[index] is None else {
-                    "state": upcoming[index].state,
+                    "state": upcoming[index].target,
+                    "owner": upcoming[index].owner,
                     "deadline": int(upcoming[index].deadline * 1000) # ms for JS
                 }
             }
