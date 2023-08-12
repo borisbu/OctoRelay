@@ -86,18 +86,6 @@ $(() => {
       };
       for (const [key, value] of Object.entries(data)) {
         const btn = $("#relais" + key)
-          .css({
-            display: "flex",
-            float: "left",
-            width: "40px",
-            height: "40px",
-            padding: "unset",
-            cursor: "pointer",
-            "font-size": "1.25rem",
-            "text-decoration": "none",
-            "align-items": "center",
-            "justify-content": "center",
-          })
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
           .tooltip("destroy")
