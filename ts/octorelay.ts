@@ -95,8 +95,8 @@ $(() => {
           })
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
-          .attr("title", value.label_text)
           .tooltip("destroy")
+          .attr("title", value.label_text)
           .tooltip({ placement: "bottom" })
           .off("click")
           .on("click", () => handleClick(key, value));
