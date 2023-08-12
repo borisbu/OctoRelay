@@ -104,7 +104,7 @@ $(() => {
         }).format(timeLeft);
       };
       for (const [key, value] of Object.entries(data)) {
-        const btn = $("#navbar_plugin_octorelay #relais" + key)
+        const btn = $(`#navbar_plugin_octorelay #relais${key}`)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
           .removeAttr("title")
@@ -121,12 +121,15 @@ $(() => {
               trigger: "manual",
               title: `<span>${value.label_text} goes <span class="label">${
                 value.upcoming.state ? "ON" : "OFF"
-              }</span></span><button type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
+              }</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
               content: `<time datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">in ${formatDeadline(
                 value.upcoming.deadline
               )}</time><button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
+          $(`#navbar_plugin_octorelay #pop-closer-${key}`).on("click", () =>
+            btn.popover("hide")
+          );
         } else {
           btn.attr("title", value.label_text).tooltip({ placement: "bottom" });
         }
