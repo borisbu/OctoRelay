@@ -584,13 +584,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         case["delay"], self.plugin_instance.toggle_relay, ["r8", case["state"]]
                     )
                     timerMock.start.assert_called_with()
-                    self.assertEqual(
-                        self.plugin_instance.tasks,
-                        # todo fix assertion
-                        list(map(lambda index, owner=case["event"]: Task(
-                            index, case["state"], owner, case["delay"], Mock(), []
-                        ), RELAY_INDEXES))
-                    )
+                    self.assertEqual(len(self.plugin_instance.tasks), 8)
+                    for index in range(0,8):
+                        self.assertIsInstance(self.plugin_instance.tasks[index], Task)
+                        self.assertEqual(self.plugin_instance.tasks[index].subject, f"r{index + 1}")
+                        self.assertEqual(self.plugin_instance.tasks[index].owner, case["event"])
+                        self.assertEqual(self.plugin_instance.tasks[index].delay, case["delay"])
+                        self.assertEqual(self.plugin_instance.tasks[index].target, case["state"])
             else:
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
