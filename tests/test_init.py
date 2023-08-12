@@ -445,7 +445,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "label_text": "TEST",
                     "active": True,
                     "icon_html": case["expectedIcon"],
-                    "confirm_off": False
+                    "confirm_off": False,
+                    "upcoming": None
                 }
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)

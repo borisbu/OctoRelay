@@ -222,6 +222,7 @@ class OctoRelayPlugin(
 
     def update_ui(self):
         settings = self._settings.get([], merged=True) # expensive
+        upcoming = self.get_upcoming_tasks()
         for index in RELAY_INDEXES:
             relay = Relay(
                 int(settings[index]["relay_pin"] or 0),
@@ -235,7 +236,11 @@ class OctoRelayPlugin(
                 "label_text": settings[index]["label_text"],
                 "active": bool(settings[index]["active"]),
                 "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
-                "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False
+                "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
+                "upcoming": None if upcoming[index] is None else {
+                    "state": upcoming[index].state,
+                    "deadline": int(upcoming[index].deadline * 1000) # ms for JS
+                }
             }
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
