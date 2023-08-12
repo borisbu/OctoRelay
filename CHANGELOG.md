@@ -6,7 +6,7 @@
 
 - Tooltips for control buttons.
 
-![Controls](https://user-images.githubusercontent.com/13189514/260168071-9acaf3bf-0294-49e9-b518-868b17b7d173.png)
+![Controls](https://user-images.githubusercontent.com/13189514/260209663-73146715-5f42-471b-a6cb-a0d82f894b3c.png)
 
 ### 3.5.0
 
