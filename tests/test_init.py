@@ -5,7 +5,7 @@
 
 import unittest
 import sys
-from unittest.mock import Mock, patch
+from unittest.mock import Mock, patch, ANY
 from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
@@ -589,7 +589,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         list(map(lambda index, owner=case["event"]: {
                             "subject": index,
                             "owner": owner,
-                            "timer": timerMock
+                            "timer": timerMock,
+                            "deadline": ANY
                         }, RELAY_INDEXES))
                     )
             else:
