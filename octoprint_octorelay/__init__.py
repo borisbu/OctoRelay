@@ -228,18 +228,16 @@ class OctoRelayPlugin(
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed()
-            # set the icon state
-            self.model[index]["relay_pin"] = relay.pin
-            self.model[index]["inverted_output"] = relay.inverted
-            self.model[index]["relay_state"] = relay_state # bool since v3.1
-            self.model[index]["label_text"] = settings[index]["label_text"]
-            self.model[index]["active"] = bool(settings[index]["active"])
-            if relay_state:
-                self.model[index]["icon_html"] = settings[index]["icon_on"]
-                self.model[index]["confirm_off"] = bool(settings[index]["confirm_off"])
-            else:
-                self.model[index]["icon_html"] = settings[index]["icon_off"]
-                self.model[index]["confirm_off"] = False
+
+            self.model[index] = {
+                "relay_pin": relay.pin,
+                "inverted_output": relay.inverted,
+                "relay_state": relay_state, # bool since v3.1
+                "label_text": settings[index]["label_text"],
+                "active": bool(settings[index]["active"]),
+                "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
+                "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False
+            }
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
