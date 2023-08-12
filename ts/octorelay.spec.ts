@@ -9,18 +9,20 @@ describe("OctoRelayViewModel", () => {
     | "find"
     | "text"
     | "modal"
-    | "css",
+    | "css"
+    | "tooltip",
     jest.Mock
   > = {
-    toggle: jest.fn(),
-    html: jest.fn(),
-    attr: jest.fn(),
+    toggle: jest.fn(() => elementMock),
+    html: jest.fn(() => elementMock),
+    attr: jest.fn(() => elementMock),
     off: jest.fn(() => elementMock),
-    on: jest.fn(),
+    on: jest.fn(() => elementMock),
     find: jest.fn(() => elementMock),
-    text: jest.fn(),
-    modal: jest.fn(),
+    text: jest.fn(() => elementMock),
+    modal: jest.fn(() => elementMock),
     css: jest.fn(() => elementMock),
+    tooltip: jest.fn(() => elementMock),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -128,6 +130,7 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
     expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");
+    expect(elementMock.tooltip.mock.calls).toMatchSnapshot(".tooltip()");
     expect(elementMock.off).toHaveBeenCalledTimes(5);
     expect(elementMock.off).toHaveBeenCalledWith("click");
     expect(elementMock.on).toHaveBeenCalledTimes(5);

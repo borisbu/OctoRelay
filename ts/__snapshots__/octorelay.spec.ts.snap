@@ -206,6 +206,51 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .tooltip() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "placement": "bottom",
+    },
+  ],
+  [
+    "destroy",
+  ],
+  [
+    {
+      "placement": "bottom",
+    },
+  ],
+  [
+    "destroy",
+  ],
+  [
+    {
+      "placement": "bottom",
+    },
+  ],
+  [
+    "destroy",
+  ],
+  [
+    {
+      "placement": "bottom",
+    },
+  ],
+  [
+    "destroy",
+  ],
+  [
+    {
+      "placement": "bottom",
+    },
+  ],
+]
+`;
+
 exports[`OctoRelayViewModel Should push the model into the registry 1`] = `
 {
   "construct": [Function],

@@ -2,6 +2,12 @@
 
 ## Version 3
 
+### 3.6.0
+
+- Tooltips for control buttons.
+
+![Controls](https://user-images.githubusercontent.com/13189514/260209663-73146715-5f42-471b-a6cb-a0d82f894b3c.png)
+
 ### 3.5.0
 
 - A couple more improvements for the UI/UX.
