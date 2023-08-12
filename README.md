@@ -6,7 +6,7 @@
 
 The plugin adds buttons to the navigation bar for toggling GPIO pins on the Raspberry Pi.
 
-![WebUI interface](img/controls.jpg)
+![WebUI interface](img/controls.png)
 
 > _I use it with a 4 relay board, and printed this
 > [case for it](https://www.thingiverse.com/thing:2975944)._
