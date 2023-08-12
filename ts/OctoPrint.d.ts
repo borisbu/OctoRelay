@@ -33,6 +33,7 @@ interface ViewModel {
 }
 
 declare const OCTOPRINT_VIEWMODELS: Array<ViewModel>;
+declare const LOCALE: string;
 
 /** @see https://github.com/OctoPrint/OctoPrint/blob/1.9.0/docs/jsclientlib/base.rst */
 declare const OctoPrint: {

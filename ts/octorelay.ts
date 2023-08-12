@@ -95,7 +95,7 @@ $(() => {
           timeLeft /= 60;
           unit = "hour";
         }
-        return new Intl.NumberFormat("en", {
+        return new Intl.NumberFormat(LOCALE || "en", {
           style: "unit",
           unitDisplay: "long",
           minimumFractionDigits: 0,
@@ -113,6 +113,7 @@ $(() => {
           .off("click")
           .on("click", () => handleClick(key, value));
         if (value.upcoming) {
+          const dateObj = new Date(value.upcoming.deadline);
           btn
             .popover({
               html: true,
@@ -121,9 +122,9 @@ $(() => {
               title: `${value.label_text}<button type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
               content: `goes <span class="label">${
                 value.upcoming.state ? "ON" : "OFF"
-              }</span> in ${formatDeadline(
+              }</span> <time datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">in ${formatDeadline(
                 value.upcoming.deadline
-              )} <button class="btn btn-mini" type="button">Cancel</button>`,
+              )}</time> <button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
         } else {
