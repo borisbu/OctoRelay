@@ -104,7 +104,7 @@ $(() => {
         }).format(timeLeft);
       };
       for (const [key, value] of Object.entries(data)) {
-        const btn = $("#relais" + key)
+        const btn = $("#navbar_plugin_octorelay #relais" + key)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
           .removeAttr("title")
