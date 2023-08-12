@@ -624,45 +624,23 @@ class TestOctoRelayPlugin(unittest.TestCase):
         timerMock.reset_mock()
 
     def test_get_upcoming_tasks(self):
-        self.plugin_instance.tasks = [{
-            "subject": "r4",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock,
-            "deadline": 2000 # should be overridden
-        }, {
-            "subject": "r6",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock,
-            "deadline": 2000 # the only for this relay
-        }, {
-           "subject": "r4",
-           "owner": "PRINTING_STARTED",
-           "timer": timerMock,
-           "deadline": 1000 # closest
-        }, {
-            "subject": "r4",
-            "owner": "STARTUP",
-            "timer": timerMock,
-            "deadline": 300 # past
-        }]
+        remaining_r4 = Task("r4", False, "PRINTING_STARTED", 1000, Mock(), [])
+        remaining_r6 = Task("r6", False, "PRINTING_STOPPED", 2000, Mock(), [])
+        self.plugin_instance.tasks = [
+            Task("r4", False, "PRINTING_STOPPED", 2000, Mock(), []),
+            remaining_r6,
+            remaining_r4,
+            Task("r4", False, "STARTUP", 300, Mock(), [])
+        ]
+        # todo mock timers
         actual = self.plugin_instance.get_upcoming_tasks(500)
         self.assertEqual(actual, {
             "r1": None,
             "r2": None,
             "r3": None,
-            "r4": {
-                 "subject": "r4",
-                 "owner": "PRINTING_STARTED",
-                 "timer": timerMock,
-                 "deadline": 1000
-            },
+            "r4": remaining_r4,
             "r5": None,
-            "r6": {
-                "subject": "r6",
-                "owner": "PRINTING_STOPPED",
-                "timer": timerMock,
-                "deadline": 2000
-            },
+            "r6": remaining_r6,
             "r7": None,
             "r8": None
         })
