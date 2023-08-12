@@ -586,12 +586,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     timerMock.start.assert_called_with()
                     self.assertEqual(
                         self.plugin_instance.tasks,
-                        list(map(lambda index, owner=case["event"]: {
-                            "subject": index,
-                            "owner": owner,
-                            "timer": timerMock,
-                            "deadline": ANY
-                        }, RELAY_INDEXES))
+                        # todo fix assertion
+                        list(map(lambda index, owner=case["event"]: Task(
+                            index, case["state"], owner, case["delay"], Mock(), []
+                        ), RELAY_INDEXES))
                     )
             else:
                 utilMock.ResettableTimer.assert_not_called()
