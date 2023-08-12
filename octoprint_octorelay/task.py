@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from octoprint.util import ResettableTimer
 import time
 
