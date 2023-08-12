@@ -8,7 +8,6 @@ import flask
 
 import octoprint.plugin
 from octoprint.events import Events
-from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
@@ -18,6 +17,7 @@ from .const import (
     STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF
 )
 from .driver import Relay
+from .task import Task
 from .migrations import migrate
 
 # pylint: disable=too-many-ancestors
@@ -37,7 +37,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.tasks = [] # of { subject, owner, timer, deadline }
+        self.tasks = [] # of Task
         self.model = { index: {} for index in RELAY_INDEXES }
 
     def get_settings_version(self):
@@ -159,20 +159,15 @@ class OctoRelayPlugin(
             if bool(settings[index]["active"]):
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
+                    target = bool(target)
                     self.cancel_tasks(index, event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
-                        self.toggle_relay(index, bool(target))
+                        self.toggle_relay(index, target)
                     else:
-                        # https://github.com/OctoPrint/OctoPrint/blob/ed4a264/src/octoprint/util/__init__.py#L1319
-                        timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
-                        self.tasks.append({
-                            "subject": index,
-                            "owner": event,
-                            "timer": timer,
-                            "deadline": time.time() + delay
-                        })
-                        timer.start()
+                        task = Task(index, target, event, delay, self.toggle_relay, [index, target])
+                        self.tasks.append(task)
+                        task.timer.start()
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
@@ -192,14 +187,14 @@ class OctoRelayPlugin(
 
     def cancel_tasks(self, index: str, requestor: str):
         exceptions = CANCELLATION_EXCEPTIONS[requestor] if requestor in CANCELLATION_EXCEPTIONS else []
-        def handler(task):
-            if index == task["subject"] and task["owner"] not in exceptions:
+        def handler(task: Task):
+            if index == task.subject and task.owner not in exceptions:
                 try:
-                    task["timer"].cancel()
-                    self._logger.info(f"cancelled timer {task['owner']} for relay {task['subject']}")
+                    task.timer.cancel()
+                    self._logger.info(f"cancelled timer {task.owner} for relay {task.subject}")
                 except Exception as exception:
                     self._logger.warn(
-                        f"failed to cancel timer {task['owner']} for {task['subject']}, reason: {exception}"
+                        f"failed to cancel timer {task.owner} for {task.subject}, reason: {exception}"
                     )
                 return False # exclude
             return True # include
@@ -212,12 +207,12 @@ class OctoRelayPlugin(
 
     def get_upcoming_tasks(self, now = time.time()):
         future_tasks = filter(
-            lambda task: task["deadline"] > now + PREEMPTIVE_CANCELLATION_CUTOFF,
+            lambda task: task.deadline > now + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
         )
         def reducer(agg, task):
-            index = task["subject"]
-            agg[index] = task if agg[index] is None or task["deadline"] < agg[index]["deadline"] else agg[index]
+            index = task.subject
+            agg[index] = task if agg[index] is None or task.deadline < agg[index].deadline else agg[index]
             return agg
         return reduce( # { r1: task, r2: None, ... }
             reducer,
