@@ -127,9 +127,11 @@ $(() => {
               )}</time><button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
-          $(`#navbar_plugin_octorelay #pop-closer-${key}`).on("click", () =>
-            btn.popover("hide")
-          );
+          const closer = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
+          closer.on("click", () => {
+            closer.off("click");
+            btn.popover("hide");
+          });
         } else {
           btn.attr("title", value.label_text).tooltip({ placement: "bottom" });
         }
