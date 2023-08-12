@@ -623,7 +623,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         )
         timerMock.reset_mock()
 
-    @patch("time.time", Mock(return_value=0))
+    @patch("time.time", Mock(return_value=500))
     def test_get_upcoming_tasks(self):
         remaining_r4 = Task("r4", False, "PRINTING_STARTED", 1000, Mock(), [])
         remaining_r6 = Task("r6", False, "PRINTING_STOPPED", 2000, Mock(), [])
@@ -631,9 +631,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
             Task("r4", False, "PRINTING_STOPPED", 2000, Mock(), []),
             remaining_r6,
             remaining_r4,
-            Task("r4", False, "STARTUP", 300, Mock(), [])
+            Task("r4", False, "STARTUP", -500, Mock(), [])
         ]
-        actual = self.plugin_instance.get_upcoming_tasks(500)
+        actual = self.plugin_instance.get_upcoming_tasks()
         self.assertEqual(actual, {
             "r1": None,
             "r2": None,

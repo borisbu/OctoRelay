@@ -205,9 +205,9 @@ class OctoRelayPlugin(
             self._logger.info(f"OctoRelay runs system command: {cmd}")
             os.system(cmd)
 
-    def get_upcoming_tasks(self, now = time.time()):
+    def get_upcoming_tasks(self):
         future_tasks = filter(
-            lambda task: task.deadline > now + PREEMPTIVE_CANCELLATION_CUTOFF,
+            lambda task: task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
         )
         def reducer(agg, task):
