@@ -612,6 +612,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ])
         timerMock.cancel.assert_called_with()
 
+    def test_cancel_tasks__exception(self):
+        # Should handle a possible exception when cancelling a timer
+        self.plugin_instance.tasks = [
+            Task("r4", False, "PRINTING_STOPPED", 0, Mock(), [])
+        ]
+        timerMock.cancel=Mock( side_effect=Exception("Caught!") )
+        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
+        self.plugin_instance._logger.warn.assert_called_with(
+            "failed to cancel timer PRINTING_STOPPED for r4, reason: Caught!"
+        )
+        timerMock.reset_mock()
+
     def test_get_upcoming_tasks(self):
         self.plugin_instance.tasks = [{
             "subject": "r4",
@@ -655,20 +667,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "r7": None,
             "r8": None
         })
-
-    def test_cancel_tasks__exception(self):
-        # Should handle a possible exception when cancelling a timer
-        self.plugin_instance.tasks = [{
-            "subject": "r4",
-            "owner": "PRINTING_STOPPED",
-            "timer": Mock(
-                cancel=Mock( side_effect=Exception("Caught!") )
-            )
-        }]
-        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
-        self.plugin_instance._logger.warn.assert_called_with(
-            "failed to cancel timer PRINTING_STOPPED for r4, reason: Caught!"
-        )
 
     def test_has_switch_permission(self):
         # Should proxy the permission and handle a possible exception
