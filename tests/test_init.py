@@ -36,7 +36,7 @@ sys.modules["octoprint_octorelay.driver"] = Mock(
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import (
-    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES
+    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES, Task
 )
 
 class TestOctoRelayPlugin(unittest.TestCase):
@@ -601,25 +601,15 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
         timerMock.mock_reset()
-        self.plugin_instance.tasks = [{
-            "subject": "r4",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock
-        }, {
-            "subject": "r6",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock
-        }, {
-            "subject": "r4",
-            "owner": "STARTUP",
-            "timer": timerMock
-        }]
+        self.plugin_instance.tasks = [
+            Task("r4", False, "PRINTING_STOPPED", 0, Mock(), []),
+            Task("r6", False, "PRINTING_STOPPED", 0, Mock(), []),
+            Task("r4", False, "STARTUP", 0, Mock(), [])
+        ]
         self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
-        self.assertEqual(self.plugin_instance.tasks, [{
-            "subject": "r6",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock
-        }])
+        self.assertEqual(self.plugin_instance.tasks, [
+            Task("r6", False, "PRINTING_STOPPED", 0, Mock(), [])
+        ])
         timerMock.cancel.assert_called_with()
 
     def test_get_upcoming_tasks(self):
