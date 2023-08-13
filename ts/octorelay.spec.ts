@@ -12,7 +12,8 @@ describe("OctoRelayViewModel", () => {
     | "text"
     | "modal"
     | "tooltip"
-    | "popover",
+    | "popover"
+    | "closest",
     jest.Mock
   > = {
     toggle: jest.fn(() => elementMock),
@@ -27,6 +28,7 @@ describe("OctoRelayViewModel", () => {
     modal: jest.fn(() => elementMock),
     tooltip: jest.fn(() => elementMock),
     popover: jest.fn(() => elementMock),
+    closest: jest.fn(() => elementMock),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -41,9 +43,14 @@ describe("OctoRelayViewModel", () => {
   const hasPermissionMock = jest.fn();
 
   Object.assign(global, {
+    LOCALE: "en",
     OCTOPRINT_VIEWMODELS: registry,
     OctoPrint: { simpleApiCommand: apiMock },
     $: jQueryMock,
+    document: {
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+    },
   });
   require("./octorelay");
 
