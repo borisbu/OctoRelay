@@ -46,7 +46,7 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    const handleRelayBtnClick = (key: string, value: RelayInfo) => {
+    const toggleRelay = (key: string, value: RelayInfo) => {
       const command = () =>
         OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
       if (!value.confirm_off) {
@@ -124,7 +124,7 @@ $(() => {
           .tooltip("destroy")
           .popover("destroy")
           .off("click")
-          .on("click", () => handleRelayBtnClick(key, value));
+          .on("click", () => toggleRelay(key, value));
         if (value.upcoming) {
           const dateObj = new Date(value.upcoming.deadline);
           relayBtn
@@ -141,12 +141,12 @@ $(() => {
             })
             .popover("show");
           const closeBtn = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
-          const handleCloseClick = () => {
+          const closePopover = () => {
             closeBtn.off("click");
             relayBtn.popover("hide");
           };
-          closeBtn.on("click", handleCloseClick);
-          onClickOutside(closeBtn.closest(".popover"), handleCloseClick);
+          closeBtn.on("click", closePopover);
+          onClickOutside(closeBtn.closest(".popover"), closePopover);
         } else {
           relayBtn
             .attr("title", value.label_text)
