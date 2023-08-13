@@ -1,3 +1,5 @@
+import MockDate from "mockdate";
+
 describe("OctoRelayViewModel", () => {
   const registry: ViewModel[] = [];
   const elementMock: Record<
@@ -54,8 +56,16 @@ describe("OctoRelayViewModel", () => {
   });
   require("./octorelay");
 
+  beforeAll(() => {
+    MockDate.set("2023-08-13T22:30:00");
+  });
+
   afterEach(() => {
     jQueryMock.mockClear();
+  });
+
+  afterAll(() => {
+    MockDate.reset();
   });
 
   test("Should push the model into the registry", () => {

@@ -258,7 +258,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover (15 sec delay)
   ],
   [
     {
-      "content": "<time datetime="2023-08-13T20:27:02.481Z" title="8/13/2023, 10:27:02 PM">in 15 seconds</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "content": "<time datetime="2023-08-13T20:30:15.000Z" title="8/13/2023, 10:30:15 PM">in 15 seconds</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
       "html": true,
       "placement": "bottom",
       "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
@@ -278,7 +278,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover (150 sec delay
   ],
   [
     {
-      "content": "<time datetime="2023-08-13T20:29:17.502Z" title="8/13/2023, 10:29:17 PM">in 3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "content": "<time datetime="2023-08-13T20:32:30.000Z" title="8/13/2023, 10:32:30 PM">in 3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
       "html": true,
       "placement": "bottom",
       "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
@@ -298,7 +298,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover (5000 sec dela
   ],
   [
     {
-      "content": "<time datetime="2023-08-13T21:50:07.503Z" title="8/13/2023, 11:50:07 PM">in 1 hour</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "content": "<time datetime="2023-08-13T21:53:20.000Z" title="8/13/2023, 11:53:20 PM">in 1 hour</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
       "html": true,
       "placement": "bottom",
       "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
