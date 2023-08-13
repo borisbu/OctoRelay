@@ -47,6 +47,10 @@ class OctoRelayPlugin(
     def get_settings_defaults(self):
         return get_default_settings()
 
+    def on_settings_save(self, data):
+        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+        self.update_ui()
+
     def on_settings_migrate(self, target: int, current):
         current = current or 0
         self._logger.info(f"OctoRelay performs the migration of its settings from v{current} to v{target}")
@@ -202,10 +206,6 @@ class OctoRelayPlugin(
         )
         cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
         self.run_system_command(cmd)
-
-    def on_settings_save(self, data):
-        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
-        self.update_ui()
 
     def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
         exceptions = CANCELLATION_EXCEPTIONS.get(initiator) or []
