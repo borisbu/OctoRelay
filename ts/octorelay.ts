@@ -73,6 +73,13 @@ $(() => {
       dialog.modal("show");
     };
 
+    const cancelPostponedTask = (key: string, value: RelayInfo) =>
+      OctoPrint.simpleApiCommand(ownCode, "cancelTask", {
+        subject: key,
+        owner: value.upcoming?.owner,
+        state: value.upcoming?.state,
+      });
+
     const formatDeadline = (time: number): string => {
       let unit = "second";
       let timeLeft = (time - Date.now()) / 1000;
@@ -137,16 +144,18 @@ $(() => {
               }</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
               content: `<time datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">in ${formatDeadline(
                 value.upcoming.deadline
-              )}</time><button class="btn btn-mini" type="button">Cancel</button>`,
+              )}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
           const closeBtn = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
+          const cancelBtn = $(`#navbar_plugin_octorelay #cancel-btn-${key}`);
           const closePopover = () => {
             closeBtn.off("click");
             relayBtn.popover("hide");
           };
           closeBtn.on("click", closePopover);
           onClickOutside(closeBtn.closest(".popover"), closePopover);
+          cancelBtn.on("click", () => cancelPostponedTask(key, value));
         } else {
           relayBtn
             .attr("title", value.label_text)
