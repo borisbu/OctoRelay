@@ -46,6 +46,69 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
+    const handleClick = (key: string, value: RelayInfo) => {
+      const command = () =>
+        OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
+      if (!value.confirm_off) {
+        return command();
+      }
+      const dialog = $("#octorelay-confirmation-dialog");
+      dialog.find(".modal-title").text("Turning " + value.label_text + " off");
+      dialog
+        .find("#octorelay-confirmation-text")
+        .text(
+          "Are you sure you want to turn the " + value.label_text + " off?"
+        );
+      dialog
+        .find(".btn-cancel")
+        .off("click")
+        .on("click", () => dialog.modal("hide"));
+      dialog
+        .find(".btn-confirm")
+        .off("click")
+        .on("click", () => {
+          command();
+          dialog.modal("hide");
+        });
+      dialog.modal("show");
+    };
+
+    const formatDeadline = (time: number): string => {
+      let unit = "second";
+      let timeLeft = (time - Date.now()) / 1000;
+      if (timeLeft >= 60) {
+        timeLeft /= 60;
+        unit = "minute";
+      }
+      if (timeLeft >= 60) {
+        timeLeft /= 60;
+        unit = "hour";
+      }
+      return new Intl.NumberFormat(LOCALE || "en", {
+        style: "unit",
+        unitDisplay: "long",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+        unit,
+      }).format(timeLeft);
+    };
+
+    const onClickOutside = (selector: JQuery, handler: () => void) => {
+      const listener = (event: MouseEvent) => {
+        if (!event.target) {
+          return;
+        }
+        const target = $(event.target);
+        if (!target.closest(selector).length) {
+          if ($(selector).is(":visible")) {
+            handler();
+          }
+          document.removeEventListener("click", listener); // disposer
+        }
+      };
+      document.addEventListener("click", listener);
+    };
+
     self.onDataUpdaterPluginMessage = function (plugin, data) {
       if (plugin !== ownCode) {
         return;
@@ -56,68 +119,6 @@ $(() => {
         permission && self.loginState.hasPermission
           ? self.loginState.hasPermission(permission)
           : false;
-      const handleClick = (key: string, value: RelayInfo) => {
-        const command = () =>
-          OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
-        if (!value.confirm_off) {
-          return command();
-        }
-        const dialog = $("#octorelay-confirmation-dialog");
-        dialog
-          .find(".modal-title")
-          .text("Turning " + value.label_text + " off");
-        dialog
-          .find("#octorelay-confirmation-text")
-          .text(
-            "Are you sure you want to turn the " + value.label_text + " off?"
-          );
-        dialog
-          .find(".btn-cancel")
-          .off("click")
-          .on("click", () => dialog.modal("hide"));
-        dialog
-          .find(".btn-confirm")
-          .off("click")
-          .on("click", () => {
-            command();
-            dialog.modal("hide");
-          });
-        dialog.modal("show");
-      };
-      const formatDeadline = (time: number): string => {
-        let unit = "second";
-        let timeLeft = (time - Date.now()) / 1000;
-        if (timeLeft >= 60) {
-          timeLeft /= 60;
-          unit = "minute";
-        }
-        if (timeLeft >= 60) {
-          timeLeft /= 60;
-          unit = "hour";
-        }
-        return new Intl.NumberFormat(LOCALE || "en", {
-          style: "unit",
-          unitDisplay: "long",
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-          unit,
-        }).format(timeLeft);
-      };
-      const onClickOutside = (selector: JQuery, handler: () => void) => {
-        const listener = (event: MouseEvent) => {
-          if (!event.target) {
-            return;
-          }
-          const target = $(event.target);
-          if (!target.closest(selector).length) {
-            if ($(selector).is(":visible")) {
-              handler();
-            }
-            document.removeEventListener("click", listener); // disposer
-          }
-        };
-        document.addEventListener("click", listener);
-      };
       for (const [key, value] of Object.entries(data)) {
         const btn = $(`#navbar_plugin_octorelay #relais${key}`)
           .toggle(hasPermission && value.active)
