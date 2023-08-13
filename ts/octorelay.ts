@@ -95,10 +95,7 @@ $(() => {
 
     const onClickOutside = (selector: JQuery, handler: () => void) => {
       const listener = (event: MouseEvent) => {
-        if (!event.target) {
-          return;
-        }
-        const target = $(event.target);
+        const target = $(event.target!); // !
         if (!target.closest(selector).length) {
           if ($(selector).is(":visible")) {
             handler();
