@@ -217,11 +217,9 @@ class OctoRelayPlugin(
             if same_subject and not_exception and same_target and same_owner:
                 try:
                     task.timer.cancel()
-                    self._logger.info(f"cancelled timer {task.owner} for relay {task.subject}")
+                    self._logger.info(f"cancelled {task}")
                 except Exception as exception:
-                    self._logger.warn(
-                        f"failed to cancel timer {task.owner} for {task.subject}, reason: {exception}"
-                    )
+                    self._logger.warn(f"failed to cancel {task}, reason: {exception}")
                 return False # exclude
             return True # include
         self.tasks = list(filter(handler, self.tasks))
