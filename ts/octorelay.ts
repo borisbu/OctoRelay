@@ -91,7 +91,7 @@ $(() => {
         timeLeft /= 60;
         unit = "hour";
       }
-      return new Intl.NumberFormat(LOCALE || "en", {
+      return new Intl.NumberFormat(LOCALE, {
         style: "unit",
         unitDisplay: "long",
         minimumFractionDigits: 0,
