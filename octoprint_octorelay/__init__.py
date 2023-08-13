@@ -145,6 +145,7 @@ class OctoRelayPlugin(
                 owner = data.get("owner")
             )
             self.update_ui()
+            return flask.jsonify(status="ok")
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
