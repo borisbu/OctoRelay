@@ -10,7 +10,7 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "lint": "eslint ./",
-    "test": "tsc --noEmit && jest",
+    "test": "tsc --noEmit && TZ=UTC jest",
     "build": "tsc -p ./tsconfig.build.json",
     "stub": "tsc -p ./tsconfig.stub.json"
   },
