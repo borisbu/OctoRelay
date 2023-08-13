@@ -127,9 +127,11 @@ $(() => {
         const relayBtn = $(`#navbar_plugin_octorelay #relais${key}`)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
-          .removeAttr("title")
           .tooltip("destroy")
           .popover("destroy")
+          .removeData("original-title")
+          .removeAttr("data-original-title")
+          .removeAttr("title")
           .off("click")
           .on("click", () => toggleRelay(key, value));
         if (value.upcoming) {
