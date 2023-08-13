@@ -686,41 +686,55 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger.warn.assert_called_with("Failed to check relay switching permission, Caught!")
 
     @patch("flask.jsonify")
+    def test_handle_list_all_command(self, jsonify_mock):
+        # Should response with JSON having states of the active relays
+        cases = [{
+            "closed": False,
+            "expectedJson": [
+                { "id": "r1", "name": "TEST", "active": False },
+                { "id": "r2", "name": "TEST", "active": False },
+                { "id": "r3", "name": "TEST", "active": False },
+                { "id": "r4", "name": "TEST", "active": False },
+                { "id": "r5", "name": "TEST", "active": False },
+                { "id": "r6", "name": "TEST", "active": False },
+                { "id": "r7", "name": "TEST", "active": False },
+                { "id": "r8", "name": "TEST", "active": False }
+            ]
+        }, {
+            "closed": True,
+            "expectedJson": [
+                { "id": "r1", "name": "TEST", "active": True },
+                { "id": "r2", "name": "TEST", "active": True },
+                { "id": "r3", "name": "TEST", "active": True },
+                { "id": "r4", "name": "TEST", "active": True },
+                { "id": "r5", "name": "TEST", "active": True },
+                { "id": "r6", "name": "TEST", "active": True },
+                { "id": "r7", "name": "TEST", "active": True },
+                { "id": "r8", "name": "TEST", "active": True }
+            ]
+        }]
+        for case in cases:
+            relayMock.is_closed = Mock(return_value=case["closed"])
+            relay_settings_mock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": False,
+                "label_text": "TEST",
+                "cmd_on": "CommandOnMock",
+                "cmd_off": "CommandOffMock"
+            }
+            self.plugin_instance._settings.get = Mock(return_value={
+                index: relay_settings_mock for index in RELAY_INDEXES
+            })
+            self.plugin_instance.handle_list_all_command()
+            jsonify_mock.assert_called_with(case["expectedJson"])
+
+    @patch("flask.jsonify")
     @patch("os.system")
     def test_on_api_command(self, system_mock, jsonify_mock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         cases = [
-            {
-                "command": "listAllStatus",
-                "data": None,
-                "closed": False,
-                "expectedJson": [
-                    { "id": "r1", "name": "TEST", "active": False },
-                    { "id": "r2", "name": "TEST", "active": False },
-                    { "id": "r3", "name": "TEST", "active": False },
-                    { "id": "r4", "name": "TEST", "active": False },
-                    { "id": "r5", "name": "TEST", "active": False },
-                    { "id": "r6", "name": "TEST", "active": False },
-                    { "id": "r7", "name": "TEST", "active": False },
-                    { "id": "r8", "name": "TEST", "active": False }
-                ]
-            },
-            {
-                "command": "listAllStatus",
-                "data": None,
-                "closed": True,
-                "expectedJson": [
-                    { "id": "r1", "name": "TEST", "active": True },
-                    { "id": "r2", "name": "TEST", "active": True },
-                    { "id": "r3", "name": "TEST", "active": True },
-                    { "id": "r4", "name": "TEST", "active": True },
-                    { "id": "r5", "name": "TEST", "active": True },
-                    { "id": "r6", "name": "TEST", "active": True },
-                    { "id": "r7", "name": "TEST", "active": True },
-                    { "id": "r8", "name": "TEST", "active": True }
-                ]
-            },
             {
                 "command": "getStatus",
                 "data": { "pin": "r4" },
