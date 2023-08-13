@@ -14,7 +14,8 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF,
+    CANCEL_TASK_COMMAND
 )
 from .driver import Relay
 from .task import Task
@@ -81,6 +82,7 @@ class OctoRelayPlugin(
             UPDATE_COMMAND: [ "pin" ],
             GET_STATUS_COMMAND: [ "pin" ],
             LIST_ALL_COMMAND: [],
+            CANCEL_TASK_COMMAND: [ "subject" ]
         }
 
     def get_additional_permissions(self, *args, **kwargs):
@@ -185,7 +187,7 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, params: dict):
+    def cancel_tasks(self, params: dict): # initiator, subject
         exceptions = CANCELLATION_EXCEPTIONS.get(params.get("initiator")) or []
         def handler(task: Task):
             if params.get("subject") == task.subject and task.owner not in exceptions:

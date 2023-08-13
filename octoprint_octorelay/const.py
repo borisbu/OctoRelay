@@ -271,6 +271,7 @@ ASSETS = {
 UPDATE_COMMAND = "update"
 GET_STATUS_COMMAND = "getStatus"
 LIST_ALL_COMMAND = "listAllStatus"
+CANCEL_TASK_COMMAND = "cancelTask"
 AT_COMMAND = "OCTORELAY"
 
 # see https://docs.octoprint.org/en/master/plugins/hooks.html#octoprint-access-permissions

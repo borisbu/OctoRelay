@@ -343,7 +343,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_api_commands(self):
         # Should return the list of available plugin commands
-        expected = { "update": [ "pin" ], "getStatus": [ "pin" ], "listAllStatus": [] }
+        expected = {
+            "update": [ "pin" ],
+            "getStatus": [ "pin" ],
+            "listAllStatus": [],
+            "cancelTask": [ "subject" ]
+        }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
