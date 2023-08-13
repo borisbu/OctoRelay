@@ -803,8 +803,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
     @patch("flask.abort")
-    def test_on_api_command__exception(self, abort_mock):
-        # Should refuse to update the pin state in case of insufficient permissions
+    def test_handle_update_command__exception(self, abort_mock):
+        # Should refuse to update the relay state in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
             "relay_pin": 17,
@@ -813,7 +813,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
-        self.plugin_instance.on_api_command("update", { "pin": "r4" })
+        self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
 
