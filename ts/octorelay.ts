@@ -46,7 +46,7 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    const handleClick = (key: string, value: RelayInfo) => {
+    const handleRelayBtnClick = (key: string, value: RelayInfo) => {
       const command = () =>
         OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
       if (!value.confirm_off) {
@@ -117,17 +117,17 @@ $(() => {
           ? self.loginState.hasPermission(permission)
           : false;
       for (const [key, value] of Object.entries(data)) {
-        const btn = $(`#navbar_plugin_octorelay #relais${key}`)
+        const relayBtn = $(`#navbar_plugin_octorelay #relais${key}`)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
           .removeAttr("title")
           .tooltip("destroy")
           .popover("destroy")
           .off("click")
-          .on("click", () => handleClick(key, value));
+          .on("click", () => handleRelayBtnClick(key, value));
         if (value.upcoming) {
           const dateObj = new Date(value.upcoming.deadline);
-          btn
+          relayBtn
             .popover({
               html: true,
               placement: "bottom",
@@ -140,15 +140,17 @@ $(() => {
               )}</time><button class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
-          const closer = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
+          const closeBtn = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
           const handleCloseClick = () => {
-            closer.off("click");
-            btn.popover("hide");
+            closeBtn.off("click");
+            relayBtn.popover("hide");
           };
-          closer.on("click", handleCloseClick);
-          onClickOutside(closer.closest(".popover"), handleCloseClick);
+          closeBtn.on("click", handleCloseClick);
+          onClickOutside(closeBtn.closest(".popover"), handleCloseClick);
         } else {
-          btn.attr("title", value.label_text).tooltip({ placement: "bottom" });
+          relayBtn
+            .attr("title", value.label_text)
+            .tooltip({ placement: "bottom" });
         }
       }
     };
