@@ -117,22 +117,23 @@ $(() => {
     const getCountdownDelay = (deadline: number): number =>
       deadline - Date.now() > 120000 ? 60000 : 1000;
 
-    const setCountdown = (selector: JQuery, deadline: number) => {
+    const setCountdown = (selector: JQuery, deadline: number): (() => void) => {
       const delay = getCountdownDelay(deadline);
+      let disposer = () => {};
       const interval = setInterval(() => {
-        const disposer = () => clearInterval(interval);
         const isVisible = selector.is(":visible");
         if (!isVisible) {
-          disposer();
-          return;
+          return disposer();
         }
         selector.text(formatDeadline(deadline));
         const nextDelay = getCountdownDelay(deadline);
         if (nextDelay !== delay) {
           disposer();
-          setCountdown(selector, deadline); // reset with new interval
+          disposer = setCountdown(selector, deadline); // reset with new interval
         }
       }, delay);
+      disposer = () => clearInterval(interval);
+      return disposer;
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
@@ -174,8 +175,12 @@ $(() => {
           const closeBtn = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
           const cancelBtn = $(`#navbar_plugin_octorelay #cancel-btn-${key}`);
           const timeTag = $(`#navbar_plugin_octorelay #time-tag-${key}`);
-          setCountdown(timeTag, value.upcoming.deadline);
+          const countdownDisposer = setCountdown(
+            timeTag,
+            value.upcoming.deadline
+          );
           const closePopover = () => {
+            countdownDisposer();
             closeBtn.off("click");
             relayBtn.popover("hide");
           };
