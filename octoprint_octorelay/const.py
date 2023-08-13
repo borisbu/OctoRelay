@@ -5,6 +5,7 @@ from octoprint.access import ADMIN_GROUP, USER_GROUP
 STARTUP = "STARTUP"
 PRINTING_STARTED = "PRINTING_STARTED"
 PRINTING_STOPPED = "PRINTING_STOPPED"
+USER_ACTION = "USER_ACTION"
 
 # Task cancellation exceptions
 # { eventHappened: [ events which postponed timers should NOT be cancelled ]

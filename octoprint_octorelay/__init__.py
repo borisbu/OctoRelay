@@ -15,7 +15,7 @@ from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
     STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF,
-    CANCEL_TASK_COMMAND
+    CANCEL_TASK_COMMAND, USER_ACTION
 )
 from .driver import Relay
 from .task import Task
@@ -135,6 +135,12 @@ class OctoRelayPlugin(
             self.toggle_relay(index)
             self.update_ui()
             return flask.jsonify(status="ok")
+
+        if command == CANCEL_TASK_COMMAND:
+            self.cancel_tasks({
+                **data, # {subject,target,owner}
+                "initiator": USER_ACTION
+            })
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
@@ -187,7 +193,7 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, params: dict): # initiator, subject
+    def cancel_tasks(self, params: dict): # initiator, subject, todo: target, owner
         exceptions = CANCELLATION_EXCEPTIONS.get(params.get("initiator")) or []
         def handler(task: Task):
             if params.get("subject") == task.subject and task.owner not in exceptions:
