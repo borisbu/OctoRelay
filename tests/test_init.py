@@ -753,29 +753,26 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("flask.jsonify")
     @patch("os.system")
-    def test_on_api_command(self, system_mock, jsonify_mock):
-        # Depending on command should perform different actions and response with JSON
+    def test_handle_update_command(self, system_mock, jsonify_mock):
+        # Should toggle the relay state, execute command and update UI when having permission
         self.plugin_instance.update_ui = Mock()
         cases = [
             {
-                "command": "update",
-                "data": { "pin": "r4" },
+                "index": "r4",
                 "closed": False,
                 "expectedStatus": "ok",
                 "expectedToggle": True,
                 "expectedCommand": "CommandOnMock"
             },
             {
-                "command": "update",
-                "data": { "pin": "r4" },
+                "index": "r4",
                 "closed": True,
                 "expectedStatus": "ok",
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
             {
-                "command": "update",
-                "data": { "pin": "invalid" },
+                "index": "invalid",
                 "closed": True,
                 "expectedStatus": "error",
             }
@@ -794,11 +791,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOffMock"
             }
             self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
-            self.plugin_instance.on_api_command(case["command"], case["data"])
+            self.plugin_instance.handle_update_command(case["index"])
             if case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
-            if "expectedJson" in case:
-                jsonify_mock.assert_called_with(case["expectedJson"])
             if "expectedToggle" in case:
                 relayMock.toggle.assert_called_with(None)
                 self.plugin_instance.update_ui.assert_called_with()
