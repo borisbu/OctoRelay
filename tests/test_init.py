@@ -783,14 +783,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_on": "CommandOnMock",
                 "cmd_off": "CommandOffMock"
             }
-            if case["command"] == "listAllStatus":
-                self.plugin_instance._settings.get = Mock(return_value={
-                    index: relay_settings_mock for index in RELAY_INDEXES
-                })
-            else:
-                self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
+            self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
             self.plugin_instance.on_api_command(case["command"], case["data"])
-            if case["command"] != "listAllStatus" and case["expectedStatus"] != "error":
+            if case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedJson" in case:
                 jsonify_mock.assert_called_with(case["expectedJson"])
