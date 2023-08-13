@@ -141,6 +141,7 @@ class OctoRelayPlugin(
                 **data, # {subject,target,owner}
                 "initiator": USER_ACTION
             })
+            self.update_ui()
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
