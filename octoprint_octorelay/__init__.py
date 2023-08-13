@@ -196,7 +196,9 @@ class OctoRelayPlugin(
     def cancel_tasks(self, params: dict): # initiator, subject, todo: target, owner
         exceptions = CANCELLATION_EXCEPTIONS.get(params.get("initiator")) or []
         def handler(task: Task):
-            if params.get("subject") == task.subject and task.owner not in exceptions:
+            not_exception = task.owner not in exceptions
+            same_subject = params.get("subject") == task.subject
+            if same_subject and not_exception:
                 try:
                     task.timer.cancel()
                     self._logger.info(f"cancelled timer {task.owner} for relay {task.subject}")
