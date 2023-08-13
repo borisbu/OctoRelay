@@ -138,10 +138,12 @@ class OctoRelayPlugin(
 
         # API command to cancel the postponed toggling task
         if command == CANCEL_TASK_COMMAND:
-            self.cancel_tasks({
-                **data, # {subject,target,owner}
-                "initiator": USER_ACTION
-            })
+            self.cancel_tasks(
+                subject = data.get("subject"),
+                initiator = USER_ACTION,
+                target = bool(data.get("target")),
+                owner = data.get("owner")
+            )
             self.update_ui()
         return flask.abort(400) # Unknown command
 
@@ -170,7 +172,7 @@ class OctoRelayPlugin(
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
-                    self.cancel_tasks({ "subject": index, "initiator": event })
+                    self.cancel_tasks(subject = index, initiator = event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
                         self.toggle_relay(index, target)
@@ -202,13 +204,11 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, params: dict): # initiator, subject, target, owner
-        exceptions = CANCELLATION_EXCEPTIONS.get(params.get("initiator")) or []
-        target = params.get("target")
-        owner = params.get("owner")
+    def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
+        exceptions = CANCELLATION_EXCEPTIONS.get(initiator) or []
         def handler(task: Task):
             not_exception = task.owner not in exceptions
-            same_subject = params.get("subject") == task.subject
+            same_subject = subject == task.subject
             same_target = True if target is None else task.target == target
             same_owner = True if owner is None else task.owner == owner
             if same_subject and not_exception and same_target and same_owner:
