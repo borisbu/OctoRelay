@@ -577,7 +577,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
-            self.plugin_instance.cancel_tasks.assert_called_with("r8", case["event"])
+            self.plugin_instance.cancel_tasks.assert_called_with({
+                "subject": "r8",
+                "initiator": case["event"]
+            })
             if case["expectedCall"]:
                 if case["delay"] == 0:
                     self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
@@ -607,7 +610,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             remaining_task,
             Task("r4", False, "STARTUP", 0, Mock(), [])
         ]
-        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
+        self.plugin_instance.cancel_tasks({ "subject": "r4", "initiator": "PRINTING_STARTED" })
         self.assertEqual(self.plugin_instance.tasks, [remaining_task])
         timerMock.cancel.assert_called_with()
 
@@ -617,7 +620,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             Task("r4", False, "PRINTING_STOPPED", 0, Mock(), [])
         ]
         timerMock.cancel=Mock( side_effect=Exception("Caught!") )
-        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
+        self.plugin_instance.cancel_tasks({ "subject": "r4", "initiator": "PRINTING_STARTED" })
         self.plugin_instance._logger.warn.assert_called_with(
             "failed to cancel timer PRINTING_STOPPED for r4, reason: Caught!"
         )

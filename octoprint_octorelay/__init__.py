@@ -160,7 +160,7 @@ class OctoRelayPlugin(
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
-                    self.cancel_tasks(index, event)
+                    self.cancel_tasks({ "subject": index, "initiator": event })
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
                         self.toggle_relay(index, target)
@@ -185,10 +185,10 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, index: str, initiator: str):
-        exceptions = CANCELLATION_EXCEPTIONS[initiator] if initiator in CANCELLATION_EXCEPTIONS else []
+    def cancel_tasks(self, params: dict):
+        exceptions = CANCELLATION_EXCEPTIONS.get(params.get("initiator")) or []
         def handler(task: Task):
-            if index == task.subject and task.owner not in exceptions:
+            if params.get("subject") == task.subject and task.owner not in exceptions:
                 try:
                     task.timer.cancel()
                     self._logger.info(f"cancelled timer {task.owner} for relay {task.subject}")
