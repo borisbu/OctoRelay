@@ -123,19 +123,54 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeAttr() 1`] = `
 [
   [
-    "title",
+    "data-original-title",
   ],
   [
     "title",
   ],
   [
-    "title",
+    "data-original-title",
   ],
   [
     "title",
   ],
   [
+    "data-original-title",
+  ],
+  [
     "title",
+  ],
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeData() 1`] = `
+[
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
   ],
 ]
 `;
