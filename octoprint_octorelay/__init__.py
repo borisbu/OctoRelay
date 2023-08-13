@@ -95,6 +95,8 @@ class OctoRelayPlugin(
             self._logger.warn(f"Failed to check relay switching permission, {exception}")
             return False
 
+    # todo distribute commands into methods
+    # pylint: disable=too-many-return-statements
     def on_api_command(self, command, data):
         self._logger.debug(f"on_api_command {command}, parameters {data}")
 
