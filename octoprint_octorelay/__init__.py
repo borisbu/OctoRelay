@@ -185,8 +185,8 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, index: str, requestor: str):
-        exceptions = CANCELLATION_EXCEPTIONS[requestor] if requestor in CANCELLATION_EXCEPTIONS else []
+    def cancel_tasks(self, index: str, initiator: str):
+        exceptions = CANCELLATION_EXCEPTIONS[initiator] if initiator in CANCELLATION_EXCEPTIONS else []
         def handler(task: Task):
             if index == task.subject and task.owner not in exceptions:
                 try:
