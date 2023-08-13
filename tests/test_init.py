@@ -609,11 +609,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
         timerMock.mock_reset()
-        remaining_task = Task("r6", False, "PRINTING_STOPPED", 0, Mock(), [])
+        remaining_task = Task(
+            subject = "r6",
+            target = False,
+            owner = "PRINTING_STOPPED",
+            delay = 0,
+            function = Mock(),
+            args = []
+        )
         self.plugin_instance.tasks = [
-            Task("r4", False, "PRINTING_STOPPED", 0, Mock(), []),
+            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 0, function = Mock(), args = []),
             remaining_task,
-            Task("r4", False, "STARTUP", 0, Mock(), [])
+            Task(subject = "r4", target = False, owner = "STARTUP", delay = 0, function = Mock(), args = [])
         ]
         self.plugin_instance.cancel_tasks({ "subject": "r4", "initiator": "PRINTING_STARTED" })
         self.assertEqual(self.plugin_instance.tasks, [remaining_task])
@@ -622,7 +629,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_cancel_tasks__exception(self):
         # Should handle a possible exception when cancelling a timer
         self.plugin_instance.tasks = [
-            Task("r4", False, "PRINTING_STOPPED", 0, Mock(), [])
+            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 0, function = Mock(), args = [])
         ]
         timerMock.cancel=Mock( side_effect=Exception("Caught!") )
         self.plugin_instance.cancel_tasks({ "subject": "r4", "initiator": "PRINTING_STARTED" })
@@ -633,13 +640,27 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("time.time", Mock(return_value=500))
     def test_get_upcoming_tasks(self):
-        remaining_r4 = Task("r4", False, "PRINTING_STARTED", 1000, Mock(), [])
-        remaining_r6 = Task("r6", False, "PRINTING_STOPPED", 2000, Mock(), [])
+        remaining_r4 = Task(
+            subject = "r4",
+            target = False,
+            owner = "PRINTING_STARTED",
+            delay = 1000,
+            function = Mock(),
+            args = []
+        )
+        remaining_r6 = Task(
+            subject = "r6",
+            target = False,
+            owner = "PRINTING_STOPPED",
+            delay = 2000,
+            function = Mock(),
+            args = []
+        )
         self.plugin_instance.tasks = [
-            Task("r4", False, "PRINTING_STOPPED", 2000, Mock(), []),
+            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 2000, function = Mock(), args=[]),
             remaining_r6,
             remaining_r4,
-            Task("r4", False, "STARTUP", -500, Mock(), [])
+            Task(subject = "r4", target = False, owner = "STARTUP", delay = -500, function = Mock(), args = [])
         ]
         actual = self.plugin_instance.get_upcoming_tasks()
         self.assertEqual(actual, {
