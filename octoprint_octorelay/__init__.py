@@ -147,7 +147,7 @@ class OctoRelayPlugin(
         if command == UPDATE_COMMAND: # API command to toggle the relay
             return self.handle_update_command(data["pin"])
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
-            return self.handle_cancel_task_command(data.get("subject"), bool(data.get("target")), data.get("owner"))
+            return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
