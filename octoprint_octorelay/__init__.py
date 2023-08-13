@@ -99,59 +99,55 @@ class OctoRelayPlugin(
             self._logger.warn(f"Failed to check relay switching permission, {exception}")
             return False
 
-    # todo distribute commands into methods
-    # pylint: disable=too-many-return-statements
+    def handle_list_all_command(self):
+        active_relays = []
+        settings = self._settings.get([], merged=True) # expensive
+        for index in RELAY_INDEXES:
+            if settings[index]["active"]:
+                relay = Relay(
+                    int(settings[index]["relay_pin"] or 0),
+                    bool(settings[index]["inverted_output"])
+                )
+                active_relays.append({
+                    "id": index,
+                    "name": settings[index]["label_text"],
+                    "active": relay.is_closed(),
+                })
+        return flask.jsonify(active_relays)
+
+    def handle_get_status_command(self, index: str):
+        settings = self._settings.get([index], merged=True) # expensive
+        relay = Relay(
+            int(settings["relay_pin"] or 0),
+            bool(settings["inverted_output"])
+        )
+        return flask.jsonify(status=relay.is_closed())
+
+    def handle_update_command(self, index: str):
+        if not self.has_switch_permission():
+            return flask.abort(403)
+        if index not in RELAY_INDEXES:
+            self._logger.warn(f"Invalid relay index supplied {index}")
+            return flask.jsonify(status="error")
+        self.toggle_relay(index)
+        self.update_ui()
+        return flask.jsonify(status="ok")
+
+    def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
+        self.cancel_tasks(subject = subject, initiator = USER_ACTION, target = target, owner = owner)
+        self.update_ui()
+        return flask.jsonify(status="ok")
+
     def on_api_command(self, command, data):
         self._logger.debug(f"on_api_command {command}, parameters {data}")
-
-        # API command to get relay statuses
-        if command == LIST_ALL_COMMAND:
-            active_relays = []
-            settings = self._settings.get([], merged=True) # expensive
-            for index in RELAY_INDEXES:
-                if settings[index]["active"]:
-                    relay = Relay(
-                        int(settings[index]["relay_pin"] or 0),
-                        bool(settings[index]["inverted_output"])
-                    )
-                    active_relays.append({
-                        "id": index,
-                        "name": settings[index]["label_text"],
-                        "active": relay.is_closed(),
-                    })
-            return flask.jsonify(active_relays)
-
-        # API command to get relay status
-        if command == GET_STATUS_COMMAND:
-            settings = self._settings.get([data["pin"]], merged=True) # expensive
-            relay = Relay(
-                int(settings["relay_pin"] or 0),
-                bool(settings["inverted_output"])
-            )
-            return flask.jsonify(status=relay.is_closed())
-
-        # API command to toggle the relay
-        if command == UPDATE_COMMAND:
-            if not self.has_switch_permission():
-                return flask.abort(403)
-            index = data["pin"]
-            if index not in RELAY_INDEXES:
-                self._logger.warn(f"Invalid relay index supplied {index}")
-                return flask.jsonify(status="error")
-            self.toggle_relay(index)
-            self.update_ui()
-            return flask.jsonify(status="ok")
-
-        # API command to cancel the postponed toggling task
-        if command == CANCEL_TASK_COMMAND:
-            self.cancel_tasks(
-                subject = data.get("subject"),
-                initiator = USER_ACTION,
-                target = bool(data.get("target")),
-                owner = data.get("owner")
-            )
-            self.update_ui()
-            return flask.jsonify(status="ok")
+        if command == LIST_ALL_COMMAND: # API command to get relay statuses
+            return self.handle_list_all_command()
+        if command == GET_STATUS_COMMAND: # API command to get relay status
+            return self.handle_get_status_command(data["pin"])
+        if command == UPDATE_COMMAND: # API command to toggle the relay
+            return self.handle_update_command(data["pin"])
+        if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
+            return self.handle_cancel_task_command(data.get("subject"), bool(data.get("target")), data.get("owner"))
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
