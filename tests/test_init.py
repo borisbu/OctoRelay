@@ -687,7 +687,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("flask.jsonify")
     def test_handle_list_all_command(self, jsonify_mock):
-        # Should response with JSON having states of the active relays
+        # Should respond with JSON having states of the active relays
         cases = [{
             "closed": False,
             "expectedJson": [
@@ -730,23 +730,33 @@ class TestOctoRelayPlugin(unittest.TestCase):
             jsonify_mock.assert_called_with(case["expectedJson"])
 
     @patch("flask.jsonify")
+    def test_handle_get_status_command(self, jsonify_mock):
+        # Should respond with JSON having the requested relay state
+        cases = [
+            { "closed": False, "expectedStatus": False },
+            { "closed": True, "expectedStatus": True }
+        ]
+        for case in cases:
+            relayMock.is_closed = Mock(return_value=case["closed"])
+            relay_settings_mock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": False,
+                "label_text": "TEST",
+                "cmd_on": "CommandOnMock",
+                "cmd_off": "CommandOffMock"
+            }
+            self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
+            self.plugin_instance.handle_get_status_command("r4")
+            self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
+            jsonify_mock.assert_called_with(status=case["expectedStatus"])
+
+    @patch("flask.jsonify")
     @patch("os.system")
     def test_on_api_command(self, system_mock, jsonify_mock):
         # Depending on command should perform different actions and response with JSON
         self.plugin_instance.update_ui = Mock()
         cases = [
-            {
-                "command": "getStatus",
-                "data": { "pin": "r4" },
-                "closed": False,
-                "expectedStatus": False
-            },
-            {
-                "command": "getStatus",
-                "data": { "pin": "r4" },
-                "closed": True,
-                "expectedStatus": True
-            },
             {
                 "command": "update",
                 "data": { "pin": "r4" },
