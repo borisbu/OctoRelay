@@ -134,7 +134,7 @@ $(() => {
           .removeAttr("title")
           .off("click")
           .on("click", () => toggleRelay(key, value));
-        if (value.upcoming) {
+        if (value.upcoming && value.upcoming.target !== value.relay_state) {
           const dateObj = new Date(value.upcoming.deadline);
           relayBtn
             .popover({
