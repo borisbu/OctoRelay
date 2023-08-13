@@ -82,7 +82,7 @@ class OctoRelayPlugin(
             UPDATE_COMMAND: [ "pin" ],
             GET_STATUS_COMMAND: [ "pin" ],
             LIST_ALL_COMMAND: [],
-            CANCEL_TASK_COMMAND: [ "subject" ]
+            CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
 
     def get_additional_permissions(self, *args, **kwargs):

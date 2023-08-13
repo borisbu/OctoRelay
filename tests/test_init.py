@@ -347,7 +347,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "update": [ "pin" ],
             "getStatus": [ "pin" ],
             "listAllStatus": [],
-            "cancelTask": [ "subject" ]
+            "cancelTask": [ "subject", "target", "owner" ]
         }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
