@@ -91,26 +91,48 @@ $(() => {
         timeLeft /= 60;
         unit = "hour";
       }
-      return new Intl.NumberFormat(LOCALE, {
+      const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
         style: "unit",
         unitDisplay: "long",
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
         unit,
       }).format(timeLeft);
+      return `in ${formattedTimeLeft}`;
     };
 
     const onClickOutside = (selector: JQuery, handler: () => void) => {
       const listener = (event: MouseEvent) => {
         const target = $(event.target!); // !
         if (!target.closest(selector).length) {
-          if ($(selector).is(":visible")) {
+          if (selector.is(":visible")) {
             handler();
           }
           document.removeEventListener("click", listener); // disposer
         }
       };
       document.addEventListener("click", listener);
+    };
+
+    const getCountdownDelay = (deadline: number): number =>
+      deadline - Date.now() > 120000 ? 60000 : 1000;
+
+    const setCountdown = (selector: JQuery, deadline: number) => {
+      const delay = getCountdownDelay(deadline);
+      const interval = setInterval(() => {
+        const disposer = () => clearInterval(interval);
+        const isVisible = selector.is(":visible");
+        if (!isVisible) {
+          disposer();
+          return;
+        }
+        selector.text(formatDeadline(deadline));
+        const nextDelay = getCountdownDelay(deadline);
+        if (nextDelay !== delay) {
+          disposer();
+          setCountdown(selector, deadline); // reset with new interval
+        }
+      }, delay);
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
@@ -144,13 +166,15 @@ $(() => {
               title: `<span>${value.label_text} goes <span class="label">${
                 value.upcoming.target ? "ON" : "OFF"
               }</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
-              content: `<time datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">in ${formatDeadline(
+              content: `<time id="time-tag-${key}" datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">${formatDeadline(
                 value.upcoming.deadline
               )}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
           const closeBtn = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
           const cancelBtn = $(`#navbar_plugin_octorelay #cancel-btn-${key}`);
+          const timeTag = $(`#navbar_plugin_octorelay #time-tag-${key}`);
+          setCountdown(timeTag, value.upcoming.deadline);
           const closePopover = () => {
             closeBtn.off("click");
             relayBtn.popover("hide");

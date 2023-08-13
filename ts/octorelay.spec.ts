@@ -15,7 +15,8 @@ describe("OctoRelayViewModel", () => {
     | "modal"
     | "tooltip"
     | "popover"
-    | "closest",
+    | "closest"
+    | "is",
     jest.Mock
   > = {
     toggle: jest.fn(() => elementMock),
@@ -31,6 +32,7 @@ describe("OctoRelayViewModel", () => {
     tooltip: jest.fn(() => elementMock),
     popover: jest.fn(() => elementMock),
     closest: jest.fn(() => elementMock),
+    is: jest.fn(() => true),
   };
   const jQueryMock = jest.fn((subject: string | (() => void)) => {
     if (typeof subject === "function") {
@@ -53,6 +55,7 @@ describe("OctoRelayViewModel", () => {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
     },
+    setInterval: jest.fn(),
   });
   require("./octorelay");
 
