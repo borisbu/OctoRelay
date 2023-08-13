@@ -103,6 +103,21 @@ $(() => {
           unit,
         }).format(timeLeft);
       };
+      const onClickOutside = (selector: JQuery, handler: () => void) => {
+        const listener = (event: MouseEvent) => {
+          if (!event.target) {
+            return;
+          }
+          const target = $(event.target);
+          if (!target.closest(selector).length) {
+            if ($(selector).is(":visible")) {
+              handler();
+            }
+            document.removeEventListener("click", listener); // disposer
+          }
+        };
+        document.addEventListener("click", listener);
+      };
       for (const [key, value] of Object.entries(data)) {
         const btn = $(`#navbar_plugin_octorelay #relais${key}`)
           .toggle(hasPermission && value.active)
@@ -128,10 +143,12 @@ $(() => {
             })
             .popover("show");
           const closer = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
-          closer.on("click", () => {
+          const handleCloseClick = () => {
             closer.off("click");
             btn.popover("hide");
-          });
+          };
+          closer.on("click", handleCloseClick);
+          onClickOutside(closer.closest(".popover"), handleCloseClick);
         } else {
           btn.attr("title", value.label_text).tooltip({ placement: "bottom" });
         }
