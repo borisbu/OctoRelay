@@ -817,6 +817,17 @@ class TestOctoRelayPlugin(unittest.TestCase):
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
 
+    @patch("flask.jsonify")
+    def test_handle_cancel_task_command(self, jsonify_mock):
+        self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.cancel_tasks = Mock()
+        self.plugin_instance.handle_cancel_task_command("r4", True, "STARTUP")
+        self.plugin_instance.cancel_tasks.assert_called_with(
+            subject = "r4", initiator = "USER_ACTION", target = True, owner = "STARTUP"
+        )
+        self.plugin_instance.update_ui.assert_called_with()
+        jsonify_mock.assert_called_with(status="ok")
+
     def test_on_api_command(self):
         self.plugin_instance.handle_list_all_command = Mock(return_value="handle_list_all_command")
         self.plugin_instance.handle_get_status_command = Mock(return_value="handle_get_status_command")
