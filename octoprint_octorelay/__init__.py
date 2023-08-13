@@ -193,12 +193,16 @@ class OctoRelayPlugin(
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
-    def cancel_tasks(self, params: dict): # initiator, subject, todo: target, owner
+    def cancel_tasks(self, params: dict): # initiator, subject, target, owner
         exceptions = CANCELLATION_EXCEPTIONS.get(params.get("initiator")) or []
+        target = params.get("target")
+        owner = params.get("owner")
         def handler(task: Task):
             not_exception = task.owner not in exceptions
             same_subject = params.get("subject") == task.subject
-            if same_subject and not_exception:
+            same_target = True if target is None else task.target == target
+            same_owner = True if owner is None else task.owner == owner
+            if same_subject and not_exception and same_target and same_owner:
                 try:
                     task.timer.cancel()
                     self._logger.info(f"cancelled timer {task.owner} for relay {task.subject}")
