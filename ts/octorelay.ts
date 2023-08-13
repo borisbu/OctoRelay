@@ -9,7 +9,7 @@ interface RelayInfo {
   upcoming: null | {
     deadline: number;
     owner: string;
-    state: boolean;
+    target: boolean;
   };
 }
 
@@ -77,7 +77,7 @@ $(() => {
       OctoPrint.simpleApiCommand(ownCode, "cancelTask", {
         subject: key,
         owner: value.upcoming?.owner,
-        state: value.upcoming?.state,
+        target: value.upcoming?.target,
       });
 
     const formatDeadline = (time: number): string => {
@@ -140,7 +140,7 @@ $(() => {
               placement: "bottom",
               trigger: "manual",
               title: `<span>${value.label_text} goes <span class="label">${
-                value.upcoming.state ? "ON" : "OFF"
+                value.upcoming.target ? "ON" : "OFF"
               }</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
               content: `<time datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">in ${formatDeadline(
                 value.upcoming.deadline
