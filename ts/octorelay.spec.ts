@@ -49,6 +49,8 @@ describe("OctoRelayViewModel", () => {
     () => "mockedInterval"
   );
   const clearIntervalMock = jest.fn();
+  const addEventListenerMock = jest.fn();
+  const removeEventListenerMock = jest.fn();
 
   Object.assign(global, {
     LOCALE: "en",
@@ -56,8 +58,8 @@ describe("OctoRelayViewModel", () => {
     OctoPrint: { simpleApiCommand: apiMock },
     $: jQueryMock,
     document: {
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
+      addEventListener: addEventListenerMock,
+      removeEventListener: removeEventListenerMock,
     },
     setInterval: setIntervalMock,
     clearInterval: clearIntervalMock,
@@ -234,6 +236,35 @@ describe("OctoRelayViewModel", () => {
       expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
     }
   );
+
+  test("Should display upcoming state popover (%s sec delay)", () => {
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    handler("octorelay", {
+      r1: {
+        relay_pin: 16,
+        inverted_output: false,
+        relay_state: true,
+        label_text: "Nozzle Light",
+        active: true,
+        icon_html: "<div>&#128161;</div>",
+        confirm_off: false,
+        upcoming: {
+          target: false,
+          owner: "PRINTING_STOPPED",
+          deadline: Date.now() + 20 * 1000,
+        },
+      },
+    });
+    expect(addEventListenerMock).toHaveBeenCalledWith(
+      "click",
+      expect.any(Function)
+    );
+    const listener = addEventListenerMock.mock.calls[0][1];
+    listener({ target: "targetMock" });
+    expect(elementMock.popover).toHaveBeenCalledWith("hide");
+    expect(removeEventListenerMock).toHaveBeenCalledWith("click", listener);
+  });
 
   test.each([true, false])("Should set countdown %#", (isVisible) => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
