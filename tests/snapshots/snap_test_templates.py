@@ -334,6 +334,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
                 
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
@@ -731,6 +766,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: false, checked: confirm_off"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
                                 />
                                 NO
                             </label>
@@ -1146,6 +1216,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
                 
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
@@ -1543,6 +1648,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: false, checked: confirm_off"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
                                 />
                                 NO
                             </label>
@@ -1958,6 +2098,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
                 
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
@@ -2355,6 +2530,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: false, checked: confirm_off"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
                                 />
                                 NO
                             </label>
@@ -2770,6 +2980,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
                 
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
@@ -3167,6 +3412,41 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <input
                                     type="radio"
                                     data-bind="checkedValue: false, checked: confirm_off"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Alert on switches ahead</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': show_upcoming() === true,
+                                'btn-default': show_upcoming() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: show_upcoming"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': show_upcoming() === false,
+                                'btn-default': show_upcoming() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: show_upcoming"
                                 />
                                 NO
                             </label>
