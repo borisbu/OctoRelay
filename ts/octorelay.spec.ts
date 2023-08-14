@@ -214,32 +214,37 @@ describe("OctoRelayViewModel", () => {
 
   test.each([
     { delay: 15, target: false },
+    { delay: 75, target: false },
     { delay: 150, target: false },
     { delay: 5000, target: false },
     { delay: 15, target: true },
+    { delay: 75, target: true },
     { delay: 150, target: true },
     { delay: 5000, target: true },
-  ])("Should display upcoming state popover %#", ({ delay, target }) => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("octorelay", {
-      r1: {
-        relay_pin: 16,
-        inverted_output: false,
-        relay_state: !target,
-        label_text: "Nozzle Light",
-        active: true,
-        icon_html: "<div>&#128161;</div>",
-        confirm_off: false,
-        upcoming: {
-          target,
-          owner: "PRINTING_STOPPED",
-          deadline: Date.now() + delay * 1000,
+  ])(
+    "Should display upcoming state popover for delay $delay and $target target",
+    ({ delay, target }) => {
+      const handler = (registry[0].construct as OwnModel & OwnProperties)
+        .onDataUpdaterPluginMessage;
+      handler("octorelay", {
+        r1: {
+          relay_pin: 16,
+          inverted_output: false,
+          relay_state: !target,
+          label_text: "Nozzle Light",
+          active: true,
+          icon_html: "<div>&#128161;</div>",
+          confirm_off: false,
+          upcoming: {
+            target,
+            owner: "PRINTING_STOPPED",
+            deadline: Date.now() + delay * 1000,
+          },
         },
-      },
-    });
-    expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
-  });
+      });
+      expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
+    }
+  );
 
   test("Should display upcoming state popover (%s sec delay)", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)

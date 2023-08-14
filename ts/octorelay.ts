@@ -81,7 +81,7 @@ $(() => {
       });
 
     const formatDeadline = (time: number): string => {
-      let unit = "second";
+      let unit: "second" | "minute" | "hour" = "second";
       let timeLeft = (time - Date.now()) / 1000;
       if (timeLeft >= 60) {
         timeLeft /= 60;
@@ -91,11 +91,12 @@ $(() => {
         timeLeft /= 60;
         unit = "hour";
       }
+      const isLastMinute = unit === "minute" && timeLeft < 2;
       const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
         style: "unit",
         unitDisplay: "long",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
+        minimumFractionDigits: isLastMinute ? 1 : 0,
+        maximumFractionDigits: isLastMinute ? 1 : 0,
         unit,
       }).format(timeLeft);
       return `in ${formattedTimeLeft}`;
