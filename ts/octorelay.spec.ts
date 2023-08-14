@@ -65,7 +65,6 @@ describe("OctoRelayViewModel", () => {
   require("./octorelay");
 
   beforeAll(() => {
-    MockDate.set("2023-08-13T22:30:00");
     const [model] = registry;
     const { construct } = model;
     construct.call(construct, [
@@ -75,6 +74,7 @@ describe("OctoRelayViewModel", () => {
   });
 
   afterEach(() => {
+    MockDate.set("2023-08-13T22:30:00");
     jQueryMock.mockClear();
     elementMock.popover.mockClear();
     elementMock.on.mockClear();
@@ -250,16 +250,19 @@ describe("OctoRelayViewModel", () => {
         upcoming: {
           target: false,
           owner: "PRINTING_STOPPED",
-          deadline: Date.now() + 20 * 1000,
+          deadline: Date.now() + 121 * 1000, // right above the edge of delay change
         },
       },
     });
-    expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 1000);
+    expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 60000);
     const intervalFn = setIntervalMock.mock.calls[0][0];
     elementMock.is.mockImplementationOnce(() => isVisible);
+    MockDate.set(Date.now() + 1000); // this will trigger the new delay
     intervalFn();
     if (isVisible) {
-      expect(elementMock.text).toHaveBeenCalledWith("in 20 seconds");
+      expect(elementMock.text).toHaveBeenCalledWith("in 2 minutes");
+      expect(setIntervalMock).toHaveBeenCalledTimes(2); // reset with a new delay
+      expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 1000);
     } else {
       expect(elementMock.text).not.toHaveBeenCalled();
       expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
