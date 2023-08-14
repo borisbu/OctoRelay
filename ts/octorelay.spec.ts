@@ -55,7 +55,8 @@ describe("OctoRelayViewModel", () => {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
     },
-    setInterval: jest.fn(),
+    setInterval: jest.fn(() => "mockedInterval"),
+    clearInterval: jest.fn(),
   });
   require("./octorelay");
 
@@ -282,6 +283,8 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
     const closeHandler = elementMock.on.mock.calls[1][1];
     closeHandler();
+    expect(elementMock.popover).toHaveBeenCalledWith("hide");
+    expect(global.clearInterval).toHaveBeenCalledWith("mockedInterval");
   });
 
   test.each([
