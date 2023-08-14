@@ -698,28 +698,18 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should respond with JSON having states of the active relays
         cases = [{
             "closed": False,
-            "expectedJson": [
-                { "id": "r1", "name": "TEST", "active": False },
-                { "id": "r2", "name": "TEST", "active": False },
-                { "id": "r3", "name": "TEST", "active": False },
-                { "id": "r4", "name": "TEST", "active": False },
-                { "id": "r5", "name": "TEST", "active": False },
-                { "id": "r6", "name": "TEST", "active": False },
-                { "id": "r7", "name": "TEST", "active": False },
-                { "id": "r8", "name": "TEST", "active": False }
-            ]
+            "expectedJson": list(map(lambda index: {
+                "id": index,
+                "name": "TEST",
+                "active": False
+            }, RELAY_INDEXES))
         }, {
             "closed": True,
-            "expectedJson": [
-                { "id": "r1", "name": "TEST", "active": True },
-                { "id": "r2", "name": "TEST", "active": True },
-                { "id": "r3", "name": "TEST", "active": True },
-                { "id": "r4", "name": "TEST", "active": True },
-                { "id": "r5", "name": "TEST", "active": True },
-                { "id": "r6", "name": "TEST", "active": True },
-                { "id": "r7", "name": "TEST", "active": True },
-                { "id": "r8", "name": "TEST", "active": True }
-            ]
+            "expectedJson": list(map(lambda index: {
+                "id": index,
+                "name": "TEST",
+                "active": True
+            }, RELAY_INDEXES))
         }]
         for case in cases:
             relayMock.is_closed = Mock(return_value=case["closed"])
