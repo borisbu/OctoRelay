@@ -181,12 +181,8 @@ class OctoRelayPlugin(
                         self.toggle_relay(index, target)
                     else:
                         task = Task(
-                            subject = index,
-                            target = target,
-                            owner = event,
-                            delay = delay,
-                            function = self.toggle_relay,
-                            args = [index, target]
+                            subject = index, target = target, owner = event, delay = delay,
+                            function = self.toggle_relay, args = [index, target]
                         )
                         self.tasks.append(task)
                         task.timer.start()
