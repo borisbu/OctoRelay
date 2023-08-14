@@ -208,6 +208,7 @@ describe("OctoRelayViewModel", () => {
       const handler = (registry[0].construct as OwnModel & OwnProperties)
         .onDataUpdaterPluginMessage;
       elementMock.popover.mockClear();
+      setIntervalMock.mockClear();
       handler("octorelay", {
         r1: {
           relay_pin: 16,
@@ -225,6 +226,10 @@ describe("OctoRelayViewModel", () => {
         },
       });
       expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
+      expect(setIntervalMock).toHaveBeenCalledWith(
+        expect.any(Function),
+        delay > 120 ? 60000 : 1000
+      );
     }
   );
 
