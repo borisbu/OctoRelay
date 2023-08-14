@@ -45,6 +45,8 @@ describe("OctoRelayViewModel", () => {
     PLUGIN_OCTORELAY_SWITCH: { test: "I am PLUGIN_OCTORELAY_SWITCH" },
   };
   const hasPermissionMock = jest.fn();
+  const setIntervalMock = jest.fn(() => "mockedInterval");
+  const clearIntervalMock = jest.fn();
 
   Object.assign(global, {
     LOCALE: "en",
@@ -55,8 +57,8 @@ describe("OctoRelayViewModel", () => {
       addEventListener: jest.fn(),
       removeEventListener: jest.fn(),
     },
-    setInterval: jest.fn(() => "mockedInterval"),
-    clearInterval: jest.fn(),
+    setInterval: setIntervalMock,
+    clearInterval: clearIntervalMock,
   });
   require("./octorelay");
 
@@ -284,7 +286,7 @@ describe("OctoRelayViewModel", () => {
     const closeHandler = elementMock.on.mock.calls[1][1];
     closeHandler();
     expect(elementMock.popover).toHaveBeenCalledWith("hide");
-    expect(global.clearInterval).toHaveBeenCalledWith("mockedInterval");
+    expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
   });
 
   test.each([
