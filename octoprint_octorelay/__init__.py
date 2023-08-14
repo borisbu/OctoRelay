@@ -200,7 +200,7 @@ class OctoRelayPlugin(
         cmd = settings["cmd_on" if state else "cmd_off"]
         self.run_system_command(cmd)
         if state:
-            self.handle_plugin_event(TURNED_ON)
+            self.handle_plugin_event(TURNED_ON, scope = [index])
 
     def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
         exceptions = CANCELLATION_EXCEPTIONS.get(initiator) or []

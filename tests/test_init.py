@@ -531,7 +531,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with(case["expectedCommand"])
             if case["expectedCommand"] == "CommandON":
-                self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON")
+                self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON", scope = ["r4"])
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
 
@@ -837,7 +837,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
             if "expectedEvent" in case:
-                self.plugin_instance.handle_plugin_event.assert_called_with(case["expectedEvent"])
+                self.plugin_instance.handle_plugin_event.assert_called_with(case["expectedEvent"], scope = ["r4"])
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedStatus" in case:
