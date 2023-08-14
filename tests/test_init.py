@@ -422,6 +422,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         relayMock.is_closed = Mock(return_value=True)
         self.plugin_instance.input_polling()
+        self.assertEqual(relayConstructorMock.call_count, 2)
         relayConstructorMock.assert_any_call(17, False)
         relayConstructorMock.assert_any_call(18, False)
         self.plugin_instance.update_ui.assert_called_with()
