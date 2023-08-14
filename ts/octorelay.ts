@@ -98,7 +98,7 @@ $(() => {
         minimumFractionDigits: isLastMinute ? 1 : 0,
         maximumFractionDigits: isLastMinute ? 1 : 0,
         unit,
-      }).format(timeLeft);
+      }).format(Math.max(0, timeLeft));
       return `in ${formattedTimeLeft}`;
     };
 
