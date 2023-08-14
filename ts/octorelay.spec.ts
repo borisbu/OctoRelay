@@ -74,6 +74,10 @@ describe("OctoRelayViewModel", () => {
 
   afterEach(() => {
     jQueryMock.mockClear();
+    elementMock.popover.mockClear();
+    elementMock.on.mockClear();
+    setIntervalMock.mockClear();
+    apiMock.mockClear();
   });
 
   afterAll(() => {
@@ -207,8 +211,6 @@ describe("OctoRelayViewModel", () => {
     (delay) => {
       const handler = (registry[0].construct as OwnModel & OwnProperties)
         .onDataUpdaterPluginMessage;
-      elementMock.popover.mockClear();
-      setIntervalMock.mockClear();
       handler("octorelay", {
         r1: {
           relay_pin: 16,
@@ -236,9 +238,6 @@ describe("OctoRelayViewModel", () => {
   test("Clicking on Cancel button should send the command", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
-    elementMock.popover.mockClear();
-    elementMock.on.mockClear();
-    apiMock.mockClear();
     handler("octorelay", {
       r1: {
         relay_pin: 16,
@@ -268,9 +267,6 @@ describe("OctoRelayViewModel", () => {
   test("Clicking on Cancel button should send the command", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
-    elementMock.popover.mockClear();
-    elementMock.on.mockClear();
-    apiMock.mockClear();
     handler("octorelay", {
       r1: {
         relay_pin: 16,
