@@ -2,6 +2,18 @@
 
 ## Version 3
 
+### 3.7.0
+
+- Introducing the ability to cancel the upcoming automated switch.
+  - In case of a configured relay switching delay, the corresponding
+    control button will notify about this in a popover.
+  - The popover shows the upcoming state and the countdown.
+  - The popover offers a Cancel button to dismiss the pending task.
+  - This feature is opt-out and can be disabled in the plugin settings.
+- New relay setting: "Alert on switches ahead".
+
+![UI](https://user-images.githubusercontent.com/13189514/260525275-dae7b391-71a1-4624-a235-27aa825996a7.png)
+
 ### 3.6.0
 
 - Tooltips for control buttons.

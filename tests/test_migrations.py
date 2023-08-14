@@ -18,6 +18,7 @@ from octoprint_octorelay.migrations import migrators, migrate, v0, v1, v2
 # avoid keeping other modules automatically imported by this test
 del sys.modules["octoprint_octorelay"]
 del sys.modules["octoprint_octorelay.driver"]
+del sys.modules["octoprint_octorelay.task"]
 
 class TestMigrations(unittest.TestCase):
     def test_migrators__quantity(self):

@@ -20,6 +20,7 @@ describe("Knockout bindings", () => {
     "cmd_{{state}}", // on/off added programmatically
     "icon_{{state}}", // on/off added programmatically
     "confirm_off",
+    "show_upcoming",
     "state",
     "delay",
   ];

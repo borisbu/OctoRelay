@@ -36,7 +36,7 @@ sys.modules["octoprint_octorelay.driver"] = Mock(
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import (
-    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES
+    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES, Task
 )
 
 class TestOctoRelayPlugin(unittest.TestCase):
@@ -76,6 +76,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "Light",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -104,6 +105,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Printer",
                 "confirm_off": True,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -132,6 +134,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Fan",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -160,6 +163,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Webcam",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": True,
@@ -185,6 +189,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "OFF",
                 "label_text": "R5",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -210,6 +215,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R6",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -235,6 +241,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R7",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -260,6 +267,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R8",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -343,7 +351,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_api_commands(self):
         # Should return the list of available plugin commands
-        expected = { "update": [ "pin" ], "getStatus": [ "pin" ], "listAllStatus": [] }
+        expected = {
+            "update": [ "pin" ],
+            "getStatus": [ "pin" ],
+            "listAllStatus": [],
+            "cancelTask": [ "subject", "target", "owner" ]
+        }
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
@@ -445,7 +458,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "label_text": "TEST",
                     "active": True,
                     "icon_html": case["expectedIcon"],
-                    "confirm_off": False
+                    "confirm_off": False,
+                    "upcoming": None
                 }
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)
@@ -575,7 +589,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
-            self.plugin_instance.cancel_tasks.assert_called_with("r8", case["event"])
+            self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
             if case["expectedCall"]:
                 if case["delay"] == 0:
                     self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
@@ -584,14 +598,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         case["delay"], self.plugin_instance.toggle_relay, ["r8", case["state"]]
                     )
                     timerMock.start.assert_called_with()
-                    self.assertEqual(
-                        self.plugin_instance.tasks,
-                        list(map(lambda index, owner=case["event"]: {
-                            "subject": index,
-                            "owner": owner,
-                            "timer": timerMock
-                        }, RELAY_INDEXES))
-                    )
+                    self.assertEqual(len(self.plugin_instance.tasks), 8)
+                    for index in range(0,8):
+                        self.assertIsInstance(self.plugin_instance.tasks[index], Task)
+                        self.assertEqual(self.plugin_instance.tasks[index].subject, f"r{index + 1}")
+                        self.assertEqual(self.plugin_instance.tasks[index].owner, case["event"])
+                        self.assertEqual(self.plugin_instance.tasks[index].delay, case["delay"])
+                        self.assertEqual(self.plugin_instance.tasks[index].target, case["state"])
             else:
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
@@ -600,40 +613,70 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
         timerMock.mock_reset()
-        self.plugin_instance.tasks = [{
-            "subject": "r4",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock
-        }, {
-            "subject": "r6",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock
-        }, {
-            "subject": "r4",
-            "owner": "STARTUP",
-            "timer": timerMock
-        }]
-        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
-        self.assertEqual(self.plugin_instance.tasks, [{
-            "subject": "r6",
-            "owner": "PRINTING_STOPPED",
-            "timer": timerMock
-        }])
+        remaining_task = Task(
+            subject = "r6",
+            target = False,
+            owner = "PRINTING_STOPPED",
+            delay = 0,
+            function = Mock(),
+            args = []
+        )
+        self.plugin_instance.tasks = [
+            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 0, function = Mock(), args = []),
+            remaining_task,
+            Task(subject = "r4", target = False, owner = "STARTUP", delay = 0, function = Mock(), args = [])
+        ]
+        self.plugin_instance.cancel_tasks(subject = "r4", initiator = "PRINTING_STARTED")
+        self.assertEqual(self.plugin_instance.tasks, [remaining_task])
         timerMock.cancel.assert_called_with()
 
     def test_cancel_tasks__exception(self):
         # Should handle a possible exception when cancelling a timer
-        self.plugin_instance.tasks = [{
-            "subject": "r4",
-            "owner": "PRINTING_STOPPED",
-            "timer": Mock(
-                cancel=Mock( side_effect=Exception("Caught!") )
-            )
-        }]
-        self.plugin_instance.cancel_tasks("r4", "PRINTING_STARTED")
+        self.plugin_instance.tasks = [
+            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 0, function = Mock(), args = [])
+        ]
+        timerMock.cancel=Mock( side_effect=Exception("Caught!") )
+        self.plugin_instance.cancel_tasks(subject = "r4", initiator = "PRINTING_STARTED")
         self.plugin_instance._logger.warn.assert_called_with(
-            "failed to cancel timer PRINTING_STOPPED for r4, reason: Caught!"
+            "failed to cancel Task(r4,False,PRINTING_STOPPED,0), reason: Caught!"
         )
+        timerMock.reset_mock()
+
+    @patch("time.time", Mock(return_value=500))
+    def test_get_upcoming_tasks(self):
+        remaining_r4 = Task(
+            subject = "r4",
+            target = False,
+            owner = "PRINTING_STARTED",
+            delay = 1000,
+            function = Mock(),
+            args = []
+        )
+        remaining_r6 = Task(
+            subject = "r6",
+            target = False,
+            owner = "PRINTING_STOPPED",
+            delay = 2000,
+            function = Mock(),
+            args = []
+        )
+        self.plugin_instance.tasks = [
+            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 2000, function = Mock(), args=[]),
+            remaining_r6,
+            remaining_r4,
+            Task(subject = "r4", target = False, owner = "STARTUP", delay = -500, function = Mock(), args = [])
+        ]
+        actual = self.plugin_instance.get_upcoming_tasks(["r4", "r5", "r6"])
+        self.assertEqual(actual, {
+            "r1": None,
+            "r2": None,
+            "r3": None,
+            "r4": remaining_r4,
+            "r5": None,
+            "r6": remaining_r6,
+            "r7": None,
+            "r8": None
+        })
 
     def test_has_switch_permission(self):
         # Should proxy the permission and handle a possible exception
@@ -650,72 +693,83 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger.warn.assert_called_with("Failed to check relay switching permission, Caught!")
 
     @patch("flask.jsonify")
+    def test_handle_list_all_command(self, jsonify_mock):
+        # Should respond with JSON having states of the active relays
+        cases = [{
+            "closed": False,
+            "expectedJson": list(map(lambda index: {
+                "id": index,
+                "name": "TEST",
+                "active": False
+            }, RELAY_INDEXES))
+        }, {
+            "closed": True,
+            "expectedJson": list(map(lambda index: {
+                "id": index,
+                "name": "TEST",
+                "active": True
+            }, RELAY_INDEXES))
+        }]
+        for case in cases:
+            relayMock.is_closed = Mock(return_value=case["closed"])
+            relay_settings_mock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": False,
+                "label_text": "TEST",
+                "cmd_on": "CommandOnMock",
+                "cmd_off": "CommandOffMock"
+            }
+            self.plugin_instance._settings.get = Mock(return_value={
+                index: relay_settings_mock for index in RELAY_INDEXES
+            })
+            self.plugin_instance.handle_list_all_command()
+            jsonify_mock.assert_called_with(case["expectedJson"])
+
+    @patch("flask.jsonify")
+    def test_handle_get_status_command(self, jsonify_mock):
+        # Should respond with JSON having the requested relay state
+        cases = [
+            { "closed": False, "expectedStatus": False },
+            { "closed": True, "expectedStatus": True }
+        ]
+        for case in cases:
+            relayMock.is_closed = Mock(return_value=case["closed"])
+            relay_settings_mock = {
+                "active": True,
+                "relay_pin": 17,
+                "inverted_output": False,
+                "label_text": "TEST",
+                "cmd_on": "CommandOnMock",
+                "cmd_off": "CommandOffMock"
+            }
+            self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
+            self.plugin_instance.handle_get_status_command("r4")
+            self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
+            jsonify_mock.assert_called_with(status=case["expectedStatus"])
+
+    @patch("flask.jsonify")
     @patch("os.system")
-    def test_on_api_command(self, system_mock, jsonify_mock):
-        # Depending on command should perform different actions and response with JSON
+    def test_handle_update_command(self, system_mock, jsonify_mock):
+        # Should toggle the relay state, execute command and update UI when having permission
         self.plugin_instance.update_ui = Mock()
         cases = [
             {
-                "command": "listAllStatus",
-                "data": None,
-                "closed": False,
-                "expectedJson": [
-                    { "id": "r1", "name": "TEST", "active": False },
-                    { "id": "r2", "name": "TEST", "active": False },
-                    { "id": "r3", "name": "TEST", "active": False },
-                    { "id": "r4", "name": "TEST", "active": False },
-                    { "id": "r5", "name": "TEST", "active": False },
-                    { "id": "r6", "name": "TEST", "active": False },
-                    { "id": "r7", "name": "TEST", "active": False },
-                    { "id": "r8", "name": "TEST", "active": False }
-                ]
-            },
-            {
-                "command": "listAllStatus",
-                "data": None,
-                "closed": True,
-                "expectedJson": [
-                    { "id": "r1", "name": "TEST", "active": True },
-                    { "id": "r2", "name": "TEST", "active": True },
-                    { "id": "r3", "name": "TEST", "active": True },
-                    { "id": "r4", "name": "TEST", "active": True },
-                    { "id": "r5", "name": "TEST", "active": True },
-                    { "id": "r6", "name": "TEST", "active": True },
-                    { "id": "r7", "name": "TEST", "active": True },
-                    { "id": "r8", "name": "TEST", "active": True }
-                ]
-            },
-            {
-                "command": "getStatus",
-                "data": { "pin": "r4" },
-                "closed": False,
-                "expectedStatus": False
-            },
-            {
-                "command": "getStatus",
-                "data": { "pin": "r4" },
-                "closed": True,
-                "expectedStatus": True
-            },
-            {
-                "command": "update",
-                "data": { "pin": "r4" },
+                "index": "r4",
                 "closed": False,
                 "expectedStatus": "ok",
                 "expectedToggle": True,
                 "expectedCommand": "CommandOnMock"
             },
             {
-                "command": "update",
-                "data": { "pin": "r4" },
+                "index": "r4",
                 "closed": True,
                 "expectedStatus": "ok",
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
             {
-                "command": "update",
-                "data": { "pin": "invalid" },
+                "index": "invalid",
                 "closed": True,
                 "expectedStatus": "error",
             }
@@ -733,17 +787,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_on": "CommandOnMock",
                 "cmd_off": "CommandOffMock"
             }
-            if case["command"] == "listAllStatus":
-                self.plugin_instance._settings.get = Mock(return_value={
-                    index: relay_settings_mock for index in RELAY_INDEXES
-                })
-            else:
-                self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
-            self.plugin_instance.on_api_command(case["command"], case["data"])
-            if case["command"] != "listAllStatus" and case["expectedStatus"] != "error":
+            self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
+            self.plugin_instance.handle_update_command(case["index"])
+            if case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
-            if "expectedJson" in case:
-                jsonify_mock.assert_called_with(case["expectedJson"])
             if "expectedToggle" in case:
                 relayMock.toggle.assert_called_with(None)
                 self.plugin_instance.update_ui.assert_called_with()
@@ -753,8 +800,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
     @patch("flask.abort")
-    def test_on_api_command__exception(self, abort_mock):
-        # Should refuse to update the pin state in case of insufficient permissions
+    def test_handle_update_command__exception(self, abort_mock):
+        # Should refuse to update the relay state in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
             "relay_pin": 17,
@@ -763,9 +810,53 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
-        self.plugin_instance.on_api_command("update", { "pin": "r4" })
+        self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
+
+    @patch("flask.jsonify")
+    def test_handle_cancel_task_command(self, jsonify_mock):
+        self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.cancel_tasks = Mock()
+        self.plugin_instance.handle_cancel_task_command("r4", True, "STARTUP")
+        self.plugin_instance.cancel_tasks.assert_called_with("r4", "USER_ACTION", True, "STARTUP")
+        self.plugin_instance.update_ui.assert_called_with()
+        jsonify_mock.assert_called_with(status="ok")
+
+    def test_on_api_command(self):
+        self.plugin_instance.handle_list_all_command = Mock()
+        self.plugin_instance.handle_get_status_command = Mock()
+        self.plugin_instance.handle_update_command = Mock()
+        self.plugin_instance.handle_cancel_task_command = Mock()
+        cases = [
+            {
+                "command": "listAllStatus",
+                "data": {},
+                "expectedCall": self.plugin_instance.handle_list_all_command,
+                "expectedParams": []
+            },
+            {
+                "command": "getStatus",
+                "data": { "pin": "r4" },
+                "expectedCall": self.plugin_instance.handle_get_status_command,
+                "expectedParams": ["r4"]
+            },
+            {
+                "command": "update",
+                "data": { "pin": "r4" },
+                "expectedCall": self.plugin_instance.handle_update_command,
+                "expectedParams": ["r4"]
+            },
+            {
+                "command": "cancelTask",
+                "data": { "subject": "r4", "owner": "STARTUP", "target": True },
+                "expectedCall": self.plugin_instance.handle_cancel_task_command,
+                "expectedParams": [ "r4", True, "STARTUP" ]
+            }
+        ]
+        for case in cases:
+            self.plugin_instance.on_api_command(case["command"], case["data"])
+            case["expectedCall"].assert_called_with(*case["expectedParams"])
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
