@@ -61,6 +61,12 @@ describe("OctoRelayViewModel", () => {
 
   beforeAll(() => {
     MockDate.set("2023-08-13T22:30:00");
+    const [model] = registry;
+    const { construct } = model;
+    construct.call(construct, [
+      { access: { permissions: permissionsMock } },
+      { hasPermission: hasPermissionMock },
+    ]);
   });
 
   afterEach(() => {
@@ -78,14 +84,8 @@ describe("OctoRelayViewModel", () => {
   });
 
   test("Constructor should set its certain properties", () => {
-    const [model] = registry;
-    const { construct } = model;
-    expect(Object.keys(construct)).toEqual([]);
-    construct.call(construct, [
-      { access: { permissions: permissionsMock } },
-      { hasPermission: hasPermissionMock },
-    ]);
-    expect({ ...construct }).toMatchSnapshot();
+    // constructor is called in beforeAll()
+    expect({ ...registry[0].construct }).toMatchSnapshot();
   });
 
   test("Message handler should ignore other recipients", () => {
@@ -255,6 +255,33 @@ describe("OctoRelayViewModel", () => {
       subject: "r1",
       target: false,
     });
+  });
+
+  test("Clicking on Cancel button should send the command", () => {
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    elementMock.popover.mockClear();
+    elementMock.on.mockClear();
+    apiMock.mockClear();
+    handler("octorelay", {
+      r1: {
+        relay_pin: 16,
+        inverted_output: false,
+        relay_state: true,
+        label_text: "Nozzle Light",
+        active: true,
+        icon_html: "<div>&#128161;</div>",
+        confirm_off: false,
+        upcoming: {
+          target: false,
+          owner: "PRINTING_STOPPED",
+          deadline: Date.now() + 150 * 1000,
+        },
+      },
+    });
+    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
+    const closeHandler = elementMock.on.mock.calls[1][1];
+    closeHandler();
   });
 
   test.each([
