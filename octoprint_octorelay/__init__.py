@@ -134,7 +134,7 @@ class OctoRelayPlugin(
         return flask.jsonify(status="ok")
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
-        self.cancel_tasks(subject = subject, initiator = USER_ACTION, target = target, owner = owner)
+        self.cancel_tasks(subject, USER_ACTION, target, owner)
         self.update_ui()
         return flask.jsonify(status="ok")
 

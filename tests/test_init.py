@@ -830,9 +830,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.cancel_tasks = Mock()
         self.plugin_instance.handle_cancel_task_command("r4", True, "STARTUP")
-        self.plugin_instance.cancel_tasks.assert_called_with(
-            subject = "r4", initiator = "USER_ACTION", target = True, owner = "STARTUP"
-        )
+        self.plugin_instance.cancel_tasks.assert_called_with("r4", "USER_ACTION", True, "STARTUP")
         self.plugin_instance.update_ui.assert_called_with()
         jsonify_mock.assert_called_with(status="ok")
 
