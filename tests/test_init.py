@@ -415,7 +415,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_input_polling(self):
         # First active relay having state not equal to the one stored in model should trigger UI update
         self.plugin_instance.update_ui = Mock()
-        relayConstructorMock.mock_reset()
+        relayConstructorMock.reset_mock()
         self.plugin_instance.model = {
             "r1": { "active": False, "relay_pin": 4, "inverted_output": False, "relay_state": True },
             "r2": { "active": True, "relay_pin": 17, "inverted_output": False, "relay_state": True },
@@ -613,7 +613,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
-        timerMock.mock_reset()
+        timerMock.reset_mock()
         remaining_task = Task(
             subject = "r6",
             target = False,
@@ -776,7 +776,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
         ]
         for case in cases:
-            self.plugin_instance.update_ui.mock_reset()
+            self.plugin_instance.update_ui.reset_mock()
             relayMock.is_closed = Mock(return_value=case["closed"])
             relayMock.toggle = Mock(return_value=not case["closed"])
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
