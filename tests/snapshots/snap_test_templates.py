@@ -532,6 +532,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
 
                 
                 <div class="control-group">
@@ -925,6 +978,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -1420,6 +1526,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
 
                 
                 <div class="control-group">
@@ -1813,6 +1972,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -2308,6 +2520,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
 
                 
                 <div class="control-group">
@@ -2701,6 +2966,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -3196,6 +3514,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
 
                 
                 <div class="control-group">
@@ -3589,6 +3960,59 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-success': state() === true,
+                                'btn-default': state() !== true
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true, checked: state"
+                                />
+                                ON
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': state() === null,
+                                'btn-default': state() !== null
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: null, checked: state"
+                                />
+                                skip
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-danger': state() === false,
+                                'btn-default': state() !== false
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false, checked: state"
+                                />
+                                OFF
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
+                        <div class="input-prepend input-append" data-bind="hidden: state() === null">
+                            <span class="add-on">delay</span>
+                            <input type="number" min="0" max="86400" class="input-mini" data-bind="value: delay">
+                            <span class="add-on">s</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="using: rules.TURNED_ON">
+                    <label class="control-label">after Turned ON</label>
                     <div class="controls">
                         <div class="btn-group">
                             
