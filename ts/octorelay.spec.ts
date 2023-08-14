@@ -225,6 +225,38 @@ describe("OctoRelayViewModel", () => {
     }
   );
 
+  test("Clicking on Cancel button should send the command", () => {
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    elementMock.popover.mockClear();
+    elementMock.on.mockClear();
+    apiMock.mockClear();
+    handler("octorelay", {
+      r1: {
+        relay_pin: 16,
+        inverted_output: false,
+        relay_state: true,
+        label_text: "Nozzle Light",
+        active: true,
+        icon_html: "<div>&#128161;</div>",
+        confirm_off: false,
+        upcoming: {
+          target: false,
+          owner: "PRINTING_STOPPED",
+          deadline: Date.now() + 150 * 1000,
+        },
+      },
+    });
+    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
+    const cancelHandler = elementMock.on.mock.calls[2][1];
+    cancelHandler();
+    expect(apiMock).toHaveBeenCalledWith("octorelay", "cancelTask", {
+      owner: "PRINTING_STOPPED",
+      subject: "r1",
+      target: false,
+    });
+  });
+
   test.each([
     {
       hasPermission: false,
