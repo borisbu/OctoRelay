@@ -515,6 +515,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "target": None, "inverted": True, "expectedCommand": "CommandON" }
         ]
         for case in cases:
+            self.plugin_instance.handle_plugin_event = Mock()
             relayMock.toggle = Mock(
                 return_value=case["inverted"] if case["target"] is None else case["target"]
             )
@@ -529,6 +530,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayConstructorMock.assert_called_with(17, case["inverted"])
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with(case["expectedCommand"])
+            if case["expectedCommand"] == "CommandON":
+                self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON")
+            else:
+                self.plugin_instance.handle_plugin_event.assert_not_called()
 
     @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
