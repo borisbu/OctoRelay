@@ -21,19 +21,7 @@ exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = 
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: $() 1`] = `
 [
   [
-    "#navbar_plugin_octorelay #relaisr1",
-  ],
-  [
-    "#navbar_plugin_octorelay #relaisr2",
-  ],
-  [
-    "#navbar_plugin_octorelay #relaisr3",
-  ],
-  [
-    "#navbar_plugin_octorelay #relaisr4",
-  ],
-  [
-    "#navbar_plugin_octorelay #relaisr5",
+    "#navbar_plugin_octorelay",
   ],
 ]
 `;
@@ -65,6 +53,21 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
 [
+  [
+    "#relaisr1",
+  ],
+  [
+    "#relaisr2",
+  ],
+  [
+    "#relaisr3",
+  ],
+  [
+    "#relaisr4",
+  ],
+  [
+    "#relaisr5",
+  ],
   [
     ".modal-title",
   ],

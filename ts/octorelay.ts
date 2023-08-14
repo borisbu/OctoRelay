@@ -147,8 +147,10 @@ $(() => {
         permission && self.loginState.hasPermission
           ? self.loginState.hasPermission(permission)
           : false;
+      const navbar = $(`#navbar_plugin_${ownCode}`);
       for (const [key, value] of Object.entries(data)) {
-        const relayBtn = $(`#navbar_plugin_octorelay #relais${key}`)
+        const relayBtn = navbar
+          .find(`#relais${key}`)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
           .tooltip("destroy")
@@ -173,9 +175,9 @@ $(() => {
               )}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
             })
             .popover("show");
-          const closeBtn = $(`#navbar_plugin_octorelay #pop-closer-${key}`);
-          const cancelBtn = $(`#navbar_plugin_octorelay #cancel-btn-${key}`);
-          const timeTag = $(`#navbar_plugin_octorelay #time-tag-${key}`);
+          const closeBtn = navbar.find(`#pop-closer-${key}`);
+          const cancelBtn = navbar.find(`#cancel-btn-${key}`);
+          const timeTag = navbar.find(`#time-tag-${key}`);
           const countdownDisposer = setCountdown(
             timeTag,
             value.upcoming.deadline
