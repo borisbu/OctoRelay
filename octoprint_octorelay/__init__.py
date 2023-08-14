@@ -225,9 +225,9 @@ class OctoRelayPlugin(
             self._logger.info(f"OctoRelay runs system command: {cmd}")
             os.system(cmd)
 
-    def get_upcoming_tasks(self):
+    def get_upcoming_tasks(self, subjects):
         future_tasks = filter(
-            lambda task: task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
+            lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
         )
         def reducer(agg, task):
@@ -242,7 +242,10 @@ class OctoRelayPlugin(
 
     def update_ui(self):
         settings = self._settings.get([], merged=True) # expensive
-        upcoming = self.get_upcoming_tasks()
+        upcoming = self.get_upcoming_tasks(filter(
+            lambda index: settings[index]["show_upcoming"],
+            RELAY_INDEXES
+        ))
         for index in RELAY_INDEXES:
             relay = Relay(
                 int(settings[index]["relay_pin"] or 0),

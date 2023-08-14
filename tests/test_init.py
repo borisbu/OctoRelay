@@ -667,7 +667,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             remaining_r4,
             Task(subject = "r4", target = False, owner = "STARTUP", delay = -500, function = Mock(), args = [])
         ]
-        actual = self.plugin_instance.get_upcoming_tasks()
+        actual = self.plugin_instance.get_upcoming_tasks(["r4", "r5", "r6"])
         self.assertEqual(actual, {
             "r1": None,
             "r2": None,
