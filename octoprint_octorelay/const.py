@@ -6,16 +6,19 @@ STARTUP = "STARTUP"
 PRINTING_STARTED = "PRINTING_STARTED"
 PRINTING_STOPPED = "PRINTING_STOPPED"
 TURNED_ON = "TURNED_ON"
+USER_ACTION = "USER_ACTION"
 
 # Task cancellation exceptions
 # { eventHappened: [ events which postponed timers should NOT be cancelled ]
 CANCELLATION_EXCEPTIONS = {}
+# min seconds before the task can be cancelled
+PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
 # Versioning of the plugin's default settings described below
 SETTINGS_VERSION = 3
 
 # Plugin's default settings, immutable getter
-# Warning: every change to these settings requires:
+# Warning: every amendment or deletion of these settings requires:
 # - to increase the SETTINGS_VERSION above
 # - and migration to preserve user's previous configuration intact
 def get_default_settings():
@@ -30,6 +33,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "Light",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -62,6 +66,7 @@ def get_default_settings():
             ),
             "label_text": "Printer",
             "confirm_off": True,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -94,6 +99,7 @@ def get_default_settings():
             ),
             "label_text": "Fan",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -126,6 +132,7 @@ def get_default_settings():
             ),
             "label_text": "Webcam",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": True,
@@ -155,6 +162,7 @@ def get_default_settings():
             "icon_off": "OFF",
             "label_text": "R5",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -184,6 +192,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R6",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -213,6 +222,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R7",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -242,6 +252,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R8",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -303,6 +314,7 @@ ASSETS = {
 UPDATE_COMMAND = "update"
 GET_STATUS_COMMAND = "getStatus"
 LIST_ALL_COMMAND = "listAllStatus"
+CANCEL_TASK_COMMAND = "cancelTask"
 AT_COMMAND = "OCTORELAY"
 
 # see https://docs.octoprint.org/en/master/plugins/hooks.html#octoprint-access-permissions

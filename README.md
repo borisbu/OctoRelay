@@ -3,10 +3,11 @@
 [![CI](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml)
 [![CodeQL](https://github.com/borisbu/OctoRelay/actions/workflows/codeql.yml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/codeql.yml)
 [![Coverage Status](https://coveralls.io/repos/github/borisbu/OctoRelay/badge.svg?branch=master)](https://coveralls.io/github/borisbu/OctoRelay?branch=master)
+[![Downloads of latest release](https://img.shields.io/github/downloads/borisbu/octorelay/latest/release.zip?color=blue)](https://github.com/borisbu/OctoRelay/releases/latest)
 
 The plugin adds buttons to the navigation bar for toggling GPIO pins on the Raspberry Pi.
 
-![WebUI interface](img/controls.jpg)
+![WebUI interface](img/controls.png)
 
 > _I use it with a 4 relay board, and printed this
 > [case for it](https://www.thingiverse.com/thing:2975944)._
@@ -47,22 +48,23 @@ After installing the plugin you need to configure it in order to see the control
 Currently, OctoRelay supports up to 8 relays represented by the tabs on the top of the settings screen.
 Each relay has the following settings *(in order of appearance)*:
 
-| Setting             | Description                                                |
-|---------------------|------------------------------------------------------------|
-| Active              | Activates the relay and its control on the navigation bar  |
-| Label               | The HTML title of the icon in the navigation bar (hint)    |
-| Icon *(ON/OFF)*     | An HTML tag or emoji to display on the navigation bar      |
-| GPIO Number         | The GPIO pin on the Raspberry Pi *(see the picture above)* |
-| Inverted output     | For normally closed relay: the relay is ON without power   |
-| Warn if turning OFF | Enables a confirmation dialog when turning the relay OFF   |
-| **Events:**         | Behavior customization (automation)                        |
-| on Startup          | The state to switch the relay to when OctoPrint started    |
-| on Printing Started | The state to switch the relay to when started printing     |
-| on Printing Stopped | The state to switch the relay to when stopped printing     |
-| skip *(option)*     | No action should be taken                                  |                                 |
-| delay               | Postpones the action for the time specified in seconds     |
-| **Side effects:**   | Additional actions in certain cases                        |
-| Command *(ON/OFF)*  | An optional OS command to run when toggling the relay      |
+| Setting                 | Description                                                |
+|-------------------------|------------------------------------------------------------|
+| Active                  | Activates the relay and its control on the navigation bar  |
+| Label                   | The HTML title of the icon in the navigation bar (hint)    |
+| Icon *(ON/OFF)*         | An HTML tag or emoji to display on the navigation bar      |
+| GPIO Number             | The GPIO pin on the Raspberry Pi *(see the picture above)* |
+| Inverted output         | For normally closed relay: the relay is ON without power   |
+| Warn if turning OFF     | Enables a confirmation dialog when turning the relay OFF   |
+| Alert on switches ahead | Notifies on upcoming switch with an ability to cancel it   |
+| **Events:**             | Behavior customization (automation)                        |
+| on Startup              | The state to switch the relay to when OctoPrint started    |
+| on Printing Started     | The state to switch the relay to when started printing     |
+| on Printing Stopped     | The state to switch the relay to when stopped printing     |
+| skip *(option)*         | No action should be taken                                  |                                 |
+| delay                   | Postpones the action for the time specified in seconds     |
+| **Side effects:**       | Additional actions in certain cases                        |
+| Command *(ON/OFF)*      | An optional OS command to run when toggling the relay      |
 
 ## Operation
 

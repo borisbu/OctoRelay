@@ -1,21 +1,24 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 from typing import Optional
+from functools import reduce
 import os
+import time
 import flask
 
 import octoprint.plugin
 from octoprint.events import Events
-from octoprint.util import ResettableTimer
 from octoprint.util import RepeatedTimer
 from octoprint.access.permissions import Permissions
 
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, TURNED_ON
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF,
+    CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON
 )
 from .driver import Relay
+from .task import Task
 from .migrations import migrate
 
 # pylint: disable=too-many-ancestors
@@ -35,7 +38,7 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.tasks = [] # of { subject: relayIndex, owner: pluginEvent, timer: ResettableTimer }
+        self.tasks = [] # of Task
         self.model = { index: {} for index in RELAY_INDEXES }
 
     def get_settings_version(self):
@@ -43,6 +46,10 @@ class OctoRelayPlugin(
 
     def get_settings_defaults(self):
         return get_default_settings()
+
+    def on_settings_save(self, data):
+        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
+        self.update_ui()
 
     def on_settings_migrate(self, target: int, current):
         current = current or 0
@@ -79,6 +86,7 @@ class OctoRelayPlugin(
             UPDATE_COMMAND: [ "pin" ],
             GET_STATUS_COMMAND: [ "pin" ],
             LIST_ALL_COMMAND: [],
+            CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
 
     def get_additional_permissions(self, *args, **kwargs):
@@ -91,46 +99,55 @@ class OctoRelayPlugin(
             self._logger.warn(f"Failed to check relay switching permission, {exception}")
             return False
 
+    def handle_list_all_command(self):
+        active_relays = []
+        settings = self._settings.get([], merged=True) # expensive
+        for index in RELAY_INDEXES:
+            if settings[index]["active"]:
+                relay = Relay(
+                    int(settings[index]["relay_pin"] or 0),
+                    bool(settings[index]["inverted_output"])
+                )
+                active_relays.append({
+                    "id": index,
+                    "name": settings[index]["label_text"],
+                    "active": relay.is_closed(),
+                })
+        return flask.jsonify(active_relays)
+
+    def handle_get_status_command(self, index: str):
+        settings = self._settings.get([index], merged=True) # expensive
+        relay = Relay(
+            int(settings["relay_pin"] or 0),
+            bool(settings["inverted_output"])
+        )
+        return flask.jsonify(status=relay.is_closed())
+
+    def handle_update_command(self, index: str):
+        if not self.has_switch_permission():
+            return flask.abort(403)
+        if index not in RELAY_INDEXES:
+            self._logger.warn(f"Invalid relay index supplied {index}")
+            return flask.jsonify(status="error")
+        self.toggle_relay(index)
+        self.update_ui()
+        return flask.jsonify(status="ok")
+
+    def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
+        self.cancel_tasks(subject, USER_ACTION, target, owner)
+        self.update_ui()
+        return flask.jsonify(status="ok")
+
     def on_api_command(self, command, data):
         self._logger.debug(f"on_api_command {command}, parameters {data}")
-
-        # API command to get relay statuses
-        if command == LIST_ALL_COMMAND:
-            active_relays = []
-            settings = self._settings.get([], merged=True) # expensive
-            for index in RELAY_INDEXES:
-                if settings[index]["active"]:
-                    relay = Relay(
-                        int(settings[index]["relay_pin"] or 0),
-                        bool(settings[index]["inverted_output"])
-                    )
-                    active_relays.append({
-                        "id": index,
-                        "name": settings[index]["label_text"],
-                        "active": relay.is_closed(),
-                    })
-            return flask.jsonify(active_relays)
-
-        # API command to get relay status
-        if command == GET_STATUS_COMMAND:
-            settings = self._settings.get([data["pin"]], merged=True) # expensive
-            relay = Relay(
-                int(settings["relay_pin"] or 0),
-                bool(settings["inverted_output"])
-            )
-            return flask.jsonify(status=relay.is_closed())
-
-        # API command to toggle the relay
-        if command == UPDATE_COMMAND:
-            if not self.has_switch_permission():
-                return flask.abort(403)
-            index = data["pin"]
-            if index not in RELAY_INDEXES:
-                self._logger.warn(f"Invalid relay index supplied {index}")
-                return flask.jsonify(status="error")
-            self.toggle_relay(index)
-            self.update_ui()
-            return flask.jsonify(status="ok")
+        if command == LIST_ALL_COMMAND: # API command to get relay statuses
+            return self.handle_list_all_command()
+        if command == GET_STATUS_COMMAND: # API command to get relay status
+            return self.handle_get_status_command(data["pin"])
+        if command == UPDATE_COMMAND: # API command to toggle the relay
+            return self.handle_update_command(data["pin"])
+        if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
+            return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
@@ -157,18 +174,18 @@ class OctoRelayPlugin(
             if bool(settings[index]["active"]):
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
-                    self.cancel_tasks(index, event)
+                    target = bool(target)
+                    self.cancel_tasks(subject = index, initiator = event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
-                        self.toggle_relay(index, bool(target))
+                        self.toggle_relay(index, target)
                     else:
-                        timer = ResettableTimer(delay, self.toggle_relay, [index, bool(target)])
-                        self.tasks.append({
-                            "subject": index,
-                            "owner": event,
-                            "timer": timer
-                        })
-                        timer.start()
+                        task = Task(
+                            subject = index, target = target, owner = event, delay = delay,
+                            function = self.toggle_relay, args = [index, target]
+                        )
+                        self.tasks.append(task)
+                        task.timer.start()
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
@@ -185,21 +202,19 @@ class OctoRelayPlugin(
         if state:
             self.handle_plugin_event(TURNED_ON)
 
-    def on_settings_save(self, data):
-        octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
-        self.update_ui()
-
-    def cancel_tasks(self, index: str, requestor: str):
-        exceptions = CANCELLATION_EXCEPTIONS[requestor] if requestor in CANCELLATION_EXCEPTIONS else []
-        def handler(entry):
-            if index == entry["subject"] and entry["owner"] not in exceptions:
+    def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
+        exceptions = CANCELLATION_EXCEPTIONS.get(initiator) or []
+        def handler(task: Task):
+            not_exception = task.owner not in exceptions
+            same_subject = subject == task.subject
+            same_target = True if target is None else task.target == target
+            same_owner = True if owner is None else task.owner == owner
+            if same_subject and not_exception and same_target and same_owner:
                 try:
-                    entry["timer"].cancel()
-                    self._logger.info(f"cancelled timer {entry['owner']} for relay {entry['subject']}")
+                    task.cancel_timer()
+                    self._logger.info(f"cancelled {task}")
                 except Exception as exception:
-                    self._logger.warn(
-                        f"failed to cancel timer {entry['owner']} for {entry['subject']}, reason: {exception}"
-                    )
+                    self._logger.warn(f"failed to cancel {task}, reason: {exception}")
                 return False # exclude
             return True # include
         self.tasks = list(filter(handler, self.tasks))
@@ -209,26 +224,47 @@ class OctoRelayPlugin(
             self._logger.info(f"OctoRelay runs system command: {cmd}")
             os.system(cmd)
 
+    def get_upcoming_tasks(self, subjects):
+        future_tasks = filter(
+            lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
+            self.tasks
+        )
+        def reducer(agg, task):
+            index = task.subject
+            agg[index] = task if agg[index] is None or task.deadline < agg[index].deadline else agg[index]
+            return agg
+        return reduce( # { r1: task, r2: None, ... }
+            reducer,
+            future_tasks,
+            { index: None for index in RELAY_INDEXES }
+        )
+
     def update_ui(self):
         settings = self._settings.get([], merged=True) # expensive
+        upcoming = self.get_upcoming_tasks(filter(
+            lambda index: settings[index]["show_upcoming"],
+            RELAY_INDEXES
+        ))
         for index in RELAY_INDEXES:
             relay = Relay(
                 int(settings[index]["relay_pin"] or 0),
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed()
-            # set the icon state
-            self.model[index]["relay_pin"] = relay.pin
-            self.model[index]["inverted_output"] = relay.inverted
-            self.model[index]["relay_state"] = relay_state # bool since v3.1
-            self.model[index]["label_text"] = settings[index]["label_text"]
-            self.model[index]["active"] = bool(settings[index]["active"])
-            if relay_state:
-                self.model[index]["icon_html"] = settings[index]["icon_on"]
-                self.model[index]["confirm_off"] = bool(settings[index]["confirm_off"])
-            else:
-                self.model[index]["icon_html"] = settings[index]["icon_off"]
-                self.model[index]["confirm_off"] = False
+            self.model[index] = {
+                "relay_pin": relay.pin,
+                "inverted_output": relay.inverted,
+                "relay_state": relay_state, # bool since v3.1
+                "label_text": settings[index]["label_text"],
+                "active": bool(settings[index]["active"]),
+                "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
+                "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
+                "upcoming": None if upcoming[index] is None else {
+                    "target": upcoming[index].target,
+                    "owner": upcoming[index].owner,
+                    "deadline": int(upcoming[index].deadline * 1000) # ms for JS
+                }
+            }
         #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
