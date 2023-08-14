@@ -208,7 +208,7 @@ class OctoRelayPlugin(
             same_owner = True if owner is None else task.owner == owner
             if same_subject and not_exception and same_target and same_owner:
                 try:
-                    task.timer.cancel()
+                    task.cancel_timer()
                     self._logger.info(f"cancelled {task}")
                 except Exception as exception:
                     self._logger.warn(f"failed to cancel {task}, reason: {exception}")
