@@ -825,10 +825,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         jsonify_mock.assert_called_with(status="ok")
 
     def test_on_api_command(self):
-        self.plugin_instance.handle_list_all_command = Mock(return_value="handle_list_all_command")
-        self.plugin_instance.handle_get_status_command = Mock(return_value="handle_get_status_command")
-        self.plugin_instance.handle_update_command = Mock(return_value="handle_update_command")
-        self.plugin_instance.handle_cancel_task_command = Mock(return_value="handle_cancel_task_command")
+        self.plugin_instance.handle_list_all_command = Mock()
+        self.plugin_instance.handle_get_status_command = Mock()
+        self.plugin_instance.handle_update_command = Mock()
+        self.plugin_instance.handle_cancel_task_command = Mock()
         cases = [
             {
                 "command": "listAllStatus",
