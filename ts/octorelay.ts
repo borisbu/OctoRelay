@@ -119,7 +119,7 @@ $(() => {
 
     const setCountdown = (selector: JQuery, deadline: number): (() => void) => {
       const delay = getCountdownDelay(deadline);
-      let disposer = () => {};
+      let disposer: () => void;
       const interval = setInterval(() => {
         const isVisible = selector.is(":visible");
         if (!isVisible) {
