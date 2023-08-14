@@ -797,7 +797,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "closed": False,
                 "expectedStatus": "ok",
                 "expectedToggle": True,
-                "expectedCommand": "CommandOnMock"
+                "expectedCommand": "CommandOnMock",
+                "expectedEvent": "TURNED_ON"
             },
             {
                 "index": "r4",
@@ -835,10 +836,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
-                if case["expectedCommand"] == "CommandOnMock":
-                    self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON")
-                else:
-                    self.plugin_instance.handle_plugin_event.assert_not_called()
+            if "expectedEvent" in case:
+                self.plugin_instance.handle_plugin_event.assert_called_with(case["expectedEvent"])
+            else:
+                self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedStatus" in case:
                 jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
