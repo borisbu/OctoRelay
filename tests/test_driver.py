@@ -15,6 +15,7 @@ from octoprint_octorelay.driver import Relay
 # avoid keeping other modules automatically imported by this test
 del sys.modules["octoprint_octorelay"]
 del sys.modules["octoprint_octorelay.migrations"]
+del sys.modules["octoprint_octorelay.task"]
 
 class TestRelayDriver(unittest.TestCase):
     def test_constructor(self):

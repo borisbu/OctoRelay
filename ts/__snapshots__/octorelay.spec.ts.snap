@@ -21,19 +21,7 @@ exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = 
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: $() 1`] = `
 [
   [
-    "#relaisr1",
-  ],
-  [
-    "#relaisr2",
-  ],
-  [
-    "#relaisr3",
-  ],
-  [
-    "#relaisr4",
-  ],
-  [
-    "#relaisr5",
+    "#navbar_plugin_octorelay",
   ],
 ]
 `;
@@ -63,83 +51,23 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .css() 1`] = `
-[
-  [
-    {
-      "align-items": "center",
-      "cursor": "pointer",
-      "display": "flex",
-      "float": "left",
-      "font-size": "1.25rem",
-      "height": "40px",
-      "justify-content": "center",
-      "padding": "unset",
-      "text-decoration": "none",
-      "width": "40px",
-    },
-  ],
-  [
-    {
-      "align-items": "center",
-      "cursor": "pointer",
-      "display": "flex",
-      "float": "left",
-      "font-size": "1.25rem",
-      "height": "40px",
-      "justify-content": "center",
-      "padding": "unset",
-      "text-decoration": "none",
-      "width": "40px",
-    },
-  ],
-  [
-    {
-      "align-items": "center",
-      "cursor": "pointer",
-      "display": "flex",
-      "float": "left",
-      "font-size": "1.25rem",
-      "height": "40px",
-      "justify-content": "center",
-      "padding": "unset",
-      "text-decoration": "none",
-      "width": "40px",
-    },
-  ],
-  [
-    {
-      "align-items": "center",
-      "cursor": "pointer",
-      "display": "flex",
-      "float": "left",
-      "font-size": "1.25rem",
-      "height": "40px",
-      "justify-content": "center",
-      "padding": "unset",
-      "text-decoration": "none",
-      "width": "40px",
-    },
-  ],
-  [
-    {
-      "align-items": "center",
-      "cursor": "pointer",
-      "display": "flex",
-      "float": "left",
-      "font-size": "1.25rem",
-      "height": "40px",
-      "justify-content": "center",
-      "padding": "unset",
-      "text-decoration": "none",
-      "width": "40px",
-    },
-  ],
-]
-`;
-
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
 [
+  [
+    "#relaisr1",
+  ],
+  [
+    "#relaisr2",
+  ],
+  [
+    "#relaisr3",
+  ],
+  [
+    "#relaisr4",
+  ],
+  [
+    "#relaisr5",
+  ],
   [
     ".modal-title",
   ],
@@ -171,6 +99,81 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   ],
   [
     "ON",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeAttr() 1`] = `
+[
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+  [
+    "data-original-title",
+  ],
+  [
+    "title",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeData() 1`] = `
+[
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
+  ],
+  [
+    "original-title",
   ],
 ]
 `;
@@ -247,6 +250,166 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
     {
       "placement": "bottom",
     },
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 15 and false target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T22:30:15.000Z" title="8/13/2023, 10:30:15 PM">in 15 seconds</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 15 and true target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T22:30:15.000Z" title="8/13/2023, 10:30:15 PM">in 15 seconds</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">ON</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 75 and false target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T22:31:15.000Z" title="8/13/2023, 10:31:15 PM">in 1.3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 75 and true target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T22:31:15.000Z" title="8/13/2023, 10:31:15 PM">in 1.3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">ON</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 150 and false target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T22:32:30.000Z" title="8/13/2023, 10:32:30 PM">in 3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 150 and true target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T22:32:30.000Z" title="8/13/2023, 10:32:30 PM">in 3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">ON</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 5000 and false target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T23:53:20.000Z" title="8/13/2023, 11:53:20 PM">in 1 hour</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">OFF</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`OctoRelayViewModel Should display upcoming state popover for delay 5000 and true target: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    {
+      "content": "<time id="time-tag-r1" datetime="2023-08-13T23:53:20.000Z" title="8/13/2023, 11:53:20 PM">in 1 hour</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">ON</span></span><button id="pop-closer-r1" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
   ],
 ]
 `;
