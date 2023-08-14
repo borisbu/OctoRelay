@@ -366,6 +366,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -807,6 +810,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -1248,6 +1254,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -1689,6 +1698,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -2130,6 +2142,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -2571,6 +2586,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -3012,6 +3030,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
@@ -3453,6 +3474,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Including the ability to cancel
+                        </span>
                     </div>
                 </div>
 
