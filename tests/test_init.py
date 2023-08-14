@@ -786,6 +786,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_update_command(self, system_mock, jsonify_mock):
         # Should toggle the relay state, execute command and update UI when having permission
         self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.handle_plugin_event = Mock()
         cases = [
             {
                 "index": "r4",
@@ -827,6 +828,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if "expectedToggle" in case:
                 relayMock.toggle.assert_called_with(None)
                 self.plugin_instance.update_ui.assert_called_with()
+                if case["expectedToggle"]:
+                    self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON")
+                else:
+                    self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
             if "expectedStatus" in case:
