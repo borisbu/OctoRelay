@@ -5,7 +5,7 @@
 ### 3.7.0
 
 - Introducing the ability to cancel the upcoming automated switch.
-  - In the case of a configured relay switching delay, the corresponding
+  - In case of a configured relay switching delay, the corresponding
     control button will notify about this in a popover.
   - The popover shows the upcoming state and the countdown.
   - The popover offers a Cancel button to dismiss the pending task.
