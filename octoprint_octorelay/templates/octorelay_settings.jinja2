@@ -159,6 +159,28 @@
                     </div>
                 </div>
 
+                <div class="control-group">
+                    <label class="control-label">{{ _('Alert on switches ahead') }}</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            {% for value, option in plugin_octorelay_boolean.items() %}
+                            <!--ko let: { classBinding: {
+                                'active btn-{{option.color}}': show_upcoming() === {{value}},
+                                'btn-default': show_upcoming() !== {{value}}
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: {{value}}, checked: show_upcoming"
+                                />
+                                {{ _(option.caption) }}
+                            </label>
+                            <!--/ko-->
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
                 {% for event, label in plugin_octorelay_events.items() %}
                 <div class="control-group" data-bind="using: rules.{{event}}">
                     <label class="control-label">{{ _(label) }}</label>

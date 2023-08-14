@@ -17,7 +17,7 @@ PREEMPTIVE_CANCELLATION_CUTOFF = 2
 SETTINGS_VERSION = 3
 
 # Plugin's default settings, immutable getter
-# Warning: every change to these settings requires:
+# Warning: every amendment or deletion of these settings requires:
 # - to increase the SETTINGS_VERSION above
 # - and migration to preserve user's previous configuration intact
 def get_default_settings():
@@ -32,6 +32,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "Light",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -60,6 +61,7 @@ def get_default_settings():
             ),
             "label_text": "Printer",
             "confirm_off": True,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -88,6 +90,7 @@ def get_default_settings():
             ),
             "label_text": "Fan",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -116,6 +119,7 @@ def get_default_settings():
             ),
             "label_text": "Webcam",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": True,
@@ -141,6 +145,7 @@ def get_default_settings():
             "icon_off": "OFF",
             "label_text": "R5",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -166,6 +171,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R6",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -191,6 +197,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R7",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,
@@ -216,6 +223,7 @@ def get_default_settings():
             "icon_off": """<div style="filter: grayscale(90%)">&#128161;</div>""",
             "label_text": "R8",
             "confirm_off": False,
+            "show_upcoming": True,
             "rules": {
                 STARTUP: {
                     "state": False,

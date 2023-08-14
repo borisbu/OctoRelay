@@ -76,6 +76,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "Light",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -104,6 +105,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Printer",
                 "confirm_off": True,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -132,6 +134,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Fan",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -160,6 +163,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 ),
                 "label_text": "Webcam",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": True,
@@ -185,6 +189,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "OFF",
                 "label_text": "R5",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -210,6 +215,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R6",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -235,6 +241,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R7",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
@@ -260,6 +267,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "icon_off": "<div style=\"filter: grayscale(90%)\">&#128161;</div>",
                 "label_text": "R8",
                 "confirm_off": False,
+                "show_upcoming": True,
                 "rules": {
                     "STARTUP": {
                         "state": False,
