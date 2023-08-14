@@ -415,6 +415,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_input_polling(self):
         # First active relay having state not equal to the one stored in model should trigger UI update
         self.plugin_instance.update_ui = Mock()
+        relayConstructorMock.mock_reset()
         self.plugin_instance.model = {
             "r1": { "active": False, "relay_pin": 4, "inverted_output": False, "relay_state": True },
             "r2": { "active": True, "relay_pin": 17, "inverted_output": False, "relay_state": True },
