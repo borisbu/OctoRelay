@@ -310,8 +310,7 @@ STABLE_CHANNEL = {
 PRE_RELEASE_CHANNEL = {
     "name": "Prerelease",
     "branch": "develop",
-    # todo restore
-    "commitish": [ "feat-87-cancel-task", "develop", "master" ]
+    "commitish": [ "develop", "master" ]
 }
 
 # https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html#octoprint-plugin-softwareupdate-check-config
