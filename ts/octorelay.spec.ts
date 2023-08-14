@@ -45,7 +45,9 @@ describe("OctoRelayViewModel", () => {
     PLUGIN_OCTORELAY_SWITCH: { test: "I am PLUGIN_OCTORELAY_SWITCH" },
   };
   const hasPermissionMock = jest.fn();
-  const setIntervalMock = jest.fn(() => "mockedInterval");
+  const setIntervalMock = jest.fn<void, [() => void, number]>(
+    () => "mockedInterval"
+  );
   const clearIntervalMock = jest.fn();
 
   Object.assign(global, {
@@ -76,7 +78,9 @@ describe("OctoRelayViewModel", () => {
     jQueryMock.mockClear();
     elementMock.popover.mockClear();
     elementMock.on.mockClear();
+    elementMock.text.mockClear();
     setIntervalMock.mockClear();
+    clearIntervalMock.mockClear();
     apiMock.mockClear();
   });
 
@@ -228,12 +232,39 @@ describe("OctoRelayViewModel", () => {
         },
       });
       expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
-      expect(setIntervalMock).toHaveBeenCalledWith(
-        expect.any(Function),
-        delay > 120 ? 60000 : 1000
-      );
     }
   );
+
+  test.each([true, false])("Should set countdown %#", (isVisible) => {
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    handler("octorelay", {
+      r1: {
+        relay_pin: 16,
+        inverted_output: false,
+        relay_state: true,
+        label_text: "Nozzle Light",
+        active: true,
+        icon_html: "<div>&#128161;</div>",
+        confirm_off: false,
+        upcoming: {
+          target: false,
+          owner: "PRINTING_STOPPED",
+          deadline: Date.now() + 20 * 1000,
+        },
+      },
+    });
+    expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 1000);
+    const intervalFn = setIntervalMock.mock.calls[0][0];
+    elementMock.is.mockImplementationOnce(() => isVisible);
+    intervalFn();
+    if (isVisible) {
+      expect(elementMock.text).toHaveBeenCalledWith("in 20 seconds");
+    } else {
+      expect(elementMock.text).not.toHaveBeenCalled();
+      expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
+    }
+  });
 
   test("Clicking on Cancel button should send the command", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
