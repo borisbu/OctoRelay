@@ -168,9 +168,9 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
-    def handle_plugin_event(self, event):
+    def handle_plugin_event(self, event, scope = RELAY_INDEXES):
         settings = self._settings.get([], merged=True) # expensive
-        for index in RELAY_INDEXES:
+        for index in scope:
             if bool(settings[index]["active"]):
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
