@@ -2,6 +2,10 @@
 
 ## Version 3
 
+### 3.7.2
+
+- This update prohibits switching of disabled relays.
+
 ### 3.7.1
 
 - Fixed a bug: the disabled relays were still requested on their pin states.
