@@ -256,7 +256,7 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
-        self._logger.debug(f"Updating the UI")
+        self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
         upcoming = self.get_upcoming_tasks(filter(
             lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
