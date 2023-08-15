@@ -2,6 +2,10 @@
 
 ## Version 3
 
+### 3.7.1
+
+- Fixed a bug: the disabled relays were still requested on their pin states.
+
 ### 3.7.0
 
 - Introducing the ability to cancel the upcoming automated switch.
