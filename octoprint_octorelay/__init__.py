@@ -55,7 +55,7 @@ class OctoRelayPlugin(
         current = current or 0
         self._logger.info(f"Performing the settings migration from v{current} to v{target}")
         migrate(current, self._settings, self._logger)
-        self._logger.info(f"Finished the settings migration to v{target}")
+        self._logger.debug(f"Finished the settings migration to v{target}")
 
     def get_template_configs(self):
         return get_templates()
@@ -72,7 +72,7 @@ class OctoRelayPlugin(
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
         self.polling_timer.start()
-        self._logger.info("The plugin started")
+        self._logger.debug("The plugin started")
 
     def on_shutdown(self):
         self.polling_timer.cancel()
@@ -136,7 +136,7 @@ class OctoRelayPlugin(
         return flask.jsonify(status="ok")
 
     def on_api_command(self, command, data):
-        self._logger.debug(f"on_api_command {command}, parameters {data}")
+        self._logger.info(f"on_api_command {command}, parameters {data}")
         if command == LIST_ALL_COMMAND: # API command to get relay statuses
             return self.handle_list_all_command()
         if command == GET_STATUS_COMMAND: # API command to get relay status
@@ -217,7 +217,7 @@ class OctoRelayPlugin(
 
     def run_system_command(self, cmd):
         if cmd:
-            self._logger.info(f"Running the system command: {cmd}")
+            self._logger.debug(f"Running the system command: {cmd}")
             os.system(cmd)
 
     def get_upcoming_tasks(self, subjects):
@@ -262,7 +262,6 @@ class OctoRelayPlugin(
                     "deadline": int(upcoming[index].deadline * 1000) # ms for JS
                 }
             }
-        #self._logger.info(f"update ui with model {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
     # pylint: disable=useless-return
