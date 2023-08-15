@@ -103,7 +103,7 @@ class OctoRelayPlugin(
         active_relays = []
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
-            if settings[index]["active"]:
+            if bool(settings[index]["active"]):
                 relay = Relay(
                     int(settings[index]["relay_pin"] or 0),
                     bool(settings[index]["inverted_output"])
@@ -117,11 +117,11 @@ class OctoRelayPlugin(
 
     def handle_get_status_command(self, index: str):
         settings = self._settings.get([index], merged=True) # expensive
-        relay = Relay(
+        is_closed = Relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
-        )
-        return flask.jsonify(status=relay.is_closed())
+        ).is_closed() if bool(settings["active"]) else False
+        return flask.jsonify(status=is_closed)
 
     def handle_update_command(self, index: str):
         if not self.has_switch_permission():
@@ -239,21 +239,22 @@ class OctoRelayPlugin(
     def update_ui(self):
         settings = self._settings.get([], merged=True) # expensive
         upcoming = self.get_upcoming_tasks(filter(
-            lambda index: settings[index]["show_upcoming"],
+            lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
             RELAY_INDEXES
         ))
         for index in RELAY_INDEXES:
+            active = bool(settings[index]["active"])
             relay = Relay(
                 int(settings[index]["relay_pin"] or 0),
                 bool(settings[index]["inverted_output"])
             )
-            relay_state = relay.is_closed()
+            relay_state = relay.is_closed() if active else False
             self.model[index] = {
                 "relay_pin": relay.pin,
                 "inverted_output": relay.inverted,
                 "relay_state": relay_state, # bool since v3.1
                 "label_text": settings[index]["label_text"],
-                "active": bool(settings[index]["active"]),
+                "active": active,
                 "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
                 "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
                 "upcoming": None if upcoming[index] is None else {
@@ -292,7 +293,7 @@ class OctoRelayPlugin(
             actual_state = Relay(
                 self.model[index]["relay_pin"],
                 self.model[index]["inverted_output"]
-            ).is_closed()
+            ).is_closed() if active else False
             if active and (actual_state is not model_state):
                 self._logger.debug(f"relay: {index} has changed its pin state")
                 self.update_ui()
