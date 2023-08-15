@@ -117,11 +117,11 @@ class OctoRelayPlugin(
 
     def handle_get_status_command(self, index: str):
         settings = self._settings.get([index], merged=True) # expensive
-        relay = Relay(
+        is_closed = Relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
-        )
-        return flask.jsonify(status=relay.is_closed())
+        ).is_closed() if bool(settings["active"]) else False
+        return flask.jsonify(status=is_closed)
 
     def handle_update_command(self, index: str):
         if not self.has_switch_permission():
