@@ -448,6 +448,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_input_polling(self):
         # First active relay having state not equal to the one stored in model should trigger UI update
         self.plugin_instance.update_ui = Mock()
+        relayConstructorMock.reset_mock()
         self.plugin_instance.model = {
             "r1": { "active": False, "relay_pin": 4, "inverted_output": False, "relay_state": True },
             "r2": { "active": True, "relay_pin": 17, "inverted_output": False, "relay_state": True },
@@ -455,7 +456,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         relayMock.is_closed = Mock(return_value=True)
         self.plugin_instance.input_polling()
-        relayConstructorMock.assert_any_call(4, False)
+        self.assertEqual(relayConstructorMock.call_count, 2)
         relayConstructorMock.assert_any_call(17, False)
         relayConstructorMock.assert_any_call(18, False)
         self.plugin_instance.update_ui.assert_called_with()
@@ -534,6 +535,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON", scope = ["r4"])
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
+
+    def test_toggle_relay__disabled(self):
+        # Should not do anything when the requested relay is disabled
+        relayMock.toggle = Mock()
+        self.plugin_instance._settings.get = Mock(return_value={
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "cmd_on": "CommandON",
+            "cmd_off": "CommandOFF"
+        })
+        self.plugin_instance.toggle_relay("r4", True)
+        relayMock.toggle.assert_not_called()
 
     @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
@@ -650,7 +664,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
-        timerMock.mock_reset()
+        timerMock.reset_mock()
         remaining_task = Task(
             subject = "r6",
             target = False,
@@ -815,7 +829,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         ]
         for case in cases:
             self.plugin_instance.handle_plugin_event = Mock()
-            self.plugin_instance.update_ui.mock_reset()
+            self.plugin_instance.update_ui.reset_mock()
             relayMock.is_closed = Mock(return_value=case["closed"])
             relayMock.toggle = Mock(return_value=not case["closed"])
             permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
