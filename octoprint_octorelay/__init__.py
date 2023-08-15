@@ -189,6 +189,8 @@ class OctoRelayPlugin(
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
+        if not bool(settings["active"]):
+            return
         pin = int(settings["relay_pin"] or 0)
         inverted = bool(settings["inverted_output"])
         relay = Relay(pin, inverted)

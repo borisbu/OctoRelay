@@ -498,6 +498,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with(case["expectedCommand"])
 
+    def test_toggle_relay__disabled(self):
+        # Should not do anything when the requested relay is disabled
+        relayMock.toggle = Mock()
+        self.plugin_instance._settings.get = Mock(return_value={
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "cmd_on": "CommandON",
+            "cmd_off": "CommandOFF"
+        })
+        self.plugin_instance.toggle_relay("r4", True)
+        relayMock.toggle.assert_not_called()
+
     @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
         # Should call the SettingsPlugin event handler with own instance and supplied argument
