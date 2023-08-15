@@ -67,19 +67,16 @@ class OctoRelayPlugin(
         return ASSETS
 
     def on_after_startup(self):
-        self._logger.info("--------------------------------------------")
         self._logger.info("start OctoRelay")
         self.handle_plugin_event(STARTUP)
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
         self.polling_timer.start()
         self._logger.info("OctoRelay plugin started")
-        self._logger.info("--------------------------------------------")
 
     def on_shutdown(self):
         self.polling_timer.cancel()
         self._logger.info("OctoRelay plugin stopped")
-        self._logger.info("--------------------------------------------")
 
     def get_api_commands(self):
         return {
