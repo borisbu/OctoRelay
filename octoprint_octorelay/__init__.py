@@ -103,7 +103,7 @@ class OctoRelayPlugin(
         active_relays = []
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
-            if settings[index]["active"]:
+            if bool(settings[index]["active"]):
                 relay = Relay(
                     int(settings[index]["relay_pin"] or 0),
                     bool(settings[index]["inverted_output"])
