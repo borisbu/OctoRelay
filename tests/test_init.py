@@ -301,7 +301,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.on_settings_migrate(1, None)
         self.plugin_instance._logger.info.assert_any_call("Performing the settings migration from v0 to v1")
         migrationsMock.migrate.assert_called_with(0, self.plugin_instance._settings, self.plugin_instance._logger)
-        self.plugin_instance._logger.info.assert_called_with("Finished the settings migration to v1")
+        self.plugin_instance._logger.debug.assert_called_with("Finished the settings migration to v1")
 
     def test_get_template_configs(self):
         # Should return the plugin template configurations
