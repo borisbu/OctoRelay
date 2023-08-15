@@ -239,7 +239,7 @@ class OctoRelayPlugin(
     def update_ui(self):
         settings = self._settings.get([], merged=True) # expensive
         upcoming = self.get_upcoming_tasks(filter(
-            lambda index: bool(settings[index]["active"]) and settings[index]["show_upcoming"],
+            lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
             RELAY_INDEXES
         ))
         for index in RELAY_INDEXES:
