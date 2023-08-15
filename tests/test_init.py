@@ -650,7 +650,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         timerMock.cancel=Mock( side_effect=Exception("Caught!") )
         self.plugin_instance.cancel_tasks(subject = "r4", initiator = "PRINTING_STARTED")
         self.plugin_instance._logger.warn.assert_called_with(
-            "failed to cancel Task(r4,False,PRINTING_STOPPED,0), reason: Caught!"
+            "Failed to cancel Task(r4,False,PRINTING_STOPPED,0), reason: Caught!"
         )
         timerMock.reset_mock()
 
