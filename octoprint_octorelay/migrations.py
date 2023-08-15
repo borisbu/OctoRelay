@@ -80,5 +80,5 @@ def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from
     jobs = migrators[current::]
     for index, job in enumerate(jobs):
-        logger.info(f"Migrating to settings v{current + index + 1}")
+        logger.info(f"Migrating the settings to v{current + index + 1}")
         job(settings, logger)
