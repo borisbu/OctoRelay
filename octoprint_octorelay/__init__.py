@@ -53,9 +53,9 @@ class OctoRelayPlugin(
 
     def on_settings_migrate(self, target: int, current):
         current = current or 0
-        self._logger.info(f"OctoRelay performs the migration of its settings from v{current} to v{target}")
+        self._logger.info(f"Performing the settings migration from v{current} to v{target}")
         migrate(current, self._settings, self._logger)
-        self._logger.info(f"OctoRelay finished the migration of settings to v{target}")
+        self._logger.info(f"Finished the settings migration to v{target}")
 
     def get_template_configs(self):
         return get_templates()
@@ -67,16 +67,16 @@ class OctoRelayPlugin(
         return ASSETS
 
     def on_after_startup(self):
-        self._logger.info("start OctoRelay")
+        self._logger.info("Starting the plugin")
         self.handle_plugin_event(STARTUP)
         self.update_ui()
         self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
         self.polling_timer.start()
-        self._logger.info("OctoRelay plugin started")
+        self._logger.info("The plugin started")
 
     def on_shutdown(self):
         self.polling_timer.cancel()
-        self._logger.info("OctoRelay plugin stopped")
+        self._logger.info("The plugin stopped")
 
     def get_api_commands(self):
         return {
@@ -217,7 +217,7 @@ class OctoRelayPlugin(
 
     def run_system_command(self, cmd):
         if cmd:
-            self._logger.info(f"OctoRelay runs system command: {cmd}")
+            self._logger.info(f"Running the system command: {cmd}")
             os.system(cmd)
 
     def get_upcoming_tasks(self, subjects):
