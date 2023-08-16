@@ -373,6 +373,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -431,6 +436,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -491,6 +501,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -550,8 +565,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -894,6 +914,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -952,6 +977,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -1012,6 +1042,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -1071,8 +1106,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -1415,6 +1455,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -1473,6 +1518,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -1533,6 +1583,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -1592,8 +1647,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -1936,6 +1996,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -1994,6 +2059,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -2054,6 +2124,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -2113,8 +2188,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -2457,6 +2537,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -2515,6 +2600,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -2575,6 +2665,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -2634,8 +2729,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -2978,6 +3078,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -3036,6 +3141,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -3096,6 +3206,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -3155,8 +3270,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -3499,6 +3619,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -3557,6 +3682,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -3617,6 +3747,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -3676,8 +3811,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
@@ -4020,6 +4160,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 </div>
 
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.STARTUP">
                     <label class="control-label">on Startup</label>
                     <div class="controls">
@@ -4078,6 +4223,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </div>
                     </div>
                 </div>
+                
+                
+                
+                
+                
                 
                 <div class="control-group" data-bind="using: rules.PRINTING_STARTED">
                     <label class="control-label">on Printing Started</label>
@@ -4138,6 +4288,11 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.PRINTING_STOPPED">
                     <label class="control-label">on Printing Stopped</label>
                     <div class="controls">
@@ -4197,8 +4352,13 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
+                
+                
+                
+                
+                
                 <div class="control-group" data-bind="using: rules.TURNED_ON">
-                    <label class="control-label">after Turned ON</label>
+                    <label class="control-label">after Turned <span class=\'label\'>ON</span></label>
                     <div class="controls">
                         <div class="btn-group">
                             
