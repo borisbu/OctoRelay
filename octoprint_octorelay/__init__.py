@@ -123,7 +123,7 @@ class OctoRelayPlugin(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
         ).is_closed() if bool(settings["active"]) else False
-        self._logger.debug(f"Responding to {GET_STATUS_COMMAND}: {is_closed}")
+        self._logger.debug(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
         return flask.jsonify(status=is_closed)
 
     def handle_update_command(self, index: str):
@@ -136,14 +136,14 @@ class OctoRelayPlugin(
             return flask.jsonify(status="error")
         self.toggle_relay(index)
         self.update_ui()
-        self._logger.debug(f"Responding to {UPDATE_COMMAND}")
+        self._logger.debug(f"Responding to {UPDATE_COMMAND} command")
         return flask.jsonify(status="ok")
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
         self.cancel_tasks(subject, USER_ACTION, target, owner)
         self.update_ui()
-        self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND}")
+        self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
         return flask.jsonify(status="ok")
 
     def on_api_command(self, command, data):
