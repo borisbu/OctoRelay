@@ -608,7 +608,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_plugin_event(self):
         # Should follow the rule on handling the event by toggling the relay if "state" is not None
         self.plugin_instance.tasks = [{"subject": "r4", "timer": timerMock}]
-        self.plugin_instance.cancel_tasks = Mock()
         cases = [
             { "event": "PRINTING_STARTED", "state": True, "expectedCall": True, "delay": 300 },
             { "event": "PRINTING_STARTED", "state": False, "expectedCall": True, "delay": 300 },
@@ -626,6 +625,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 0 },
         ]
         for case in cases:
+            self.plugin_instance.cancel_tasks = Mock()
             self.plugin_instance.tasks = []
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
@@ -642,8 +642,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
-            self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
             if case["expectedCall"]:
+                self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
                 if case["delay"] == 0:
                     self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
                 else:
@@ -659,6 +659,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         self.assertEqual(self.plugin_instance.tasks[index].delay, case["delay"])
                         self.assertEqual(self.plugin_instance.tasks[index].target, case["state"])
             else:
+                self.plugin_instance.cancel_tasks.assert_not_called()
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
                 self.plugin_instance.toggle_relay.assert_not_called()
