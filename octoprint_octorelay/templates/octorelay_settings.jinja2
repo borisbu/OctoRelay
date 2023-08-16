@@ -184,19 +184,26 @@
                     </div>
                 </div>
 
-                {% for event, label in plugin_octorelay_events.items() %}
+                {% for event, props in plugin_octorelay_events.items() %}
+                {% set last3 = props["label"][-3:] %}
+                {% set rest = _(props["label"][0:-3].rstrip()) %}
+                {% set hasState = last3 in [" ON", "OFF"] %}
+                {% set tags = [" <span class='label'>", "</span>"] %}
+                {% set label = rest + tags[0] + _( last3.lstrip() ) + tags[1] if hasState else _( props["label"] ) %}
                 <div class="control-group" data-bind="using: rules.{{event}}">
-                    <label class="control-label">{{ _(label) }}</label>
+                    <label class="control-label">{{ label }}</label>
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, state in plugin_octorelay_tristate.items() %}
+                            {% set disabled = "disabled" if value in props["disabled"] else "" %}
                             <!--ko let: { classBinding: {
                                 'active btn-{{state.color}}': state() === {{value}},
                                 'btn-default': state() !== {{value}}
                             } } -->
-                            <label class="btn" data-bind="css: classBinding">
+                            <label class="btn {{disabled}}" data-bind="css: classBinding">
                                 <input
                                     type="radio"
+                                    {{ disabled }}
                                     data-bind="checkedValue: {{value}}, checked: state"
                                 />
                                 {{ _(state.caption) }}

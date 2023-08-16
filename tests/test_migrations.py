@@ -163,7 +163,7 @@ class TestMigrations(unittest.TestCase):
         )
         logger = Mock()
         migrate(0, settings, logger)
-        logger.info.assert_any_call("OctoRelay migrates to settings v1")
+        logger.info.assert_any_call("Migrating the settings to v1")
 
 
 if __name__ == "__main__":
