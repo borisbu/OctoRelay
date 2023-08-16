@@ -160,7 +160,7 @@ class OctoRelayPlugin(
         return flask.abort(400) # Unknown command
 
     def on_event(self, event, payload):
-        self._logger.debug(f"Received the {event} event having payload {payload}")
+        self._logger.debug(f"Received the {event} event having payload: {payload}")
         if event == Events.CLIENT_OPENED:
             self.update_ui()
         elif event == Events.PRINT_STARTED:
