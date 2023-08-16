@@ -48,7 +48,7 @@ class OctoRelayPlugin(
         return get_default_settings()
 
     def on_settings_save(self, data):
-        self._logger.info(f"Saving the settings {data}")
+        self._logger.info(f"Saving the settings: {data}")
         octoprint.plugin.SettingsPlugin.on_settings_save(self, data)
         self.update_ui()
 
