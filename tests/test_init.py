@@ -619,6 +619,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 300 },
             { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 300 },
             { "event": "STARTUP", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "TURNED_ON", "state": True, "expectedCall": False, "delay": 300 },
+            { "event": "TURNED_ON", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "TURNED_ON", "state": None, "expectedCall": False, "delay": 300 },
             { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 0 },
             { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 0 },
         ]
