@@ -113,7 +113,7 @@ class OctoRelayPlugin(
                     "name": settings[index]["label_text"],
                     "active": relay.is_closed(),
                 })
-        self._logger.debug(f"Responding to {LIST_ALL_COMMAND}: {active_relays}")
+        self._logger.debug(f"Responding to {LIST_ALL_COMMAND} command: {active_relays}")
         return flask.jsonify(active_relays)
 
     def handle_get_status_command(self, index: str):
