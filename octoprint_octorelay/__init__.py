@@ -187,7 +187,7 @@ class OctoRelayPlugin(
                 if target is not None:
                     target = bool(target)
                     if target and event == TURNED_ON:
-                        return # avoid infinite loop
+                        continue # avoid infinite loop
                     self.cancel_tasks(subject = index, initiator = event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
