@@ -40,6 +40,7 @@ class OctoRelayPlugin(
         self.polling_timer = None
         self.tasks = [] # of Task
         self.model = { index: {} for index in RELAY_INDEXES }
+        self.ui_update_lock = None
 
     def get_settings_version(self):
         return SETTINGS_VERSION
@@ -262,6 +263,9 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
+        if self.ui_update_lock:
+            return
+        self.ui_update_lock = True
         self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
         upcoming = self.get_upcoming_tasks(filter(
@@ -291,6 +295,7 @@ class OctoRelayPlugin(
             }
         self._logger.debug(f"The UI feed: {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
+        self.ui_update_lock = None
 
     # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
