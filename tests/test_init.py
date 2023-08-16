@@ -478,7 +478,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "icon_on": "ON",
                     "icon_off": "OFF",
                     "label_text": "TEST",
-                    "confirm_off": False
+                    "confirm_off": False,
+                    "show_upcoming": True
                 } for index in RELAY_INDEXES
             })
             expected_model = {}
