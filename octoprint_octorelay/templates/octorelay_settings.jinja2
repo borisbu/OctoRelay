@@ -184,9 +184,9 @@
                     </div>
                 </div>
 
-                {% for event, label in plugin_octorelay_events.items() %}
+                {% for event, props in plugin_octorelay_events.items() %}
                 <div class="control-group" data-bind="using: rules.{{event}}">
-                    <label class="control-label">{{ _(label) }}</label>
+                    <label class="control-label">{{ _(props["label"]) }}</label>
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, state in plugin_octorelay_tristate.items() %}

@@ -288,10 +288,10 @@ def get_templates():
 def get_ui_vars():
     return {
         "events": {
-            STARTUP: "on Startup",
-            PRINTING_STARTED: "on Printing Started",
-            PRINTING_STOPPED: "on Printing Stopped",
-            TURNED_ON: "after Turned ON"
+            STARTUP: { "label": "on Startup", "disabled": [] },
+            PRINTING_STARTED: { "label": "on Printing Started", "disabled": [] },
+            PRINTING_STOPPED: { "label": "on Printing Stopped", "disabled": [] },
+            TURNED_ON: { "label": "after Turned ON", "disabled": [ "true" ] }
         },
         "boolean": {
             "true": { "caption": "YES", "color": "info" },
