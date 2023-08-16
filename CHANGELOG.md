@@ -2,6 +2,15 @@
 
 ## Version 3
 
+### 3.8.0
+
+- Improved logging:
+  - fewer messages on `info` level,
+  - more messages on `debug` level.
+- Introducing the new event: After Turned ON.
+  - By setting the option to `OFF` with a certain delay, now it has become
+    possible to turn on something for a limited time, not related to printing.
+
 ### 3.7.2
 
 - This update prohibits switching of disabled relays.
