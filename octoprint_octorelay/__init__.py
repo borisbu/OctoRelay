@@ -246,7 +246,7 @@ class OctoRelayPlugin(
             os.system(cmd)
 
     def get_upcoming_tasks(self, subjects):
-        self._logger.debug(f"Finding the upcoming tasks for {subjects}")
+        self._logger.debug(f"Finding the upcoming tasks for {list(subjects)}")
         future_tasks = filter(
             lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
