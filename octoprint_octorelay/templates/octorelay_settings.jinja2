@@ -185,7 +185,8 @@
                 </div>
 
                 {% for event, props in plugin_octorelay_events.items() %}
-                {% set state_label = "ON" if props['label'][-3:] == " ON" else "OFF" if props['label'][-4:] == " OFF" else None %}
+                {% set last3 = props['label'][-3:] %}
+                {% set state_label = "ON" if last3 == " ON" else "OFF" if last3 == "OFF" else None %}
                 {% set label = _(props["label"][0:-3].rstrip()) + " <span class='label'>" + _( state_label ) + "</span>" if state_label else _( props["label"] ) %}
                 <div class="control-group" data-bind="using: rules.{{event}}">
                     <label class="control-label">{{ label }}</label>
