@@ -190,13 +190,15 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, state in plugin_octorelay_tristate.items() %}
+                            {% set disabled = "disabled" if value in props["disabled"] else "" %}
                             <!--ko let: { classBinding: {
                                 'active btn-{{state.color}}': state() === {{value}},
                                 'btn-default': state() !== {{value}}
                             } } -->
-                            <label class="btn" data-bind="css: classBinding">
+                            <label class="btn {{disabled}}" data-bind="css: classBinding">
                                 <input
                                     type="radio"
+                                    {{ disabled }}
                                     data-bind="checkedValue: {{value}}, checked: state"
                                 />
                                 {{ _(state.caption) }}
