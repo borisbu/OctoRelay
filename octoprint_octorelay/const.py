@@ -5,6 +5,7 @@ from octoprint.access import ADMIN_GROUP, USER_GROUP
 STARTUP = "STARTUP"
 PRINTING_STARTED = "PRINTING_STARTED"
 PRINTING_STOPPED = "PRINTING_STOPPED"
+TURNED_ON = "TURNED_ON"
 USER_ACTION = "USER_ACTION"
 
 # Task cancellation exceptions
@@ -46,6 +47,10 @@ def get_default_settings():
                     "state": False,
                     "delay": 10,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r2": {
@@ -75,6 +80,10 @@ def get_default_settings():
                     "state": None,
                     "delay": 0,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r3": {
@@ -104,6 +113,10 @@ def get_default_settings():
                     "state": False,
                     "delay": 10,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r4": {
@@ -133,6 +146,10 @@ def get_default_settings():
                     "state": False,
                     "delay": 10,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r5": {
@@ -159,6 +176,10 @@ def get_default_settings():
                     "state": None,
                     "delay": 0,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r6": {
@@ -185,6 +206,10 @@ def get_default_settings():
                     "state": None,
                     "delay": 0,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r7": {
@@ -211,6 +236,10 @@ def get_default_settings():
                     "state": None,
                     "delay": 0,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
         "r8": {
@@ -237,6 +266,10 @@ def get_default_settings():
                     "state": None,
                     "delay": 0,
                 },
+                TURNED_ON: {
+                    "state": None,
+                    "delay": 0
+                }
             },
         },
     }
@@ -255,9 +288,10 @@ def get_templates():
 def get_ui_vars():
     return {
         "events": {
-            STARTUP: "on Startup",
-            PRINTING_STARTED: "on Printing Started",
-            PRINTING_STOPPED: "on Printing Stopped"
+            STARTUP: { "label": "on Startup", "disabled": [] },
+            PRINTING_STARTED: { "label": "on Printing Started", "disabled": [] },
+            PRINTING_STOPPED: { "label": "on Printing Stopped", "disabled": [] },
+            TURNED_ON: { "label": "after Turned ON", "disabled": [ "true" ] }
         },
         "boolean": {
             "true": { "caption": "YES", "color": "info" },

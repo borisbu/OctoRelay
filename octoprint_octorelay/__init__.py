@@ -15,7 +15,7 @@ from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
     STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF,
-    CANCEL_TASK_COMMAND, USER_ACTION
+    CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON
 )
 from .driver import Relay
 from .task import Task
@@ -178,14 +178,17 @@ class OctoRelayPlugin(
         #elif event == Events.PRINT_CANCELLED:
             # self.print_stopped()
 
-    def handle_plugin_event(self, event):
-        self._logger.debug(f"Handling the plugin event: {event}")
+    def handle_plugin_event(self, event, scope = RELAY_INDEXES):
+        self._logger.debug(f"Handling the plugin event {event} having scope: {scope}")
         settings = self._settings.get([], merged=True) # expensive
-        for index in RELAY_INDEXES:
+        for index in scope:
             if bool(settings[index]["active"]):
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
+                    if target and event == TURNED_ON:
+                        self._logger.debug(f"Skipping {index} to avoid infinite loop")
+                        continue # avoid infinite loop
                     self.cancel_tasks(subject = index, initiator = event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
@@ -212,8 +215,11 @@ class OctoRelayPlugin(
             f"Toggling the relay {index} on pin {pin}" if target is None else
             f"Turning the relay {index} {'ON' if target else 'OFF'} (pin {pin})"
         )
-        cmd = settings["cmd_on" if relay.toggle(target) else "cmd_off"]
+        state = relay.toggle(target)
+        cmd = settings["cmd_on" if state else "cmd_off"]
         self.run_system_command(cmd)
+        if state:
+            self.handle_plugin_event(TURNED_ON, scope = [index])
 
     def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
         self._logger.debug(f"Cancelling tasks by request from {initiator} for relay {subject}")

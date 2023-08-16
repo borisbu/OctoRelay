@@ -90,6 +90,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": False,
                         "delay": 10,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r2": {
@@ -119,6 +123,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r3": {
@@ -148,6 +156,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": False,
                         "delay": 10,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r4": {
@@ -177,6 +189,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": False,
                         "delay": 10,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r5": {
@@ -203,6 +219,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r6": {
@@ -229,6 +249,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r7": {
@@ -255,6 +279,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
             "r8": {
@@ -281,6 +309,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         "state": None,
                         "delay": 0,
                     },
+                    "TURNED_ON": {
+                        "state": None,
+                        "delay": 0
+                    }
                 },
             },
         }
@@ -316,9 +348,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should return the variables needed for the settings template
         expected = {
             "events": {
-                "STARTUP": "on Startup",
-                "PRINTING_STARTED": "on Printing Started",
-                "PRINTING_STOPPED": "on Printing Stopped"
+                "STARTUP": { "label": "on Startup", "disabled": [] },
+                "PRINTING_STARTED": { "label": "on Printing Started", "disabled": [] },
+                "PRINTING_STOPPED": { "label": "on Printing Stopped", "disabled": [] },
+                "TURNED_ON": { "label": "after Turned ON", "disabled": [ "true" ] }
             },
             "boolean": {
                 "true": { "caption": "YES", "color": "info" },
@@ -481,6 +514,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "target": None, "inverted": True, "expectedCommand": "CommandON" }
         ]
         for case in cases:
+            self.plugin_instance.handle_plugin_event = Mock()
             relayMock.toggle = Mock(
                 return_value=case["inverted"] if case["target"] is None else case["target"]
             )
@@ -495,6 +529,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
             relayConstructorMock.assert_called_with(17, case["inverted"])
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with(case["expectedCommand"])
+            if case["expectedCommand"] == "CommandON":
+                self.plugin_instance.handle_plugin_event.assert_called_with("TURNED_ON", scope = ["r4"])
+            else:
+                self.plugin_instance.handle_plugin_event.assert_not_called()
 
     def test_toggle_relay__disabled(self):
         # Should not do anything when the requested relay is disabled
@@ -570,7 +608,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_plugin_event(self):
         # Should follow the rule on handling the event by toggling the relay if "state" is not None
         self.plugin_instance.tasks = [{"subject": "r4", "timer": timerMock}]
-        self.plugin_instance.cancel_tasks = Mock()
         cases = [
             { "event": "PRINTING_STARTED", "state": True, "expectedCall": True, "delay": 300 },
             { "event": "PRINTING_STARTED", "state": False, "expectedCall": True, "delay": 300 },
@@ -581,10 +618,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 300 },
             { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 300 },
             { "event": "STARTUP", "state": None, "expectedCall": False, "delay": 300 },
+            { "event": "TURNED_ON", "state": True, "expectedCall": False, "delay": 300 },
+            { "event": "TURNED_ON", "state": False, "expectedCall": True, "delay": 300 },
+            { "event": "TURNED_ON", "state": None, "expectedCall": False, "delay": 300 },
             { "event": "STARTUP", "state": True, "expectedCall": True, "delay": 0 },
             { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 0 },
         ]
         for case in cases:
+            self.plugin_instance.cancel_tasks = Mock()
             self.plugin_instance.tasks = []
             utilMock.ResettableTimer.reset_mock()
             timerMock.start.reset_mock()
@@ -601,8 +642,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
-            self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
             if case["expectedCall"]:
+                self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
                 if case["delay"] == 0:
                     self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
                 else:
@@ -618,6 +659,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         self.assertEqual(self.plugin_instance.tasks[index].delay, case["delay"])
                         self.assertEqual(self.plugin_instance.tasks[index].target, case["state"])
             else:
+                self.plugin_instance.cancel_tasks.assert_not_called()
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
                 self.plugin_instance.toggle_relay.assert_not_called()
@@ -771,7 +813,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "closed": False,
                 "expectedStatus": "ok",
                 "expectedToggle": True,
-                "expectedCommand": "CommandOnMock"
+                "expectedCommand": "CommandOnMock",
+                "expectedEvent": "TURNED_ON"
             },
             {
                 "index": "r4",
@@ -787,6 +830,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
         ]
         for case in cases:
+            self.plugin_instance.handle_plugin_event = Mock()
             self.plugin_instance.update_ui.reset_mock()
             relayMock.is_closed = Mock(return_value=case["closed"])
             relayMock.toggle = Mock(return_value=not case["closed"])
@@ -808,6 +852,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
+            if "expectedEvent" in case:
+                self.plugin_instance.handle_plugin_event.assert_called_with(case["expectedEvent"], scope = ["r4"])
+            else:
+                self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedStatus" in case:
                 jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
