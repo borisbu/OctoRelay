@@ -75,6 +75,7 @@ Each relay has the following settings *(in order of appearance)*:
 You can toggle the relays ON and OFF the following ways:
 
 - By clicking the control buttons on the navigation bar.
+  - The icon you choose for the button will display the current state.
 - By sending GCODE command `@OCTORELAY r#`.
   - Where `#` is relay index from `1` to `8`.
 - Or by querying [OctoRelay API](https://docs.octoprint.org/en/master/api/).
