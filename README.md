@@ -5,7 +5,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/borisbu/OctoRelay/badge.svg?branch=master)](https://coveralls.io/github/borisbu/OctoRelay?branch=master)
 [![Downloads of latest release](https://img.shields.io/github/downloads/borisbu/octorelay/latest/release.zip?color=blue)](https://github.com/borisbu/OctoRelay/releases/latest)
 
-The plugin adds buttons to the navigation bar for toggling GPIO pins on the Raspberry Pi.
+The plugin adds buttons to control GPIO pins of Raspberry Pi for switching relays and indicating their states.
 
 ![WebUI interface](img/controls.png)
 
