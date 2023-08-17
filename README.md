@@ -9,6 +9,9 @@ The plugin adds buttons to control GPIO pins of Raspberry Pi for switching relay
 
 ![WebUI interface](img/controls.png)
 
+In this screenshot, the black button indicates the printer relay is `ON`, and the gray buttons indicate it is `OFF`.
+The plugin allows you to set your own icons and flexibly customize the way the relay states are displayed.
+
 > _I use it with a 4 relay board, and printed this
 > [case for it](https://www.thingiverse.com/thing:2975944)._
 > _Just hooked up the GPIO pins with the relay board, and now I can turn the
