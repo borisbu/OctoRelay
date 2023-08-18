@@ -102,19 +102,6 @@ $(() => {
       return `in ${formattedTimeLeft}`;
     };
 
-    const onClickOutside = (selector: JQuery, handler: () => void) => {
-      const listener = (event: MouseEvent) => {
-        const target = $(event.target!); // !
-        if (!target.closest(selector).length) {
-          if (selector.is(":visible")) {
-            handler();
-          }
-          document.removeEventListener("click", listener); // disposer
-        }
-      };
-      document.addEventListener("click", listener);
-    };
-
     const getCountdownDelay = (deadline: number): number =>
       deadline - Date.now() > 120000 ? 60000 : 1000;
 
@@ -182,13 +169,11 @@ $(() => {
             timeTag,
             value.upcoming.deadline
           );
-          const closePopover = () => {
+          closeBtn.on("click", () => {
             countdownDisposer();
             closeBtn.off("click");
             relayBtn.popover("hide");
-          };
-          closeBtn.on("click", closePopover);
-          onClickOutside(closeBtn.closest(".popover"), closePopover);
+          });
           cancelBtn.on("click", () => cancelPostponedTask(key, value));
         } else {
           relayBtn
