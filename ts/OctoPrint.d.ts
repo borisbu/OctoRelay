@@ -13,7 +13,7 @@ interface JQuery {
           placement?: "top" | "bottom" | "left" | "right";
           title?: string;
         }
-  );
+  ): JQuery;
   popover(
     option:
       | "destroy"
@@ -27,7 +27,7 @@ interface JQuery {
           title?: string;
           content?: string;
         }
-  );
+  ): JQuery;
 }
 
 interface ViewModel {
