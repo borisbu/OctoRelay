@@ -9,7 +9,10 @@ interface JQuery {
       | "toggle"
       | "hide"
       | "show"
-      | { placement?: "top" | "bottom" | "left" | "right" }
+      | {
+          placement?: "top" | "bottom" | "left" | "right";
+          title?: string;
+        }
   );
   popover(
     option:

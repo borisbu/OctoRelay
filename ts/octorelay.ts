@@ -142,9 +142,6 @@ $(() => {
           .html(value.icon_html)
           .tooltip("destroy")
           .popover("destroy")
-          .removeData("original-title")
-          .removeAttr("data-original-title")
-          .removeAttr("title")
           .off("click")
           .on("click", () => toggleRelay(key, value));
         if (value.upcoming && value.upcoming.target !== value.relay_state) {
@@ -176,9 +173,7 @@ $(() => {
           });
           cancelBtn.on("click", () => cancelPostponedTask(key, value));
         } else {
-          relayBtn
-            .attr("title", value.label_text)
-            .tooltip({ placement: "bottom" });
+          relayBtn.tooltip({ placement: "bottom", title: value.label_text });
         }
       }
     };
