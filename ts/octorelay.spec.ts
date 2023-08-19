@@ -246,35 +246,6 @@ describe("OctoRelayViewModel", () => {
     }
   );
 
-  test("Should display upcoming state popover (%s sec delay)", () => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("octorelay", {
-      r1: {
-        relay_pin: 16,
-        inverted_output: false,
-        relay_state: true,
-        label_text: "Nozzle Light",
-        active: true,
-        icon_html: "<div>&#128161;</div>",
-        confirm_off: false,
-        upcoming: {
-          target: false,
-          owner: "PRINTING_STOPPED",
-          deadline: Date.now() + 20 * 1000,
-        },
-      },
-    });
-    expect(addEventListenerMock).toHaveBeenCalledWith(
-      "click",
-      expect.any(Function)
-    );
-    const listener = addEventListenerMock.mock.calls[0][1];
-    listener({ target: "targetMock" });
-    expect(elementMock.popover).toHaveBeenCalledWith("hide");
-    expect(removeEventListenerMock).toHaveBeenCalledWith("click", listener);
-  });
-
   test.each([true, false])("Should set countdown %#", (isVisible) => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
@@ -338,7 +309,7 @@ describe("OctoRelayViewModel", () => {
     });
   });
 
-  test("Clicking on Cancel button should send the command", () => {
+  test("Clicking on Close button should close the popover", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("octorelay", {
