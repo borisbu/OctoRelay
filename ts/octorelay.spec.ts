@@ -331,7 +331,7 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
     const closeHandler = elementMock.on.mock.calls[1][1];
     closeHandler();
-    expect(elementMock.popover).toHaveBeenCalledWith("hide");
+    expect(elementMock.popover).toHaveBeenCalledWith("destroy");
     expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
   });
 

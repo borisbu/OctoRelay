@@ -184,7 +184,7 @@ $(() => {
       closeBtn.on("click", () => {
         countdownDisposer();
         closeBtn.off("click");
-        btn.popover("hide");
+        btn.popover("destroy");
       });
       cancelBtn.on("click", () => cancelPostponedTask(key, upcoming));
       return btn;
