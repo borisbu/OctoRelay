@@ -144,7 +144,7 @@ $(() => {
     const addPopover = ({
       btn,
       key,
-      value: { label_text, upcoming },
+      value: { label_text: subject, upcoming },
       navbar,
     }: {
       btn: JQuery;
@@ -153,17 +153,17 @@ $(() => {
       navbar: JQuery;
     }) => {
       const dateObj = new Date(upcoming.deadline);
+      const dateISO = dateObj.toISOString();
+      const dateLocalized = dateObj.toLocaleString();
+      const timeLeft = formatDeadline(upcoming.deadline);
+      const targetState = upcoming.target ? "ON" : "OFF";
       btn
         .popover({
           html: true,
           placement: "bottom",
           trigger: "manual",
-          title: `<span>${label_text} goes <span class="label">${
-            upcoming.target ? "ON" : "OFF"
-          }</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
-          content: `<time id="time-tag-${key}" datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">${formatDeadline(
-            upcoming.deadline
-          )}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
+          title: `<span>${subject} goes <span class="label">${targetState}</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
+          content: `<time id="time-tag-${key}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
         })
         .popover("show");
       const closeBtn = navbar.find(`#pop-closer-${key}`);
