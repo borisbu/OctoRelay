@@ -157,18 +157,23 @@ $(() => {
       const dateLocalized = dateObj.toLocaleString();
       const timeLeft = formatDeadline(upcoming.deadline);
       const targetState = upcoming.target ? "ON" : "OFF";
+      const [closerId, cancelId, timeTagId] = [
+        "pop-closer",
+        "cancel-btn",
+        "time-tag",
+      ].map((prefix) => `${prefix}-${key}`);
       btn
         .popover({
           html: true,
           placement: "bottom",
           trigger: "manual",
-          title: `<span>${subject} goes <span class="label">${targetState}</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
-          content: `<time id="time-tag-${key}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
+          title: `<span>${subject} goes <span class="label">${targetState}</span></span><button id="${closerId}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
+          content: `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time><button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`,
         })
         .popover("show");
-      const closeBtn = navbar.find(`#pop-closer-${key}`);
-      const cancelBtn = navbar.find(`#cancel-btn-${key}`);
-      const timeTag = navbar.find(`#time-tag-${key}`);
+      const closeBtn = navbar.find(`#${closerId}`);
+      const cancelBtn = navbar.find(`#${cancelId}`);
+      const timeTag = navbar.find(`#${timeTagId}`);
       const countdownDisposer = setCountdown(timeTag, upcoming.deadline);
       closeBtn.on("click", () => {
         countdownDisposer();
