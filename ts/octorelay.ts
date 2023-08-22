@@ -79,7 +79,7 @@ $(() => {
       dialog.modal("show");
     };
 
-    const cancelPostponedTask = (key: string, { owner, target }: Task) =>
+    const cancelTask = (key: string, { owner, target }: Task) =>
       OctoPrint.simpleApiCommand(ownCode, "cancelTask", {
         subject: key,
         owner,
@@ -183,7 +183,7 @@ $(() => {
         closeBtn.off("click");
         addTooltip(clearHints(relayBtn), subject);
       });
-      cancelBtn.on("click", () => cancelPostponedTask(key, upcoming));
+      cancelBtn.on("click", () => cancelTask(key, upcoming));
       return relayBtn;
     };
 
