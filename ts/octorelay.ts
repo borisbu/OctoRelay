@@ -138,16 +138,19 @@ $(() => {
     ): value is RelayInfoWithUpcomingTask =>
       value.upcoming ? value.upcoming.target !== value.relay_state : false;
 
+    const clearHints = (btn: JQuery) =>
+      btn.tooltip("destroy").popover("destroy");
+
     const addTooltip = (btn: JQuery, text: string) =>
       btn.tooltip({ placement: "bottom", title: text });
 
     const addPopover = ({
-      btn,
+      relayBtn,
       key,
       value: { label_text: subject, upcoming },
       navbar,
     }: {
-      btn: JQuery;
+      relayBtn: JQuery;
       key: string;
       value: RelayInfoWithUpcomingTask;
       navbar: JQuery;
@@ -167,7 +170,7 @@ $(() => {
       const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
       const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
       const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
-      btn
+      relayBtn
         .popover({
           html: true,
           placement: "bottom",
@@ -183,11 +186,10 @@ $(() => {
       closeBtn.on("click", () => {
         countdownDisposer();
         closeBtn.off("click");
-        btn.popover("destroy");
-        addTooltip(btn, subject);
+        addTooltip(clearHints(relayBtn), subject);
       });
       cancelBtn.on("click", () => cancelPostponedTask(key, upcoming));
-      return btn;
+      return relayBtn;
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
@@ -206,12 +208,11 @@ $(() => {
           .find(`#relais${key}`)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
-          .tooltip("destroy")
-          .popover("destroy")
           .off("click")
           .on("click", () => toggleRelay(key, value));
+        clearHints(relayBtn);
         if (hasUpcomingTask(value)) {
-          addPopover({ btn: relayBtn, key, value, navbar });
+          addPopover({ relayBtn: relayBtn, key, value, navbar });
         } else {
           addTooltip(relayBtn, value.label_text);
         }
