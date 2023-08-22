@@ -26,8 +26,6 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .attr() 1`] = `[]`;
-
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
 [
   [
@@ -99,10 +97,6 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   ],
 ]
 `;
-
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeAttr() 1`] = `[]`;
-
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeData() 1`] = `[]`;
 
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
 [
