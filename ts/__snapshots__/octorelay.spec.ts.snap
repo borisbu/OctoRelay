@@ -80,7 +80,25 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .popover() 1`] = `[]`;
+exports[`OctoRelayViewModel Message handler should process the supplied configuration: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+]
+`;
 
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeAttr() 1`] = `[]`;
 
