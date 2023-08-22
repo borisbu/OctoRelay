@@ -185,6 +185,7 @@ $(() => {
         countdownDisposer();
         closeBtn.off("click");
         btn.popover("destroy");
+        addTooltip(btn, subject);
       });
       cancelBtn.on("click", () => cancelPostponedTask(key, upcoming));
       return btn;

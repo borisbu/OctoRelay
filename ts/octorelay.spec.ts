@@ -78,6 +78,7 @@ describe("OctoRelayViewModel", () => {
   afterEach(() => {
     MockDate.set("2023-08-13T22:30:00");
     jQueryMock.mockClear();
+    elementMock.tooltip.mockClear();
     elementMock.popover.mockClear();
     elementMock.on.mockClear();
     elementMock.text.mockClear();
@@ -333,6 +334,10 @@ describe("OctoRelayViewModel", () => {
     closeHandler();
     expect(elementMock.popover).toHaveBeenCalledWith("destroy");
     expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
+    expect(elementMock.tooltip).toHaveBeenCalledWith({
+      placement: "bottom",
+      title: "Nozzle Light",
+    });
   });
 
   test.each([
