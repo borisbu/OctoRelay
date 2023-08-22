@@ -79,11 +79,14 @@ $(() => {
       dialog.modal("show");
     };
 
-    const cancelPostponedTask = (key: string, value: RelayInfo) =>
+    const cancelPostponedTask = (
+      key: string,
+      { owner, target }: UpcomingTask
+    ) =>
       OctoPrint.simpleApiCommand(ownCode, "cancelTask", {
         subject: key,
-        owner: value.upcoming?.owner,
-        target: value.upcoming?.target,
+        owner,
+        target,
       });
 
     const formatDeadline = (time: number): string => {
@@ -141,7 +144,7 @@ $(() => {
     const addPopover = ({
       btn,
       key,
-      value,
+      value: { label_text, upcoming },
       navbar,
     }: {
       btn: JQuery;
@@ -149,30 +152,30 @@ $(() => {
       value: RelayInfoWithUpcomingTask;
       navbar: JQuery;
     }) => {
-      const dateObj = new Date(value.upcoming.deadline);
+      const dateObj = new Date(upcoming.deadline);
       btn
         .popover({
           html: true,
           placement: "bottom",
           trigger: "manual",
-          title: `<span>${value.label_text} goes <span class="label">${
-            value.upcoming.target ? "ON" : "OFF"
+          title: `<span>${label_text} goes <span class="label">${
+            upcoming.target ? "ON" : "OFF"
           }</span></span><button id="pop-closer-${key}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
           content: `<time id="time-tag-${key}" datetime="${dateObj.toISOString()}" title="${dateObj.toLocaleString()}">${formatDeadline(
-            value.upcoming.deadline
+            upcoming.deadline
           )}</time><button id="cancel-btn-${key}" class="btn btn-mini" type="button">Cancel</button>`,
         })
         .popover("show");
       const closeBtn = navbar.find(`#pop-closer-${key}`);
       const cancelBtn = navbar.find(`#cancel-btn-${key}`);
       const timeTag = navbar.find(`#time-tag-${key}`);
-      const countdownDisposer = setCountdown(timeTag, value.upcoming.deadline);
+      const countdownDisposer = setCountdown(timeTag, upcoming.deadline);
       closeBtn.on("click", () => {
         countdownDisposer();
         closeBtn.off("click");
         btn.popover("hide");
       });
-      cancelBtn.on("click", () => cancelPostponedTask(key, value));
+      cancelBtn.on("click", () => cancelPostponedTask(key, upcoming));
       return btn;
     };
 
