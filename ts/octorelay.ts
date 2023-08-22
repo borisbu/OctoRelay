@@ -1,3 +1,9 @@
+interface UpcomingTask {
+  deadline: number;
+  owner: string;
+  target: boolean;
+}
+
 interface RelayInfo {
   active: boolean;
   confirm_off: boolean;
@@ -6,11 +12,7 @@ interface RelayInfo {
   relay_pin: number;
   inverted_output: boolean;
   relay_state: boolean;
-  upcoming: null | {
-    deadline: number;
-    owner: string;
-    target: boolean;
-  };
+  upcoming: null | UpcomingTask;
 }
 
 type OwnMessage = Record<`r${number}`, RelayInfo>;
@@ -124,6 +126,14 @@ $(() => {
       return disposer;
     };
 
+    const hasUpcomingTask = (
+      value: RelayInfo
+    ): value is RelayInfo & { upcoming: NonNullable<RelayInfo["upcoming"]> } =>
+      value.upcoming ? value.upcoming.target !== value.relay_state : false;
+
+    const addTooltip = (btn: JQuery, text: string) =>
+      btn.tooltip({ placement: "bottom", title: text });
+
     self.onDataUpdaterPluginMessage = function (plugin, data) {
       if (plugin !== ownCode) {
         return;
@@ -144,7 +154,7 @@ $(() => {
           .popover("destroy")
           .off("click")
           .on("click", () => toggleRelay(key, value));
-        if (value.upcoming && value.upcoming.target !== value.relay_state) {
+        if (hasUpcomingTask(value)) {
           const dateObj = new Date(value.upcoming.deadline);
           relayBtn
             .popover({
@@ -173,7 +183,7 @@ $(() => {
           });
           cancelBtn.on("click", () => cancelPostponedTask(key, value));
         } else {
-          relayBtn.tooltip({ placement: "bottom", title: value.label_text });
+          addTooltip(relayBtn, value.label_text);
         }
       }
     };
