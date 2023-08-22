@@ -162,13 +162,18 @@ $(() => {
         "cancel-btn",
         "time-tag",
       ].map((prefix) => `${prefix}-${key}`);
+      const upcomingHTML = `<span>${subject} goes <span class="label">${targetState}</span></span>`;
+      const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
+      const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
+      const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
+      const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
       btn
         .popover({
           html: true,
           placement: "bottom",
           trigger: "manual",
-          title: `<span>${subject} goes <span class="label">${targetState}</span></span><button id="${closerId}" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>`,
-          content: `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time><button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`,
+          title: `${upcomingHTML}${closeBtnHTML}`,
+          content: `${timeHTML}${cancelHTML}`,
         })
         .popover("show");
       const closeBtn = navbar.find(`#${closerId}`);
