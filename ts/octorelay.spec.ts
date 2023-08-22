@@ -5,9 +5,6 @@ describe("OctoRelayViewModel", () => {
   const elementMock: Record<
     | "toggle"
     | "html"
-    | "attr"
-    | "removeAttr"
-    | "removeData"
     | "off"
     | "on"
     | "find"
@@ -21,9 +18,6 @@ describe("OctoRelayViewModel", () => {
   > = {
     toggle: jest.fn(() => elementMock),
     html: jest.fn(() => elementMock),
-    attr: jest.fn(() => elementMock),
-    removeAttr: jest.fn(() => elementMock),
-    removeData: jest.fn(() => elementMock),
     off: jest.fn(() => elementMock),
     on: jest.fn(() => elementMock),
     find: jest.fn(() => elementMock),
