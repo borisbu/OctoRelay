@@ -212,7 +212,7 @@ $(() => {
           .on("click", () => toggleRelay(key, value));
         clearHints(relayBtn);
         if (hasUpcomingTask(value)) {
-          addPopover({ relayBtn: relayBtn, key, value, navbar });
+          addPopover({ relayBtn, key, value, navbar });
         } else {
           addTooltip(relayBtn, value.label_text);
         }
