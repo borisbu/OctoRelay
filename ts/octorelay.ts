@@ -1,4 +1,4 @@
-interface UpcomingTask {
+interface Task {
   deadline: number;
   owner: string;
   target: boolean;
@@ -12,10 +12,10 @@ interface RelayInfo {
   relay_pin: number;
   inverted_output: boolean;
   relay_state: boolean;
-  upcoming: null | UpcomingTask;
+  upcoming: null | Task;
 }
 
-type RelayInfoWithUpcomingTask = RelayInfo & {
+type RelayHavingTask = RelayInfo & {
   upcoming: NonNullable<RelayInfo["upcoming"]>;
 };
 
@@ -79,10 +79,7 @@ $(() => {
       dialog.modal("show");
     };
 
-    const cancelPostponedTask = (
-      key: string,
-      { owner, target }: UpcomingTask
-    ) =>
+    const cancelPostponedTask = (key: string, { owner, target }: Task) =>
       OctoPrint.simpleApiCommand(ownCode, "cancelTask", {
         subject: key,
         owner,
@@ -133,9 +130,7 @@ $(() => {
       return disposer;
     };
 
-    const hasUpcomingTask = (
-      value: RelayInfo
-    ): value is RelayInfoWithUpcomingTask =>
+    const hasUpcomingTask = (value: RelayInfo): value is RelayHavingTask =>
       value.upcoming ? value.upcoming.target !== value.relay_state : false;
 
     const clearHints = (btn: JQuery) =>
@@ -152,7 +147,7 @@ $(() => {
     }: {
       relayBtn: JQuery;
       key: string;
-      value: RelayInfoWithUpcomingTask;
+      value: RelayHavingTask;
       navbar: JQuery;
     }) => {
       const dateObj = new Date(upcoming.deadline);
