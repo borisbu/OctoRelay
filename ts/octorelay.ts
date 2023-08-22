@@ -139,7 +139,7 @@ $(() => {
       value.upcoming ? value.upcoming.target !== value.relay_state : false;
 
     const addTooltip = (btn: JQuery, text: string) =>
-      btn.tooltip({ placement: "bottom", title: text });
+      btn.tooltip("destroy").tooltip({ placement: "bottom", title: text });
 
     const addPopover = ({
       btn,
@@ -168,6 +168,7 @@ $(() => {
       const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
       const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
       btn
+        .popover("destroy")
         .popover({
           html: true,
           placement: "bottom",
@@ -205,8 +206,6 @@ $(() => {
           .find(`#relais${key}`)
           .toggle(hasPermission && value.active)
           .html(value.icon_html)
-          .tooltip("destroy")
-          .popover("destroy")
           .off("click")
           .on("click", () => toggleRelay(key, value));
         if (hasUpcomingTask(value)) {
