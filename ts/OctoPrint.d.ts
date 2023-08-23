@@ -9,8 +9,11 @@ interface JQuery {
       | "toggle"
       | "hide"
       | "show"
-      | { placement?: "top" | "bottom" | "left" | "right" }
-  );
+      | {
+          placement?: "top" | "bottom" | "left" | "right";
+          title?: string;
+        }
+  ): JQuery;
   popover(
     option:
       | "destroy"
@@ -24,7 +27,7 @@ interface JQuery {
           title?: string;
           content?: string;
         }
-  );
+  ): JQuery;
 }
 
 interface ViewModel {

@@ -2,6 +2,12 @@
 
 ## Version 3
 
+### 3.8.1
+
+- A couple fixes for the upcoming switch popover:
+  - The outside clicks handler is removed, so dismissing the popover is now only possible by clicking the Close button.
+  - Restoring the regular tooltip after dismissing the popover.
+
 ### 3.8.0
 
 - Improved logging:

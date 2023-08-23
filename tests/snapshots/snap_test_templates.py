@@ -8,35 +8,35 @@ from snapshottest import Snapshot
 snapshots = Snapshot()
 
 snapshots['TestTemplates::test_templates octorelay_navbar.jinja2'] = '''
-    <a id="relaisr1" title="relay 1" role="button" style="display: none">
+    <a id="relaisr1" role="button" style="display: none">
         R1
     </a>
 
-    <a id="relaisr2" title="relay 2" role="button" style="display: none">
+    <a id="relaisr2" role="button" style="display: none">
         R2
     </a>
 
-    <a id="relaisr3" title="relay 3" role="button" style="display: none">
+    <a id="relaisr3" role="button" style="display: none">
         R3
     </a>
 
-    <a id="relaisr4" title="relay 4" role="button" style="display: none">
+    <a id="relaisr4" role="button" style="display: none">
         R4
     </a>
 
-    <a id="relaisr5" title="relay 5" role="button" style="display: none">
+    <a id="relaisr5" role="button" style="display: none">
         R5
     </a>
 
-    <a id="relaisr6" title="relay 6" role="button" style="display: none">
+    <a id="relaisr6" role="button" style="display: none">
         R6
     </a>
 
-    <a id="relaisr7" title="relay 7" role="button" style="display: none">
+    <a id="relaisr7" role="button" style="display: none">
         R7
     </a>
 
-    <a id="relaisr8" title="relay 8" role="button" style="display: none">
+    <a id="relaisr8" role="button" style="display: none">
         R8
     </a>
 
