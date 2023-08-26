@@ -40,7 +40,6 @@ class OctoRelayPlugin(
         self.polling_timer = None
         self.tasks = [] # of Task
         self.model = { index: {} for index in RELAY_INDEXES }
-        self.ui_update_lock = None
 
     def get_settings_version(self):
         return SETTINGS_VERSION
@@ -264,7 +263,6 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
-        self.ui_update_lock = True # issue 186
         self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
         upcoming = self.get_upcoming_tasks(filter(
@@ -292,7 +290,6 @@ class OctoRelayPlugin(
                     "deadline": int(upcoming[index].deadline * 1000) # ms for JS
                 }
             }
-        self.ui_update_lock = None # issue 186, once model is updated, the lock can be released
         self._logger.debug(f"The UI feed: {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
@@ -318,8 +315,6 @@ class OctoRelayPlugin(
     # Polling thread
     def input_polling(self):
         # self._logger.debug("input_polling") # in case your log file is too small
-        if self.ui_update_lock:
-            return # issue 186, avoid the update during the another one
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
