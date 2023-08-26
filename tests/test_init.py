@@ -605,7 +605,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         utilMock.RepeatedTimer.assert_called_with(
             0.3, self.plugin_instance.input_polling, condition=ANY, daemon = True
         )
-        self.assertTrue(utilMock.RepeatedTimer.call_args.kwargs["condition"]())
+        self.assertTrue(utilMock.RepeatedTimer.mock_calls[0].kwargs["condition"]())
         timerMock.start.assert_called_with()
 
     def test_handle_plugin_event(self):
