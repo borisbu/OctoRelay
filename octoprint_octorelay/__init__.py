@@ -265,6 +265,7 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
+        self._logger.debug("Waiting for UI lock to be released")
         with self.ui_update_lock:
             self._logger.debug("Updating the UI")
             settings = self._settings.get([], merged=True) # expensive
