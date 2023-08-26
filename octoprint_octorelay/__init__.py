@@ -181,6 +181,7 @@ class OctoRelayPlugin(
     def handle_plugin_event(self, event, scope = RELAY_INDEXES):
         self._logger.debug(f"Handling the plugin event {event} having scope: {scope}")
         settings = self._settings.get([], merged=True) # expensive
+        needs_ui_update = False
         for index in scope:
             if bool(settings[index]["active"]):
                 target = settings[index]["rules"][event]["state"]
@@ -202,7 +203,9 @@ class OctoRelayPlugin(
                         self.tasks.append(task)
                         task.timer.start()
                         self._logger.debug(f"The task registered: {task}")
-                        self.update_ui() # issue 190
+                        needs_ui_update = True
+        if needs_ui_update:
+            self.update_ui() # issue 190
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
