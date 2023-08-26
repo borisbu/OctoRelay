@@ -68,6 +68,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         expected = {
             "r1": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 4,
                 "inverted_output": True,
                 "cmd_on": "",
@@ -98,6 +99,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r2": {
                 "active": False,
+                "printer": True,
                 "relay_pin": 17,
                 "inverted_output": True,
                 "cmd_on": "",
@@ -131,6 +133,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r3": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 18,
                 "inverted_output": True,
                 "cmd_on": "",
@@ -164,6 +167,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r4": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 23,
                 "inverted_output": True,
                 "cmd_on": "sudo service webcamd start",
@@ -197,6 +201,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r5": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 24,
                 "inverted_output": True,
                 "cmd_on": "",
@@ -227,6 +232,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r6": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 25,
                 "inverted_output": True,
                 "cmd_on": "",
@@ -257,6 +263,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r7": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 8,
                 "inverted_output": True,
                 "cmd_on": "",
@@ -287,6 +294,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             "r8": {
                 "active": False,
+                "printer": False,
                 "relay_pin": 7,
                 "inverted_output": True,
                 "cmd_on": "",
