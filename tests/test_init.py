@@ -666,6 +666,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
                 self.plugin_instance.toggle_relay.assert_not_called()
+                self.plugin_instance.update_ui.assert_not_called()
 
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
