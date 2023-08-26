@@ -198,6 +198,7 @@ $(() => {
           ? self.loginState.hasPermission(permission)
           : false;
       const navbar = $(`#navbar_plugin_${ownCode}`);
+      const upcomingStack: Array<Parameters<typeof addPopover>[0]> = [];
       for (const [key, value] of Object.entries(data)) {
         const relayBtn = navbar
           .find(`#relais${key}`)
@@ -207,10 +208,14 @@ $(() => {
           .on("click", () => toggleRelay(key, value));
         clearHints(relayBtn);
         if (hasUpcomingTask(value)) {
-          addPopover({ relayBtn, key, value, navbar });
+          upcomingStack.push({ relayBtn, key, value, navbar });
         } else {
           addTooltip(relayBtn, value.label_text);
         }
+        upcomingStack.sort(
+          (a, b) => a.value.upcoming.deadline - b.value.upcoming.deadline
+        );
+        upcomingStack.forEach(addPopover); // @todo continue here
       }
     };
   };
