@@ -626,6 +626,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             { "event": "STARTUP", "state": False, "expectedCall": True, "delay": 0 },
         ]
         for case in cases:
+            self.plugin_instance.update_ui = Mock()
             self.plugin_instance.cancel_tasks = Mock()
             self.plugin_instance.tasks = []
             utilMock.ResettableTimer.reset_mock()
@@ -652,6 +653,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         case["delay"], self.plugin_instance.toggle_relay, ["r8", case["state"]]
                     )
                     timerMock.start.assert_called_with()
+                    self.plugin_instance.update_ui.assert_called_with() # issue 190
                     self.assertEqual(len(self.plugin_instance.tasks), 8)
                     for index in range(0,8):
                         self.assertIsInstance(self.plugin_instance.tasks[index], Task)

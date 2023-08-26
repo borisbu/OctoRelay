@@ -202,7 +202,7 @@ class OctoRelayPlugin(
                         self.tasks.append(task)
                         task.timer.start()
                         self._logger.debug(f"The task registered: {task}")
-                        self.update_ui()
+                        self.update_ui() # issue 190
 
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
