@@ -319,7 +319,7 @@ class OctoRelayPlugin(
     def input_polling(self):
         # self._logger.debug("input_polling") # in case your log file is too small
         if self.ui_update_lock:
-            return # issue 186, avoid update during making another update
+            return # issue 186, avoid the update during the another one
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
