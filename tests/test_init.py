@@ -5,7 +5,7 @@
 
 import unittest
 import sys
-from unittest.mock import Mock, patch
+from unittest.mock import ANY, Mock, patch
 from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
@@ -603,7 +603,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.handle_plugin_event.assert_called_with("STARTUP")
         self.plugin_instance.update_ui.assert_called_with()
         utilMock.RepeatedTimer.assert_called_with(
-            0.3, self.plugin_instance.input_polling, daemon = True
+            0.3, self.plugin_instance.input_polling, condition=ANY, daemon = True
         )
         timerMock.start.assert_called_with()
 
