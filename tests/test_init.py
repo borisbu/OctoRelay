@@ -510,6 +510,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
                 "MockedIdentifier", expected_model
             )
+            self.assertIsNone(self.plugin_instance.ui_update_lock)
 
     @patch("os.system")
     def test_toggle_relay(self, system_mock):
