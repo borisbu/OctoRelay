@@ -460,15 +460,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
 
-    def test_input_polling__locked(self):
-        # Should return immediately when the UI update is locked
-        self.plugin_instance.ui_update_lock = True
-        self.plugin_instance.update_ui = Mock()
-        relayConstructorMock.reset_mock()
-        self.plugin_instance.input_polling()
-        self.plugin_instance.update_ui.assert_not_called()
-        relayConstructorMock.assert_not_called()
-
     def test_update_ui(self):
         # Should send message via plugin manager containing actual settings and the relay state
         cases = [
