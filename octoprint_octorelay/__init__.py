@@ -4,8 +4,8 @@ from typing import Optional
 from functools import reduce
 import os
 import time
-import flask
 import threading
+import flask
 
 import octoprint.plugin
 from octoprint.events import Events
