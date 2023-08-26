@@ -5,9 +5,6 @@ describe("OctoRelayViewModel", () => {
   const elementMock: Record<
     | "toggle"
     | "html"
-    | "attr"
-    | "removeAttr"
-    | "removeData"
     | "off"
     | "on"
     | "find"
@@ -21,9 +18,6 @@ describe("OctoRelayViewModel", () => {
   > = {
     toggle: jest.fn(() => elementMock),
     html: jest.fn(() => elementMock),
-    attr: jest.fn(() => elementMock),
-    removeAttr: jest.fn(() => elementMock),
-    removeData: jest.fn(() => elementMock),
     off: jest.fn(() => elementMock),
     on: jest.fn(() => elementMock),
     find: jest.fn(() => elementMock),
@@ -78,6 +72,7 @@ describe("OctoRelayViewModel", () => {
   afterEach(() => {
     MockDate.set("2023-08-13T22:30:00");
     jQueryMock.mockClear();
+    elementMock.tooltip.mockClear();
     elementMock.popover.mockClear();
     elementMock.on.mockClear();
     elementMock.text.mockClear();
@@ -170,9 +165,6 @@ describe("OctoRelayViewModel", () => {
     expect(jQueryMock.mock.calls).toMatchSnapshot("$()");
     expect(elementMock.toggle.mock.calls).toMatchSnapshot(".toggle()");
     expect(elementMock.html.mock.calls).toMatchSnapshot(".html()");
-    expect(elementMock.removeAttr.mock.calls).toMatchSnapshot(".removeAttr()");
-    expect(elementMock.removeData.mock.calls).toMatchSnapshot(".removeData()");
-    expect(elementMock.attr.mock.calls).toMatchSnapshot(".attr()");
     expect(elementMock.tooltip.mock.calls).toMatchSnapshot(".tooltip()");
     expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
     expect(elementMock.off).toHaveBeenCalledTimes(5);
@@ -246,35 +238,6 @@ describe("OctoRelayViewModel", () => {
     }
   );
 
-  test("Should display upcoming state popover (%s sec delay)", () => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("octorelay", {
-      r1: {
-        relay_pin: 16,
-        inverted_output: false,
-        relay_state: true,
-        label_text: "Nozzle Light",
-        active: true,
-        icon_html: "<div>&#128161;</div>",
-        confirm_off: false,
-        upcoming: {
-          target: false,
-          owner: "PRINTING_STOPPED",
-          deadline: Date.now() + 20 * 1000,
-        },
-      },
-    });
-    expect(addEventListenerMock).toHaveBeenCalledWith(
-      "click",
-      expect.any(Function)
-    );
-    const listener = addEventListenerMock.mock.calls[0][1];
-    listener({ target: "targetMock" });
-    expect(elementMock.popover).toHaveBeenCalledWith("hide");
-    expect(removeEventListenerMock).toHaveBeenCalledWith("click", listener);
-  });
-
   test.each([true, false])("Should set countdown %#", (isVisible) => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
@@ -338,7 +301,7 @@ describe("OctoRelayViewModel", () => {
     });
   });
 
-  test("Clicking on Cancel button should send the command", () => {
+  test("Clicking on Close button should close the popover", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
     handler("octorelay", {
@@ -360,8 +323,12 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
     const closeHandler = elementMock.on.mock.calls[1][1];
     closeHandler();
-    expect(elementMock.popover).toHaveBeenCalledWith("hide");
+    expect(elementMock.popover).toHaveBeenCalledWith("destroy");
     expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
+    expect(elementMock.tooltip).toHaveBeenCalledWith({
+      placement: "bottom",
+      title: "Nozzle Light",
+    });
   });
 
   test.each([

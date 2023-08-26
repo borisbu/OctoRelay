@@ -2,6 +2,19 @@
 
 ## Version 3
 
+### 3.8.2
+
+- Fixed a bug: the popover on upcoming relay switch could not appear in some cases.
+  - In case a postponed switch is configured for PRINTING_STARTED or PRINTING_STOPPED event, but no switch is
+    configured to happen immediately, the UI did not have an update.
+  - Thanks to [@backupartist](https://github.com/backupartist) for reporting and elaborating to fix this issue.
+
+### 3.8.1
+
+- A couple fixes for the upcoming switch popover:
+  - The outside clicks handler is removed, so dismissing the popover is now only possible by clicking the Close button.
+  - Restoring the regular tooltip after dismissing the popover.
+
 ### 3.8.0
 
 - Improved logging:

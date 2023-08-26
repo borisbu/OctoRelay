@@ -26,31 +26,6 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .attr() 1`] = `
-[
-  [
-    "title",
-    "Nozzle Light",
-  ],
-  [
-    "title",
-    "Printer",
-  ],
-  [
-    "title",
-    "Fan",
-  ],
-  [
-    "title",
-    "Chassis Light",
-  ],
-  [
-    "title",
-    "R5",
-  ],
-]
-`;
-
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
 [
   [
@@ -123,61 +98,6 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeAttr() 1`] = `
-[
-  [
-    "data-original-title",
-  ],
-  [
-    "title",
-  ],
-  [
-    "data-original-title",
-  ],
-  [
-    "title",
-  ],
-  [
-    "data-original-title",
-  ],
-  [
-    "title",
-  ],
-  [
-    "data-original-title",
-  ],
-  [
-    "title",
-  ],
-  [
-    "data-original-title",
-  ],
-  [
-    "title",
-  ],
-]
-`;
-
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .removeData() 1`] = `
-[
-  [
-    "original-title",
-  ],
-  [
-    "original-title",
-  ],
-  [
-    "original-title",
-  ],
-  [
-    "original-title",
-  ],
-  [
-    "original-title",
-  ],
-]
-`;
-
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
 [
   [
@@ -217,6 +137,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   [
     {
       "placement": "bottom",
+      "title": "Nozzle Light",
     },
   ],
   [
@@ -225,6 +146,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   [
     {
       "placement": "bottom",
+      "title": "Printer",
     },
   ],
   [
@@ -233,6 +155,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   [
     {
       "placement": "bottom",
+      "title": "Fan",
     },
   ],
   [
@@ -241,6 +164,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   [
     {
       "placement": "bottom",
+      "title": "Chassis Light",
     },
   ],
   [
@@ -249,6 +173,7 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   [
     {
       "placement": "bottom",
+      "title": "R5",
     },
   ],
 ]
