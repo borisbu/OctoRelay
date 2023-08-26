@@ -72,7 +72,12 @@ class OctoRelayPlugin(
         self._logger.info("Starting the plugin")
         self.handle_plugin_event(STARTUP)
         self.update_ui()
-        self.polling_timer = RepeatedTimer(POLLING_INTERVAL, self.input_polling, daemon=True)
+        self.polling_timer = RepeatedTimer(
+            POLLING_INTERVAL,
+            self.input_polling,
+            condition = lambda: self.ui_update_lock is None, # issue 186, avoid the update during the another one
+            daemon = True
+        )
         self.polling_timer.start()
         self._logger.debug("The plugin started")
 
@@ -318,8 +323,6 @@ class OctoRelayPlugin(
     # Polling thread
     def input_polling(self):
         # self._logger.debug("input_polling") # in case your log file is too small
-        if self.ui_update_lock:
-            return # issue 186, avoid the update during the another one
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
