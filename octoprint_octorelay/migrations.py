@@ -73,8 +73,16 @@ def v2(settings, logger):
         logger.debug(f"Replacing it with: {after}")
         settings.set([index], after)
 
+def v3(settings, logger):
+    """Migration from v3 to v4"""
+    # There was no printer setting
+    before = settings.get(["r2"]) # the r2 supposed to be the printer relay by default
+    if before["label_text"] != "Printer":
+        after = { **before, "printer": False }
+        settings.set(["r2"], after)
+
 # List of migration functions starting from v0->v1
-migrators = [ v0, v1, v2 ]
+migrators = [ v0, v1, v2, v3 ]
 
 def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from

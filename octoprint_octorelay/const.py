@@ -15,7 +15,7 @@ CANCELLATION_EXCEPTIONS = {}
 PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 3
+SETTINGS_VERSION = 4
 
 # Plugin's default settings, immutable getter
 # Warning: every amendment or deletion of these settings requires:
