@@ -265,8 +265,7 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
-        self.ui_update_lock.acquire()
-        try:
+        with self.ui_update_lock:
             self._logger.debug("Updating the UI")
             settings = self._settings.get([], merged=True) # expensive
             upcoming = self.get_upcoming_tasks(filter(
@@ -296,8 +295,6 @@ class OctoRelayPlugin(
                 }
             self._logger.debug(f"The UI feed: {self.model}")
             self._plugin_manager.send_plugin_message(self._identifier, self.model)
-        finally:
-            self.ui_update_lock.release()
 
     # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
