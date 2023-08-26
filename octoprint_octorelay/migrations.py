@@ -78,7 +78,7 @@ def v3(settings, logger):
     # There was no printer setting
     before = settings.get(["r2"]) # the r2 supposed to be the printer relay by default
     logger.debug(f"Relay r2 stored settings: {before}")
-    if before["label_text"] != "Printer":
+    if before.get("label_text") is not None: # if changed from being default - Printer
         logger.debug("Seems to be not a printer relay anymore")
         after = { **before, "printer": False }
         settings.set(["r2"], after)
