@@ -264,7 +264,7 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
-        self.ui_update_lock = True
+        self.ui_update_lock = True # issue 186
         self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
         upcoming = self.get_upcoming_tasks(filter(
@@ -292,7 +292,7 @@ class OctoRelayPlugin(
                     "deadline": int(upcoming[index].deadline * 1000) # ms for JS
                 }
             }
-        self.ui_update_lock = None
+        self.ui_update_lock = None # issue 186, once model is updated, the lock can be released
         self._logger.debug(f"The UI feed: {self.model}")
         self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
