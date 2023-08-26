@@ -4,7 +4,6 @@ from typing import Optional
 from functools import reduce
 import os
 import time
-import threading
 import flask
 
 import octoprint.plugin
@@ -41,7 +40,7 @@ class OctoRelayPlugin(
         self.polling_timer = None
         self.tasks = [] # of Task
         self.model = { index: {} for index in RELAY_INDEXES }
-        self.ui_update_lock = threading.Lock()
+        self.ui_update_lock = None
 
     def get_settings_version(self):
         return SETTINGS_VERSION
@@ -265,37 +264,37 @@ class OctoRelayPlugin(
         )
 
     def update_ui(self):
-        self._logger.debug("Waiting for UI lock to be released")
-        with self.ui_update_lock:
-            self._logger.debug("Updating the UI")
-            settings = self._settings.get([], merged=True) # expensive
-            upcoming = self.get_upcoming_tasks(filter(
-                lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
-                RELAY_INDEXES
-            ))
-            for index in RELAY_INDEXES:
-                active = bool(settings[index]["active"])
-                relay = Relay(
-                    int(settings[index]["relay_pin"] or 0),
-                    bool(settings[index]["inverted_output"])
-                )
-                relay_state = relay.is_closed() if active else False
-                self.model[index] = {
-                    "relay_pin": relay.pin,
-                    "inverted_output": relay.inverted,
-                    "relay_state": relay_state, # bool since v3.1
-                    "label_text": settings[index]["label_text"],
-                    "active": active,
-                    "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
-                    "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
-                    "upcoming": None if upcoming[index] is None else {
-                        "target": upcoming[index].target,
-                        "owner": upcoming[index].owner,
-                        "deadline": int(upcoming[index].deadline * 1000) # ms for JS
-                    }
+        self.ui_update_lock = True
+        self._logger.debug("Updating the UI")
+        settings = self._settings.get([], merged=True) # expensive
+        upcoming = self.get_upcoming_tasks(filter(
+            lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
+            RELAY_INDEXES
+        ))
+        for index in RELAY_INDEXES:
+            active = bool(settings[index]["active"])
+            relay = Relay(
+                int(settings[index]["relay_pin"] or 0),
+                bool(settings[index]["inverted_output"])
+            )
+            relay_state = relay.is_closed() if active else False
+            self.model[index] = {
+                "relay_pin": relay.pin,
+                "inverted_output": relay.inverted,
+                "relay_state": relay_state, # bool since v3.1
+                "label_text": settings[index]["label_text"],
+                "active": active,
+                "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
+                "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
+                "upcoming": None if upcoming[index] is None else {
+                    "target": upcoming[index].target,
+                    "owner": upcoming[index].owner,
+                    "deadline": int(upcoming[index].deadline * 1000) # ms for JS
                 }
-            self._logger.debug(f"The UI feed: {self.model}")
-            self._plugin_manager.send_plugin_message(self._identifier, self.model)
+            }
+        self.ui_update_lock = None
+        self._logger.debug(f"The UI feed: {self.model}")
+        self._plugin_manager.send_plugin_message(self._identifier, self.model)
 
     # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
@@ -319,6 +318,8 @@ class OctoRelayPlugin(
     # Polling thread
     def input_polling(self):
         # self._logger.debug("input_polling") # in case your log file is too small
+        if self.ui_update_lock:
+            return # issue 186, avoid update during making another update
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
