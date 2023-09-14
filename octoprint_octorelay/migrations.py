@@ -75,13 +75,12 @@ def v2(settings, logger):
 
 def v3(settings, logger):
     """Migration from v3 to v4"""
-    # There was no printer setting
+    # There was no common/printer setting
     before = settings.get(["r2"]) # the r2 supposed to be the printer relay by default
     logger.debug(f"Relay r2 stored settings: {before}")
-    if before.get("label_text") is not None: # if changed from being default - Printer
-        logger.debug("Seems to be not a printer relay anymore")
-        after = { **before, "printer": False }
-        settings.set(["r2"], after)
+    printer_relay = "r2" if before.get("label_text") is None else None
+    logger.debug(f"Setting the printer relay index {printer_relay}")
+    settings.set(["common"], { "printer": printer_relay })
 
 # List of migration functions starting from v0->v1
 migrators = [ v0, v1, v2, v3 ]

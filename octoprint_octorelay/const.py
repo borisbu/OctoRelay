@@ -23,9 +23,11 @@ SETTINGS_VERSION = 4
 # - and migration to preserve user's previous configuration intact
 def get_default_settings():
     return {
+        "common": {
+            "printer": "r2"
+        },
         "r1": {
             "active": False,
-            "printer": False,
             "relay_pin": 4,
             "inverted_output": True,
             "cmd_on": "",
@@ -56,7 +58,6 @@ def get_default_settings():
         },
         "r2": {
             "active": False,
-            "printer": True,
             "relay_pin": 17,
             "inverted_output": True,
             "cmd_on": "",
@@ -90,7 +91,6 @@ def get_default_settings():
         },
         "r3": {
             "active": False,
-            "printer": False,
             "relay_pin": 18,
             "inverted_output": True,
             "cmd_on": "",
@@ -124,7 +124,6 @@ def get_default_settings():
         },
         "r4": {
             "active": False,
-            "printer": False,
             "relay_pin": 23,
             "inverted_output": True,
             "cmd_on": "sudo service webcamd start",
@@ -158,7 +157,6 @@ def get_default_settings():
         },
         "r5": {
             "active": False,
-            "printer": False,
             "relay_pin": 24,
             "inverted_output": True,
             "cmd_on": "",
@@ -189,7 +187,6 @@ def get_default_settings():
         },
         "r6": {
             "active": False,
-            "printer": False,
             "relay_pin": 25,
             "inverted_output": True,
             "cmd_on": "",
@@ -220,7 +217,6 @@ def get_default_settings():
         },
         "r7": {
             "active": False,
-            "printer": False,
             "relay_pin": 8,
             "inverted_output": True,
             "cmd_on": "",
@@ -251,7 +247,6 @@ def get_default_settings():
         },
         "r8": {
             "active": False,
-            "printer": False,
             "relay_pin": 7,
             "inverted_output": True,
             "cmd_on": "",
@@ -282,8 +277,8 @@ def get_default_settings():
         },
     }
 
-# Keys of the default settings, used for iterations: [r1...r8]
-RELAY_INDEXES = get_default_settings().keys()
+# Keys for iterating the relay settings [r1..r8]
+RELAY_INDEXES = list(map(lambda x: f"r{x}", range(1,9)))
 
 # Plugin templates, immutable getter
 def get_templates():
