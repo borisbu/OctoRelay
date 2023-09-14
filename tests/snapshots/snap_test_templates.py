@@ -126,12 +126,12 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" data-bind="using: settings.plugins.octorelay">
         
         <div
             id="relay_settings_1"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 1 }, using: settings.plugins.octorelay.r1"
+            data-bind="css: { \'active in\': 1 === 1 }, using: r1"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -190,6 +190,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r1' : $parent.common.printer() !== 'r1',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r1\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r1' : $parent.common.printer() !== 'r1',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r1\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -672,7 +705,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_2"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 2 }, using: settings.plugins.octorelay.r2"
+            data-bind="css: { \'active in\': 1 === 2 }, using: r2"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -731,6 +764,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r2' : $parent.common.printer() !== 'r2',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r2\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r2' : $parent.common.printer() !== 'r2',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r2\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -1213,7 +1279,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_3"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 3 }, using: settings.plugins.octorelay.r3"
+            data-bind="css: { \'active in\': 1 === 3 }, using: r3"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -1272,6 +1338,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r3' : $parent.common.printer() !== 'r3',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r3\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r3' : $parent.common.printer() !== 'r3',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r3\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -1754,7 +1853,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_4"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 4 }, using: settings.plugins.octorelay.r4"
+            data-bind="css: { \'active in\': 1 === 4 }, using: r4"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -1813,6 +1912,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r4' : $parent.common.printer() !== 'r4',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r4\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r4' : $parent.common.printer() !== 'r4',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r4\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -2295,7 +2427,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_5"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 5 }, using: settings.plugins.octorelay.r5"
+            data-bind="css: { \'active in\': 1 === 5 }, using: r5"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -2354,6 +2486,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r5' : $parent.common.printer() !== 'r5',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r5\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r5' : $parent.common.printer() !== 'r5',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r5\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -2836,7 +3001,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_6"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 6 }, using: settings.plugins.octorelay.r6"
+            data-bind="css: { \'active in\': 1 === 6 }, using: r6"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -2895,6 +3060,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r6' : $parent.common.printer() !== 'r6',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r6\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r6' : $parent.common.printer() !== 'r6',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r6\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -3377,7 +3575,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_7"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 7 }, using: settings.plugins.octorelay.r7"
+            data-bind="css: { \'active in\': 1 === 7 }, using: r7"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -3436,6 +3634,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r7' : $parent.common.printer() !== 'r7',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r7\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r7' : $parent.common.printer() !== 'r7',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r7\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
@@ -3918,7 +4149,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_8"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 8 }, using: settings.plugins.octorelay.r8"
+            data-bind="css: { \'active in\': 1 === 8 }, using: r8"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -3977,6 +4208,39 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <label class="control-label">Label</label>
                     <div class="controls">
                         <input type="text" class="input-small" data-bind="value: label_text">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? $parent.common.printer() === 'r8' : $parent.common.printer() !== 'r8',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: true ? \'r8\' : null, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? $parent.common.printer() === 'r8' : $parent.common.printer() !== 'r8',
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: false ? \'r8\' : null, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            
+                        </div>
                     </div>
                 </div>
 
