@@ -506,6 +506,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
 
     def test_is_printer_relay(self):
+        # Should assert the equality of the common/printer value with the supplied argument
         cases = [
             { "printer": "r4", "expected": True },
             { "printer": "r5", "expected": False },
