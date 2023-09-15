@@ -568,21 +568,25 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             {
                 "event": Events.CLIENT_OPENED,
+                "payload": {"remoteAddress": "127.0.0.1"},
                 "expectedMethod": self.plugin_instance.update_ui,
                 "expectedParams": []
             },
             {
                 "event": Events.PRINT_STARTED,
+                "payload": {"name": "test.gcode"},
                 "expectedMethod": self.plugin_instance.handle_plugin_event,
                 "expectedParams": ["PRINTING_STARTED"]
             },
             {
                 "event": Events.PRINT_DONE,
+                "payload": {"name": "test.gcode"},
                 "expectedMethod": self.plugin_instance.handle_plugin_event,
                 "expectedParams": ["PRINTING_STOPPED"]
             },
             {
                 "event": Events.PRINT_FAILED,
+                "payload": {"name": "test.gcode"},
                 "expectedMethod": self.plugin_instance.handle_plugin_event,
                 "expectedParams": ["PRINTING_STOPPED"]
             },
@@ -590,11 +594,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         if hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             cases.append({
                 "event": Events.CONNECTIONS_AUTOREFRESHED,
+                "payload": {"ports": ["/dev/ttyUSB0"]},
                 "expectedMethod": self.plugin_instance._printer.connect,
                 "expectedParams": []
             })
         for case in cases:
-            self.plugin_instance.on_event(case["event"], "MockedPayload")
+            self.plugin_instance.on_event(case["event"], case["payload"])
             case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
     def test_on_after_startup(self):
@@ -814,6 +819,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_update_command(self, system_mock, jsonify_mock):
         # Should toggle the relay state, execute command and update UI when having permission
         self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.is_printer_relay = Mock(return_value=False)
         cases = [
             {
                 "index": "r4",
