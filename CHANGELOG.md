@@ -23,6 +23,8 @@
   - This also prevents the failures to AutoConnect and attempts to reconnect
     after turning the printer relay off.
 
+![UI](https://user-images.githubusercontent.com/13189514/268201477-01688f8d-08ed-4d1f-8c71-8f278b8f7f04.png)
+
 ### 3.8.2
 
 - Fixed a bug: the popover on upcoming relay switch could not appear in some cases.
