@@ -505,6 +505,17 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "MockedIdentifier", expected_model
             )
 
+    def test_is_printer_relay(self):
+        cases = [
+            { "printer": "r4", "expected": True },
+            { "printer": "r5", "expected": False },
+            { "printer": None, "expected": False }
+        ]
+        for case in cases:
+            self.plugin_instance._settings.get = Mock(return_value=case["printer"])
+            actual = self.plugin_instance.is_printer_relay("r4")
+            self.assertEqual(actual, case["expected"])
+
     @patch("os.system")
     def test_toggle_relay(self, system_mock):
         # Should toggle the relay and execute a command matching its new state
