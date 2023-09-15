@@ -2,6 +2,27 @@
 
 ## Version 3
 
+### 3.9.0
+
+- A small performance improvement.
+  - When handling the events causing the relay switches, now triggering the UI
+    update only once for them all after processing their new state.
+- New setting: "This is printer relay".
+  - Ability to specify the relay that controls your printer.
+  - Thus, the plugin can distinguish the printer relay among other ones.
+  - The migration script will set this setting to `r2` if you didn't change the
+    second relay label `Printer` (default).
+  - You may quite reasonably wonder why this is needed:
+- New feature: disconnect from the printer before turning its relay off.
+  - When turning the printer relay off (according to the new setting), the
+    plugin will close the current printer connection.  
+  - This helps to shut down the printer a bit more gracefully.
+  - It prevents an error state like `SerialException` when turning printer off.
+- A small improvement to the AutoConnect feature in this regard.
+  - Now connects automatically only when there are some ports available.
+  - This also prevents the failures to AutoConnect and attempts to reconnect
+    after turning the printer relay off.
+
 ### 3.8.2
 
 - Fixed a bug: the popover on upcoming relay switch could not appear in some cases.
