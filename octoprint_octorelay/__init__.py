@@ -171,8 +171,9 @@ class OctoRelayPlugin(
             self.handle_plugin_event(PRINTING_STOPPED)
         elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             if event == Events.CONNECTIONS_AUTOREFRESHED:
-                self._logger.debug("Connecting to the printer")
-                self._printer.connect()
+                if payload is not None and "ports" in payload and len(payload["ports"]) > 0:
+                    self._logger.debug("Connecting to the printer")
+                    self._printer.connect()
         #elif event == Events.PRINT_CANCELLING:
             # self.print_stopped()
         #elif event == Events.PRINT_CANCELLED:
@@ -209,11 +210,20 @@ class OctoRelayPlugin(
         if needs_ui_update:
             self.update_ui() # issue 190
 
+    def is_printer_relay(self, index) -> bool:
+        printer_relay = self._settings.get(["common", "printer"], merged=True) # expensive
+        return printer_relay is not None and printer_relay == index
+
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
             self._logger.debug(f"Refusing to switch the relay {index} since it's disabled")
             return
+        if self.is_printer_relay(index):
+            self._logger.debug(f"{index} is the printer relay")
+            if self._printer.is_operational():
+                self._logger.debug(f"Disconnecting from the printer before turning {index} OFF")
+                self._printer.disconnect()
         pin = int(settings["relay_pin"] or 0)
         inverted = bool(settings["inverted_output"])
         relay = Relay(pin, inverted)
