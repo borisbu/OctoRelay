@@ -198,28 +198,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r1',
+                                isAnotherRelay: $parent.common.printer() !== 'r1',
+                                radioValue: true ? 'r1' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r1' : $parent.common.printer() !== 'r1',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r1\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r1',
+                                isAnotherRelay: $parent.common.printer() !== 'r1',
+                                radioValue: false ? 'r1' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r1' : $parent.common.printer() !== 'r1',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r1\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -772,28 +784,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r2',
+                                isAnotherRelay: $parent.common.printer() !== 'r2',
+                                radioValue: true ? 'r2' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r2' : $parent.common.printer() !== 'r2',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r2\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r2',
+                                isAnotherRelay: $parent.common.printer() !== 'r2',
+                                radioValue: false ? 'r2' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r2' : $parent.common.printer() !== 'r2',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r2\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -1346,28 +1370,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r3',
+                                isAnotherRelay: $parent.common.printer() !== 'r3',
+                                radioValue: true ? 'r3' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r3' : $parent.common.printer() !== 'r3',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r3\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r3',
+                                isAnotherRelay: $parent.common.printer() !== 'r3',
+                                radioValue: false ? 'r3' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r3' : $parent.common.printer() !== 'r3',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r3\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -1920,28 +1956,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r4',
+                                isAnotherRelay: $parent.common.printer() !== 'r4',
+                                radioValue: true ? 'r4' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r4' : $parent.common.printer() !== 'r4',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r4\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r4',
+                                isAnotherRelay: $parent.common.printer() !== 'r4',
+                                radioValue: false ? 'r4' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r4' : $parent.common.printer() !== 'r4',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r4\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -2494,28 +2542,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r5',
+                                isAnotherRelay: $parent.common.printer() !== 'r5',
+                                radioValue: true ? 'r5' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r5' : $parent.common.printer() !== 'r5',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r5\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r5',
+                                isAnotherRelay: $parent.common.printer() !== 'r5',
+                                radioValue: false ? 'r5' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r5' : $parent.common.printer() !== 'r5',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r5\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -3068,28 +3128,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r6',
+                                isAnotherRelay: $parent.common.printer() !== 'r6',
+                                radioValue: true ? 'r6' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r6' : $parent.common.printer() !== 'r6',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r6\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r6',
+                                isAnotherRelay: $parent.common.printer() !== 'r6',
+                                radioValue: false ? 'r6' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r6' : $parent.common.printer() !== 'r6',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r6\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -3642,28 +3714,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r7',
+                                isAnotherRelay: $parent.common.printer() !== 'r7',
+                                radioValue: true ? 'r7' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r7' : $parent.common.printer() !== 'r7',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r7\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r7',
+                                isAnotherRelay: $parent.common.printer() !== 'r7',
+                                radioValue: false ? 'r7' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r7' : $parent.common.printer() !== 'r7',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r7\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
@@ -4216,28 +4300,40 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     <div class="controls">
                         <div class="btn-group">
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r8',
+                                isAnotherRelay: $parent.common.printer() !== 'r8',
+                                radioValue: true ? 'r8' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-info': true ? $parent.common.printer() === 'r8' : $parent.common.printer() !== 'r8',
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: true ? \'r8\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 YES
                             </label>
                             <!--/ko-->
+                            <!--/ko-->
                             
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r8',
+                                isAnotherRelay: $parent.common.printer() !== 'r8',
+                                radioValue: false ? 'r8' : null
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-default': false ? $parent.common.printer() === 'r8' : $parent.common.printer() !== 'r8',
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: false ? \'r8\' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 NO
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             
                         </div>
