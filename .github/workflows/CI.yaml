@@ -16,7 +16,7 @@ jobs:
         id: yarnCache
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -72,7 +72,7 @@ jobs:
           - octoprint: 1.8
             python: 3.11
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Python
         uses: actions/setup-python@v4
         with:
