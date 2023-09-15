@@ -157,7 +157,22 @@ class TestMigrations(unittest.TestCase):
                 })
 
     def test_v3(self):
-        pass
+        # Should add common/printer setting
+        cases = [
+            { "r2": {}, "expected": "r2" }, # default label is used
+            { "r2": {"label_text": "Something else"}, "expected": None }
+        ]
+        for case in cases:
+            settings = Mock(
+                get = Mock(return_value={
+                    "r1": {},
+                    **case["r2"],
+                    "r3": {}
+                })
+            )
+            logger = Mock()
+            v3(settings, logger)
+            settings.set.assert_called_with(["common"], { "printer": case["expected"] })
 
     def test_migrate(self):
         # Should call all migrations
