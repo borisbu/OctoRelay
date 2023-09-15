@@ -68,7 +68,8 @@
                             {% for value, option in plugin_octorelay_boolean.items() %}
                             <!--ko let: {
                                 isThisRelay: $parent.common.printer() === 'r{{n}}',
-                                isAnotherRelay: $parent.common.printer() !== 'r{{n}}'
+                                isAnotherRelay: $parent.common.printer() !== 'r{{n}}',
+                                radioValue: {{value}} ? 'r{{n}}' : null
                             } -->
                             <!--ko let: { classBinding: {
                                 'active btn-{{option.color}}': {{value}} ? isThisRelay : isAnotherRelay
@@ -76,7 +77,7 @@
                             <label class="btn" data-bind="css: classBinding">
                                 <input
                                     type="radio"
-                                    data-bind="checkedValue: {{value}} ? 'r{{n}}' : null, checked: $parent.common.printer"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
                                 />
                                 {{ _(option.caption) }}
                             </label>
