@@ -61,11 +61,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_settings_version(self):
         # Should return the current version of settings defaults
-        self.assertEqual(self.plugin_instance.get_settings_version(), 3)
+        self.assertEqual(self.plugin_instance.get_settings_version(), 4)
 
     def test_get_settings_defaults(self):
         # Should return the plugin default settings
         expected = {
+            "common": {
+                "printer": "r2"
+            },
             "r1": {
                 "active": False,
                 "relay_pin": 4,
@@ -483,7 +486,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             expected_model = {}
-            for index in self.plugin_instance.get_settings_defaults():
+            for index in RELAY_INDEXES:
                 expected_model[index] = {
                     "relay_pin": 17,
                     "inverted_output": False,
@@ -496,7 +499,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 }
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)
-            for index in self.plugin_instance.get_settings_defaults():
+            for index in RELAY_INDEXES:
                 self.plugin_instance._settings.get.assert_any_call([], merged=True)
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
                 "MockedIdentifier", expected_model

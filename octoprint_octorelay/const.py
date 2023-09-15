@@ -15,7 +15,7 @@ CANCELLATION_EXCEPTIONS = {}
 PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 3
+SETTINGS_VERSION = 4
 
 # Plugin's default settings, immutable getter
 # Warning: every amendment or deletion of these settings requires:
@@ -23,6 +23,9 @@ SETTINGS_VERSION = 3
 # - and migration to preserve user's previous configuration intact
 def get_default_settings():
     return {
+        "common": {
+            "printer": "r2"
+        },
         "r1": {
             "active": False,
             "relay_pin": 4,
@@ -274,8 +277,8 @@ def get_default_settings():
         },
     }
 
-# Keys of the default settings, used for iterations: [r1...r8]
-RELAY_INDEXES = get_default_settings().keys()
+# Keys for iterating the relay settings [r1..r8]
+RELAY_INDEXES = list(map(lambda x: f"r{x}", range(1,9)))
 
 # Plugin templates, immutable getter
 def get_templates():
