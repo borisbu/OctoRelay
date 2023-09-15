@@ -13,9 +13,9 @@
   - The migration script will set this setting to `r2` if you didn't change the
     second relay label `Printer` (default).
   - You may quite reasonably wonder why this is needed:
-- New feature: disconnect from the printer before turning its relay off.
-  - When turning the printer relay off (according to the new setting), the
-    plugin will close the current printer connection.  
+- New feature: AutoDisconnect.
+  - Disconnects from the printer before turning its relay off
+    (according to the new setting).
   - This helps to shut down the printer a bit more gracefully.
   - It prevents an error state like `SerialException` when turning printer off.
 - A small improvement to the AutoConnect feature in this regard.
