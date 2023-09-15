@@ -66,8 +66,12 @@
                     <div class="controls">
                         <div class="btn-group">
                             {% for value, option in plugin_octorelay_boolean.items() %}
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r{{n}}',
+                                isAnotherRelay: $parent.common.printer() !== 'r{{n}}'
+                            } -->
                             <!--ko let: { classBinding: {
-                                'active btn-{{option.color}}': {{value}} ? $parent.common.printer() === 'r{{n}}' : $parent.common.printer() !== 'r{{n}}',
+                                'active btn-{{option.color}}': {{value}} ? isThisRelay : isAnotherRelay
                             } } -->
                             <label class="btn" data-bind="css: classBinding">
                                 <input
@@ -76,6 +80,7 @@
                                 />
                                 {{ _(option.caption) }}
                             </label>
+                            <!--/ko-->
                             <!--/ko-->
                             {% endfor %}
                         </div>
