@@ -219,7 +219,7 @@ class OctoRelayPlugin(
         if not bool(settings["active"]):
             self._logger.debug(f"Refusing to switch the relay {index} since it's disabled")
             return
-        if self.is_printer_relay(index):
+        if target is not True and self.is_printer_relay(index):
             self._logger.debug(f"{index} is the printer relay")
             if self._printer.is_operational():
                 self._logger.debug(f"Disconnecting from the printer before turning {index} OFF")

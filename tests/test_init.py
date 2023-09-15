@@ -567,9 +567,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_toggle_relay__printer(self):
         # Should disconnect from the printer when turning its relay off
         cases = [
-            { "is_printer": True, "is_operational": True },
-            { "is_printer": True, "is_operational": False },
-            { "is_printer": False, "is_operational": True },
+            { "target": None, "is_printer": True, "is_operational": True },
+            { "target": False, "is_printer": True, "is_operational": True },
+            { "target": True, "is_printer": True, "is_operational": True },
+            { "target": False, "is_printer": True, "is_operational": False },
+            { "target": False, "is_printer": False, "is_operational": True },
         ]
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
@@ -583,8 +585,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._printer.reset_mock()
             self.plugin_instance.is_printer_relay = Mock(return_value=case["is_printer"])
             self.plugin_instance._printer.is_operational = Mock(return_value=case["is_operational"])
-            self.plugin_instance.toggle_relay("r4")
-            if case["is_printer"] and case["is_operational"]:
+            self.plugin_instance.toggle_relay("r4", case["target"])
+            if case["target"] is not True and case["is_printer"] and case["is_operational"]:
                 self.plugin_instance._printer.disconnect.assert_called_with()
             else:
                 self.plugin_instance._printer.disconnect.assert_not_called()
