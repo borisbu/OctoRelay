@@ -61,11 +61,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_settings_version(self):
         # Should return the current version of settings defaults
-        self.assertEqual(self.plugin_instance.get_settings_version(), 3)
+        self.assertEqual(self.plugin_instance.get_settings_version(), 4)
 
     def test_get_settings_defaults(self):
         # Should return the plugin default settings
         expected = {
+            "common": {
+                "printer": "r2"
+            },
             "r1": {
                 "active": False,
                 "relay_pin": 4,
@@ -483,7 +486,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             expected_model = {}
-            for index in self.plugin_instance.get_settings_defaults():
+            for index in RELAY_INDEXES:
                 expected_model[index] = {
                     "relay_pin": 17,
                     "inverted_output": False,
@@ -496,15 +499,28 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 }
             self.plugin_instance.update_ui()
             relayConstructorMock.assert_called_with(17, False)
-            for index in self.plugin_instance.get_settings_defaults():
+            for index in RELAY_INDEXES:
                 self.plugin_instance._settings.get.assert_any_call([], merged=True)
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
                 "MockedIdentifier", expected_model
             )
 
+    def test_is_printer_relay(self):
+        # Should assert the equality of the common/printer value with the supplied argument
+        cases = [
+            { "printer": "r4", "expected": True },
+            { "printer": "r5", "expected": False },
+            { "printer": None, "expected": False }
+        ]
+        for case in cases:
+            self.plugin_instance._settings.get = Mock(return_value=case["printer"])
+            actual = self.plugin_instance.is_printer_relay("r4")
+            self.assertEqual(actual, case["expected"])
+
     @patch("os.system")
     def test_toggle_relay(self, system_mock):
         # Should toggle the relay and execute a command matching its new state
+        self.plugin_instance.is_printer_relay = Mock(return_value=False)
         cases = [
             { "target": True, "inverted": False, "expectedCommand": "CommandON" },
             { "target": True, "inverted": True, "expectedCommand": "CommandON" },
@@ -548,6 +564,33 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
+    def test_toggle_relay__printer(self):
+        # Should disconnect from the printer when turning its relay off
+        cases = [
+            { "target": None, "is_printer": True, "is_operational": True },
+            { "target": False, "is_printer": True, "is_operational": True },
+            { "target": True, "is_printer": True, "is_operational": True },
+            { "target": False, "is_printer": True, "is_operational": False },
+            { "target": False, "is_printer": False, "is_operational": True },
+        ]
+        self.plugin_instance._settings.get = Mock(return_value={
+            "active": True,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "cmd_on": None,
+            "cmd_off": None
+        })
+        relayMock.toggle = Mock(return_value=False)
+        for case in cases:
+            self.plugin_instance._printer.reset_mock()
+            self.plugin_instance.is_printer_relay = Mock(return_value=case["is_printer"])
+            self.plugin_instance._printer.is_operational = Mock(return_value=case["is_operational"])
+            self.plugin_instance.toggle_relay("r4", case["target"])
+            if case["target"] is not True and case["is_printer"] and case["is_operational"]:
+                self.plugin_instance._printer.disconnect.assert_called_with()
+            else:
+                self.plugin_instance._printer.disconnect.assert_not_called()
+
     @patch("octoprint.plugin")
     def test_on_settings_save(self, plugins_mock):
         # Should call the SettingsPlugin event handler with own instance and supplied argument
@@ -565,21 +608,25 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             {
                 "event": Events.CLIENT_OPENED,
+                "payload": {"remoteAddress": "127.0.0.1"},
                 "expectedMethod": self.plugin_instance.update_ui,
                 "expectedParams": []
             },
             {
                 "event": Events.PRINT_STARTED,
+                "payload": {"name": "test.gcode"},
                 "expectedMethod": self.plugin_instance.handle_plugin_event,
                 "expectedParams": ["PRINTING_STARTED"]
             },
             {
                 "event": Events.PRINT_DONE,
+                "payload": {"name": "test.gcode"},
                 "expectedMethod": self.plugin_instance.handle_plugin_event,
                 "expectedParams": ["PRINTING_STOPPED"]
             },
             {
                 "event": Events.PRINT_FAILED,
+                "payload": {"name": "test.gcode"},
                 "expectedMethod": self.plugin_instance.handle_plugin_event,
                 "expectedParams": ["PRINTING_STOPPED"]
             },
@@ -587,11 +634,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
         if hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             cases.append({
                 "event": Events.CONNECTIONS_AUTOREFRESHED,
+                "payload": {"ports": ["/dev/ttyUSB0"]},
                 "expectedMethod": self.plugin_instance._printer.connect,
                 "expectedParams": []
             })
         for case in cases:
-            self.plugin_instance.on_event(case["event"], "MockedPayload")
+            self.plugin_instance.on_event(case["event"], case["payload"])
             case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
     def test_on_after_startup(self):
@@ -811,6 +859,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_handle_update_command(self, system_mock, jsonify_mock):
         # Should toggle the relay state, execute command and update UI when having permission
         self.plugin_instance.update_ui = Mock()
+        self.plugin_instance.is_printer_relay = Mock(return_value=False)
         cases = [
             {
                 "index": "r4",
