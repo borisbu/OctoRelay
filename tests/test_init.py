@@ -692,8 +692,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 } for index in RELAY_INDEXES
             })
             self.plugin_instance.handle_plugin_event(case["event"])
+            self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
             if case["expectedCall"]:
-                self.plugin_instance.cancel_tasks.assert_called_with(subject = "r8", initiator = case["event"])
                 if case["delay"] == 0:
                     self.plugin_instance.toggle_relay.assert_called_with("r8", case["state"])
                 else:
@@ -710,7 +710,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                         self.assertEqual(self.plugin_instance.tasks[index].delay, case["delay"])
                         self.assertEqual(self.plugin_instance.tasks[index].target, case["state"])
             else:
-                self.plugin_instance.cancel_tasks.assert_not_called()
                 utilMock.ResettableTimer.assert_not_called()
                 timerMock.start.assert_not_called()
                 self.plugin_instance.toggle_relay.assert_not_called()
