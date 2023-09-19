@@ -187,13 +187,13 @@ class OctoRelayPlugin(
         needs_ui_update = False
         for index in scope:
             if bool(settings[index]["active"]):
+                self.cancel_tasks(subject = index, initiator = event) # issue 205
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
                     if target and event == TURNED_ON:
                         self._logger.debug(f"Skipping {index} to avoid infinite loop")
                         continue # avoid infinite loop
-                    self.cancel_tasks(subject = index, initiator = event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
                         self.toggle_relay(index, target)
