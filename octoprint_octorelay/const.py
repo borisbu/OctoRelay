@@ -10,7 +10,9 @@ USER_ACTION = "USER_ACTION"
 
 # Task cancellation exceptions
 # { eventHappened: [ events which postponed timers should NOT be cancelled ]
-CANCELLATION_EXCEPTIONS = {}
+CANCELLATION_EXCEPTIONS = {
+    TURNED_ON: [ STARTUP, PRINTING_STARTED, PRINTING_STOPPED ]
+}
 # min seconds before the task can be cancelled
 PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
