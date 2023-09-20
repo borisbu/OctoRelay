@@ -187,7 +187,7 @@ class OctoRelayPlugin(
         needs_ui_update = False
         for index in scope:
             if bool(settings[index]["active"]):
-                self.cancel_tasks(subject = index, initiator = event) # issue 205
+                needs_ui_update = needs_ui_update or self.cancel_tasks(subject = index, initiator = event) # issue 205
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
@@ -237,9 +237,13 @@ class OctoRelayPlugin(
         if state:
             self.handle_plugin_event(TURNED_ON, scope = [index])
 
-    def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
+    def cancel_tasks(
+        self, subject: str, initiator: str,
+        target: Optional[bool] = None, owner: Optional[str] = None
+    ) -> bool: # returns True when cancelled some tasks
         self._logger.debug(f"Cancelling tasks by request from {initiator} for relay {subject}")
         priority = PRIORITIES.get(initiator) or FALLBACK_PRIORITY
+        count_before = len(self.tasks)
         def handler(task: Task):
             lower_priority = (PRIORITIES.get(task.owner) or FALLBACK_PRIORITY) >= priority
             same_subject = subject == task.subject
@@ -254,7 +258,9 @@ class OctoRelayPlugin(
                 return False # exclude
             return True # include
         self.tasks = list(filter(handler, self.tasks))
-        self._logger.debug("The cancelled tasks removed from the registry")
+        count_after = len(self.tasks)
+        self._logger.debug(f"The cancelled tasks removed from the registry, before {before} after {after}")
+        return count_before != count_after
 
     def run_system_command(self, cmd):
         if cmd:
