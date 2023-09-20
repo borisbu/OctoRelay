@@ -717,23 +717,21 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_cancel_tasks(self):
         # Should remove the tasks for the certain relay and cancel its timer
-        timerMock.reset_mock()
-        remaining_task = Task(
-            subject = "r6",
-            target = False,
-            owner = "PRINTING_STOPPED",
-            delay = 0,
-            function = Mock(),
-            args = []
-        )
-        self.plugin_instance.tasks = [
-            Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 0, function = Mock(), args = []),
-            remaining_task,
-            Task(subject = "r4", target = False, owner = "STARTUP", delay = 0, function = Mock(), args = [])
+        task1 = Task(subject = "r4", target = False, owner = "PRINTING_STOPPED", delay = 0, function=Mock(), args=[])
+        task2 = Task(subject = "r6", target = False, owner = "PRINTING_STOPPED", delay = 0, function=Mock(), args=[])
+        task3 = Task(subject = "r4", target = False, owner = "STARTUP", delay = 0, function = Mock(), args = [])
+        cases = [
+            { "initiator": "PRINTING_STARTED", "expected_rest": [ task2 ], "expected_call": True },
+            # event listed in CANCELLATION_EXCEPTIONS:
+            { "initiator": "TURNED_ON", "expected_rest": [ task1, task2, task3 ], "expected_call": False }
         ]
-        self.plugin_instance.cancel_tasks(subject = "r4", initiator = "PRINTING_STARTED")
-        self.assertEqual(self.plugin_instance.tasks, [remaining_task])
-        timerMock.cancel.assert_called_with()
+        for case in cases:
+            timerMock.reset_mock()
+            self.plugin_instance.tasks = [ task1, task2, task3 ]
+            self.plugin_instance.cancel_tasks(subject = "r4", initiator = case["initiator"])
+            self.assertEqual(self.plugin_instance.tasks, case["expected_rest"])
+            if case["expected_call"]:
+                timerMock.cancel.assert_called_with()
 
     def test_cancel_tasks__exception(self):
         # Should handle a possible exception when cancelling a timer
