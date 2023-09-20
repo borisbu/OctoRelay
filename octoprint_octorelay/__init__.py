@@ -187,7 +187,8 @@ class OctoRelayPlugin(
         needs_ui_update = False
         for index in scope:
             if bool(settings[index]["active"]):
-                self.cancel_tasks(subject = index, initiator = event) # issue 205
+                did_cancel = self.cancel_tasks(subject = index, initiator = event) # issue 205
+                needs_ui_update = needs_ui_update or did_cancel
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
@@ -196,7 +197,7 @@ class OctoRelayPlugin(
                         continue # avoid infinite loop
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
-                        self.toggle_relay(index, target)
+                        self.toggle_relay(index, target) # UI update conducted by the polling thread
                     else:
                         self._logger.debug(f"Postponing the switching of the relay {index} by {delay}s")
                         task = Task(
@@ -237,9 +238,13 @@ class OctoRelayPlugin(
         if state:
             self.handle_plugin_event(TURNED_ON, scope = [index])
 
-    def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
+    def cancel_tasks(
+        self, subject: str, initiator: str,
+        target: Optional[bool] = None, owner: Optional[str] = None
+    ) -> bool: # returns True when cancelled some tasks
         self._logger.debug(f"Cancelling tasks by request from {initiator} for relay {subject}")
         priority = PRIORITIES.get(initiator) or FALLBACK_PRIORITY
+        count_before = len(self.tasks)
         def handler(task: Task):
             lower_priority = (PRIORITIES.get(task.owner) or FALLBACK_PRIORITY) >= priority
             same_subject = subject == task.subject
@@ -254,7 +259,13 @@ class OctoRelayPlugin(
                 return False # exclude
             return True # include
         self.tasks = list(filter(handler, self.tasks))
-        self._logger.debug("The cancelled tasks removed from the registry")
+        count_cancelled = count_before - len(self.tasks)
+        did_cancel = count_cancelled > 0
+        self._logger.debug(
+            f"Cancelled ({count_cancelled}) tasks and removed from the registry"
+            if did_cancel else "No tasks cancelled"
+        )
+        return did_cancel
 
     def run_system_command(self, cmd):
         if cmd:
