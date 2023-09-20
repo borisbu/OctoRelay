@@ -187,7 +187,8 @@ class OctoRelayPlugin(
         needs_ui_update = False
         for index in scope:
             if bool(settings[index]["active"]):
-                needs_ui_update = needs_ui_update or self.cancel_tasks(subject = index, initiator = event) # issue 205
+                did_cancel = self.cancel_tasks(subject = index, initiator = event) # issue 205
+                needs_ui_update = needs_ui_update or did_cancel
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
