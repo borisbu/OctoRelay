@@ -196,7 +196,7 @@ class OctoRelayPlugin(
                         continue # avoid infinite loop
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
-                        self.toggle_relay(index, target)
+                        self.toggle_relay(index, target) # UI update conducted by the polling thread
                     else:
                         self._logger.debug(f"Postponing the switching of the relay {index} by {delay}s")
                         task = Task(
