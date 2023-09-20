@@ -14,8 +14,8 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF,
-    CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, PRIORITY, FALLBACK_PRIORITY, PREEMPTIVE_CANCELLATION_CUTOFF,
+    CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON,
 )
 from .driver import Relay
 from .task import Task
@@ -239,13 +239,13 @@ class OctoRelayPlugin(
 
     def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
         self._logger.debug(f"Cancelling tasks by request from {initiator} for relay {subject}")
-        exceptions = CANCELLATION_EXCEPTIONS.get(initiator) or []
+        priority = PRIORITY.get(initiator) or FALLBACK_PRIORITY
         def handler(task: Task):
-            not_exception = task.owner not in exceptions
+            lower_priority = (PRIORITY.get(task.owner) or FALLBACK_PRIORITY) >= priority
             same_subject = subject == task.subject
             same_target = True if target is None else task.target == target
             same_owner = True if owner is None else task.owner == owner
-            if same_subject and not_exception and same_target and same_owner:
+            if same_subject and lower_priority and same_target and same_owner:
                 try:
                     task.cancel_timer()
                     self._logger.info(f"Cancelled the task: {task}")

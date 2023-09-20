@@ -8,11 +8,19 @@ PRINTING_STOPPED = "PRINTING_STOPPED"
 TURNED_ON = "TURNED_ON"
 USER_ACTION = "USER_ACTION"
 
-# Task cancellation exceptions
-# { eventHappened: [ events which postponed timers should NOT be cancelled ]
-CANCELLATION_EXCEPTIONS = {
-    TURNED_ON: [ STARTUP, PRINTING_STARTED, PRINTING_STOPPED ]
+# Event having higher or same priority (lower or equal number here) cancells the tasks placed by previous events
+# Highest priority is 1.
+PRIORITY = {
+    USER_ACTION: 1,
+    STARTUP: 2,
+    PRINTING_STARTED: 2,
+    PRINTING_STOPPED: 2,
+    TURNED_ON: 3
 }
+
+# Missing events above will be treated as having this priority
+FALLBACK_PRIORITY = 5
+
 # min seconds before the task can be cancelled
 PREEMPTIVE_CANCELLATION_CUTOFF = 2
 

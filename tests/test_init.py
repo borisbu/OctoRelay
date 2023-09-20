@@ -722,8 +722,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         task3 = Task(subject = "r4", target = False, owner = "STARTUP", delay = 0, function = Mock(), args = [])
         cases = [
             { "initiator": "PRINTING_STARTED", "expected_rest": [ task2 ], "expected_call": True },
-            # event listed in CANCELLATION_EXCEPTIONS:
-            { "initiator": "TURNED_ON", "expected_rest": [ task1, task2, task3 ], "expected_call": False }
+            # event having lower priority:
+            { "initiator": "TURNED_ON", "expected_rest": [ task1, task2, task3 ], "expected_call": False },
+            # event having higher priority:
+            { "initiator": "USER_ACTION", "expected_rest": [ task2 ], "expected_call": False }
         ]
         for case in cases:
             timerMock.reset_mock()
