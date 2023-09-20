@@ -10,7 +10,7 @@ USER_ACTION = "USER_ACTION"
 
 # Event having higher or same priority (lower or equal number here) cancells the tasks placed by previous events
 # Highest priority is 1.
-PRIORITY = {
+PRIORITIES = {
     USER_ACTION: 1,
     STARTUP: 2,
     PRINTING_STARTED: 2,

@@ -14,7 +14,7 @@ from octoprint.access.permissions import Permissions
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, PRIORITY, FALLBACK_PRIORITY, PREEMPTIVE_CANCELLATION_CUTOFF,
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, PRIORITIES, FALLBACK_PRIORITY, PREEMPTIVE_CANCELLATION_CUTOFF,
     CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON
 )
 from .driver import Relay
@@ -239,9 +239,9 @@ class OctoRelayPlugin(
 
     def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
         self._logger.debug(f"Cancelling tasks by request from {initiator} for relay {subject}")
-        priority = PRIORITY.get(initiator) or FALLBACK_PRIORITY
+        priority = PRIORITIES.get(initiator) or FALLBACK_PRIORITY
         def handler(task: Task):
-            lower_priority = (PRIORITY.get(task.owner) or FALLBACK_PRIORITY) >= priority
+            lower_priority = (PRIORITIES.get(task.owner) or FALLBACK_PRIORITY) >= priority
             same_subject = subject == task.subject
             same_target = True if target is None else task.target == target
             same_owner = True if owner is None else task.owner == owner
