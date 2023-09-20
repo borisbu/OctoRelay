@@ -18,7 +18,7 @@ PRIORITIES = {
     TURNED_ON: 3
 }
 
-# Missing events above will be treated as having this priority
+# Missing events above will be treated as ones having this priority
 FALLBACK_PRIORITY = 5
 
 # min seconds before the task can be cancelled
