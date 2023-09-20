@@ -2,6 +2,13 @@
 
 ## Version 3
 
+### 3.9.1
+
+- Renamed setting: "Confirm turning OFF".
+- Fixed issue found and reported by [@CrNMGuy](https://github.com/CrNMGuy).
+  - When printing started should cancel a postponed switch caused by Printing
+    Stopped event.
+
 ### 3.9.0
 
 - A small performance improvement.
