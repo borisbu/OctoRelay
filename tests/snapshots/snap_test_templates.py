@@ -235,6 +235,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -343,7 +347,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -376,6 +380,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -821,6 +828,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -929,7 +940,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -962,6 +973,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -1407,6 +1421,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -1515,7 +1533,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -1548,6 +1566,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -1993,6 +2014,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -2101,7 +2126,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -2134,6 +2159,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -2579,6 +2607,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -2687,7 +2719,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -2720,6 +2752,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -3165,6 +3200,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -3273,7 +3312,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -3306,6 +3345,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -3751,6 +3793,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -3859,7 +3905,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -3892,6 +3938,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -4337,6 +4386,10 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
                     </div>
                 </div>
 
@@ -4445,7 +4498,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -4478,6 +4531,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 

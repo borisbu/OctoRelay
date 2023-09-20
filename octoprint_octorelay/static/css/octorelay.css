@@ -19,7 +19,8 @@
     color: inherit;
 }
 
-#settings_plugin_octorelay .control-label span.label {
+#settings_plugin_octorelay .control-label span.label,
+#settings_plugin_octorelay .help-inline span.label {
     zoom: 0.85; /* not scale */
 }
 
