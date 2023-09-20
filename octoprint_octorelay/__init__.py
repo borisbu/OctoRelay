@@ -259,7 +259,7 @@ class OctoRelayPlugin(
             return True # include
         self.tasks = list(filter(handler, self.tasks))
         count_after = len(self.tasks)
-        self._logger.debug(f"The cancelled tasks removed from the registry, before {before} after {after}")
+        self._logger.debug(f"The cancelled tasks ({count_before - count_after}) were removed from the registry")
         return count_before > count_after
 
     def run_system_command(self, cmd):
