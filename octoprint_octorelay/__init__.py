@@ -179,10 +179,6 @@ class OctoRelayPlugin(
                         method()
                     else:
                         ResettableTimer(delay, method, []).start()
-        #elif event == Events.PRINT_CANCELLING:
-            # self.print_stopped()
-        #elif event == Events.PRINT_CANCELLED:
-            # self.print_stopped()
 
     def handle_plugin_event(self, event, scope = None):
         if scope is None:
