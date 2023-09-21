@@ -175,7 +175,7 @@ class OctoRelayPlugin(
                     delay = int(self._settings.get(["common", "delay"], merged=True) or 0) # expensive
                     self._logger.debug(f"AutoConnecting to the printer in {delay}s")
                     method = self._printer.connect
-                    (method if delay == 0 else ResettableTimer(delay, method, []).start)()
+                    (method if delay == 0 else ResettableTimer(delay, method).start)()
 
     def handle_plugin_event(self, event, scope = None):
         if scope is None:

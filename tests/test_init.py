@@ -645,7 +645,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "payload": {"ports": ["/dev/ttyUSB0"]},
                 "delay": 5,
                 "expectedMethod": utilMock.ResettableTimer,
-                "expectedParams": [5, self.plugin_instance._printer.connect, []]
+                "expectedParams": [5, self.plugin_instance._printer.connect]
             })
         for case in cases:
             if "delay" in case:
