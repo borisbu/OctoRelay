@@ -172,8 +172,8 @@ class OctoRelayPlugin(
         elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             if event == Events.CONNECTIONS_AUTOREFRESHED:
                 if payload is not None and "ports" in payload and len(payload["ports"]) > 0:
-                    self._logger.debug("Connecting to the printer")
                     delay = int(self._settings.get(["common", "delay"], merged=True) or 0) # expensive
+                    self._logger.debug(f"AutoConnecting to the printer in {delay}s")
                     method = self._printer.connect
                     if delay == 0:
                         method()
