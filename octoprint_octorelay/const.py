@@ -25,7 +25,7 @@ FALLBACK_PRIORITY = 5
 PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 4
+SETTINGS_VERSION = 5
 
 # Plugin's default settings, immutable getter
 # Warning: every amendment or deletion of these settings requires:
@@ -34,7 +34,8 @@ SETTINGS_VERSION = 4
 def get_default_settings():
     return {
         "common": {
-            "printer": "r2"
+            "printer": "r2",
+            "auto_connect_delay": 0
         },
         "r1": {
             "active": False,
