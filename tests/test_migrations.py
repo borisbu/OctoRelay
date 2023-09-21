@@ -13,7 +13,7 @@ sys.modules["RPi.GPIO"] = Mock()
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.const import SETTINGS_VERSION
-from octoprint_octorelay.migrations import migrators, migrate, v0, v1, v2, v3
+from octoprint_octorelay.migrations import migrators, migrate, v0, v1, v2, v3, v4
 
 # avoid keeping other modules automatically imported by this test
 del sys.modules["octoprint_octorelay"]
@@ -173,6 +173,13 @@ class TestMigrations(unittest.TestCase):
             logger = Mock()
             v3(settings, logger)
             settings.set.assert_called_with(["common"], { "printer": case["expected"] })
+
+    def test_v4(self):
+        # Should add common/auto_connect_delay
+        logger = Mock()
+        settings = Mock()
+        v4(settings, logger)
+        settings.set.assert_called_with(["common", "auto_connect_delay"], 0)
 
     def test_migrate(self):
         # Should call all migrations

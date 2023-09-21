@@ -61,7 +61,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_get_settings_version(self):
         # Should return the current version of settings defaults
-        self.assertEqual(self.plugin_instance.get_settings_version(), 4)
+        self.assertEqual(self.plugin_instance.get_settings_version(), 5)
 
     def test_get_settings_defaults(self):
         # Should return the plugin default settings

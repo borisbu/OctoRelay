@@ -82,8 +82,14 @@ def v3(settings, logger):
     logger.debug(f"Setting the printer relay index {printer_relay}")
     settings.set(["common"], { "printer": printer_relay })
 
+def v4(settings, logger):
+    """Migration from v4 to v5"""
+    # There was no common/auto_connect_delay setting
+    logger.debug("Setting auto_connect_delay to 0")
+    settings.set(["common", "auto_connect_delay"], 0)
+
 # List of migration functions starting from v0->v1
-migrators = [ v0, v1, v2, v3 ]
+migrators = [ v0, v1, v2, v3, v4 ]
 
 def migrate(current: int, settings, logger):
     # Current version number corresponds to the list index to begin migrations from
