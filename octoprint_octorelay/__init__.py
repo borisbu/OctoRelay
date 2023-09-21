@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, List
+from typing import Optional, List, Dict
 from functools import reduce
 import os
 import time
@@ -20,6 +20,7 @@ from .const import (
 from .driver import Relay
 from .task import Task
 from .migrations import migrate
+from .model import Model
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -39,7 +40,7 @@ class OctoRelayPlugin(
         # pylint: disable=super-init-not-called
         self.polling_timer = None
         self.tasks: List[Task] = []
-        self.model = { index: {} for index in RELAY_INDEXES }
+        self.model: Dict[str, Model] = { index: {} for index in RELAY_INDEXES }
 
     def get_settings_version(self):
         return SETTINGS_VERSION
