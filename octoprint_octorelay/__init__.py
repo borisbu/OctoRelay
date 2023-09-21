@@ -8,7 +8,7 @@ import flask
 
 import octoprint.plugin
 from octoprint.events import Events
-from octoprint.util import RepeatedTimer
+from octoprint.util import RepeatedTimer, ResettableTimer
 from octoprint.access.permissions import Permissions
 
 from .const import (
@@ -173,7 +173,12 @@ class OctoRelayPlugin(
             if event == Events.CONNECTIONS_AUTOREFRESHED:
                 if payload is not None and "ports" in payload and len(payload["ports"]) > 0:
                     self._logger.debug("Connecting to the printer")
-                    self._printer.connect()
+                    delay = int(self._settings.get(["common", "delay"], merged=True) or 0) # expensive
+                    method = self._printer.connect
+                    if delay == 0:
+                        method()
+                    else:
+                        ResettableTimer(delay, method, []).start()
         #elif event == Events.PRINT_CANCELLING:
             # self.print_stopped()
         #elif event == Events.PRINT_CANCELLED:

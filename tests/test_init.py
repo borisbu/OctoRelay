@@ -636,10 +636,20 @@ class TestOctoRelayPlugin(unittest.TestCase):
             cases.append({
                 "event": Events.CONNECTIONS_AUTOREFRESHED,
                 "payload": {"ports": ["/dev/ttyUSB0"]},
+                "delay": 0,
                 "expectedMethod": self.plugin_instance._printer.connect,
                 "expectedParams": []
             })
+            cases.append({
+                "event": Events.CONNECTIONS_AUTOREFRESHED,
+                "payload": {"ports": ["/dev/ttyUSB0"]},
+                "delay": 5,
+                "expectedMethod": utilMock.ResettableTimer,
+                "expectedParams": [5, self.plugin_instance._printer.connect, []]
+            })
         for case in cases:
+            if "delay" in case:
+                self.plugin_instance._settings.get = Mock(return_value=case["delay"])
             self.plugin_instance.on_event(case["event"], case["payload"])
             case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
