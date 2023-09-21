@@ -95,7 +95,7 @@ jobs:
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
-        run: pip install coverage pylint snapshottest
+        run: pip install coverage pylint snapshottest mypy
       - name: Test
         working-directory: tests
         run: python -m coverage run -m unittest test*.py
@@ -113,7 +113,9 @@ jobs:
           parallel: true
           file: ./tests/coverage.lcov
       - name: Lint
-        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
+        run: |
+          pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
+          mypy ./octoprint_octorelay
 
   finish:
     needs: [UI, Python]
