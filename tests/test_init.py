@@ -422,7 +422,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     def test_python_compatibility(self):
         # Should be the current Python compability string
-        self.assertEqual(__plugin_pythoncompat__, ">=3.8,<4")
+        self.assertEqual(__plugin_pythoncompat__, ">=3.7,<4")
 
     def test_exposed_implementation(self):
         # Should be an instance of the plugin class
