@@ -67,7 +67,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should return the plugin default settings
         expected = {
             "common": {
-                "printer": "r2"
+                "printer": "r2",
+                "auto_connect_delay": 0
             },
             "r1": {
                 "active": False,
