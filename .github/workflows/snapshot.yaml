@@ -1,0 +1,30 @@
+name: Snapshot Update
+on: workflow_dispatch
+
+jobs:
+  snapshotUpdate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fregante/setup-git-user@v1
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.10
+      - name: Install OctoPrint
+        run: pip install octoprint~=1.9.0
+      - name: Install OctoRelay
+        run: pip install -e .
+      - name: Prepare testing environment
+        run: pip install coverage pylint snapshottest
+      - name: Remove snapshots
+        run: rm tests/snapshots/snap*
+      - name: Make new snapshots
+        working-directory: tests
+        run: python -m coverage run -m unittest test*.py
+      - name: Commit changes
+        run: |
+          git add tests/snapshots
+          git commit -m "Updating snapshots."
+      - name: Push changes
+        run: git push
