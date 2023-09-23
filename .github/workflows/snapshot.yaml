@@ -11,6 +11,14 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+      - name: Get pip cache dir
+        id: pipCache
+        run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache pip modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pipCache.outputs.dir }}
+          key: ${{ runner.os }}-build-cache-pip-python-3.10-octoprint-1.9
       - name: Install OctoPrint
         run: pip install octoprint~=1.9.0
       - name: Install OctoRelay
