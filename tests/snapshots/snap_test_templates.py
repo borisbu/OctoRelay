@@ -55,7 +55,7 @@ snapshots['TestTemplates::test_templates octorelay_navbar.jinja2'] = '''
     </div>
 </div>'''
 
-snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form class="form-horizontal">
+snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form class="form-horizontal" id="test">
     <h3>OctoRelay Settings</h3>
 
     <ul class="nav nav-pills">
