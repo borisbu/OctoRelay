@@ -1,9 +1,5 @@
 name: Snapshot Update
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - snapshot-update-workflow
+on: workflow_dispatch
 
 jobs:
   snapshotUpdate:
