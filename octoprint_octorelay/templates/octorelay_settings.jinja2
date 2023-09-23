@@ -136,12 +136,12 @@
                 <div class="control-group" data-bind="visible: $parent.common.printer() === 'r{{n}}'">
                     <label class="control-label">{{ _('AutoConnect delay') }}</label>
                     <div class="controls">
-                        <div class="input-append">
+                        <div class="input-prepend">
+                            <span class="add-on">{{ _('s') }}</span>
                             <input
                                 type="number" min="0" max="600" class="input-mini"
                                 data-bind="value: $parent.common.delay"
                             >
-                            <span class="add-on">{{ _('s') }}</span>
                         </div>
                         <span class="help-inline">{{ _('Requires OctoPrint 1.9.0+') }}</a>
                     </div>
