@@ -193,6 +193,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -241,42 +277,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r1\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -300,20 +314,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r1\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -800,6 +800,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -848,42 +884,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r2\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -907,20 +921,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r2\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -1407,6 +1407,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -1455,42 +1491,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r3\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -1514,20 +1528,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r3\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -2014,6 +2014,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -2062,42 +2098,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r4\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -2121,20 +2135,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r4\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -2621,6 +2621,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -2669,42 +2705,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r5\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -2728,20 +2742,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r5\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -3228,6 +3228,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -3276,42 +3312,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r6\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -3335,20 +3349,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r6\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -3835,6 +3835,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -3883,42 +3919,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r7\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -3942,20 +3956,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r7\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
@@ -4442,6 +4442,42 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
 
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">ON</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_on"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <label class="control-label">
+                        Icon
+                        <span class="label">OFF</span>
+                    </label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <input
+                                type="text"
+                                class="input-xlarge code"
+                                data-bind="value: icon_off"
+                            >
+                        </div>
+                    </div>
+                </div>
+                
+
                 <div class="control-group">
                     <label class="control-label">This is printer relay</label>
                     <div class="controls">
@@ -4490,42 +4526,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
-
                 
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">ON</span>
-                    </label>
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r8\'">
+                    <label class="control-label">AutoConnect delay</label>
                     <div class="controls">
                         <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
+                            <span class="add-on">s</span>
                             <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_on"
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
                             >
                         </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
-                
-                <div class="control-group">
-                    <label class="control-label">
-                        Icon
-                        <span class="label">OFF</span>
-                    </label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on"><i class="fa fa-code fa-sm"></i></span>
-                            <input
-                                type="text"
-                                class="input-xlarge code"
-                                data-bind="value: icon_off"
-                            >
-                        </div>
-                    </div>
-                </div>
-                
 
                 <div class="control-group">
                     <label class="control-label">GPIO Number</label>
@@ -4549,20 +4563,6 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                     </div>
                 </div>
                 
-                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r8\'">
-                    <label class="control-label">AutoConnect delay</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">s</span>
-                            <input
-                                type="number" min="0" max="600" class="input-mini"
-                                data-bind="value: $parent.common.delay"
-                            >
-                        </div>
-                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
-                    </div>
-                </div>
-
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
                     <div class="controls">
