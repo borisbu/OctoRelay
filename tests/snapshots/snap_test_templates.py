@@ -299,6 +299,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r1\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
@@ -890,6 +904,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <i class="fa fa-info"></i>
                             </a>
                         </span>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r2\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
 
@@ -1485,6 +1513,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r3\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
@@ -2076,6 +2118,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <i class="fa fa-info"></i>
                             </a>
                         </span>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r4\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
 
@@ -2671,6 +2727,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r5\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
@@ -3262,6 +3332,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <i class="fa fa-info"></i>
                             </a>
                         </span>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r6\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
 
@@ -3857,6 +3941,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                         </span>
                     </div>
                 </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r7\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
 
                 <div class="control-group">
                     <label class="control-label">Inverted output</label>
@@ -4448,6 +4546,20 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                                 <i class="fa fa-info"></i>
                             </a>
                         </span>
+                    </div>
+                </div>
+                
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r8\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-append">
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                            <span class="add-on">s</span>
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
                     </div>
                 </div>
 

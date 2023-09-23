@@ -34,7 +34,8 @@ SETTINGS_VERSION = 4
 def get_default_settings():
     return {
         "common": {
-            "printer": "r2"
+            "printer": "r2",
+            "auto_connect_delay": 0
         },
         "r1": {
             "active": False,
