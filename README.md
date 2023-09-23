@@ -58,6 +58,7 @@ Each relay has the following settings *(in order of appearance)*:
 | This is printer relay   | Closes the printer connection when turning this relay `OFF`      |
 | Icon `ON` / `OFF`       | An image or emoji to indicate the relay state (supports HTML)    |
 | GPIO Number             | The [GPIO pin on the Raspberry Pi](https://pinout.xyz/)          |
+| AutoConnect delay       | AutoConnect feature adjustment when turning the relay `ON`       |
 | Inverted output         | For normally closed relay: the relay is `ON` without power       |
 | Confirm turning `OFF`   | Enables a confirmation dialog when turning the relay `OFF`       |
 | Alert on switches ahead | Notifies on upcoming switch with an ability to cancel it         |
