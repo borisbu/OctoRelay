@@ -174,7 +174,7 @@ $(() => {
           const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
             (prefix) => `${prefix}-${key}`
           );
-          const upcomingHTML = `<span>${subject} goes <span class="label">${targetState}</span></span>`;
+          const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
           const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
           const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
           if (hasMultipleTasks) {
@@ -183,7 +183,7 @@ $(() => {
               title: `<span>Several relay switches ahead</span>${closeBtnHTML}`,
               content:
                 agg.content +
-                `<div>${upcomingHTML}${timeHTML}${cancelHTML}</div>`,
+                `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`,
               rest: agg.rest.concat({
                 cancelId,
                 timeTagId,
@@ -194,7 +194,7 @@ $(() => {
           } else {
             return {
               targetBtn: relayBtn,
-              title: `${upcomingHTML}${closeBtnHTML}`,
+              title: `<span>${upcomingHTML}</span>${closeBtnHTML}`,
               content: `<div>${timeHTML}${cancelHTML}</div>`,
               rest: [
                 {

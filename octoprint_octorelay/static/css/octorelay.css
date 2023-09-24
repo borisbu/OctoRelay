@@ -90,6 +90,7 @@
 #navbar_plugin_octorelay .popover .popover-content {
     display: flex;
     flex-direction: column;
+    gap: 10px;
 }
 
 #navbar_plugin_octorelay .popover .popover-content > div {
