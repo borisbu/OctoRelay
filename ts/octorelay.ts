@@ -180,7 +180,7 @@ $(() => {
           if (hasMultipleTasks) {
             return {
               targetBtn: agg.targetBtn || relayBtn,
-              title: "<span>Several relay switches ahead</span>${closeBtnHTML}",
+              title: `<span>Several relay switches ahead</span>${closeBtnHTML}`,
               content:
                 agg.content +
                 `<div>${upcomingHTML}${timeHTML}${cancelHTML}</div>`,
