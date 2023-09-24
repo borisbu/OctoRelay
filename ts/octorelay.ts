@@ -235,10 +235,7 @@ $(() => {
           closeBtn.off("click");
           addTooltip(clearHints(targetBtn), entries[0].value.label_text);
         });
-        return targetBtn;
       }
-
-      return undefined;
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
