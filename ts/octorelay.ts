@@ -195,7 +195,7 @@ $(() => {
             return {
               targetBtn: relayBtn,
               title: `${upcomingHTML}${closeBtnHTML}`,
-              content: `${timeHTML}${cancelHTML}`,
+              content: `<div>${timeHTML}${cancelHTML}</div>`,
               rest: [
                 {
                   cancelId,
