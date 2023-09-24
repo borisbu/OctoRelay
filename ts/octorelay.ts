@@ -267,11 +267,11 @@ $(() => {
         } else {
           addTooltip(relayBtn, value.label_text);
         }
-        upcomingTasks.sort(
-          (a, b) => a.value.upcoming.deadline - b.value.upcoming.deadline
-        );
-        showUpcomingTasks({ entries: upcomingTasks, navbar });
       }
+      upcomingTasks.sort(
+        (a, b) => a.value.upcoming.deadline - b.value.upcoming.deadline
+      );
+      showUpcomingTasks({ entries: upcomingTasks, navbar });
     };
   };
 
