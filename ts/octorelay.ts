@@ -177,6 +177,12 @@ $(() => {
           const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
           const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
           const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
+          const restEntry = {
+            cancelId,
+            timeTagId,
+            deadline: upcoming.deadline,
+            cancel: () => cancelTask(key, upcoming),
+          };
           if (hasMultipleTasks) {
             return {
               targetBtn: agg.targetBtn || relayBtn,
@@ -184,26 +190,14 @@ $(() => {
               content:
                 agg.content +
                 `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`,
-              rest: agg.rest.concat({
-                cancelId,
-                timeTagId,
-                deadline: upcoming.deadline,
-                cancel: () => cancelTask(key, upcoming),
-              }),
+              rest: agg.rest.concat(restEntry),
             };
           } else {
             return {
               targetBtn: relayBtn,
               title: `<span>${upcomingHTML}</span>${closeBtnHTML}`,
               content: `<div>${timeHTML}${cancelHTML}</div>`,
-              rest: [
-                {
-                  cancelId,
-                  timeTagId,
-                  deadline: upcoming.deadline,
-                  cancel: () => cancelTask(key, upcoming),
-                },
-              ],
+              rest: [restEntry],
             };
           }
         },
