@@ -126,12 +126,12 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" data-bind="using: settings.plugins.octorelay">
         
         <div
             id="relay_settings_1"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 1 }, using: settings.plugins.octorelay.r1"
+            data-bind="css: { \'active in\': 1 === 1 }, using: r1"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -230,6 +230,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r1',
+                                isAnotherRelay: $parent.common.printer() !== 'r1',
+                                radioValue: true ? 'r1' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r1',
+                                isAnotherRelay: $parent.common.printer() !== 'r1',
+                                radioValue: false ? 'r1' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r1\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -298,7 +361,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -331,6 +394,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -672,7 +738,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_2"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 2 }, using: settings.plugins.octorelay.r2"
+            data-bind="css: { \'active in\': 1 === 2 }, using: r2"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -771,6 +837,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r2',
+                                isAnotherRelay: $parent.common.printer() !== 'r2',
+                                radioValue: true ? 'r2' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r2',
+                                isAnotherRelay: $parent.common.printer() !== 'r2',
+                                radioValue: false ? 'r2' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r2\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -839,7 +968,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -872,6 +1001,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -1213,7 +1345,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_3"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 3 }, using: settings.plugins.octorelay.r3"
+            data-bind="css: { \'active in\': 1 === 3 }, using: r3"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -1312,6 +1444,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r3',
+                                isAnotherRelay: $parent.common.printer() !== 'r3',
+                                radioValue: true ? 'r3' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r3',
+                                isAnotherRelay: $parent.common.printer() !== 'r3',
+                                radioValue: false ? 'r3' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r3\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -1380,7 +1575,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -1413,6 +1608,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -1754,7 +1952,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_4"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 4 }, using: settings.plugins.octorelay.r4"
+            data-bind="css: { \'active in\': 1 === 4 }, using: r4"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -1853,6 +2051,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r4',
+                                isAnotherRelay: $parent.common.printer() !== 'r4',
+                                radioValue: true ? 'r4' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r4',
+                                isAnotherRelay: $parent.common.printer() !== 'r4',
+                                radioValue: false ? 'r4' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r4\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -1921,7 +2182,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -1954,6 +2215,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -2295,7 +2559,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_5"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 5 }, using: settings.plugins.octorelay.r5"
+            data-bind="css: { \'active in\': 1 === 5 }, using: r5"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -2394,6 +2658,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r5',
+                                isAnotherRelay: $parent.common.printer() !== 'r5',
+                                radioValue: true ? 'r5' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r5',
+                                isAnotherRelay: $parent.common.printer() !== 'r5',
+                                radioValue: false ? 'r5' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r5\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -2462,7 +2789,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -2495,6 +2822,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -2836,7 +3166,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_6"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 6 }, using: settings.plugins.octorelay.r6"
+            data-bind="css: { \'active in\': 1 === 6 }, using: r6"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -2935,6 +3265,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r6',
+                                isAnotherRelay: $parent.common.printer() !== 'r6',
+                                radioValue: true ? 'r6' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r6',
+                                isAnotherRelay: $parent.common.printer() !== 'r6',
+                                radioValue: false ? 'r6' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r6\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -3003,7 +3396,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -3036,6 +3429,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -3377,7 +3773,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_7"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 7 }, using: settings.plugins.octorelay.r7"
+            data-bind="css: { \'active in\': 1 === 7 }, using: r7"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -3476,6 +3872,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r7',
+                                isAnotherRelay: $parent.common.printer() !== 'r7',
+                                radioValue: true ? 'r7' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r7',
+                                isAnotherRelay: $parent.common.printer() !== 'r7',
+                                radioValue: false ? 'r7' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r7\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -3544,7 +4003,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -3577,6 +4036,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 
@@ -3918,7 +4380,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
         <div
             id="relay_settings_8"
             class="tab-pane fade"
-            data-bind="css: { \'active in\': 1 === 8 }, using: settings.plugins.octorelay.r8"
+            data-bind="css: { \'active in\': 1 === 8 }, using: r8"
         >
             <div class="control-group">
                 <label class="control-label">Active</label>
@@ -4017,6 +4479,69 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                 
 
                 <div class="control-group">
+                    <label class="control-label">This is printer relay</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r8',
+                                isAnotherRelay: $parent.common.printer() !== 'r8',
+                                radioValue: true ? 'r8' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-info': true ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                YES
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r8',
+                                isAnotherRelay: $parent.common.printer() !== 'r8',
+                                radioValue: false ? 'r8' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-default': false ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                NO
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            
+                        </div>
+                        <span class="help-inline">
+                            Disconnects when turning
+                            <span class="label">OFF</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === \'r8\'">
+                    <label class="control-label">AutoConnect delay</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">s</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">Requires OctoPrint 1.9.0+</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">GPIO Number</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -4085,7 +4610,7 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
 
                 <div class="control-group">
                     <label class="control-label">
-                        Warn if turning
+                        Confirm turning
                         <span class="label">OFF</span>
                     </label>
                     <div class="controls">
@@ -4118,6 +4643,9 @@ snapshots['TestTemplates::test_templates octorelay_settings.jinja2'] = '''<form 
                             <!--/ko-->
                             
                         </div>
+                        <span class="help-inline">
+                            Enables an extra dialog
+                        </span>
                     </div>
                 </div>
 

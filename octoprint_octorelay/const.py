@@ -8,14 +8,24 @@ PRINTING_STOPPED = "PRINTING_STOPPED"
 TURNED_ON = "TURNED_ON"
 USER_ACTION = "USER_ACTION"
 
-# Task cancellation exceptions
-# { eventHappened: [ events which postponed timers should NOT be cancelled ]
-CANCELLATION_EXCEPTIONS = {}
+# Event having higher or same priority (lower or equal number here) cancells the tasks placed by previous events
+# Highest priority is 1.
+PRIORITIES = {
+    USER_ACTION: 1,
+    STARTUP: 2,
+    PRINTING_STARTED: 2,
+    PRINTING_STOPPED: 2,
+    TURNED_ON: 3
+}
+
+# Missing events above will be treated as ones having this priority
+FALLBACK_PRIORITY = 5
+
 # min seconds before the task can be cancelled
 PREEMPTIVE_CANCELLATION_CUTOFF = 2
 
 # Versioning of the plugin's default settings described below
-SETTINGS_VERSION = 3
+SETTINGS_VERSION = 4
 
 # Plugin's default settings, immutable getter
 # Warning: every amendment or deletion of these settings requires:
@@ -23,6 +33,10 @@ SETTINGS_VERSION = 3
 # - and migration to preserve user's previous configuration intact
 def get_default_settings():
     return {
+        "common": {
+            "printer": "r2",
+            "auto_connect_delay": 0
+        },
         "r1": {
             "active": False,
             "relay_pin": 4,
@@ -274,8 +288,8 @@ def get_default_settings():
         },
     }
 
-# Keys of the default settings, used for iterations: [r1...r8]
-RELAY_INDEXES = get_default_settings().keys()
+# Keys for iterating the relay settings [r1..r8]
+RELAY_INDEXES = list(map(lambda x: f"r{x}", range(1,9)))
 
 # Plugin templates, immutable getter
 def get_templates():

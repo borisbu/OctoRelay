@@ -8,13 +8,13 @@ import flask
 
 import octoprint.plugin
 from octoprint.events import Events
-from octoprint.util import RepeatedTimer
+from octoprint.util import RepeatedTimer, ResettableTimer
 from octoprint.access.permissions import Permissions
 
 from .const import (
     get_default_settings, get_templates, get_ui_vars, RELAY_INDEXES, ASSETS, SWITCH_PERMISSION, UPDATES_CONFIG,
     POLLING_INTERVAL, UPDATE_COMMAND, GET_STATUS_COMMAND, LIST_ALL_COMMAND, AT_COMMAND, SETTINGS_VERSION,
-    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, CANCELLATION_EXCEPTIONS, PREEMPTIVE_CANCELLATION_CUTOFF,
+    STARTUP, PRINTING_STOPPED, PRINTING_STARTED, PRIORITIES, FALLBACK_PRIORITY, PREEMPTIVE_CANCELLATION_CUTOFF,
     CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON
 )
 from .driver import Relay
@@ -171,29 +171,31 @@ class OctoRelayPlugin(
             self.handle_plugin_event(PRINTING_STOPPED)
         elif hasattr(Events, "CONNECTIONS_AUTOREFRESHED"): # Requires OctoPrint 1.9+
             if event == Events.CONNECTIONS_AUTOREFRESHED:
-                self._logger.debug("Connecting to the printer")
-                self._printer.connect()
-        #elif event == Events.PRINT_CANCELLING:
-            # self.print_stopped()
-        #elif event == Events.PRINT_CANCELLED:
-            # self.print_stopped()
+                if payload is not None and "ports" in payload and len(payload["ports"]) > 0:
+                    delay = int(self._settings.get(["common", "delay"], merged=True) or 0) # expensive
+                    self._logger.debug(f"AutoConnecting to the printer in {delay}s")
+                    method = self._printer.connect
+                    (method if delay == 0 else ResettableTimer(delay, method).start)()
 
-    def handle_plugin_event(self, event, scope = RELAY_INDEXES):
+    def handle_plugin_event(self, event, scope = None):
+        if scope is None:
+            scope = RELAY_INDEXES
         self._logger.debug(f"Handling the plugin event {event} having scope: {scope}")
         settings = self._settings.get([], merged=True) # expensive
         needs_ui_update = False
         for index in scope:
             if bool(settings[index]["active"]):
+                did_cancel = self.cancel_tasks(subject = index, initiator = event) # issue 205
+                needs_ui_update = needs_ui_update or did_cancel
                 target = settings[index]["rules"][event]["state"]
                 if target is not None:
                     target = bool(target)
                     if target and event == TURNED_ON:
                         self._logger.debug(f"Skipping {index} to avoid infinite loop")
                         continue # avoid infinite loop
-                    self.cancel_tasks(subject = index, initiator = event)
                     delay = int(settings[index]["rules"][event]["delay"] or 0)
                     if delay == 0:
-                        self.toggle_relay(index, target)
+                        self.toggle_relay(index, target) # UI update conducted by the polling thread
                     else:
                         self._logger.debug(f"Postponing the switching of the relay {index} by {delay}s")
                         task = Task(
@@ -207,11 +209,20 @@ class OctoRelayPlugin(
         if needs_ui_update:
             self.update_ui() # issue 190
 
+    def is_printer_relay(self, index) -> bool:
+        printer_relay = self._settings.get(["common", "printer"], merged=True) # expensive
+        return printer_relay is not None and printer_relay == index
+
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
             self._logger.debug(f"Refusing to switch the relay {index} since it's disabled")
             return
+        if target is not True and self.is_printer_relay(index):
+            self._logger.debug(f"{index} is the printer relay")
+            if self._printer.is_operational():
+                self._logger.debug(f"Disconnecting from the printer before turning {index} OFF")
+                self._printer.disconnect()
         pin = int(settings["relay_pin"] or 0)
         inverted = bool(settings["inverted_output"])
         relay = Relay(pin, inverted)
@@ -225,15 +236,19 @@ class OctoRelayPlugin(
         if state:
             self.handle_plugin_event(TURNED_ON, scope = [index])
 
-    def cancel_tasks(self, subject: str, initiator: str, target: Optional[bool] = None, owner: Optional[str] = None):
+    def cancel_tasks(
+        self, subject: str, initiator: str,
+        target: Optional[bool] = None, owner: Optional[str] = None
+    ) -> bool: # returns True when cancelled some tasks
         self._logger.debug(f"Cancelling tasks by request from {initiator} for relay {subject}")
-        exceptions = CANCELLATION_EXCEPTIONS.get(initiator) or []
+        priority = PRIORITIES.get(initiator) or FALLBACK_PRIORITY
+        count_before = len(self.tasks)
         def handler(task: Task):
-            not_exception = task.owner not in exceptions
+            lower_priority = (PRIORITIES.get(task.owner) or FALLBACK_PRIORITY) >= priority
             same_subject = subject == task.subject
             same_target = True if target is None else task.target == target
             same_owner = True if owner is None else task.owner == owner
-            if same_subject and not_exception and same_target and same_owner:
+            if same_subject and lower_priority and same_target and same_owner:
                 try:
                     task.cancel_timer()
                     self._logger.info(f"Cancelled the task: {task}")
@@ -242,7 +257,13 @@ class OctoRelayPlugin(
                 return False # exclude
             return True # include
         self.tasks = list(filter(handler, self.tasks))
-        self._logger.debug("The cancelled tasks removed from the registry")
+        count_cancelled = count_before - len(self.tasks)
+        did_cancel = count_cancelled > 0
+        self._logger.debug(
+            f"Cancelled ({count_cancelled}) tasks and removed from the registry"
+            if did_cancel else "No tasks cancelled"
+        )
+        return did_cancel
 
     def run_system_command(self, cmd):
         if cmd:

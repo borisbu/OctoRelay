@@ -56,9 +56,11 @@ Each relay has the following settings *(in order of appearance)*:
 | Active                  | Activates the relay control and indication on the navigation bar |
 | Label                   | The relay description to show on tooltip and in dialogs          |
 | Icon `ON` / `OFF`       | An image or emoji to indicate the relay state (supports HTML)    |
+| This is printer relay   | Closes the printer connection when turning this relay `OFF`      |
+| AutoConnect delay       | Printer relay feature adjustment when turning it `ON`            |
 | GPIO Number             | The [GPIO pin on the Raspberry Pi](https://pinout.xyz/)          |
 | Inverted output         | For normally closed relay: the relay is `ON` without power       |
-| Warn if turning `OFF`   | Enables a confirmation dialog when turning the relay `OFF`       |
+| Confirm turning `OFF`   | Enables a confirmation dialog when turning the relay `OFF`       |
 | Alert on switches ahead | Notifies on upcoming switch with an ability to cancel it         |
 | **Events:**             | Behavior customization (automation)                              |
 | on Startup              | The state to switch the relay to when OctoPrint started          |

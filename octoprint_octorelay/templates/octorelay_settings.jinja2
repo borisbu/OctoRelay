@@ -13,12 +13,12 @@
         {% endfor %}
     </ul>
 
-    <div class="tab-content">
+    <div class="tab-content" data-bind="using: settings.plugins.octorelay">
         {% for n in range(1,9) %}
         <div
             id="relay_settings_{{n}}"
             class="tab-pane fade"
-            data-bind="css: { 'active in': 1 === {{n}} }, using: settings.plugins.octorelay.r{{n}}"
+            data-bind="css: { 'active in': 1 === {{n}} }, using: r{{n}}"
         >
             <div class="control-group">
                 <label class="control-label">{{ _('Active') }}</label>
@@ -81,6 +81,51 @@
                 {% endfor %}
 
                 <div class="control-group">
+                    <label class="control-label">{{ _('This is printer relay') }}</label>
+                    <div class="controls">
+                        <div class="btn-group">
+                            {% for value, option in plugin_octorelay_boolean.items() %}
+                            <!--ko let: {
+                                isThisRelay: $parent.common.printer() === 'r{{n}}',
+                                isAnotherRelay: $parent.common.printer() !== 'r{{n}}',
+                                radioValue: {{value}} ? 'r{{n}}' : null
+                            } -->
+                            <!--ko let: { classBinding: {
+                                'active btn-{{option.color}}': {{value}} ? isThisRelay : isAnotherRelay
+                            } } -->
+                            <label class="btn" data-bind="css: classBinding">
+                                <input
+                                    type="radio"
+                                    data-bind="checkedValue: radioValue, checked: $parent.common.printer"
+                                />
+                                {{ _(option.caption) }}
+                            </label>
+                            <!--/ko-->
+                            <!--/ko-->
+                            {% endfor %}
+                        </div>
+                        <span class="help-inline">
+                            {{ _('Disconnects when turning') }}
+                            <span class="label">{{ _('OFF') }}</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="control-group" data-bind="visible: $parent.common.printer() === 'r{{n}}'">
+                    <label class="control-label">{{ _('AutoConnect delay') }}</label>
+                    <div class="controls">
+                        <div class="input-prepend">
+                            <span class="add-on">{{ _('s') }}</span>
+                            <input
+                                type="number" min="0" max="600" class="input-mini"
+                                data-bind="value: $parent.common.delay"
+                            >
+                        </div>
+                        <span class="help-inline">{{ _('Requires OctoPrint 1.9.0+') }}</a>
+                    </div>
+                </div>
+
+                <div class="control-group">
                     <label class="control-label">{{ _('GPIO Number') }}</label>
                     <div class="controls">
                         <div class="input-prepend">
@@ -136,7 +181,7 @@
 
                 <div class="control-group">
                     <label class="control-label">
-                        {{ _('Warn if turning') }}
+                        {{ _('Confirm turning') }}
                         <span class="label">{{ _('OFF') }}</span>
                     </label>
                     <div class="controls">
@@ -156,6 +201,9 @@
                             <!--/ko-->
                             {% endfor %}
                         </div>
+                        <span class="help-inline">
+                            {{ _('Enables an extra dialog') }}
+                        </span>
                     </div>
                 </div>
 

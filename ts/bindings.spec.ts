@@ -9,6 +9,8 @@ describe("Knockout bindings", () => {
   const document = JSDOM.fragment(html);
   const usingContexts = [
     "settings.plugins.octorelay.r{{n}}",
+    "settings.plugins.octorelay",
+    "r{{n}}",
     "rules.{{event}}",
   ];
   const settingRegex = /([\w\{}]+).*$/;
@@ -24,6 +26,7 @@ describe("Knockout bindings", () => {
     "state",
     "delay",
   ];
+  const parentSettings = ["$parent.common.printer"];
 
   test("Settings template should have bindings to the correctly named settings", () => {
     const elements = Array.from(document.querySelectorAll("[data-bind]"));
@@ -41,6 +44,10 @@ describe("Knockout bindings", () => {
           continue;
         }
         expect(settingRegex.test(address.trim())).toBeTruthy();
+        if (address.trim().startsWith("$parent")) {
+          expect(parentSettings.includes(address));
+          continue;
+        }
         const match = address.trim().match(settingRegex);
         const relaySetting = match?.[1];
         expect(typeof relaySetting).toBe("string");
