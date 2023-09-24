@@ -139,52 +139,106 @@ $(() => {
     const addTooltip = (btn: JQuery, text: string) =>
       btn.tooltip({ placement: "bottom", title: text });
 
-    const addPopover = ({
-      relayBtn,
-      key,
-      value: { label_text: subject, upcoming },
+    const showUpcomingTasks = ({
+      entries,
       navbar,
     }: {
-      relayBtn: JQuery;
-      key: string;
-      value: RelayHavingTask;
+      entries: Array<{
+        relayBtn: JQuery;
+        key: string;
+        value: RelayHavingTask;
+      }>;
       navbar: JQuery;
     }) => {
-      const dateObj = new Date(upcoming.deadline);
-      const dateISO = dateObj.toISOString();
-      const dateLocalized = dateObj.toLocaleString();
-      const timeLeft = formatDeadline(upcoming.deadline);
-      const targetState = upcoming.target ? "ON" : "OFF";
-      const [closerId, cancelId, timeTagId] = [
-        "pop-closer",
-        "cancel-btn",
-        "time-tag",
-      ].map((prefix) => `${prefix}-${key}`);
-      const upcomingHTML = `<span>${subject} goes <span class="label">${targetState}</span></span>`;
+      const hasMultipleTasks = entries.length > 1;
+      const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
       const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
-      const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
-      const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
-      relayBtn
-        .popover({
-          html: true,
-          placement: "bottom",
-          trigger: "manual",
-          title: `${upcomingHTML}${closeBtnHTML}`,
-          content: `${timeHTML}${cancelHTML}`,
-        })
-        .popover("show");
-      const closeBtn = navbar.find(`#${closerId}`);
-      const cancelBtn = navbar.find(`#${cancelId}`);
-      const timeTag = navbar.find(`#${timeTagId}`);
-      const countdownDisposer = setCountdown(timeTag, upcoming.deadline);
-      closeBtn.on("click", () => {
-        countdownDisposer();
-        closeBtn.off("click");
-        addTooltip(clearHints(relayBtn), subject);
-      });
-      cancelBtn.on("click", () => cancelTask(key, upcoming));
-      return relayBtn;
+      const { title, content, targetBtn, rest } = entries.reduce<{
+        title: string;
+        content: string;
+        targetBtn: JQuery | undefined;
+        rest: Array<{
+          cancelId: string;
+          timeTagId: string;
+          deadline: number;
+          cancel: () => JQuery.Promise<any>;
+        }>;
+      }>(
+        (agg, { value: { upcoming, label_text: subject }, key, relayBtn }) => {
+          const dateObj = new Date(upcoming.deadline);
+          const dateISO = dateObj.toISOString();
+          const dateLocalized = dateObj.toLocaleString();
+          const timeLeft = formatDeadline(upcoming.deadline);
+          const targetState = upcoming.target ? "ON" : "OFF";
+          const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
+            (prefix) => `${prefix}-${key}`
+          );
+          const upcomingHTML = `<span>${subject} goes <span class="label">${targetState}</span></span>`;
+          const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
+          const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
+          if (hasMultipleTasks) {
+            return {
+              targetBtn: agg.targetBtn || relayBtn,
+              title: "<span>Several relay switches ahead</span>${closeBtnHTML}",
+              content:
+                agg.content +
+                `<div>${upcomingHTML}${timeHTML}${cancelHTML}</div>`,
+              rest: agg.rest.concat({
+                cancelId,
+                timeTagId,
+                deadline: upcoming.deadline,
+                cancel: () => cancelTask(key, upcoming),
+              }),
+            };
+          } else {
+            return {
+              targetBtn: relayBtn,
+              title: `${upcomingHTML}${closeBtnHTML}`,
+              content: `${timeHTML}${cancelHTML}`,
+              rest: [
+                {
+                  cancelId,
+                  timeTagId,
+                  deadline: upcoming.deadline,
+                  cancel: () => cancelTask(key, upcoming),
+                },
+              ],
+            };
+          }
+        },
+        { title: "", content: "", targetBtn: undefined, rest: [] }
+      );
+      if (targetBtn) {
+        targetBtn
+          .popover({
+            html: true,
+            placement: "bottom",
+            trigger: "manual",
+            title,
+            content,
+          })
+          .popover("show");
+        const closeBtn = navbar.find(`#${closerId}`);
+        const countdownDisposers = rest.map(
+          ({ cancelId, timeTagId, deadline, cancel }) => {
+            const cancelBtn = navbar.find(`#${cancelId}`);
+            cancelBtn.on("click", cancel);
+            const timeTag = navbar.find(`#${timeTagId}`);
+            return setCountdown(timeTag, deadline);
+          }
+        );
+        closeBtn.on("click", () => {
+          for (const disposer of countdownDisposers) {
+            disposer();
+          }
+          closeBtn.off("click");
+          addTooltip(clearHints(targetBtn), entries[0].value.label_text);
+        });
+        return targetBtn;
+      }
+
+      return undefined;
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
@@ -198,9 +252,8 @@ $(() => {
           ? self.loginState.hasPermission(permission)
           : false;
       const navbar = $(`#navbar_plugin_${ownCode}`);
-      const upcomingTasks: Array<
-        Pick<Parameters<typeof addPopover>[0], "key" | "value" | "relayBtn">
-      > = [];
+      const upcomingTasks: Parameters<typeof showUpcomingTasks>[0]["entries"] =
+        [];
       for (const [key, value] of Object.entries(data)) {
         const relayBtn = navbar
           .find(`#relais${key}`)
@@ -217,7 +270,7 @@ $(() => {
         upcomingTasks.sort(
           (a, b) => a.value.upcoming.deadline - b.value.upcoming.deadline
         );
-        upcomingTasks.forEach((props) => addPopover({ ...props, navbar }));
+        showUpcomingTasks({ entries: upcomingTasks, navbar });
       }
     };
   };

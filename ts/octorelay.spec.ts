@@ -291,8 +291,8 @@ describe("OctoRelayViewModel", () => {
         },
       },
     });
-    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
-    const cancelHandler = elementMock.on.mock.calls[2][1];
+    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, cancelBtn, closeBtn
+    const cancelHandler = elementMock.on.mock.calls[1][1];
     cancelHandler();
     expect(apiMock).toHaveBeenCalledWith("octorelay", "cancelTask", {
       owner: "PRINTING_STOPPED",
@@ -320,8 +320,8 @@ describe("OctoRelayViewModel", () => {
         },
       },
     });
-    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, closeBtn, cancelBtn
-    const closeHandler = elementMock.on.mock.calls[1][1];
+    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, cancelBtn, closeBtn
+    const closeHandler = elementMock.on.mock.calls[2][1];
     closeHandler();
     expect(elementMock.popover).toHaveBeenCalledWith("destroy");
     expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
