@@ -42,6 +42,12 @@ type OwnModel = (
   dependencies: object[]
 ) => void;
 
+interface Hint {
+  relayBtn: JQuery;
+  key: string;
+  value: RelayInfo;
+}
+
 $(() => {
   const OctoRelayViewModel: OwnModel = function (
     this,
@@ -140,25 +146,21 @@ $(() => {
       btn.tooltip({ placement: "bottom", title: text });
 
     const showHints = ({
-      entries,
+      hints,
       navbar,
     }: {
-      entries: Array<{
-        relayBtn: JQuery;
-        key: string;
-        value: RelayInfo;
-      }>;
+      hints: Hint[];
       navbar: JQuery;
     }) => {
-      const hasMultipleTasks = entries.length > 1;
+      const hasMultipleTasks = hints.length > 1; // @todo this should take task presence into account
       const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
       const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
-      entries.sort(
+      hints.sort(
         (a, b) =>
           (a.value.upcoming?.deadline || 0) - (b.value.upcoming?.deadline || 0)
       );
-      const { title, content, targetBtn, rest } = entries.reduce<{
+      const { title, content, targetBtn, rest } = hints.reduce<{
         title: string;
         content: string;
         targetBtn: JQuery | undefined;
@@ -241,7 +243,7 @@ $(() => {
           disposer();
         }
         closeBtn.off("click");
-        addTooltip(clearHints(targetBtn), entries[0].value.label_text);
+        addTooltip(clearHints(targetBtn), hints[0].value.label_text);
       });
     };
 
@@ -256,7 +258,7 @@ $(() => {
           ? self.loginState.hasPermission(permission)
           : false;
       const navbar = $(`#navbar_plugin_${ownCode}`);
-      const hintsData: Parameters<typeof showHints>[0]["entries"] = [];
+      const hints: Hint[] = [];
       for (const [key, value] of Object.entries(data)) {
         const relayBtn = navbar
           .find(`#relais${key}`)
@@ -265,9 +267,9 @@ $(() => {
           .off("click")
           .on("click", () => toggleRelay(key, value));
         clearHints(relayBtn);
-        hintsData.push({ relayBtn, key, value });
+        hints.push({ relayBtn, key, value });
       }
-      showHints({ entries: hintsData, navbar });
+      showHints({ hints, navbar });
     };
   };
 
