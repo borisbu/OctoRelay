@@ -135,13 +135,22 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
     "destroy",
   ],
   [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
     {
       "placement": "bottom",
       "title": "Nozzle Light",
     },
-  ],
-  [
-    "destroy",
   ],
   [
     {
@@ -150,25 +159,16 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
     },
   ],
   [
-    "destroy",
-  ],
-  [
     {
       "placement": "bottom",
       "title": "Fan",
     },
   ],
   [
-    "destroy",
-  ],
-  [
     {
       "placement": "bottom",
       "title": "Chassis Light",
     },
-  ],
-  [
-    "destroy",
   ],
   [
     {

@@ -139,14 +139,14 @@ $(() => {
     const addTooltip = (btn: JQuery, text: string) =>
       btn.tooltip({ placement: "bottom", title: text });
 
-    const showUpcomingTasks = ({
+    const showHints = ({
       entries,
       navbar,
     }: {
       entries: Array<{
         relayBtn: JQuery;
         key: string;
-        value: RelayHavingTask;
+        value: RelayInfo;
       }>;
       navbar: JQuery;
     }) => {
@@ -154,6 +154,10 @@ $(() => {
       const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
       const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
+      entries.sort(
+        (a, b) =>
+          (a.value.upcoming?.deadline || 0) - (b.value.upcoming?.deadline || 0)
+      );
       const { title, content, targetBtn, rest } = entries.reduce<{
         title: string;
         content: string;
@@ -165,7 +169,15 @@ $(() => {
           cancel: () => JQuery.Promise<any>;
         }>;
       }>(
-        (agg, { value: { upcoming, label_text: subject }, key, relayBtn }) => {
+        (agg, { value, key, relayBtn }) => {
+          const isRelayHavingTask = hasUpcomingTask(value);
+          if (!isRelayHavingTask || agg.targetBtn) {
+            addTooltip(relayBtn, value.label_text);
+          }
+          if (!isRelayHavingTask) {
+            return agg;
+          }
+          const { upcoming, label_text: subject } = value;
           const dateObj = new Date(upcoming.deadline);
           const dateISO = dateObj.toISOString();
           const dateLocalized = dateObj.toLocaleString();
@@ -203,33 +215,34 @@ $(() => {
         },
         { title: "", content: "", targetBtn: undefined, rest: [] }
       );
-      if (targetBtn) {
-        targetBtn
-          .popover({
-            html: true,
-            placement: "bottom",
-            trigger: "manual",
-            title,
-            content,
-          })
-          .popover("show");
-        const closeBtn = navbar.find(`#${closerId}`);
-        const countdownDisposers = rest.map(
-          ({ cancelId, timeTagId, deadline, cancel }) => {
-            const cancelBtn = navbar.find(`#${cancelId}`);
-            cancelBtn.on("click", cancel);
-            const timeTag = navbar.find(`#${timeTagId}`);
-            return setCountdown(timeTag, deadline);
-          }
-        );
-        closeBtn.on("click", () => {
-          for (const disposer of countdownDisposers) {
-            disposer();
-          }
-          closeBtn.off("click");
-          addTooltip(clearHints(targetBtn), entries[0].value.label_text);
-        });
+      if (!targetBtn) {
+        return;
       }
+      targetBtn
+        .popover({
+          html: true,
+          placement: "bottom",
+          trigger: "manual",
+          title,
+          content,
+        })
+        .popover("show");
+      const closeBtn = navbar.find(`#${closerId}`);
+      const countdownDisposers = rest.map(
+        ({ cancelId, timeTagId, deadline, cancel }) => {
+          const cancelBtn = navbar.find(`#${cancelId}`);
+          cancelBtn.on("click", cancel);
+          const timeTag = navbar.find(`#${timeTagId}`);
+          return setCountdown(timeTag, deadline);
+        }
+      );
+      closeBtn.on("click", () => {
+        for (const disposer of countdownDisposers) {
+          disposer();
+        }
+        closeBtn.off("click");
+        addTooltip(clearHints(targetBtn), entries[0].value.label_text);
+      });
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
@@ -243,8 +256,7 @@ $(() => {
           ? self.loginState.hasPermission(permission)
           : false;
       const navbar = $(`#navbar_plugin_${ownCode}`);
-      const upcomingTasks: Parameters<typeof showUpcomingTasks>[0]["entries"] =
-        [];
+      const hintsData: Parameters<typeof showHints>[0]["entries"] = [];
       for (const [key, value] of Object.entries(data)) {
         const relayBtn = navbar
           .find(`#relais${key}`)
@@ -253,16 +265,9 @@ $(() => {
           .off("click")
           .on("click", () => toggleRelay(key, value));
         clearHints(relayBtn);
-        if (hasUpcomingTask(value)) {
-          upcomingTasks.push({ relayBtn, key, value });
-        } else {
-          addTooltip(relayBtn, value.label_text);
-        }
+        hintsData.push({ relayBtn, key, value });
       }
-      upcomingTasks.sort(
-        (a, b) => a.value.upcoming.deadline - b.value.upcoming.deadline
-      );
-      showUpcomingTasks({ entries: upcomingTasks, navbar });
+      showHints({ entries: hintsData, navbar });
     };
   };
 
