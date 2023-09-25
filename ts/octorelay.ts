@@ -152,7 +152,8 @@ $(() => {
       hints: Hint[];
       navbar: JQuery;
     }) => {
-      const hasMultipleTasks = hints.length > 1; // @todo this should take task presence into account
+      const hasMultipleTasks =
+        hints.filter(({ value }) => hasUpcomingTask(value)).length > 1;
       const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
       const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
