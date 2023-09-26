@@ -161,63 +161,51 @@ $(() => {
         (a, b) =>
           (a.value.upcoming?.deadline || 0) - (b.value.upcoming?.deadline || 0)
       );
-      const { title, content, targetBtn, rest } = hints.reduce<{
-        title: string;
-        content: string;
-        targetBtn: JQuery | undefined;
-        rest: Array<{
-          cancelId: string;
-          timeTagId: string;
-          deadline: number;
-          cancel: () => JQuery.Promise<any>;
-        }>;
-      }>(
-        (agg, { value, key, relayBtn }) => {
-          const isRelayHavingTask = hasUpcomingTask(value);
-          if (!isRelayHavingTask || agg.targetBtn) {
-            addTooltip(relayBtn, value.label_text);
-          }
-          if (!isRelayHavingTask) {
-            return agg;
-          }
-          const { upcoming, label_text: subject } = value;
-          const dateObj = new Date(upcoming.deadline);
-          const dateISO = dateObj.toISOString();
-          const dateLocalized = dateObj.toLocaleString();
-          const timeLeft = formatDeadline(upcoming.deadline);
-          const targetState = upcoming.target ? "ON" : "OFF";
-          const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
-            (prefix) => `${prefix}-${key}`
-          );
-          const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
-          const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
-          const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
-          const restEntry = {
-            cancelId,
-            timeTagId,
-            deadline: upcoming.deadline,
-            cancel: () => cancelTask(key, upcoming),
-          };
-          if (hasMultipleTasks) {
-            return {
-              targetBtn: agg.targetBtn || relayBtn,
-              title: `<span>Several relay switches ahead</span>${closeBtnHTML}`,
-              content:
-                agg.content +
-                `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`,
-              rest: agg.rest.concat(restEntry),
-            };
-          } else {
-            return {
-              targetBtn: relayBtn,
-              title: `<span>${upcomingHTML}</span>${closeBtnHTML}`,
-              content: `<div>${timeHTML}${cancelHTML}</div>`,
-              rest: [restEntry],
-            };
-          }
-        },
-        { title: "", content: "", targetBtn: undefined, rest: [] }
-      );
+      let popoverTitle = "";
+      let popoverContent: string[] = [];
+      let targetBtn: JQuery | undefined = undefined;
+      const rest: Array<{
+        cancelId: string;
+        timeTagId: string;
+        deadline: number;
+        cancel: () => JQuery.Promise<any>;
+      }> = [];
+      for (const { key, value, relayBtn } of hints) {
+        const isRelayHavingTask = hasUpcomingTask(value);
+        if (!isRelayHavingTask || targetBtn) {
+          addTooltip(relayBtn, value.label_text);
+        }
+        if (!isRelayHavingTask) {
+          continue;
+        }
+        const { upcoming, label_text: subject } = value;
+        const dateObj = new Date(upcoming.deadline);
+        const dateISO = dateObj.toISOString();
+        const dateLocalized = dateObj.toLocaleString();
+        const timeLeft = formatDeadline(upcoming.deadline);
+        const targetState = upcoming.target ? "ON" : "OFF";
+        const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
+          (prefix) => `${prefix}-${key}`
+        );
+        const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
+        const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
+        const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
+        rest.push({
+          cancelId,
+          timeTagId,
+          deadline: upcoming.deadline,
+          cancel: () => cancelTask(key, upcoming),
+        });
+        targetBtn = targetBtn || relayBtn;
+        popoverTitle = hasMultipleTasks
+          ? `<span>Several relay switches ahead</span>${closeBtnHTML}`
+          : `<span>${upcomingHTML}</span>${closeBtnHTML}`;
+        popoverContent.push(
+          hasMultipleTasks
+            ? `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`
+            : `<div>${timeHTML}${cancelHTML}</div>`
+        );
+      }
       if (!targetBtn) {
         return;
       }
@@ -226,8 +214,8 @@ $(() => {
           html: true,
           placement: "bottom",
           trigger: "manual",
-          title,
-          content,
+          title: popoverTitle,
+          content: popoverContent.join(""),
         })
         .popover("show");
       const closeBtn = navbar.find(`#${closerId}`);
@@ -244,7 +232,12 @@ $(() => {
           disposer();
         }
         closeBtn.off("click");
-        addTooltip(clearHints(targetBtn), hints[0].value.label_text);
+        const subject = hints.find(
+          (hint) => targetBtn && hint.relayBtn.is(targetBtn)
+        )?.value.label_text;
+        if (targetBtn && subject) {
+          addTooltip(clearHints(targetBtn), subject);
+        }
       });
     };
 
