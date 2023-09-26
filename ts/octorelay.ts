@@ -4,7 +4,7 @@ interface Task {
   target: boolean;
 }
 
-interface Relay {
+interface Relay<U extends null | Task = null | Task> {
   active: boolean;
   confirm_off: boolean;
   icon_html: string;
@@ -12,12 +12,10 @@ interface Relay {
   relay_pin: number;
   inverted_output: boolean;
   relay_state: boolean;
-  upcoming: null | Task;
+  upcoming: U;
 }
 
-type RelayHavingTask = Relay & {
-  upcoming: NonNullable<Relay["upcoming"]>;
-};
+type RelayHavingTask = Relay<Task>;
 
 type OwnMessage = Record<`r${number}`, Relay>;
 
