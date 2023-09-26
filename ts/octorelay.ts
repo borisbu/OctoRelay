@@ -48,6 +48,13 @@ interface Hint {
   value: RelayInfo;
 }
 
+interface PopoverItem {
+  cancelId: string;
+  timeTagId: string;
+  deadline: number;
+  cancel: () => JQuery.Promise<any>;
+}
+
 $(() => {
   const OctoRelayViewModel: OwnModel = function (
     this,
@@ -164,12 +171,7 @@ $(() => {
       let popoverTitle = "";
       let popoverContent: string[] = [];
       let targetBtn: JQuery | undefined = undefined;
-      const rest: Array<{
-        cancelId: string;
-        timeTagId: string;
-        deadline: number;
-        cancel: () => JQuery.Promise<any>;
-      }> = [];
+      const popoverItems: PopoverItem[] = [];
       for (const { key, value, relayBtn } of hints) {
         const isRelayHavingTask = hasUpcomingTask(value);
         if (!isRelayHavingTask || targetBtn) {
@@ -190,7 +192,7 @@ $(() => {
         const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
         const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
         const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
-        rest.push({
+        popoverItems.push({
           cancelId,
           timeTagId,
           deadline: upcoming.deadline,
@@ -219,7 +221,7 @@ $(() => {
         })
         .popover("show");
       const closeBtn = navbar.find(`#${closerId}`);
-      const countdownDisposers = rest.map(
+      const countdownDisposers = popoverItems.map(
         ({ cancelId, timeTagId, deadline, cancel }) => {
           const cancelBtn = navbar.find(`#${cancelId}`);
           cancelBtn.on("click", cancel);
