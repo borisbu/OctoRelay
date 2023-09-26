@@ -4,7 +4,7 @@ interface Task {
   target: boolean;
 }
 
-interface RelayInfo {
+interface Relay {
   active: boolean;
   confirm_off: boolean;
   icon_html: string;
@@ -15,11 +15,11 @@ interface RelayInfo {
   upcoming: null | Task;
 }
 
-type RelayHavingTask = RelayInfo & {
-  upcoming: NonNullable<RelayInfo["upcoming"]>;
+type RelayHavingTask = Relay & {
+  upcoming: NonNullable<Relay["upcoming"]>;
 };
 
-type OwnMessage = Record<`r${number}`, RelayInfo>;
+type OwnMessage = Record<`r${number}`, Relay>;
 
 type MessageHandler = (plugin: string, data: OwnMessage) => void;
 
@@ -43,9 +43,9 @@ type OwnModel = (
 ) => void;
 
 interface Hint {
-  relayBtn: JQuery;
+  control: JQuery;
   key: string;
-  value: RelayInfo;
+  relay: Relay;
 }
 
 interface PopoverItem {
@@ -65,18 +65,18 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    const toggleRelay = (key: string, value: RelayInfo) => {
+    const toggleRelay = (key: string, relay: Relay) => {
       const command = () =>
         OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
-      if (!value.confirm_off) {
+      if (!relay.confirm_off) {
         return command();
       }
       const dialog = $("#octorelay-confirmation-dialog");
-      dialog.find(".modal-title").text("Turning " + value.label_text + " off");
+      dialog.find(".modal-title").text("Turning " + relay.label_text + " off");
       dialog
         .find("#octorelay-confirmation-text")
         .text(
-          "Are you sure you want to turn the " + value.label_text + " off?"
+          "Are you sure you want to turn the " + relay.label_text + " off?"
         );
       dialog
         .find(".btn-cancel")
@@ -143,8 +143,8 @@ $(() => {
       return disposer;
     };
 
-    const hasUpcomingTask = (value: RelayInfo): value is RelayHavingTask =>
-      value.upcoming ? value.upcoming.target !== value.relay_state : false;
+    const hasUpcomingTask = (relay: Relay): relay is RelayHavingTask =>
+      relay.upcoming ? relay.upcoming.target !== relay.relay_state : false;
 
     const clearHints = (btn: JQuery) =>
       btn.tooltip("destroy").popover("destroy");
@@ -160,27 +160,27 @@ $(() => {
       navbar: JQuery;
     }) => {
       const hasMultipleTasks =
-        hints.filter(({ value }) => hasUpcomingTask(value)).length > 1;
+        hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
       const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
       const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
       hints.sort(
         (a, b) =>
-          (a.value.upcoming?.deadline || 0) - (b.value.upcoming?.deadline || 0)
+          (a.relay.upcoming?.deadline || 0) - (b.relay.upcoming?.deadline || 0)
       );
       let popoverTitle = "";
       let popoverContent: string[] = [];
       let targetBtn: JQuery | undefined = undefined;
       const popoverItems: PopoverItem[] = [];
-      for (const { key, value, relayBtn } of hints) {
-        const isRelayHavingTask = hasUpcomingTask(value);
+      for (const { key, relay, control } of hints) {
+        const isRelayHavingTask = hasUpcomingTask(relay);
         if (!isRelayHavingTask || targetBtn) {
-          addTooltip(relayBtn, value.label_text);
+          addTooltip(control, relay.label_text);
         }
         if (!isRelayHavingTask) {
           continue;
         }
-        const { upcoming, label_text: subject } = value;
+        const { upcoming, label_text: subject } = relay;
         const dateObj = new Date(upcoming.deadline);
         const dateISO = dateObj.toISOString();
         const dateLocalized = dateObj.toLocaleString();
@@ -198,7 +198,7 @@ $(() => {
           deadline: upcoming.deadline,
           cancel: () => cancelTask(key, upcoming),
         });
-        targetBtn = targetBtn || relayBtn;
+        targetBtn = targetBtn || control;
         popoverTitle = hasMultipleTasks
           ? `<span>Several relay switches ahead</span>${closeBtnHTML}`
           : `<span>${upcomingHTML}</span>${closeBtnHTML}`;
@@ -235,8 +235,8 @@ $(() => {
         }
         closeBtn.off("click");
         const subject = hints.find(
-          (hint) => targetBtn && hint.relayBtn.is(targetBtn)
-        )?.value.label_text;
+          (hint) => targetBtn && hint.control.is(targetBtn)
+        )?.relay.label_text;
         if (targetBtn && subject) {
           addTooltip(clearHints(targetBtn), subject);
         }
@@ -255,15 +255,15 @@ $(() => {
           : false;
       const navbar = $(`#navbar_plugin_${ownCode}`);
       const hints: Hint[] = [];
-      for (const [key, value] of Object.entries(data)) {
-        const relayBtn = navbar
+      for (const [key, relay] of Object.entries(data)) {
+        const control = navbar
           .find(`#relais${key}`)
-          .toggle(hasPermission && value.active)
-          .html(value.icon_html)
+          .toggle(hasPermission && relay.active)
+          .html(relay.icon_html)
           .off("click")
-          .on("click", () => toggleRelay(key, value));
-        clearHints(relayBtn);
-        hints.push({ relayBtn, key, value });
+          .on("click", () => toggleRelay(key, relay));
+        clearHints(control);
+        hints.push({ control, key, relay });
       }
       showHints({ hints, navbar });
     };
