@@ -186,6 +186,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 15 a
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:30:15.000Z" title="8/13/2023, 10:30:15 PM">in 15 seconds</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -206,6 +207,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 15 a
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:30:15.000Z" title="8/13/2023, 10:30:15 PM">in 15 seconds</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -226,6 +228,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 75 a
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:31:15.000Z" title="8/13/2023, 10:31:15 PM">in 1.3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -246,6 +249,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 75 a
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:31:15.000Z" title="8/13/2023, 10:31:15 PM">in 1.3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -266,6 +270,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 150 
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:32:30.000Z" title="8/13/2023, 10:32:30 PM">in 3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -286,6 +291,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 150 
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:32:30.000Z" title="8/13/2023, 10:32:30 PM">in 3 minutes</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -306,6 +312,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 5000
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T23:53:20.000Z" title="8/13/2023, 11:53:20 PM">in 1 hour</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
@@ -326,6 +333,7 @@ exports[`OctoRelayViewModel Should display upcoming state popover for delay 5000
   ],
   [
     {
+      "animation": false,
       "content": "<div><time id="time-tag-r1" datetime="2023-08-13T23:53:20.000Z" title="8/13/2023, 11:53:20 PM">in 1 hour</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
       "html": true,
       "placement": "bottom",
