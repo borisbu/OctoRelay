@@ -209,15 +209,15 @@ $(() => {
     }) => {
       const hasMultipleTasks =
         hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
-      const popoverCloserId = "pop-closer";
+      const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
-      const closeBtnHTML = `<button id="${popoverCloserId}" type="button" class="close">${closeIconHTML}</button>`;
+      const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
       hints.sort(compareDeadlines);
-      let popoverTitle = "";
-      let popoverContent: string[] = [];
+      let title = "";
+      let content: string[] = [];
       let target: JQuery | undefined = undefined;
       let originalSubject = "";
-      const popoverItems: PopoverItem[] = [];
+      const items: PopoverItem[] = [];
       for (const { key, relay, control } of hints) {
         const isRelayHavingTask = hasUpcomingTask(relay);
         if (!isRelayHavingTask || target) {
@@ -235,7 +235,7 @@ $(() => {
         const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
           (prefix) => `${prefix}-${key}`
         );
-        popoverItems.push({
+        items.push({
           cancelId,
           timeTagId,
           deadline: upcoming.deadline,
@@ -246,10 +246,10 @@ $(() => {
         const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
         const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
         const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
-        popoverTitle = hasMultipleTasks
+        title = hasMultipleTasks
           ? `<span>Several relay switches ahead</span>${closeBtnHTML}`
           : `<span>${upcomingHTML}</span>${closeBtnHTML}`;
-        popoverContent.push(
+        content.push(
           hasMultipleTasks
             ? `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`
             : `<div>${timeHTML}${cancelHTML}</div>`
@@ -260,10 +260,10 @@ $(() => {
           target,
           navbar,
           originalSubject,
-          title: popoverTitle,
-          content: popoverContent,
-          items: popoverItems,
-          closerId: popoverCloserId,
+          title,
+          content,
+          items,
+          closerId,
         });
       }
     };
