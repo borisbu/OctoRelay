@@ -1,7 +1,7 @@
 import type { Relay } from "./Relay";
 
 type Payload = Record<`r${number}`, Relay>;
-type MessageHandler = (plugin: string, data: Payload) => void;
+export type MessageHandler = (plugin: string, data: Payload) => void;
 
 export interface OwnProperties {
   settingsViewModel: {

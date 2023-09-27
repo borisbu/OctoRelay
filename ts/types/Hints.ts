@@ -12,13 +12,3 @@ export interface PopoverItem {
   deadline: number;
   cancel: () => JQuery.Promise<any>;
 }
-
-export interface AddPopoverProps {
-  target: JQuery;
-  title: string;
-  content: string[];
-  navbar: JQuery;
-  closerId: string;
-  items: PopoverItem[];
-  originalSubject: string;
-}
