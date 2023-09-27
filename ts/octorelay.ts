@@ -159,20 +159,20 @@ $(() => {
     }) => {
       const hasMultipleTasks =
         hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
-      const closerId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
-      const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
       hints.sort(
         (a, b) =>
           (a.relay.upcoming?.deadline || 0) - (b.relay.upcoming?.deadline || 0)
       );
       let popoverTitle = "";
       let popoverContent: string[] = [];
-      let targetBtn: JQuery | undefined = undefined;
+      let popoverTarget:
+        | { control: JQuery; closerId: string; subject: string }
+        | undefined = undefined;
       const popoverItems: PopoverItem[] = [];
       for (const { key, relay, control } of hints) {
         const isRelayHavingTask = hasUpcomingTask(relay);
-        if (!isRelayHavingTask || targetBtn) {
+        if (!isRelayHavingTask || popoverTarget) {
           addTooltip(control, relay.label_text);
         }
         if (!isRelayHavingTask) {
@@ -187,16 +187,21 @@ $(() => {
         const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
           (prefix) => `${prefix}-${key}`
         );
-        const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
-        const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
-        const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
         popoverItems.push({
           cancelId,
           timeTagId,
           deadline: upcoming.deadline,
           cancel: () => cancelTask(key, upcoming),
         });
-        targetBtn = targetBtn || control;
+        popoverTarget = popoverTarget || {
+          control,
+          subject,
+          closerId: `pop-closer-${key}`,
+        };
+        const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
+        const closeBtnHTML = `<button id="${popoverTarget.closerId}" type="button" class="close">${closeIconHTML}</button>`;
+        const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
+        const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
         popoverTitle = hasMultipleTasks
           ? `<span>Several relay switches ahead</span>${closeBtnHTML}`
           : `<span>${upcomingHTML}</span>${closeBtnHTML}`;
@@ -206,10 +211,10 @@ $(() => {
             : `<div>${timeHTML}${cancelHTML}</div>`
         );
       }
-      if (!targetBtn) {
+      if (!popoverTarget) {
         return;
       }
-      targetBtn
+      popoverTarget.control
         .popover({
           html: true,
           placement: "bottom",
@@ -218,7 +223,7 @@ $(() => {
           content: popoverContent.join(""),
         })
         .popover("show");
-      const closeBtn = navbar.find(`#${closerId}`);
+      const closeBtn = navbar.find(`#${popoverTarget.closerId}`);
       const countdownDisposers = popoverItems.map(
         ({ cancelId, timeTagId, deadline, cancel }) => {
           const cancelBtn = navbar.find(`#${cancelId}`);
@@ -232,11 +237,8 @@ $(() => {
           disposer();
         }
         closeBtn.off("click");
-        const subject = hints.find(
-          (hint) => targetBtn && hint.control.is(targetBtn)
-        )?.relay.label_text;
-        if (targetBtn && subject) {
-          addTooltip(clearHints(targetBtn), subject);
+        if (popoverTarget) {
+          addTooltip(clearHints(popoverTarget.control), popoverTarget.subject);
         }
       });
     };
