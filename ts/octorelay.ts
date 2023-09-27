@@ -159,7 +159,9 @@ $(() => {
     }) => {
       const hasMultipleTasks =
         hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
+      const popoverCloserId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
+      const closeBtnHTML = `<button id="${popoverCloserId}" type="button" class="close">${closeIconHTML}</button>`;
       hints.sort(
         (a, b) =>
           (a.relay.upcoming?.deadline || 0) - (b.relay.upcoming?.deadline || 0)
@@ -168,7 +170,6 @@ $(() => {
       let popoverContent: string[] = [];
       let target: JQuery | undefined = undefined;
       let originalSubject = "";
-      let popoverCloserId = "";
       const popoverItems: PopoverItem[] = [];
       for (const { key, relay, control } of hints) {
         const isRelayHavingTask = hasUpcomingTask(relay);
@@ -184,11 +185,9 @@ $(() => {
         const dateLocalized = dateObj.toLocaleString();
         const timeLeft = formatDeadline(upcoming.deadline);
         const targetState = upcoming.target ? "ON" : "OFF";
-        const [closerId, cancelId, timeTagId] = [
-          "pop-closer",
-          "cancel-btn",
-          "time-tag",
-        ].map((prefix) => `${prefix}-${key}`);
+        const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
+          (prefix) => `${prefix}-${key}`
+        );
         popoverItems.push({
           cancelId,
           timeTagId,
@@ -196,10 +195,8 @@ $(() => {
           cancel: () => cancelTask(key, upcoming),
         });
         target = target || control;
-        popoverCloserId = popoverCloserId || closerId;
         originalSubject = originalSubject || subject;
         const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
-        const closeBtnHTML = `<button id="${popoverCloserId}" type="button" class="close">${closeIconHTML}</button>`;
         const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
         const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
         popoverTitle = hasMultipleTasks
