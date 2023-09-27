@@ -4,7 +4,7 @@ interface Task {
   target: boolean;
 }
 
-interface RelayInfo {
+interface Relay<U extends null | Task = null | Task> {
   active: boolean;
   confirm_off: boolean;
   icon_html: string;
@@ -12,14 +12,12 @@ interface RelayInfo {
   relay_pin: number;
   inverted_output: boolean;
   relay_state: boolean;
-  upcoming: null | Task;
+  upcoming: U;
 }
 
-type RelayHavingTask = RelayInfo & {
-  upcoming: NonNullable<RelayInfo["upcoming"]>;
-};
+type RelayHavingTask = Relay<Task>;
 
-type OwnMessage = Record<`r${number}`, RelayInfo>;
+type OwnMessage = Record<`r${number}`, Relay>;
 
 type MessageHandler = (plugin: string, data: OwnMessage) => void;
 
@@ -42,6 +40,29 @@ type OwnModel = (
   dependencies: object[]
 ) => void;
 
+interface Hint {
+  control: JQuery;
+  key: string;
+  relay: Relay;
+}
+
+interface PopoverItem {
+  cancelId: string;
+  timeTagId: string;
+  deadline: number;
+  cancel: () => JQuery.Promise<any>;
+}
+
+interface AddPopoverProps {
+  target: JQuery;
+  title: string;
+  content: string[];
+  navbar: JQuery;
+  closerId: string;
+  items: PopoverItem[];
+  originalSubject: string;
+}
+
 $(() => {
   const OctoRelayViewModel: OwnModel = function (
     this,
@@ -52,18 +73,18 @@ $(() => {
     self.settingsViewModel = settingsViewModel;
     self.loginState = loginStateViewModel;
 
-    const toggleRelay = (key: string, value: RelayInfo) => {
+    const toggleRelay = (key: string, relay: Relay) => {
       const command = () =>
         OctoPrint.simpleApiCommand(ownCode, "update", { pin: key });
-      if (!value.confirm_off) {
+      if (!relay.confirm_off) {
         return command();
       }
       const dialog = $("#octorelay-confirmation-dialog");
-      dialog.find(".modal-title").text("Turning " + value.label_text + " off");
+      dialog.find(".modal-title").text("Turning " + relay.label_text + " off");
       dialog
         .find("#octorelay-confirmation-text")
         .text(
-          "Are you sure you want to turn the " + value.label_text + " off?"
+          "Are you sure you want to turn the " + relay.label_text + " off?"
         );
       dialog
         .find(".btn-cancel")
@@ -130,8 +151,8 @@ $(() => {
       return disposer;
     };
 
-    const hasUpcomingTask = (value: RelayInfo): value is RelayHavingTask =>
-      value.upcoming ? value.upcoming.target !== value.relay_state : false;
+    const hasUpcomingTask = (relay: Relay): relay is RelayHavingTask =>
+      relay.upcoming ? relay.upcoming.target !== relay.relay_state : false;
 
     const clearHints = (btn: JQuery) =>
       btn.tooltip("destroy").popover("destroy");
@@ -140,51 +161,111 @@ $(() => {
       btn.tooltip({ placement: "bottom", title: text });
 
     const addPopover = ({
-      relayBtn,
-      key,
-      value: { label_text: subject, upcoming },
+      target,
+      title,
+      content,
       navbar,
-    }: {
-      relayBtn: JQuery;
-      key: string;
-      value: RelayHavingTask;
-      navbar: JQuery;
-    }) => {
-      const dateObj = new Date(upcoming.deadline);
-      const dateISO = dateObj.toISOString();
-      const dateLocalized = dateObj.toLocaleString();
-      const timeLeft = formatDeadline(upcoming.deadline);
-      const targetState = upcoming.target ? "ON" : "OFF";
-      const [closerId, cancelId, timeTagId] = [
-        "pop-closer",
-        "cancel-btn",
-        "time-tag",
-      ].map((prefix) => `${prefix}-${key}`);
-      const upcomingHTML = `<span>${subject} goes <span class="label">${targetState}</span></span>`;
-      const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
-      const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
-      const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
-      const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
-      relayBtn
+      closerId,
+      items,
+      originalSubject,
+    }: AddPopoverProps) => {
+      target
         .popover({
+          title,
           html: true,
+          animation: false,
           placement: "bottom",
           trigger: "manual",
-          title: `${upcomingHTML}${closeBtnHTML}`,
-          content: `${timeHTML}${cancelHTML}`,
+          content: content.join(""),
         })
         .popover("show");
       const closeBtn = navbar.find(`#${closerId}`);
-      const cancelBtn = navbar.find(`#${cancelId}`);
-      const timeTag = navbar.find(`#${timeTagId}`);
-      const countdownDisposer = setCountdown(timeTag, upcoming.deadline);
+      const countdownDisposers = items.map(
+        ({ cancelId, timeTagId, deadline, cancel }) => {
+          const cancelBtn = navbar.find(`#${cancelId}`);
+          cancelBtn.on("click", cancel);
+          const timeTag = navbar.find(`#${timeTagId}`);
+          return setCountdown(timeTag, deadline);
+        }
+      );
       closeBtn.on("click", () => {
-        countdownDisposer();
+        for (const disposer of countdownDisposers) {
+          disposer();
+        }
         closeBtn.off("click");
-        addTooltip(clearHints(relayBtn), subject);
+        addTooltip(clearHints(target), originalSubject);
       });
-      cancelBtn.on("click", () => cancelTask(key, upcoming));
-      return relayBtn;
+    };
+
+    const compareDeadlines = (a: Hint, b: Hint): number =>
+      (a.relay.upcoming?.deadline || 0) - (b.relay.upcoming?.deadline || 0);
+
+    const showHints = ({
+      hints,
+      navbar,
+    }: {
+      hints: Hint[];
+      navbar: JQuery;
+    }) => {
+      const hasMultipleTasks =
+        hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
+      const closerId = "pop-closer";
+      const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
+      const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
+      hints.sort(compareDeadlines);
+      let title = "";
+      let content: string[] = [];
+      let target: JQuery | undefined = undefined;
+      let originalSubject = "";
+      const items: PopoverItem[] = [];
+      for (const { key, relay, control } of hints) {
+        const isRelayHavingTask = hasUpcomingTask(relay);
+        if (!isRelayHavingTask || target) {
+          addTooltip(control, relay.label_text);
+        }
+        if (!isRelayHavingTask) {
+          continue;
+        }
+        const { upcoming, label_text: subject } = relay;
+        const dateObj = new Date(upcoming.deadline);
+        const dateISO = dateObj.toISOString();
+        const dateLocalized = dateObj.toLocaleString();
+        const timeLeft = formatDeadline(upcoming.deadline);
+        const targetState = upcoming.target ? "ON" : "OFF";
+        const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
+          (prefix) => `${prefix}-${key}`
+        );
+        items.push({
+          cancelId,
+          timeTagId,
+          deadline: upcoming.deadline,
+          cancel: () => cancelTask(key, upcoming),
+        });
+        target = target || control;
+        originalSubject = originalSubject || subject;
+        const upcomingHTML = `${subject} goes <span class="label">${targetState}</span>`;
+        const timeHTML = `<time id="${timeTagId}" datetime="${dateISO}" title="${dateLocalized}">${timeLeft}</time>`;
+        const cancelHTML = `<button id="${cancelId}" class="btn btn-mini" type="button">Cancel</button>`;
+        title = hasMultipleTasks
+          ? `<span>Several relay switches ahead</span>${closeBtnHTML}`
+          : `<span>${upcomingHTML}</span>${closeBtnHTML}`;
+        content.push(
+          hasMultipleTasks
+            ? `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`
+            : `<div>${timeHTML}${cancelHTML}</div>`
+        );
+      }
+      if (target) {
+        addPopover({
+          target,
+          navbar,
+          originalSubject,
+          title,
+          content,
+          items,
+          closerId,
+        });
+      }
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
@@ -198,20 +279,18 @@ $(() => {
           ? self.loginState.hasPermission(permission)
           : false;
       const navbar = $(`#navbar_plugin_${ownCode}`);
-      for (const [key, value] of Object.entries(data)) {
-        const relayBtn = navbar
+      const hints: Hint[] = [];
+      for (const [key, relay] of Object.entries(data)) {
+        const control = navbar
           .find(`#relais${key}`)
-          .toggle(hasPermission && value.active)
-          .html(value.icon_html)
+          .toggle(hasPermission && relay.active)
+          .html(relay.icon_html)
           .off("click")
-          .on("click", () => toggleRelay(key, value));
-        clearHints(relayBtn);
-        if (hasUpcomingTask(value)) {
-          addPopover({ relayBtn, key, value, navbar });
-        } else {
-          addTooltip(relayBtn, value.label_text);
-        }
+          .on("click", () => toggleRelay(key, relay));
+        clearHints(control);
+        hints.push({ control, key, relay });
       }
+      showHints({ hints, navbar });
     };
   };
 

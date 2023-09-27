@@ -22,6 +22,7 @@ interface JQuery {
       | "show"
       | {
           html?: boolean;
+          animation?: boolean;
           placement?: "top" | "bottom" | "left" | "right";
           trigger?: "click" | "hover" | "focus" | "manual";
           title?: string;
