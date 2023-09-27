@@ -150,6 +150,51 @@ $(() => {
     const addTooltip = (btn: JQuery, text: string) =>
       btn.tooltip({ placement: "bottom", title: text });
 
+    const addPopover = ({
+      target,
+      title,
+      content,
+      navbar,
+      closerId,
+      items,
+      originalSubject,
+    }: {
+      target: JQuery;
+      title: string;
+      content: string[];
+      navbar: JQuery;
+      closerId: string;
+      items: PopoverItem[];
+      originalSubject: string;
+    }) => {
+      target
+        .popover({
+          title,
+          html: true,
+          animation: false,
+          placement: "bottom",
+          trigger: "manual",
+          content: content.join(""),
+        })
+        .popover("show");
+      const closeBtn = navbar.find(`#${closerId}`);
+      const countdownDisposers = items.map(
+        ({ cancelId, timeTagId, deadline, cancel }) => {
+          const cancelBtn = navbar.find(`#${cancelId}`);
+          cancelBtn.on("click", cancel);
+          const timeTag = navbar.find(`#${timeTagId}`);
+          return setCountdown(timeTag, deadline);
+        }
+      );
+      closeBtn.on("click", () => {
+        for (const disposer of countdownDisposers) {
+          disposer();
+        }
+        closeBtn.off("click");
+        addTooltip(clearHints(target), originalSubject);
+      });
+    };
+
     const showHints = ({
       hints,
       navbar,
@@ -208,37 +253,17 @@ $(() => {
             : `<div>${timeHTML}${cancelHTML}</div>`
         );
       }
-      if (!target) {
-        return;
-      }
-      target
-        .popover({
-          html: true,
-          animation: false,
-          placement: "bottom",
-          trigger: "manual",
+      if (target) {
+        addPopover({
+          target,
+          navbar,
+          originalSubject,
           title: popoverTitle,
-          content: popoverContent.join(""),
-        })
-        .popover("show");
-      const closeBtn = navbar.find(`#${popoverCloserId}`);
-      const countdownDisposers = popoverItems.map(
-        ({ cancelId, timeTagId, deadline, cancel }) => {
-          const cancelBtn = navbar.find(`#${cancelId}`);
-          cancelBtn.on("click", cancel);
-          const timeTag = navbar.find(`#${timeTagId}`);
-          return setCountdown(timeTag, deadline);
-        }
-      );
-      closeBtn.on("click", () => {
-        for (const disposer of countdownDisposers) {
-          disposer();
-        }
-        closeBtn.off("click");
-        if (target) {
-          addTooltip(clearHints(target), originalSubject);
-        }
-      });
+          content: popoverContent,
+          items: popoverItems,
+          closerId: popoverCloserId,
+        });
+      }
     };
 
     self.onDataUpdaterPluginMessage = function (plugin, data) {
