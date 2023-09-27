@@ -1,4 +1,5 @@
 import type { Hint, PopoverItem } from "../types/Hints";
+import { closeBtnHTML, closeBtnId } from "./const";
 import { formatDeadline, setCountdown } from "./countdown";
 import { hasUpcomingTask } from "./narrowing";
 import { cancelTask } from "./actions";
@@ -8,7 +9,6 @@ interface AddPopoverProps {
   title: string;
   content: string[];
   navbar: JQuery;
-  closerId: string;
   items: PopoverItem[];
   originalSubject: string;
 }
@@ -24,7 +24,6 @@ const addPopover = ({
   title,
   content,
   navbar,
-  closerId,
   items,
   originalSubject,
 }: AddPopoverProps) => {
@@ -38,7 +37,7 @@ const addPopover = ({
       content: content.join(""),
     })
     .popover("show");
-  const closeBtn = navbar.find(`#${closerId}`);
+  const closeBtn = navbar.find(`#${closeBtnId}`);
   const countdownDisposers = items.map(
     ({ cancelId, timeTagId, deadline, cancel }) => {
       const cancelBtn = navbar.find(`#${cancelId}`);
@@ -68,9 +67,6 @@ export const showHints = ({
 }) => {
   const hasMultipleTasks =
     hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
-  const closerId = "pop-closer";
-  const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
-  const closeBtnHTML = `<button id="${closerId}" type="button" class="close">${closeIconHTML}</button>`;
   hints.sort(compareDeadlines);
   let title = "";
   let content: string[] = [];
@@ -122,7 +118,6 @@ export const showHints = ({
       title,
       content,
       items,
-      closerId,
     });
   }
 };
