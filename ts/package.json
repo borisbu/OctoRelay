@@ -11,7 +11,7 @@
   "scripts": {
     "lint": "eslint ./",
     "test": "tsc --noEmit && TZ=UTC jest",
-    "build": "tsc -p ./tsconfig.build.json"
+    "build": "tsup"
   },
   "dependencies": {},
   "devDependencies": {
@@ -33,6 +33,7 @@
     "jsdom": "^22.1.0",
     "mockdate": "^3.0.5",
     "prettier": "^2.8.8",
+    "tsup": "^7.2.0",
     "typescript": "^5.1.6"
   }
 }
