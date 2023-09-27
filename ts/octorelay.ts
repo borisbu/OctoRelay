@@ -53,6 +53,16 @@ interface PopoverItem {
   cancel: () => JQuery.Promise<any>;
 }
 
+interface AddPopoverProps {
+  target: JQuery;
+  title: string;
+  content: string[];
+  navbar: JQuery;
+  closerId: string;
+  items: PopoverItem[];
+  originalSubject: string;
+}
+
 $(() => {
   const OctoRelayViewModel: OwnModel = function (
     this,
@@ -158,15 +168,7 @@ $(() => {
       closerId,
       items,
       originalSubject,
-    }: {
-      target: JQuery;
-      title: string;
-      content: string[];
-      navbar: JQuery;
-      closerId: string;
-      items: PopoverItem[];
-      originalSubject: string;
-    }) => {
+    }: AddPopoverProps) => {
       target
         .popover({
           title,
