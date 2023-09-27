@@ -1,4 +1,5 @@
 import MockDate from "mockdate";
+import type { OwnModel, OwnProperties } from "./types/OwnModel";
 
 describe("OctoRelayViewModel", () => {
   const registry: ViewModel[] = [];
