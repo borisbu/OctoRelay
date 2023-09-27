@@ -195,6 +195,9 @@ $(() => {
       });
     };
 
+    const compareDeadlines = (a: Hint, b: Hint): number =>
+      (a.relay.upcoming?.deadline || 0) - (b.relay.upcoming?.deadline || 0);
+
     const showHints = ({
       hints,
       navbar,
@@ -207,10 +210,7 @@ $(() => {
       const popoverCloserId = "pop-closer";
       const closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
       const closeBtnHTML = `<button id="${popoverCloserId}" type="button" class="close">${closeIconHTML}</button>`;
-      hints.sort(
-        (a, b) =>
-          (a.relay.upcoming?.deadline || 0) - (b.relay.upcoming?.deadline || 0)
-      );
+      hints.sort(compareDeadlines);
       let popoverTitle = "";
       let popoverContent: string[] = [];
       let target: JQuery | undefined = undefined;
