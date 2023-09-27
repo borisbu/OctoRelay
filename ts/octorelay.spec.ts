@@ -238,6 +238,42 @@ describe("OctoRelayViewModel", () => {
     }
   );
 
+  test("Should display a single popover for several upcoming events", () => {
+    const handler = (registry[0].construct as OwnModel & OwnProperties)
+      .onDataUpdaterPluginMessage;
+    handler("octorelay", {
+      r1: {
+        relay_pin: 16,
+        inverted_output: false,
+        relay_state: true,
+        label_text: "Nozzle Light",
+        active: true,
+        icon_html: "<div>&#128161;</div>",
+        confirm_off: false,
+        upcoming: {
+          target: false,
+          owner: "PRINTING_STOPPED",
+          deadline: Date.now() + 120 * 1000,
+        },
+      },
+      r2: {
+        relay_pin: 12,
+        inverted_output: false,
+        relay_state: true,
+        label_text: "Printer",
+        active: true,
+        icon_html: '<img src="plugin/dashboard/static/img/printer-icon.png">',
+        confirm_off: true,
+        upcoming: {
+          target: false,
+          owner: "PRINTING_STOPPED",
+          deadline: Date.now() + 300 * 1000,
+        },
+      },
+    });
+    expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
+  });
+
   test.each([true, false])("Should set countdown %#", (isVisible) => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;

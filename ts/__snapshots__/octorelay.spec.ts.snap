@@ -179,6 +179,30 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
+exports[`OctoRelayViewModel Should display a single popover for several upcoming events: .popover() 1`] = `
+[
+  [
+    "destroy",
+  ],
+  [
+    "destroy",
+  ],
+  [
+    {
+      "animation": false,
+      "content": "<div><span>Nozzle Light goes <span class="label">OFF</span> <time id="time-tag-r1" datetime="2023-08-13T22:32:00.000Z" title="8/13/2023, 10:32:00 PM">in 2 minutes</time></span><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div><div><span>Printer goes <span class="label">OFF</span> <time id="time-tag-r2" datetime="2023-08-13T22:35:00.000Z" title="8/13/2023, 10:35:00 PM">in 5 minutes</time></span><button id="cancel-btn-r2" class="btn btn-mini" type="button">Cancel</button></div>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Several relay switches ahead</span><button id="pop-closer" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
 exports[`OctoRelayViewModel Should display upcoming state popover for delay 15 and false target: .popover() 1`] = `
 [
   [
