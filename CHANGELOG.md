@@ -2,6 +2,21 @@
 
 ## Version 3
 
+### 3.11.0
+
+- UI improvement: better handling of multiple upcoming switches.
+  - No overlapping popovers: single popover for all upcoming events instead.
+  - Sorted by the time left.
+  - Assigned to the relay having the closest switching. 
+
+![UI](https://user-images.githubusercontent.com/13189514/270194227-b763214f-d237-4d0e-aab8-78de3215fb45.png)
+
+### 3.10.0
+
+- New feature: AutoConnect delay setting.
+  - Only visible for a Printer Relay (another setting).
+  - Only functional for OctoPrint 1.9.0+.
+
 ### 3.9.1
 
 - Renamed setting: "Confirm turning OFF".
