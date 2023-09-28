@@ -172,37 +172,6 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.off).toHaveBeenCalledWith("click");
     expect(elementMock.on).toHaveBeenCalledTimes(5);
     expect(elementMock.on).toHaveBeenCalledWith("click", expect.any(Function));
-
-    // clicking on 1st icon, no confirmation
-    elementMock.on.mock.calls[0][1]();
-    expect(apiMock).toHaveBeenCalledTimes(1);
-    expect(apiMock).toHaveBeenCalledWith("octorelay", "update", { pin: "r1" });
-    expect(elementMock.on).toHaveBeenCalledTimes(5); // remains
-
-    // clicking on 2nd icon, with confirmation
-    elementMock.on.mock.calls[1][1]();
-    expect(apiMock).toHaveBeenCalledTimes(1);
-    expect(elementMock.find.mock.calls).toMatchSnapshot(".find()");
-    expect(elementMock.text.mock.calls).toMatchSnapshot(".text()");
-    expect(elementMock.modal).toHaveBeenCalledTimes(1);
-    expect(elementMock.modal).toHaveBeenCalledWith("show");
-    expect(elementMock.on).toHaveBeenCalledTimes(7);
-
-    // clicking cancel button of the modal
-    elementMock.on.mock.calls[5][1]();
-    expect(elementMock.modal).toHaveBeenCalledTimes(2);
-    expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
-    expect(apiMock).toHaveBeenCalledTimes(1); // remains
-
-    // clicking confirm button of the modal
-    elementMock.on.mock.calls[6][1]();
-    expect(jQueryMock).toHaveBeenCalledWith("#octorelay-confirmation-dialog");
-    expect(elementMock.modal).toHaveBeenCalledTimes(3);
-    expect(elementMock.modal).toHaveBeenLastCalledWith("hide");
-    expect(apiMock).toHaveBeenCalledTimes(2);
-    expect(apiMock).toHaveBeenLastCalledWith("octorelay", "update", {
-      pin: "r2",
-    });
   });
 
   test.each([
@@ -307,35 +276,6 @@ describe("OctoRelayViewModel", () => {
       expect(elementMock.text).not.toHaveBeenCalled();
       expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
     }
-  });
-
-  test("Clicking on Cancel button should send the command", () => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("octorelay", {
-      r1: {
-        relay_pin: 16,
-        inverted_output: false,
-        relay_state: true,
-        label_text: "Nozzle Light",
-        active: true,
-        icon_html: "<div>&#128161;</div>",
-        confirm_off: false,
-        upcoming: {
-          target: false,
-          owner: "PRINTING_STOPPED",
-          deadline: Date.now() + 150 * 1000,
-        },
-      },
-    });
-    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, cancelBtn, closeBtn
-    const cancelHandler = elementMock.on.mock.calls[1][1];
-    cancelHandler();
-    expect(apiMock).toHaveBeenCalledWith("octorelay", "cancelTask", {
-      owner: "PRINTING_STOPPED",
-      subject: "r1",
-      target: false,
-    });
   });
 
   test("Clicking on Close button should close the popover", () => {

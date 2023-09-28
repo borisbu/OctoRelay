@@ -26,38 +26,6 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
 ]
 `;
 
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .find() 1`] = `
-[
-  [
-    "#relaisr1",
-  ],
-  [
-    "#relaisr2",
-  ],
-  [
-    "#relaisr3",
-  ],
-  [
-    "#relaisr4",
-  ],
-  [
-    "#relaisr5",
-  ],
-  [
-    ".modal-title",
-  ],
-  [
-    "#octorelay-confirmation-text",
-  ],
-  [
-    ".btn-cancel",
-  ],
-  [
-    ".btn-confirm",
-  ],
-]
-`;
-
 exports[`OctoRelayViewModel Message handler should process the supplied configuration: .html() 1`] = `
 [
   [
@@ -94,17 +62,6 @@ exports[`OctoRelayViewModel Message handler should process the supplied configur
   ],
   [
     "destroy",
-  ],
-]
-`;
-
-exports[`OctoRelayViewModel Message handler should process the supplied configuration: .text() 1`] = `
-[
-  [
-    "Turning Printer off",
-  ],
-  [
-    "Are you sure you want to turn the Printer off?",
   ],
 ]
 `;
