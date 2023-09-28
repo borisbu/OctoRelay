@@ -2,6 +2,13 @@
 
 ## Version 3
 
+### 3.11.1
+
+- Removing the stub `js` file from the sources.
+  - The plugin should only be installed from the distributed release file (not from sources).
+- Changing the UI compiler from `tsc` to `tsup` (based on `esbuild` and `rollup`).
+- Extracting the types into the dedicated files.
+
 ### 3.11.0
 
 - UI improvement: better handling of multiple upcoming switches.
