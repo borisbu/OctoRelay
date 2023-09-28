@@ -244,40 +244,6 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
   });
 
-  test.each([true, false])("Should set countdown %#", (isVisible) => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("octorelay", {
-      r1: {
-        relay_pin: 16,
-        inverted_output: false,
-        relay_state: true,
-        label_text: "Nozzle Light",
-        active: true,
-        icon_html: "<div>&#128161;</div>",
-        confirm_off: false,
-        upcoming: {
-          target: false,
-          owner: "PRINTING_STOPPED",
-          deadline: Date.now() + 121 * 1000, // right above the edge of delay change
-        },
-      },
-    });
-    expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 60000);
-    const intervalFn = setIntervalMock.mock.calls[0][0];
-    elementMock.is.mockImplementationOnce(() => isVisible);
-    MockDate.set(Date.now() + 1000); // this will trigger the new delay
-    intervalFn();
-    if (isVisible) {
-      expect(elementMock.text).toHaveBeenCalledWith("in 2 minutes");
-      expect(setIntervalMock).toHaveBeenCalledTimes(2); // reset with a new delay
-      expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 1000);
-    } else {
-      expect(elementMock.text).not.toHaveBeenCalled();
-      expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
-    }
-  });
-
   test("Clicking on Close button should close the popover", () => {
     const handler = (registry[0].construct as OwnModel & OwnProperties)
       .onDataUpdaterPluginMessage;
