@@ -5,3 +5,4 @@ dist
 OctoRelay.egg-info
 .coverage
 coverage.lcov
+octorelay.js
