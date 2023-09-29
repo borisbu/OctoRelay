@@ -1,5 +1,6 @@
 import MockDate from "mockdate";
 import { countdownMock, deadlineMock, disposerMock } from "../mocks/countdown";
+import { cancelMock } from "../mocks/actions";
 import { addTooltip, clearHints, addPopover, showHints } from "./hints";
 
 describe("Hints helpers", () => {
@@ -37,6 +38,7 @@ describe("Hints helpers", () => {
     deadlineMock.mockClear();
     countdownMock.mockClear();
     disposerMock.mockClear();
+    cancelMock.mockClear();
   });
 
   afterAll(() => {
@@ -63,7 +65,6 @@ describe("Hints helpers", () => {
 
   describe("addPopover() helper", () => {
     test("should add a popover to the target element", async () => {
-      const cancelMock = jest.fn();
       addPopover({
         target: elementMock as unknown as JQuery,
         title: "Title",
@@ -166,6 +167,15 @@ describe("Hints helpers", () => {
       expect(deadlineMock).toHaveBeenCalledWith(1691965860000);
       expect(elementMock.popover).toHaveBeenCalledTimes(2);
       expect(elementMock.popover.mock.calls).toMatchSnapshot();
+      expect(elementMock.on).toHaveBeenCalledTimes(2); // cancel, close
+      expect(cancelMock).not.toHaveBeenCalled();
+      const cancel = elementMock.on.mock.calls[0][1];
+      cancel();
+      expect(cancelMock).toHaveBeenCalledWith("r1", {
+        deadline: 1691965860000,
+        owner: "PRINTING_STOPPED",
+        target: true,
+      });
     });
 
     test("should show single popover for multiple upcoming tasks", () => {
