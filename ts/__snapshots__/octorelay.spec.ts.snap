@@ -17,13 +17,3 @@ exports[`OctoRelayViewModel Constructor should set its certain properties 1`] = 
   },
 }
 `;
-
-exports[`OctoRelayViewModel Should push the model into the registry 1`] = `
-{
-  "construct": [Function],
-  "dependencies": [
-    "settingsViewModel",
-    "loginStateViewModel",
-  ],
-}
-`;

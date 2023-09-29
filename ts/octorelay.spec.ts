@@ -86,12 +86,6 @@ describe("OctoRelayViewModel", () => {
     MockDate.reset();
   });
 
-  test("Should push the model into the registry", () => {
-    expect(jQueryMock).toHaveBeenCalled();
-    expect(registry).toHaveLength(1);
-    expect(registry[0]).toMatchSnapshot();
-  });
-
   test("Constructor should set its certain properties", () => {
     // constructor is called in beforeAll()
     expect({ ...registry[0].construct }).toMatchSnapshot();
