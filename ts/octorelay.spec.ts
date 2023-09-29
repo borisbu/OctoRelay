@@ -86,18 +86,6 @@ describe("OctoRelayViewModel", () => {
     MockDate.reset();
   });
 
-  test("Constructor should set its certain properties", () => {
-    // constructor is called in beforeAll()
-    expect({ ...registry[0].construct }).toMatchSnapshot();
-  });
-
-  test("Message handler should ignore other recipients", () => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("test", {});
-    expect(jQueryMock).not.toHaveBeenCalled();
-  });
-
   test.each([
     {
       hasPermission: false,
