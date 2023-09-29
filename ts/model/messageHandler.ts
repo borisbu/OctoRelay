@@ -16,10 +16,10 @@ export const makeMessageHandler =
     }
     const permission =
       model.settingsViewModel.access?.permissions?.PLUGIN_OCTORELAY_SWITCH;
-    const hasPermission =
-      permission && model.loginState.hasPermission
-        ? model.loginState.hasPermission(permission)
-        : false;
+    let hasPermission = false;
+    if (permission && model.loginState.hasPermission) {
+      hasPermission = model.loginState.hasPermission(permission);
+    }
     const navbar = $(`#navbar_plugin_${ownCode}`);
     const hints: Hint[] = [];
     for (const [key, relay] of Object.entries(data)) {

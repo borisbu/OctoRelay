@@ -16,10 +16,10 @@ interface AddPopoverProps {
 export const clearHints = (btn: JQuery) =>
   btn.tooltip("destroy").popover("destroy");
 
-const addTooltip = (btn: JQuery, text: string) =>
+export const addTooltip = (btn: JQuery, text: string) =>
   btn.tooltip({ placement: "bottom", title: text });
 
-const addPopover = ({
+export const addPopover = ({
   target,
   title,
   content,

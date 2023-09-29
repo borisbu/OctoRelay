@@ -20,7 +20,7 @@ export const formatDeadline = (time: number): string => {
   return `in ${formattedTimeLeft}`;
 };
 
-const getCountdownDelay = (deadline: number): number =>
+export const getCountdownDelay = (deadline: number): number =>
   deadline - Date.now() > 120000 ? 60000 : 1000;
 
 export const setCountdown = (
