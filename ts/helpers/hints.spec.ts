@@ -1,6 +1,6 @@
 import MockDate from "mockdate";
-import { countdownMock, disposerMock } from "../mocks/countdown";
-import { addTooltip, clearHints, addPopover } from "./hints";
+import { countdownMock, deadlineMock, disposerMock } from "../mocks/countdown";
+import { addTooltip, clearHints, addPopover, showHints } from "./hints";
 
 describe("Hints helpers", () => {
   const elementMock: Record<
@@ -34,6 +34,9 @@ describe("Hints helpers", () => {
     elementMock.find.mockClear();
     elementMock.on.mockClear();
     elementMock.off.mockClear();
+    deadlineMock.mockClear();
+    countdownMock.mockClear();
+    disposerMock.mockClear();
   });
 
   afterAll(() => {
@@ -91,6 +94,128 @@ describe("Hints helpers", () => {
         placement: "bottom",
         title: "Relay",
       });
+    });
+  });
+
+  describe("showHints() helper", () => {
+    test("should display tooltips", () => {
+      showHints({
+        navbar: elementMock as unknown as JQuery,
+        hints: [
+          {
+            key: "r1",
+            control: elementMock as unknown as JQuery,
+            relay: {
+              relay_pin: 16,
+              inverted_output: false,
+              relay_state: true,
+              label_text: "Nozzle Light",
+              active: true,
+              icon_html: "<div>&#128161;</div>",
+              confirm_off: false,
+              upcoming: null,
+            },
+          },
+          {
+            key: "r2",
+            control: elementMock as unknown as JQuery,
+            relay: {
+              relay_pin: 12,
+              inverted_output: true,
+              relay_state: true,
+              label_text: "Printer",
+              active: true,
+              icon_html:
+                '<img src="plugin/dashboard/static/img/printer-icon.png">',
+              confirm_off: true,
+              upcoming: null,
+            },
+          },
+        ],
+      });
+      expect(elementMock.popover).not.toHaveBeenCalled();
+      expect(elementMock.tooltip).toHaveBeenCalledTimes(2);
+      expect(elementMock.tooltip.mock.calls).toMatchSnapshot();
+    });
+
+    test("should show popover for a single upcoming task", () => {
+      showHints({
+        navbar: elementMock as unknown as JQuery,
+        hints: [
+          {
+            control: elementMock as unknown as JQuery,
+            key: "r1",
+            relay: {
+              relay_pin: 16,
+              inverted_output: false,
+              relay_state: false,
+              label_text: "Nozzle Light",
+              active: true,
+              icon_html: "<div>&#128161;</div>",
+              confirm_off: false,
+              upcoming: {
+                target: true,
+                owner: "PRINTING_STOPPED",
+                deadline: Date.now() + 60 * 1000,
+              },
+            },
+          },
+        ],
+      });
+      expect(elementMock.tooltip).not.toHaveBeenCalled();
+      expect(deadlineMock).toHaveBeenCalledWith(1691965860000);
+      expect(elementMock.popover).toHaveBeenCalledTimes(2);
+      expect(elementMock.popover.mock.calls).toMatchSnapshot();
+    });
+
+    test("should show single popover for multiple upcoming tasks", () => {
+      showHints({
+        navbar: elementMock as unknown as JQuery,
+        hints: [
+          {
+            control: elementMock as unknown as JQuery,
+            key: "r1",
+            relay: {
+              relay_pin: 16,
+              inverted_output: false,
+              relay_state: true,
+              label_text: "Nozzle Light",
+              active: true,
+              icon_html: "<div>&#128161;</div>",
+              confirm_off: false,
+              upcoming: {
+                target: false,
+                owner: "PRINTING_STOPPED",
+                deadline: Date.now() + 120 * 1000,
+              },
+            },
+          },
+          {
+            control: elementMock as unknown as JQuery,
+            key: "r1",
+            relay: {
+              relay_pin: 12,
+              inverted_output: false,
+              relay_state: true,
+              label_text: "Printer",
+              active: true,
+              icon_html:
+                '<img src="plugin/dashboard/static/img/printer-icon.png">',
+              confirm_off: true,
+              upcoming: {
+                target: false,
+                owner: "PRINTING_STOPPED",
+                deadline: Date.now() + 300 * 1000,
+              },
+            },
+          },
+        ],
+      });
+      expect(elementMock.tooltip).toHaveBeenCalledTimes(1);
+      expect(elementMock.tooltip.mock.calls).toMatchSnapshot();
+      expect(deadlineMock).toHaveBeenCalledTimes(2);
+      expect(elementMock.popover).toHaveBeenCalledTimes(2);
+      expect(elementMock.popover.mock.calls).toMatchSnapshot();
     });
   });
 });

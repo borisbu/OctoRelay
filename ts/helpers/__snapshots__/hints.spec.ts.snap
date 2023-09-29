@@ -31,3 +31,67 @@ exports[`Hints helpers addPopover() helper should add a popover to the target el
   ],
 ]
 `;
+
+exports[`Hints helpers showHints() helper should display tooltips 1`] = `
+[
+  [
+    {
+      "placement": "bottom",
+      "title": "Nozzle Light",
+    },
+  ],
+  [
+    {
+      "placement": "bottom",
+      "title": "Printer",
+    },
+  ],
+]
+`;
+
+exports[`Hints helpers showHints() helper should show popover for a single upcoming task 1`] = `
+[
+  [
+    {
+      "animation": false,
+      "content": "<div><time id="time-tag-r1" datetime="2023-08-13T22:31:00.000Z" title="8/13/2023, 10:31:00 PM">undefined</time><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Nozzle Light goes <span class="label">ON</span></span><button id="pop-closer" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
+
+exports[`Hints helpers showHints() helper should show single popover for multiple upcoming tasks 1`] = `
+[
+  [
+    {
+      "placement": "bottom",
+      "title": "Printer",
+    },
+  ],
+]
+`;
+
+exports[`Hints helpers showHints() helper should show single popover for multiple upcoming tasks 2`] = `
+[
+  [
+    {
+      "animation": false,
+      "content": "<div><span>Nozzle Light goes <span class="label">OFF</span> <time id="time-tag-r1" datetime="2023-08-13T22:32:00.000Z" title="8/13/2023, 10:32:00 PM">undefined</time></span><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div><div><span>Printer goes <span class="label">OFF</span> <time id="time-tag-r1" datetime="2023-08-13T22:35:00.000Z" title="8/13/2023, 10:35:00 PM">undefined</time></span><button id="cancel-btn-r1" class="btn btn-mini" type="button">Cancel</button></div>",
+      "html": true,
+      "placement": "bottom",
+      "title": "<span>Several relay switches ahead</span><button id="pop-closer" type="button" class="close"><span class="fa fa-close fa-sm"></span></button>",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;

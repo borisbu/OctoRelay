@@ -39,7 +39,7 @@ describe("Countdown helpers", () => {
   });
 
   describe("formatDeadline() helper", () => {
-    test.each([0, 1, 30, 59, 60, 61, 90, 119, 120, 121, 300])(
+    test.each([0, 1, 30, 59, 60, 61, 90, 119, 120, 121, 300, 600, 3600])(
       "Should format the supplied UNIX timestamp having offset %s seconds",
       (offset) => {
         expect(formatDeadline(Date.now() + offset * 1000)).toMatchSnapshot();

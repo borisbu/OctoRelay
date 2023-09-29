@@ -22,6 +22,10 @@ exports[`Countdown helpers formatDeadline() helper Should format the supplied UN
 
 exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 300 seconds 1`] = `"in 5 minutes"`;
 
+exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 600 seconds 1`] = `"in 10 minutes"`;
+
+exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 3600 seconds 1`] = `"in 1 hour"`;
+
 exports[`Countdown helpers getCountdownDelay() helper should return refresh interval for supplied timestamp having offset 60 seconds 1`] = `1000`;
 
 exports[`Countdown helpers getCountdownDelay() helper should return refresh interval for supplied timestamp having offset 120 seconds 1`] = `1000`;
