@@ -1,23 +1,8 @@
+import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { cancelTask, toggleRelay } from "./actions";
 
 describe("Actions", () => {
   const apiMock = jest.fn();
-  const elementMock: Record<
-    "off" | "on" | "find" | "text" | "modal",
-    jest.Mock
-  > = {
-    off: jest.fn(() => elementMock),
-    on: jest.fn(() => elementMock),
-    find: jest.fn(() => elementMock),
-    text: jest.fn(() => elementMock),
-    modal: jest.fn(() => elementMock),
-  };
-  const jQueryMock = jest.fn((subject: string | (() => void)) => {
-    if (typeof subject === "function") {
-      return subject();
-    }
-    return elementMock;
-  });
 
   Object.assign(global, {
     OctoPrint: { simpleApiCommand: apiMock },
@@ -26,6 +11,10 @@ describe("Actions", () => {
 
   afterEach(() => {
     apiMock.mockClear();
+    elementMock.text.mockClear();
+    elementMock.modal.mockClear();
+    elementMock.find.mockClear();
+    elementMock.on.mockClear();
   });
 
   describe("toggleRelay() action", () => {

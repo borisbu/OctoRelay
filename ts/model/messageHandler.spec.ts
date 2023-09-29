@@ -1,3 +1,4 @@
+import { elementMock, jQueryMock } from "../mocks/jQuery";
 import type { OwnModel, OwnProperties } from "../types/OwnModel";
 import { clearMock, showMock } from "../mocks/hints";
 import { toggleMock } from "../mocks/actions";
@@ -15,23 +16,6 @@ describe("makeMessageHandler()", () => {
     },
     loginState: { hasPermission: permissionMock },
   } as unknown as OwnModel & OwnProperties);
-
-  const elementMock: Record<
-    "toggle" | "html" | "off" | "on" | "find",
-    jest.Mock
-  > = {
-    toggle: jest.fn(() => elementMock),
-    html: jest.fn(() => elementMock),
-    off: jest.fn(() => elementMock),
-    on: jest.fn(() => elementMock),
-    find: jest.fn(() => elementMock),
-  };
-  const jQueryMock = jest.fn((subject: string | (() => void)) => {
-    if (typeof subject === "function") {
-      return subject();
-    }
-    return elementMock;
-  });
 
   Object.assign(global, {
     $: jQueryMock,

@@ -1,26 +1,10 @@
 import MockDate from "mockdate";
 import { countdownMock, deadlineMock, disposerMock } from "../mocks/countdown";
 import { cancelMock } from "../mocks/actions";
+import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { addTooltip, clearHints, addPopover, showHints } from "./hints";
 
 describe("Hints helpers", () => {
-  const elementMock: Record<
-    "popover" | "tooltip" | "find" | "on" | "off",
-    jest.Mock
-  > = {
-    popover: jest.fn(() => elementMock),
-    tooltip: jest.fn(() => elementMock),
-    find: jest.fn(() => elementMock),
-    on: jest.fn(() => elementMock),
-    off: jest.fn(() => elementMock),
-  };
-  const jQueryMock = jest.fn((subject: string | (() => void)) => {
-    if (typeof subject === "function") {
-      return subject();
-    }
-    return elementMock;
-  });
-
   Object.assign(global, {
     $: jQueryMock,
   });

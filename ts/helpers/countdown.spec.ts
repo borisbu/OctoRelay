@@ -1,17 +1,8 @@
 import MockDate from "mockdate";
+import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { formatDeadline, getCountdownDelay, setCountdown } from "./countdown";
 
 describe("Countdown helpers", () => {
-  const elementMock: Record<"is" | "text", jest.Mock> = {
-    is: jest.fn(() => elementMock),
-    text: jest.fn(() => elementMock),
-  };
-  const jQueryMock = jest.fn((subject: string | (() => void)) => {
-    if (typeof subject === "function") {
-      return subject();
-    }
-    return elementMock;
-  });
   const setIntervalMock = jest.fn<void, [() => void, number]>(
     () => "mockedInterval"
   );
@@ -32,6 +23,7 @@ describe("Countdown helpers", () => {
     setIntervalMock.mockClear();
     clearIntervalMock.mockClear();
     elementMock.text.mockClear();
+    elementMock.is.mockClear();
   });
 
   afterAll(() => {
