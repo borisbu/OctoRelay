@@ -244,36 +244,6 @@ describe("OctoRelayViewModel", () => {
     expect(elementMock.popover.mock.calls).toMatchSnapshot(".popover()");
   });
 
-  test("Clicking on Close button should close the popover", () => {
-    const handler = (registry[0].construct as OwnModel & OwnProperties)
-      .onDataUpdaterPluginMessage;
-    handler("octorelay", {
-      r1: {
-        relay_pin: 16,
-        inverted_output: false,
-        relay_state: true,
-        label_text: "Nozzle Light",
-        active: true,
-        icon_html: "<div>&#128161;</div>",
-        confirm_off: false,
-        upcoming: {
-          target: false,
-          owner: "PRINTING_STOPPED",
-          deadline: Date.now() + 150 * 1000,
-        },
-      },
-    });
-    expect(elementMock.on).toHaveBeenCalledTimes(3); // controlBtn, cancelBtn, closeBtn
-    const closeHandler = elementMock.on.mock.calls[2][1];
-    closeHandler();
-    expect(elementMock.popover).toHaveBeenCalledWith("destroy");
-    expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
-    expect(elementMock.tooltip).toHaveBeenCalledWith({
-      placement: "bottom",
-      title: "Nozzle Light",
-    });
-  });
-
   test.each([
     {
       hasPermission: false,

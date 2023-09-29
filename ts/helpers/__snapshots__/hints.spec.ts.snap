@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Hints helpers addPopover() helper should add a popover to the target element: .find() 1`] = `
+[
+  [
+    "#pop-closer",
+  ],
+  [
+    "#cancel-id",
+  ],
+  [
+    "#time-id",
+  ],
+]
+`;
+
+exports[`Hints helpers addPopover() helper should add a popover to the target element: .popover() 1`] = `
+[
+  [
+    {
+      "animation": false,
+      "content": "line1line2",
+      "html": true,
+      "placement": "bottom",
+      "title": "Title",
+      "trigger": "manual",
+    },
+  ],
+  [
+    "show",
+  ],
+]
+`;
