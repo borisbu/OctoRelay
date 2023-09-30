@@ -2,6 +2,11 @@
 
 ## Version 3
 
+### 3.11.2
+
+- UI source code splitting.
+  - Making the code easier to test and to maintain. 
+
 ### 3.11.1
 
 - Removing the stub `js` file from the sources.
