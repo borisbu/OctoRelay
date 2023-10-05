@@ -59,6 +59,8 @@ jobs:
             python: 3.10
           - octoprint: 1.5
             python: 3.11
+          - octoprint: 1.5
+            python: 3.12
           - octoprint: 1.6
             python: 3.10
           - octoprint: 1.6
