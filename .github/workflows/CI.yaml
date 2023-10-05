@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
+        python: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12" ]
         octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9" ]
         exclude:
           # These versions are not compatible to each other:
