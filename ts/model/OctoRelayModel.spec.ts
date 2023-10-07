@@ -14,7 +14,7 @@ describe("OctoRelayViewModel", () => {
     expect(OctoRelayViewModel).toHaveProperty("loginState", dep2);
     expect(OctoRelayViewModel).toHaveProperty(
       "onDataUpdaterPluginMessage",
-      handlerMock
+      handlerMock,
     );
   });
 });

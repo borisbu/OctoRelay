@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 describe("Knockout bindings", () => {
   const html = readFileSync(
     "../octoprint_octorelay/templates/octorelay_settings.jinja2",
-    "utf-8"
+    "utf-8",
   );
   const document = JSDOM.fragment(html);
   const usingContexts = [
