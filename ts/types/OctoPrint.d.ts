@@ -12,7 +12,7 @@ interface JQuery {
       | {
           placement?: "top" | "bottom" | "left" | "right";
           title?: string;
-        }
+        },
   ): JQuery;
   popover(
     option:
@@ -27,7 +27,7 @@ interface JQuery {
           trigger?: "click" | "hover" | "focus" | "manual";
           title?: string;
           content?: string;
-        }
+        },
   ): JQuery;
 }
 
@@ -45,6 +45,6 @@ declare const OctoPrint: {
     plugin: string,
     command: string,
     payload: object,
-    opts?: object
+    opts?: object,
   ) => JQuery.Promise<any>;
 };

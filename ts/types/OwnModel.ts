@@ -19,5 +19,5 @@ export interface OwnProperties {
 
 export type OwnModel = (
   this: OwnModel & OwnProperties,
-  dependencies: object[]
+  dependencies: object[],
 ) => void;
