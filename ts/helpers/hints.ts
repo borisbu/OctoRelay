@@ -44,7 +44,7 @@ export const addPopover = ({
       cancelBtn.on("click", cancel);
       const timeTag = navbar.find(`#${timeTagId}`);
       return setCountdown(timeTag, deadline);
-    }
+    },
   );
   closeBtn.on("click", () => {
     for (const disposer of countdownDisposers) {
@@ -88,7 +88,7 @@ export const showHints = ({
     const timeLeft = formatDeadline(upcoming.deadline);
     const targetState = upcoming.target ? "ON" : "OFF";
     const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
-      (prefix) => `${prefix}-${key}`
+      (prefix) => `${prefix}-${key}`,
     );
     items.push({
       cancelId,
@@ -107,7 +107,7 @@ export const showHints = ({
     content.push(
       hasMultipleTasks
         ? `<div><span>${upcomingHTML} ${timeHTML}</span>${cancelHTML}</div>`
-        : `<div>${timeHTML}${cancelHTML}</div>`
+        : `<div>${timeHTML}${cancelHTML}</div>`,
     );
   }
   if (target) {

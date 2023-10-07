@@ -25,7 +25,7 @@ export const getCountdownDelay = (deadline: number): number =>
 
 export const setCountdown = (
   selector: JQuery,
-  deadline: number
+  deadline: number,
 ): (() => void) => {
   const delay = getCountdownDelay(deadline);
   let disposer: () => void;
