@@ -80,52 +80,10 @@ You can toggle the relays ON and OFF the following ways:
   - The icon you choose for the button will display the current state.
 - By sending GCODE command `@OCTORELAY r#`.
   - Where `#` is relay index from `1` to `8`.
-- Or by querying the API (see below)
-
-## OctoRelay API
-Relays can be queried and updated through the [OctoRelay API](https://docs.octoprint.org/en/master/api/). Read this documentation to get an API Key. 
-
-### Update Command ###
-  - Use path: `/api/plugin/octorelay`.
-  - With JSON payload `{ "pin": "r#", "command": "update", target: "on" }`.
+- Or by querying [OctoRelay API](https://docs.octoprint.org/en/master/api/).
+  - Using path: `/api/plugin/octorelay`.
+  - With JSON payload `{ "pin": "r#", "command": "update" }`.
   - Where `#` is relay index from `1` to `8`.
-  - `target` is an optional parameter. Valid values are `on` or `off`. When this parameter is omitted the relay will toggle.
-  - the response will include a `status` of `ok` if it worked and the active keypair `active` will include the resulting state of the relay (boolean)
-
-Example:
-```
-curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: XXYOUR_API_KEYXX' -H 'Content-Type: application/json' -X POST -d '{"command": "update", "pin":"r1", "target":"off" }'
-{
-  "result": false,
-  "status": "ok"
-}
-```
-### List a Relay Status ###
-This is a request to show the status or relay 1
-```
-curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: XXYOUR_API_KEYXX' -H 'Content-Type: application/json' -X POST -d '{"command": "getStatus", "pin":"r1" }'            
-{
-  "status": true
-}
-```
-
-### List all Relay Status ###
-This is a request to show the status of all relays
-```
-curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: XXYOUR_API_KEYXX' -H 'Content-Type: application/json' -X POST -d '{"command": "listAllStatus" }'
-[
-  {
-    "active": true,
-    "id": "r1",
-    "name": "Light"
-  },
-  {
-    "active": false,
-    "id": "r2",
-    "name": "Printer"
-  }
-]
-```
 
 ## Updates
 
