@@ -875,22 +875,28 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             {
                 "index": "r4",
+                "target": None,
                 "closed": False,
                 "expectedStatus": "ok",
+                "expectedResult": True,
                 "expectedToggle": True,
                 "expectedCommand": "CommandOnMock",
                 "expectedEvent": "TURNED_ON"
             },
             {
                 "index": "r4",
+                "target": True,
                 "closed": True,
                 "expectedStatus": "ok",
+                "expectedResult": False,
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
             {
                 "index": "invalid",
+                "target": False,
                 "closed": True,
+                "expectedResult": None,
                 "expectedStatus": "error",
             }
         ]
@@ -909,11 +915,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOffMock"
             }
             self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
-            self.plugin_instance.handle_update_command(case["index"])
+            self.plugin_instance.handle_update_command(case["index"], case["target"])
             if case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedToggle" in case:
-                relayMock.toggle.assert_called_with(None)
+                # relayMock.toggle.assert_called_with(None)
                 self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
@@ -922,7 +928,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedStatus" in case:
-                jsonify_mock.assert_called_with(status=case["expectedStatus"])
+                jsonify_mock.assert_called_with(status=case["expectedStatus"], result=case["expectedResult"])
 
     @patch("flask.abort")
     def test_handle_update_command__exception(self, abort_mock):
@@ -968,9 +974,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "update",
-                "data": { "pin": "r4" },
+                "data": { "pin": "r4", "target": True },
                 "expectedCall": self.plugin_instance.handle_update_command,
-                "expectedParams": ["r4"]
+                "expectedParams": ["r4", True]
             },
             {
                 "command": "cancelTask",

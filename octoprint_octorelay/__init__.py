@@ -133,9 +133,9 @@ class OctoRelayPlugin(
             return flask.abort(403)
         if index not in RELAY_INDEXES:
             self._logger.warn(f"Invalid relay index supplied: {index}")
-            return flask.jsonify(status="error")
-        target_bool = True if target == "ON" else False if target == "OFF" else None
-        relay_result = self.toggle_relay(index, target_bool)
+            return flask.jsonify(status="error",result=None)
+        # target_bool = True if target == "ON" else False if target == "OFF" else None
+        relay_result = self.toggle_relay(index, target)
         self.update_ui()
         self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}") 
         return flask.jsonify(status="ok",result=relay_result)
@@ -154,8 +154,7 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND: # API command to get relay status
             return self.handle_get_status_command(data["pin"])
         if command == UPDATE_COMMAND: # API command to toggle the relay
-            target = data.get("target", "").upper() # optional parameter for target state
-            return self.handle_update_command(data["pin"],target)
+            return self.handle_update_command(data["pin"],data.get("target"))
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
             return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
         self._logger.warn(f"Unknown command {command}")
