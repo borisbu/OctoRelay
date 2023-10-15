@@ -138,7 +138,7 @@ class OctoRelayPlugin(
             relay_result = self.toggle_relay(index, target)
         except Exception as exception:
             self._logger.warn(f"Failed to toggle the relay {index}, reason: {exception}")
-            return flask.jsonify(status="error", reason=f"Can not toggle relay {index}")
+            return flask.jsonify(status="error", reason=f"Can not toggle the relay {index}")
         self.update_ui()
         self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}")
         return flask.jsonify(status="ok",result=relay_result)
