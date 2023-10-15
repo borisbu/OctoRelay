@@ -135,7 +135,7 @@ class OctoRelayPlugin(
             self._logger.warn(f"Invalid relay index supplied: {index}")
             return flask.jsonify(status="error",result=None)
         # target_bool = True if target == "ON" else False if target == "OFF" else None
-        relay_result = self.toggle_relay(index, target)
+        relay_result = self.toggle_relay(index, target) # todo handle possible Exception
         self.update_ui()
         self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}")
         return flask.jsonify(status="ok",result=relay_result)
@@ -217,8 +217,7 @@ class OctoRelayPlugin(
     def toggle_relay(self, index, target: Optional[bool] = None):
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
-            self._logger.debug(f"Refusing to switch the relay {index} since it's disabled")
-            return
+            raise Exception(f"Relay {index} is disabled")
         if target is not True and self.is_printer_relay(index):
             self._logger.debug(f"{index} is the printer relay")
             if self._printer.is_operational():
