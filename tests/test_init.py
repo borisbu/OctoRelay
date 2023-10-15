@@ -897,7 +897,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "index": "invalid",
                 "target": False,
                 "closed": True,
-                "expectedResult": None,
                 "expectedStatus": "error",
             }
         ]
@@ -929,7 +928,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedStatus" in case:
-                jsonify_mock.assert_called_with(status=case["expectedStatus"], result=case["expectedResult"])
+                if "expectedResult" in case:
+                    jsonify_mock.assert_called_with(status=case["expectedStatus"], result=case["expectedResult"])
+                else:
+                    jsonify_mock.assert_called_with(status=case["expectedStatus"])
+
 
     @patch("flask.abort")
     def test_handle_update_command__exception(self, abort_mock):
