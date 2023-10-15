@@ -16,3 +16,15 @@ class Model(TypedDict):
     icon_html: str
     confirm_off: bool
     upcoming: Optional[UpcomingModel]
+
+def get_initial_model(index: str) -> Model:
+    return {
+        "relay_pin": 0,
+        "inverted_output": False,
+        "relay_state": False,
+        "label_text": index,
+        "active": False,
+        "icon_html": index,
+        "confirm_off": False,
+        "upcoming": None
+    }

@@ -55,8 +55,16 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.assertIsNone(self.plugin_instance.polling_timer)
         self.assertEqual(self.plugin_instance.tasks, [])
         self.assertEqual(self.plugin_instance.model, {
-            "r1": {}, "r2": {}, "r3": {}, "r4": {},
-            "r5": {}, "r6": {}, "r7": {}, "r8": {}
+            index: {
+                "relay_pin": 0,
+                "inverted_output": False,
+                "relay_state": False,
+                "label_text": index,
+                "active": False,
+                "icon_html": index,
+                "confirm_off": False,
+                "upcoming": None
+            } for index in RELAY_INDEXES
         })
 
     def test_get_settings_version(self):
