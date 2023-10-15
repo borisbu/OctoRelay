@@ -154,7 +154,7 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND: # API command to get relay status
             return self.handle_get_status_command(data["pin"])
         if command == UPDATE_COMMAND: # API command to toggle the relay
-            return self.handle_update_command(data["pin"],data.get("target"))
+            return self.handle_update_command(data["pin"], data.get("target"))
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
             return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
         self._logger.warn(f"Unknown command {command}")
@@ -214,7 +214,7 @@ class OctoRelayPlugin(
         printer_relay = self._settings.get(["common", "printer"], merged=True) # expensive
         return printer_relay is not None and printer_relay == index
 
-    def toggle_relay(self, index, target: Optional[bool] = None):
+    def toggle_relay(self, index, target: Optional[bool] = None) -> bool:
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
             raise Exception(f"Relay {index} is disabled")
