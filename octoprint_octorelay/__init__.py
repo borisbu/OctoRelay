@@ -135,13 +135,13 @@ class OctoRelayPlugin(
             self._logger.warn(f"Invalid relay index supplied: {index}")
             return flask.jsonify(status="error")
         try:
-            relay_result = self.toggle_relay(index, target)
+            state = self.toggle_relay(index, target)
         except Exception as exception:
             self._logger.warn(f"Failed to toggle the relay {index}, reason: {exception}")
             return flask.jsonify(status="error", reason=f"Can not toggle the relay {index}")
         self.update_ui()
-        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}")
-        return flask.jsonify(status="ok",result=relay_result)
+        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
+        return flask.jsonify(status="ok", result=state)
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
