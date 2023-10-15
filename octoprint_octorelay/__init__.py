@@ -126,18 +126,22 @@ class OctoRelayPlugin(
         self._logger.debug(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
         return flask.jsonify(status=is_closed)
 
-    def handle_update_command(self, index: str):
-        self._logger.debug(f"Requested to switch the relay {index}")
+    def handle_update_command(self, index: str, target: Optional[bool] = None):
+        self._logger.debug(f"Requested to switch the relay {index} to {target}")
         if not self.has_switch_permission():
             self._logger.warn("Insufficient permissions")
             return flask.abort(403)
         if index not in RELAY_INDEXES:
             self._logger.warn(f"Invalid relay index supplied: {index}")
             return flask.jsonify(status="error")
-        self.toggle_relay(index)
+        try:
+            state = self.toggle_relay(index, target)
+        except Exception as exception:
+            self._logger.warn(f"Failed to toggle the relay {index}, reason: {exception}")
+            return flask.jsonify(status="error", reason=f"Can not toggle the relay {index}")
         self.update_ui()
-        self._logger.debug(f"Responding to {UPDATE_COMMAND} command")
-        return flask.jsonify(status="ok")
+        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
+        return flask.jsonify(status="ok", result=state)
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
@@ -153,7 +157,8 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND: # API command to get relay status
             return self.handle_get_status_command(data["pin"])
         if command == UPDATE_COMMAND: # API command to toggle the relay
-            return self.handle_update_command(data["pin"])
+            target = data.get("target")
+            return self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
             return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
         self._logger.warn(f"Unknown command {command}")
@@ -213,11 +218,10 @@ class OctoRelayPlugin(
         printer_relay = self._settings.get(["common", "printer"], merged=True) # expensive
         return printer_relay is not None and printer_relay == index
 
-    def toggle_relay(self, index, target: Optional[bool] = None):
+    def toggle_relay(self, index, target: Optional[bool] = None) -> bool:
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
-            self._logger.debug(f"Refusing to switch the relay {index} since it's disabled")
-            return
+            raise Exception(f"Relay {index} is disabled")
         if target is not True and self.is_printer_relay(index):
             self._logger.debug(f"{index} is the printer relay")
             if self._printer.is_operational():
@@ -235,6 +239,7 @@ class OctoRelayPlugin(
         self.run_system_command(cmd)
         if state:
             self.handle_plugin_event(TURNED_ON, scope = [index])
+        return state
 
     def cancel_tasks(
         self, subject: str, initiator: str,
