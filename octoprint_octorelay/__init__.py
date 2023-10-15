@@ -80,7 +80,8 @@ class OctoRelayPlugin(
 
     def on_shutdown(self):
         self._logger.debug("Stopping the plugin")
-        self.polling_timer.cancel()
+        if self.polling_timer:
+            self.polling_timer.cancel()
         self._logger.info("The plugin stopped")
 
     def get_api_commands(self):
