@@ -2,6 +2,8 @@ from typing import Optional
 # todo after dropping 3.7 replace with "from typing"
 from typing_extensions import TypedDict
 
+# pylint: disable=too-few-public-methods
+
 class UpcomingModel(TypedDict):
     target: bool
     owner: str
