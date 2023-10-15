@@ -562,7 +562,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": "CommandON",
             "cmd_off": "CommandOFF"
         })
-        with self.assertRaises(Exception, msg="Can not toggle the relay r4"):
+        with self.assertRaises(Exception, msg="Relay r4 is disabled"):
             self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
@@ -935,7 +935,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
 
     @patch("flask.abort")
-    def test_handle_update_command__exception(self, abort_mock):
+    def test_handle_update_command__exception_permissions(self, abort_mock):
         # Should refuse to update the relay state in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
@@ -948,6 +948,21 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
+
+    @patch("flask.jsonify")
+    def test_handle_update_command__exception_disabled(self, jsonify_mock):
+        # Should refuse to update the disabled relay
+        self.plugin_instance._settings.get = Mock(return_value={
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "cmd_on": "CommandOnMock",
+            "cmd_off": "CommandOffMock"
+        })
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
+        self.plugin_instance.handle_update_command("r4")
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
+        jsonify_mock.assert_called_with(status="error", reason="Can not toggle the relay r4")
 
     @patch("flask.jsonify")
     def test_handle_cancel_task_command(self, jsonify_mock):
