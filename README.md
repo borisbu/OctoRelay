@@ -100,7 +100,7 @@ curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 
 # }
 ```
 
-The `target` entry in request payload is an optional boolean parameter. When it's omitted the relay will toggle. The `result` entry in the response payload reflects the relay state as the outcome of the request.
+The `target` entry in request payload is an optional boolean parameter. When it's `null` or omitted the relay will toggle. The `result` entry in the response payload reflects the relay state as the outcome of the request.
 
 ### Request the relay state
 
