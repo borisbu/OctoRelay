@@ -134,7 +134,10 @@ class OctoRelayPlugin(
         if index not in RELAY_INDEXES:
             self._logger.warn(f"Invalid relay index supplied: {index}")
             return flask.jsonify(status="error")
-        relay_result = self.toggle_relay(index, target) # todo handle possible Exception
+        try:
+            relay_result = self.toggle_relay(index, target)
+        except Exception as exception:
+            return flask.jsonify(status="error", reason=exception)
         self.update_ui()
         self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}")
         return flask.jsonify(status="ok",result=relay_result)
