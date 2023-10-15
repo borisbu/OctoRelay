@@ -562,7 +562,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": "CommandON",
             "cmd_off": "CommandOFF"
         })
-        with self.assertRaises(Exception, msg="Relay r4 is disabled"):
+        with self.assertRaises(Exception, msg="Can not toggle the relay r4"):
             self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
