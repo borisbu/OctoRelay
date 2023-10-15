@@ -137,9 +137,9 @@ class OctoRelayPlugin(
         # target_bool = True if target == "ON" else False if target == "OFF" else None
         relay_result = self.toggle_relay(index, target)
         self.update_ui()
-        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}") 
+        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {relay_result}")
         return flask.jsonify(status="ok",result=relay_result)
-    
+
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
         self.cancel_tasks(subject, USER_ACTION, target, owner)
