@@ -553,7 +553,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.handle_plugin_event.assert_not_called()
 
     def test_toggle_relay__disabled(self):
-        # Should not do anything when the requested relay is disabled
+        # Should raise an exception when attempting to toggle a disabled relay
         relayMock.toggle = Mock()
         self.plugin_instance._settings.get = Mock(return_value={
             "active": False,
@@ -562,7 +562,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": "CommandON",
             "cmd_off": "CommandOFF"
         })
-        self.plugin_instance.toggle_relay("r4", True)
+        with self.assertRaises(Exception, msg="Relay r4 is disabled"):
+            self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
     def test_toggle_relay__printer(self):
