@@ -67,7 +67,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should return the plugin default settings
         expected = {
             "common": {
-                "printer": "r2"
+                "printer": "r2",
+                "auto_connect_delay": 0
             },
             "r1": {
                 "active": False,
@@ -552,7 +553,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.handle_plugin_event.assert_not_called()
 
     def test_toggle_relay__disabled(self):
-        # Should not do anything when the requested relay is disabled
+        # Should raise an exception when attempting to toggle a disabled relay
         relayMock.toggle = Mock()
         self.plugin_instance._settings.get = Mock(return_value={
             "active": False,
@@ -561,7 +562,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": "CommandON",
             "cmd_off": "CommandOFF"
         })
-        self.plugin_instance.toggle_relay("r4", True)
+        with self.assertRaises(Exception, msg="Relay r4 is disabled"):
+            self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
     def test_toggle_relay__printer(self):
@@ -635,10 +637,20 @@ class TestOctoRelayPlugin(unittest.TestCase):
             cases.append({
                 "event": Events.CONNECTIONS_AUTOREFRESHED,
                 "payload": {"ports": ["/dev/ttyUSB0"]},
+                "delay": 0,
                 "expectedMethod": self.plugin_instance._printer.connect,
                 "expectedParams": []
             })
+            cases.append({
+                "event": Events.CONNECTIONS_AUTOREFRESHED,
+                "payload": {"ports": ["/dev/ttyUSB0"]},
+                "delay": 5,
+                "expectedMethod": utilMock.ResettableTimer,
+                "expectedParams": [5, self.plugin_instance._printer.connect]
+            })
         for case in cases:
+            if "delay" in case:
+                self.plugin_instance._settings.get = Mock(return_value=case["delay"])
             self.plugin_instance.on_event(case["event"], case["payload"])
             case["expectedMethod"].assert_called_with(*case["expectedParams"])
 
@@ -864,21 +876,26 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             {
                 "index": "r4",
+                "target": None,
                 "closed": False,
                 "expectedStatus": "ok",
+                "expectedResult": True,
                 "expectedToggle": True,
                 "expectedCommand": "CommandOnMock",
                 "expectedEvent": "TURNED_ON"
             },
             {
                 "index": "r4",
+                "target": False,
                 "closed": True,
                 "expectedStatus": "ok",
+                "expectedResult": False, # from the !closed returned by mocked Relay::toggle() below
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
             {
                 "index": "invalid",
+                "target": False,
                 "closed": True,
                 "expectedStatus": "error",
             }
@@ -898,11 +915,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOffMock"
             }
             self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
-            self.plugin_instance.handle_update_command(case["index"])
+            self.plugin_instance.handle_update_command(case["index"], case["target"])
             if case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedToggle" in case:
-                relayMock.toggle.assert_called_with(None)
+                relayMock.toggle.assert_called_with(case["target"])
                 self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
@@ -911,10 +928,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
             if "expectedStatus" in case:
-                jsonify_mock.assert_called_with(status=case["expectedStatus"])
+                if "expectedResult" in case:
+                    jsonify_mock.assert_called_with(status=case["expectedStatus"], result=case["expectedResult"])
+                else:
+                    jsonify_mock.assert_called_with(status=case["expectedStatus"])
+
 
     @patch("flask.abort")
-    def test_handle_update_command__exception(self, abort_mock):
+    def test_handle_update_command__exception_permissions(self, abort_mock):
         # Should refuse to update the relay state in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
@@ -927,6 +948,21 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
         abort_mock.assert_called_with(403)
+
+    @patch("flask.jsonify")
+    def test_handle_update_command__exception_disabled(self, jsonify_mock):
+        # Should refuse to update the disabled relay
+        self.plugin_instance._settings.get = Mock(return_value={
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "cmd_on": "CommandOnMock",
+            "cmd_off": "CommandOffMock"
+        })
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
+        self.plugin_instance.handle_update_command("r4")
+        permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
+        jsonify_mock.assert_called_with(status="error", reason="Can not toggle the relay r4")
 
     @patch("flask.jsonify")
     def test_handle_cancel_task_command(self, jsonify_mock):
@@ -957,9 +993,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "update",
-                "data": { "pin": "r4" },
+                "data": { "pin": "r4", "target": True },
                 "expectedCall": self.plugin_instance.handle_update_command,
-                "expectedParams": ["r4"]
+                "expectedParams": ["r4", True]
             },
             {
                 "command": "cancelTask",

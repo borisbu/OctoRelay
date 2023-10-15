@@ -2,6 +2,39 @@
 
 ## Version 3
 
+### 3.12.0
+
+- Feature: the API command `update` now accepts the optional `target` parameter.
+  - Check out the updated documentation in Readme for the request samples and more details.
+  - Thanks to [@patrickcollins12](https://github.com/patrickcollins12) for that contribution.
+
+### 3.11.2
+
+- UI source code splitting.
+  - Making the code easier to test and to maintain.
+
+### 3.11.1
+
+- Removing the stub `js` file from the sources.
+  - The plugin should only be installed from the distributed release file (not from the sources).
+- Changing the UI compiler from `tsc` to `tsup` (based on `esbuild` and `rollup`).
+- Extracting the types into the dedicated files.
+
+### 3.11.0
+
+- UI improvement: better handling of multiple upcoming switches.
+  - No overlapping popovers: single popover for all upcoming events instead.
+  - Sorted by the time left.
+  - Assigned to the relay having the closest switching.
+
+![UI](https://user-images.githubusercontent.com/13189514/270194227-b763214f-d237-4d0e-aab8-78de3215fb45.png)
+
+### 3.10.0
+
+- New feature: AutoConnect delay setting.
+  - Only visible for a Printer Relay (another setting).
+  - Only functional for OctoPrint 1.9.0+.
+
 ### 3.9.1
 
 - Renamed setting: "Confirm turning OFF".
@@ -83,7 +116,7 @@
 ### 3.5.0
 
 - A couple more improvements for the UI/UX.
-  - This version introduces a new asset — CSS file. 
+  - This version introduces a new asset — CSS file.
 
 ![UI](https://user-images.githubusercontent.com/13189514/260043096-38e10e10-1285-401f-bf1f-18aa9e397c25.png)
 
@@ -105,7 +138,7 @@
 
 | Before                 | After                          | Type           |
 |------------------------|--------------------------------|----------------|
-| `initial_value`        | `rules.STARTUP.state`          | `bool or None` | 
+| `initial_value`        | `rules.STARTUP.state`          | `bool or None` |
 | `auto_on_before_print` | `rules.PRINTING_STARTED.state` | `bool or None` |
 | `auto_off_after_print` | `rules.PRINTING_STOPPED.state` | `bool or None` |
 | `auto_off_delay`       | `rules.PRINTING_STOPPED.delay` | `int`          |

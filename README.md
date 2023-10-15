@@ -55,8 +55,9 @@ Each relay has the following settings *(in order of appearance)*:
 |-------------------------|------------------------------------------------------------------|
 | Active                  | Activates the relay control and indication on the navigation bar |
 | Label                   | The relay description to show on tooltip and in dialogs          |
-| This is printer relay   | Closes the printer connection when turning this relay `OFF`      |
 | Icon `ON` / `OFF`       | An image or emoji to indicate the relay state (supports HTML)    |
+| This is printer relay   | Closes the printer connection when turning this relay `OFF`      |
+| AutoConnect delay       | Printer relay feature adjustment when turning it `ON`            |
 | GPIO Number             | The [GPIO pin on the Raspberry Pi](https://pinout.xyz/)          |
 | Inverted output         | For normally closed relay: the relay is `ON` without power       |
 | Confirm turning `OFF`   | Enables a confirmation dialog when turning the relay `OFF`       |
@@ -79,10 +80,64 @@ You can toggle the relays ON and OFF the following ways:
   - The icon you choose for the button will display the current state.
 - By sending GCODE command `@OCTORELAY r#`.
   - Where `#` is relay index from `1` to `8`.
-- Or by querying [OctoRelay API](https://docs.octoprint.org/en/master/api/).
-  - Using path: `/api/plugin/octorelay`.
-  - With JSON payload `{ "pin": "r#", "command": "update" }`.
-  - Where `#` is relay index from `1` to `8`.
+- Or by querying the API (see below).
+
+## OctoRelay API
+
+Relays can be queried and updated through the [OctoPrint API](https://docs.octoprint.org/en/master/api/). Read that documentation on how to get an API Key.
+
+### Change the relay state
+
+This query turns the relay `r1` OFF:
+
+```bash
+curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 'Content-Type: application/json' -X POST -d '{ "command": "update", "pin": "r1", "target": false }'
+
+# Sample response:
+# {
+#   "result": false,
+#   "status": "ok"
+# }
+```
+
+The `target` entry in request payload is an optional boolean parameter. When it's `null` or omitted the relay will toggle. The `result` entry in the response payload reflects the relay state as the outcome of the request.
+
+### Request the relay state
+
+This query provides the status or the relay `r1`:
+
+```bash
+curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 'Content-Type: application/json' -X POST -d '{ "command": "getStatus", "pin": "r1" }'
+
+# Sample response:
+# {
+#   "status": true
+# }
+```
+
+### List all the relay states
+
+This query provides the statuses of all the relays:
+
+```bash
+curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 'Content-Type: application/json' -X POST -d '{ "command": "listAllStatus" }'
+
+# Sample response:
+# [
+#   {
+#     "active": true,
+#     "id": "r1",
+#     "name": "Light"
+#   },
+#   {
+#     "active": false,
+#     "id": "r2",
+#     "name": "Printer"
+#   }
+# ]
+```
+
+The `active` entry reflects the actual state of the relay.
 
 ## Updates
 
