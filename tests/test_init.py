@@ -919,7 +919,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             if case["expectedStatus"] != "error":
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedToggle" in case:
-                # relayMock.toggle.assert_called_with(None)
+                relayMock.toggle.assert_called_with(case["target"])
                 self.plugin_instance.update_ui.assert_called_with()
             if "expectedCommand" in case:
                 system_mock.assert_called_with(case["expectedCommand"])
