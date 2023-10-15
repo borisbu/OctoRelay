@@ -886,10 +886,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "index": "r4",
-                "target": True,
+                "target": False,
                 "closed": True,
                 "expectedStatus": "ok",
-                "expectedResult": False,
+                "expectedResult": False, # from the !closed returned by mocked Relay::toggle() below
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
