@@ -87,9 +87,9 @@ Relays can be queried and updated through the [OctoRelay API](https://docs.octop
 
 ### Update Command ###
   - Use path: `/api/plugin/octorelay`.
-  - With JSON payload `{ "pin": "r#", "command": "update", target: "on" }`.
+  - With JSON payload `{ "pin": "r#", "command": "update", target: true }`.
   - Where `#` is relay index from `1` to `8`.
-  - `target` is an optional parameter. Valid values are `on` or `off`. When this parameter is omitted the relay will toggle.
+  - `target` is an optional boolean parameter. Valid values are `true` or `false`. When this parameter is omitted the relay will toggle.
   - the response will include a `status` of `ok` if it worked and the active keypair `active` will include the resulting state of the relay (boolean)
 
 Example:
