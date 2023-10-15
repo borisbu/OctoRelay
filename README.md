@@ -80,7 +80,7 @@ You can toggle the relays ON and OFF the following ways:
   - The icon you choose for the button will display the current state.
 - By sending GCODE command `@OCTORELAY r#`.
   - Where `#` is relay index from `1` to `8`.
-- Or by querying the API (see below)
+- Or by querying the API (see below).
 
 ## OctoRelay API
 
