@@ -4,7 +4,7 @@ import { formatDeadline, getCountdownDelay, setCountdown } from "./countdown";
 
 describe("Countdown helpers", () => {
   const setIntervalMock = jest.fn<void, [() => void, number]>(
-    () => "mockedInterval"
+    () => "mockedInterval",
   );
   const clearIntervalMock = jest.fn();
 
@@ -35,7 +35,7 @@ describe("Countdown helpers", () => {
       "Should format the supplied UNIX timestamp having offset %s seconds",
       (offset) => {
         expect(formatDeadline(Date.now() + offset * 1000)).toMatchSnapshot();
-      }
+      },
     );
   });
 
@@ -44,7 +44,7 @@ describe("Countdown helpers", () => {
       "should return refresh interval for supplied timestamp having offset %s seconds",
       (offset) => {
         expect(getCountdownDelay(Date.now() + offset * 1000)).toMatchSnapshot();
-      }
+      },
     );
   });
 
@@ -61,7 +61,7 @@ describe("Countdown helpers", () => {
         expect(setIntervalMock).toHaveBeenCalledTimes(2); // reset with a new delay
         expect(setIntervalMock).toHaveBeenCalledWith(
           expect.any(Function),
-          1000
+          1000,
         );
       } else {
         expect(elementMock.text).not.toHaveBeenCalled();
