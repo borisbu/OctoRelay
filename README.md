@@ -17,12 +17,12 @@ The plugin allows you to set your own icons and flexibly customize the way the r
 > _Just hooked up the GPIO pins with the relay board, and now I can turn the
 > power of the printer, the fan and the light on and off with OctoPrint._
 >
-> | ![Relay Board](img/relay-raspberry.jpg) | ![Raspberry Pi GPIO](img/rpi_gpio.png) |
-> |-----------------------------------------|----------------------------------------|
->
 > _This plugin was based on the [OctoLight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)_
 >
 > — _Boris Burgstaller_
+
+| ![Relay Board](img/relay.jpg) | ![Raspberry Pi GPIO](img/gpio.png) |
+|-------------------------------|------------------------------------|
 
 ## Requirements
 
