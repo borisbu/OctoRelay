@@ -17,12 +17,12 @@ The plugin allows you to set your own icons and flexibly customize the way the r
 > _Just hooked up the GPIO pins with the relay board, and now I can turn the
 > power of the printer, the fan and the light on and off with OctoPrint._
 >
-> | ![Relay Board](img/relay-raspberry.jpg) | ![Raspberry Pi GPIO](img/rpi_gpio.png) |
-> |-----------------------------------------|----------------------------------------|
->
 > _This plugin was based on the [OctoLight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)_
 >
 > — _Boris Burgstaller_
+
+| ![Relay Board](img/relay.jpg) | ![Raspberry Pi GPIO](img/gpio.png) |
+|-------------------------------|------------------------------------|
 
 ## Requirements
 
@@ -91,7 +91,11 @@ Relays can be queried and updated through the [OctoPrint API](https://docs.octop
 This query turns the relay `r1` OFF:
 
 ```bash
-curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 'Content-Type: application/json' -X POST -d '{ "command": "update", "pin": "r1", "target": false }'
+curl 'http://octopi.local/api/plugin/octorelay' \
+  -H 'X-Api-Key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{ "command": "update", "pin": "r1", "target": false }'
 
 # Sample response:
 # {
@@ -107,7 +111,11 @@ The `target` entry in request payload is an optional boolean parameter. When it'
 This query provides the status or the relay `r1`:
 
 ```bash
-curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 'Content-Type: application/json' -X POST -d '{ "command": "getStatus", "pin": "r1" }'
+curl 'http://octopi.local/api/plugin/octorelay' \
+  -H 'X-Api-Key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{ "command": "getStatus", "pin": "r1" }'
 
 # Sample response:
 # {
@@ -120,7 +128,11 @@ curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 
 This query provides the statuses of all the relays:
 
 ```bash
-curl 'http://octopi.local/api/plugin/octorelay' -H 'X-Api-Key: YOUR_API_KEY' -H 'Content-Type: application/json' -X POST -d '{ "command": "listAllStatus" }'
+curl 'http://octopi.local/api/plugin/octorelay' \
+  -H 'X-Api-Key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{ "command": "listAllStatus" }'
 
 # Sample response:
 # [
