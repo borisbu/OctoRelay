@@ -103,7 +103,7 @@ jobs:
         working-directory: tests
         run: |
           python -m coverage lcov --omit=test*,_version*
-          python -m coverage report --show-missing --omit=test*,_version*
+          python -m coverage report --show-missing --omit=test*,_version*,snap_*
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
