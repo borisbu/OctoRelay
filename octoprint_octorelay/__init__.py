@@ -115,54 +115,55 @@ class OctoRelayPlugin(
                     "name": settings[index]["label_text"],
                     "active": relay.is_closed(),
                 })
-        self._logger.debug(f"Responding to {LIST_ALL_COMMAND} command: {active_relays}")
-        return flask.jsonify(active_relays)
+        return active_relays
 
-    def handle_get_status_command(self, index: str):
+    def handle_get_status_command(self, index: str) -> bool:
         self._logger.debug(f"Getting the relay {index} state")
         settings = self._settings.get([index], merged=True) # expensive
-        is_closed = Relay(
+        return Relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
         ).is_closed() if bool(settings["active"]) else False
-        self._logger.debug(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
-        return flask.jsonify(status=is_closed)
 
-    def handle_update_command(self, index: str, target: Optional[bool] = None):
+    def handle_update_command(self, index: str, target: Optional[bool] = None) -> bool:
         self._logger.debug(f"Requested to switch the relay {index} to {target}")
         if not self.has_switch_permission():
             self._logger.warn("Insufficient permissions")
-            return flask.abort(403)
+            raise Exception("Forbidden")
         if index not in RELAY_INDEXES:
             self._logger.warn(f"Invalid relay index supplied: {index}")
-            return flask.jsonify(status="error")
-        try:
-            state = self.toggle_relay(index, target)
-        except Exception as exception:
-            self._logger.warn(f"Failed to toggle the relay {index}, reason: {exception}")
-            return flask.jsonify(status="error", reason=f"Can not toggle the relay {index}")
+            raise Exception("Bad request")
+        state = self.toggle_relay(index, target) # can raise an Exception
         self.update_ui()
-        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
-        return flask.jsonify(status="ok", result=state)
+        return state
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
         self.cancel_tasks(subject, USER_ACTION, target, owner)
         self.update_ui()
-        self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
-        return flask.jsonify(status="ok")
 
     def on_api_command(self, command, data):
         self._logger.info(f"Received the API command {command} with parameters: {data}")
         if command == LIST_ALL_COMMAND: # API command to get relay statuses
-            return self.handle_list_all_command()
+            response = self.handle_list_all_command()
+            self._logger.info(f"Responding to {LIST_ALL_COMMAND} command: {response}")
+            return flask.jsonify(response)
         if command == GET_STATUS_COMMAND: # API command to get relay status
-            return self.handle_get_status_command(data["pin"])
+            is_closed = self.handle_get_status_command(data["pin"])
+            self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
+            return flask.jsonify(status=is_closed)
         if command == UPDATE_COMMAND: # API command to toggle the relay
             target = data.get("target")
-            return self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
+            try:
+                state = self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
+                self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
+                flask.jsonify(status="ok", result=state)
+            except Exception:
+                return flask.abort(400)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
-            return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
+            self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
+            self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
+            return flask.jsonify(status="ok")
         self._logger.warn(f"Unknown command {command}")
         return flask.abort(400) # Unknown command
 
@@ -223,7 +224,8 @@ class OctoRelayPlugin(
     def toggle_relay(self, index, target: Optional[bool] = None) -> bool:
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
-            raise Exception(f"Relay {index} is disabled")
+            self._logger.warn(f"Relay {index} is disabled")
+            raise Exception("Bad request")
         if target is not True and self.is_printer_relay(index):
             self._logger.debug(f"{index} is the printer relay")
             if self._printer.is_operational():
