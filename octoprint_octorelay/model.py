@@ -4,7 +4,7 @@ from typing_extensions import TypedDict
 
 # pylint: disable=too-few-public-methods
 
-class UpcomingModel(TypedDict):
+class Upcoming(TypedDict):
     target: bool
     owner: str
     deadline: int
@@ -17,7 +17,7 @@ class Model(TypedDict):
     active: bool
     icon_html: str
     confirm_off: bool
-    upcoming: Optional[UpcomingModel]
+    upcoming: Optional[Upcoming]
 
 def get_initial_model(index: str) -> Model:
     return {
