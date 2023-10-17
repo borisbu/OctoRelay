@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Iterable
 from functools import reduce
 import os
 import time
@@ -277,7 +277,7 @@ class OctoRelayPlugin(
             self._logger.debug(f"Running the system command: {cmd}")
             os.system(cmd)
 
-    def get_upcoming_tasks(self, subjects) -> Dict[str, Optional[Task]]:
+    def get_upcoming_tasks(self, subjects: Iterable[str]) -> Dict[str, Optional[Task]]:
         self._logger.debug("Finding the upcoming tasks")
         future_tasks = filter(
             lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
