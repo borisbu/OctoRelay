@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, List
+from typing import Optional, List, Dict
 from functools import reduce
 import os
 import time
@@ -277,7 +277,7 @@ class OctoRelayPlugin(
             self._logger.debug(f"Running the system command: {cmd}")
             os.system(cmd)
 
-    def get_upcoming_tasks(self, subjects):
+    def get_upcoming_tasks(self, subjects) -> Dict[str, Optional[Task]]:
         self._logger.debug("Finding the upcoming tasks")
         future_tasks = filter(
             lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
@@ -296,7 +296,7 @@ class OctoRelayPlugin(
     def update_ui(self):
         self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
-        upcoming = self.get_upcoming_tasks(filter(
+        upcoming_tasks = self.get_upcoming_tasks(filter(
             lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
             RELAY_INDEXES
         ))
@@ -307,6 +307,7 @@ class OctoRelayPlugin(
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed() if active else False
+            task = upcoming_tasks[index]
             self.model[index] = {
                 "relay_pin": relay.pin,
                 "inverted_output": relay.inverted,
@@ -315,10 +316,10 @@ class OctoRelayPlugin(
                 "active": active,
                 "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
                 "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
-                "upcoming": None if upcoming[index] is None else {
-                    "target": upcoming[index].target,
-                    "owner": upcoming[index].owner,
-                    "deadline": int(upcoming[index].deadline * 1000) # ms for JS
+                "upcoming": None if task is None else {
+                    "target": task.target,
+                    "owner": task.owner,
+                    "deadline": int(task.deadline * 1000) # ms for JS
                 }
             }
         self._logger.debug(f"The UI feed: {self.model}")
