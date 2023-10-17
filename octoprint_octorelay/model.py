@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from typing import Optional, Dict
-# todo after dropping 3.7 replace with "from typing"
+# todo after dropping 3.7 take TypedDict from typing instead
 from typing_extensions import TypedDict
 
 from .const import RELAY_INDEXES
