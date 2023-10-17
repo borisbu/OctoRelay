@@ -112,10 +112,10 @@ jobs:
           flag-name: python-${{ matrix.python }}-octoprint-${{ matrix.octoprint }}
           parallel: true
           file: ./tests/coverage.lcov
+      - name: Types checking
+        run: mypy ./octoprint_octorelay
       - name: Lint
-        run: |
-          pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
-          mypy ./octoprint_octorelay
+        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
 
   finish:
     needs: [UI, Python]
