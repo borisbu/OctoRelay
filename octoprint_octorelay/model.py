@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from typing import Optional, Dict
 # todo after dropping 3.7 replace with "from typing"
 from typing_extensions import TypedDict
