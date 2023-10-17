@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional
+from typing import Optional, List, Dict, Iterable
 from functools import reduce
 import os
 import time
@@ -20,6 +20,7 @@ from .const import (
 from .driver import Relay
 from .task import Task
 from .migrations import migrate
+from .model import Model, get_initial_model
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -38,8 +39,8 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.tasks = [] # of Task
-        self.model = { index: {} for index in RELAY_INDEXES }
+        self.tasks: List[Task] = []
+        self.model: Model = get_initial_model()
 
     def get_settings_version(self):
         return SETTINGS_VERSION
@@ -77,7 +78,8 @@ class OctoRelayPlugin(
 
     def on_shutdown(self):
         self._logger.debug("Stopping the plugin")
-        self.polling_timer.cancel()
+        if self.polling_timer:
+            self.polling_timer.cancel()
         self._logger.info("The plugin stopped")
 
     def get_api_commands(self):
@@ -275,15 +277,16 @@ class OctoRelayPlugin(
             self._logger.debug(f"Running the system command: {cmd}")
             os.system(cmd)
 
-    def get_upcoming_tasks(self, subjects):
+    def get_upcoming_tasks(self, subjects: Iterable[str]) -> Dict[str, Optional[Task]]:
         self._logger.debug("Finding the upcoming tasks")
         future_tasks = filter(
             lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
         )
-        def reducer(agg, task):
+        def reducer(agg: Dict[str, Optional[Task]], task: Task):
             index = task.subject
-            agg[index] = task if agg[index] is None or task.deadline < agg[index].deadline else agg[index]
+            current = agg[index]
+            agg[index] = task if current is None or task.deadline < current.deadline else current
             return agg
         return reduce( # { r1: task, r2: None, ... }
             reducer,
@@ -294,7 +297,7 @@ class OctoRelayPlugin(
     def update_ui(self):
         self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
-        upcoming = self.get_upcoming_tasks(filter(
+        upcoming_tasks = self.get_upcoming_tasks(filter(
             lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
             RELAY_INDEXES
         ))
@@ -305,6 +308,7 @@ class OctoRelayPlugin(
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed() if active else False
+            task = upcoming_tasks[index]
             self.model[index] = {
                 "relay_pin": relay.pin,
                 "inverted_output": relay.inverted,
@@ -313,10 +317,10 @@ class OctoRelayPlugin(
                 "active": active,
                 "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
                 "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
-                "upcoming": None if upcoming[index] is None else {
-                    "target": upcoming[index].target,
-                    "owner": upcoming[index].owner,
-                    "deadline": int(upcoming[index].deadline * 1000) # ms for JS
+                "upcoming": None if task is None else {
+                    "target": task.target,
+                    "owner": task.owner,
+                    "deadline": int(task.deadline * 1000) # ms for JS
                 }
             }
         self._logger.debug(f"The UI feed: {self.model}")
