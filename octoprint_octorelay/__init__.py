@@ -283,9 +283,10 @@ class OctoRelayPlugin(
             lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
         )
-        def reducer(agg, task):
+        def reducer(agg: Dict[str, Optional[Task]], task: Task):
             index = task.subject
-            agg[index] = task if agg[index] is None or task.deadline < agg[index].deadline else agg[index]
+            current = agg[index]
+            agg[index] = task if current is None or task.deadline < current.deadline else current
             return agg
         return reduce( # { r1: task, r2: None, ... }
             reducer,
