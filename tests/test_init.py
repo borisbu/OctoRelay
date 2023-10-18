@@ -1028,6 +1028,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedOutcome"].assert_called_with(case["expectedPayload"])
 
     @patch("flask.abort")
+    def test_on_api_command__exceptions(self, abort_mock):
+        # Should respond with a faulty HTTP code when handler raises
+        self.plugin_instance.handle_update_command = Mock(side_effect=Exception("Bad request"))
+        self.plugin_instance.on_api_command("update", {})
+        abort_mock.assert_called_with(400)
+
+    @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
         # Should respond with status code 400 (bad request) to unknown commands
         self.plugin_instance.on_api_command("command", {})
