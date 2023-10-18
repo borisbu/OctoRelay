@@ -152,19 +152,19 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND: # API command to get relay status
             is_closed = self.handle_get_status_command(data["pin"])
             self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
-            return flask.jsonify(status=is_closed)
+            return flask.jsonify({"status": is_closed})
         if command == UPDATE_COMMAND: # API command to toggle the relay
             target = data.get("target")
             try:
                 state = self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
-                flask.jsonify(status="ok", result=state)
+                return flask.jsonify({"status": "ok", "result": state})
             except Exception:
                 return flask.abort(400)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
             self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
             self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
-            return flask.jsonify(status="ok")
+            return flask.jsonify({"status": "ok"})
         self._logger.warn(f"Unknown command {command}")
         return flask.abort(400) # Unknown command
 
