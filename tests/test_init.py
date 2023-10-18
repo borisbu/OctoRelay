@@ -820,7 +820,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         self.plugin_instance._logger.warn.assert_called_with("Failed to check relay switching permission, Caught!")
 
     def test_handle_list_all_command(self):
-        # Should respond with JSON having states of the active relays
+        # Should return the active relay states
         cases = [{
             "closed": False,
             "expectedJson": list(map(lambda index: {
@@ -855,7 +855,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
 
     def test_handle_get_status_command(self):
-        # Should respond with JSON having the requested relay state
+        # Should return the relay state
         cases = [
             { "closed": False, "expectedStatus": False },
             { "closed": True, "expectedStatus": True }
@@ -879,7 +879,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("os.system")
     def test_handle_update_command(self, system_mock):
-        # Should toggle the relay state, execute command and update UI when having permission
+        # Should toggle the relay state, execute command, update UI and return the resulting state
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.is_printer_relay = Mock(return_value=False)
         cases = [
@@ -944,7 +944,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.handle_plugin_event.assert_not_called()
 
     def test_handle_update_command__exception_permissions(self):
-        # Should refuse to update the relay state in case of insufficient permissions
+        # Should raise when attempting in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
             "relay_pin": 17,
@@ -958,7 +958,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
 
     def test_handle_update_command__exception_disabled(self):
-        # Should refuse to update the disabled relay
+        # Should raise when attempting to update a disabled relay
         self.plugin_instance._settings.get = Mock(return_value={
             "active": False,
             "relay_pin": 17,
@@ -972,6 +972,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
 
     def test_handle_cancel_task_command(self):
+        # Should return boolean indicating that the task was cancelled
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.cancel_tasks = Mock()
         self.assertTrue(
@@ -982,6 +983,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("flask.jsonify")
     def test_on_api_command(self, jsonify_mock):
+        # Should call a handler and respond with expected payload
         self.plugin_instance.handle_list_all_command = Mock(return_value=[])
         self.plugin_instance.handle_get_status_command = Mock(return_value=True)
         self.plugin_instance.handle_update_command = Mock(return_value=False)
