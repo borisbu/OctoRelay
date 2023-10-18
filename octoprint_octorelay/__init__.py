@@ -137,10 +137,11 @@ class OctoRelayPlugin(
         self.update_ui()
         return state
 
-    def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
+    def handle_cancel_task_command(self, subject: str, target: bool, owner: str) -> bool:
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
-        self.cancel_tasks(subject, USER_ACTION, target, owner)
+        is_cancelled = self.cancel_tasks(subject, USER_ACTION, target, owner)
         self.update_ui()
+        return is_cancelled
 
     def on_api_command(self, command, data):
         self._logger.info(f"Received the API command {command} with parameters: {data}")
