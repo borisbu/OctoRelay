@@ -139,7 +139,7 @@ class OctoRelayPlugin(
             self.update_ui()
             return state
         except Exception as exception:
-            raise HandlingException(403) from exception
+            raise HandlingException(404) from exception
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str) -> bool:
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
@@ -163,8 +163,8 @@ class OctoRelayPlugin(
                 state = self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
                 return flask.jsonify({"status": "ok", "result": state})
-            except HandlingException as exception:
-                return flask.abort(exception.status)
+            except HandlingException as exception: # todo: deprecate the behavior for 404, only abort in next version
+                return flask.jsonify({"status": "error"}) if exception.status == 404 else flask.abort(exception.status)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
             self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
             self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")

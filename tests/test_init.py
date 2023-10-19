@@ -1029,11 +1029,17 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedOutcome"].assert_called_with(case["expectedPayload"])
 
     @patch("flask.abort")
-    def test_on_api_command__update_exceptions(self, abort_mock):
+    @patch("flask.jsonify")
+    def test_on_api_command__update_exceptions(self, jsonify_mock, abort_mock):
         # Should respond with a faulty HTTP code when handler raises
-        self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(403))
-        self.plugin_instance.on_api_command("update", {"pin": "r4"})
-        abort_mock.assert_called_with(403)
+        cases = [
+            { "status": 403, "expectedMethod": abort_mock, "expectedArgument": 403 },
+            { "status": 404, "expectedMethod": jsonify_mock, "expectedArgument": {"status": "error"} }
+        ]
+        for case in cases:
+            self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(case["status"]))
+            self.plugin_instance.on_api_command("update", {"pin": "r4"})
+            case["expectedMethod"].assert_called_with(case["expectedArgument"])
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
