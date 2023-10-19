@@ -1057,7 +1057,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
 
     @patch("flask.jsonify")
     def test_om_api_command__get_status_exception(self, jsonify_mock):
-        # Should respond with status false
+        # Should respond with status false when handler raises
         self.plugin_instance.handle_get_status_command = Mock(side_effect=HandlingException(400))
         self.plugin_instance.on_api_command("getStatus", {"pin": "r4"})
         jsonify_mock.assert_called_with({"status": False})
