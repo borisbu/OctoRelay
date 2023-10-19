@@ -879,7 +879,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
 
     def test_handle_get_status_command__exception(self):
-        # Should raise an Exception when requesting the state of disabled relay
+        # Should raise when requesting the state of disabled relay
         relay_settings_mock = {
             "active": False,
             "relay_pin": 17,
@@ -959,7 +959,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.handle_plugin_event.assert_not_called()
 
     def test_handle_update_command__exception_permissions(self):
-        # Should raise when attempting in case of insufficient permissions
+        # Should raise in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
             "relay_pin": 17,
