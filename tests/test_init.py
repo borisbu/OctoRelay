@@ -36,7 +36,8 @@ sys.modules["octoprint_octorelay.driver"] = Mock(
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import (
-    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES, Task
+    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__,
+    __plugin_hooks__, RELAY_INDEXES, Task, HandlingException
 )
 
 class TestOctoRelayPlugin(unittest.TestCase):
@@ -570,7 +571,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": "CommandON",
             "cmd_off": "CommandOFF"
         })
-        with self.assertRaises(Exception, msg="Relay r4 is disabled"):
+        with self.assertRaises(Exception):
             self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
@@ -925,7 +926,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             }
             self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
             if case["expectedError"]:
-                with self.assertRaises(Exception, msg="Bad request"):
+                with self.assertRaises(HandlingException):
                     self.plugin_instance.handle_update_command(case["index"], case["target"])
             else:
                 self.assertEqual(
@@ -953,7 +954,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
-        with self.assertRaises(Exception, msg="Forbidden"):
+        with self.assertRaises(HandlingException):
             self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
 
@@ -967,7 +968,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
-        with self.assertRaises(Exception, msg="Bad request"):
+        with self.assertRaises(HandlingException):
             self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
 
@@ -1028,11 +1029,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedOutcome"].assert_called_with(case["expectedPayload"])
 
     @patch("flask.abort")
-    def test_on_api_command__exceptions(self, abort_mock):
+    def test_on_api_command__update_exceptions(self, abort_mock):
         # Should respond with a faulty HTTP code when handler raises
-        self.plugin_instance.handle_update_command = Mock(side_effect=Exception("Bad request"))
-        self.plugin_instance.on_api_command("update", {})
-        abort_mock.assert_called_with(400)
+        self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(403))
+        self.plugin_instance.on_api_command("update", {"pin": "r4"})
+        abort_mock.assert_called_with(403)
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):

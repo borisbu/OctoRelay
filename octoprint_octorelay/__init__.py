@@ -21,6 +21,7 @@ from .driver import Relay
 from .task import Task
 from .migrations import migrate
 from .model import Model, get_initial_model
+from .exceptions import HandlingException
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -129,13 +130,16 @@ class OctoRelayPlugin(
         self._logger.debug(f"Requested to switch the relay {index} to {target}")
         if not self.has_switch_permission():
             self._logger.warn("Insufficient permissions")
-            raise Exception("Forbidden")
+            raise HandlingException(403)
         if index not in RELAY_INDEXES:
             self._logger.warn(f"Invalid relay index supplied: {index}")
-            raise Exception("Bad request")
-        state = self.toggle_relay(index, target) # can raise an Exception
-        self.update_ui()
-        return state
+            raise HandlingException(400)
+        try:
+            state = self.toggle_relay(index, target) # can raise an Exception if relay is disabled
+            self.update_ui()
+            return state
+        except Exception as exception:
+            raise HandlingException(403) from exception
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str) -> bool:
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
@@ -159,8 +163,8 @@ class OctoRelayPlugin(
                 state = self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
                 return flask.jsonify({"status": "ok", "result": state})
-            except Exception:
-                return flask.abort(400)
+            except HandlingException as exception:
+                return flask.abort(exception.status)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
             self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
             self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
@@ -226,7 +230,7 @@ class OctoRelayPlugin(
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
             self._logger.warn(f"Relay {index} is disabled")
-            raise Exception("Bad request")
+            raise Exception("Can not toggle a disabled relay")
         if target is not True and self.is_printer_relay(index):
             self._logger.debug(f"{index} is the printer relay")
             if self._printer.is_operational():
