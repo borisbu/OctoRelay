@@ -121,10 +121,12 @@ class OctoRelayPlugin(
     def handle_get_status_command(self, index: str) -> bool:
         self._logger.debug(f"Getting the relay {index} state")
         settings = self._settings.get([index], merged=True) # expensive
+        if not bool(settings["active"]):
+            raise HandlingException(400)
         return Relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
-        ).is_closed() if bool(settings["active"]) else False
+        ).is_closed()
 
     def handle_update_command(self, index: str, target: Optional[bool] = None) -> bool:
         self._logger.debug(f"Requested to switch the relay {index} to {target}")
@@ -154,7 +156,10 @@ class OctoRelayPlugin(
             self._logger.info(f"Responding to {LIST_ALL_COMMAND} command: {response}")
             return flask.jsonify(response)
         if command == GET_STATUS_COMMAND: # API command to get relay status
-            is_closed = self.handle_get_status_command(data["pin"])
+            try:
+                is_closed = self.handle_get_status_command(data["pin"])
+            except HandlingException:
+                is_closed = False # todo should just abort in the next version
             self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
             return flask.jsonify({"status": is_closed})
         if command == UPDATE_COMMAND: # API command to toggle the relay

@@ -878,6 +878,19 @@ class TestOctoRelayPlugin(unittest.TestCase):
             )
             self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
 
+    def test_handle_get_status_command__exception(self):
+        relay_settings_mock = {
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "label_text": "TEST",
+            "cmd_on": "CommandOnMock",
+            "cmd_off": "CommandOffMock"
+        }
+        self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
+        with self.assertRaises(HandlingException):
+            self.plugin_instance.handle_get_status_command("r4")
+
     @patch("os.system")
     def test_handle_update_command(self, system_mock):
         # Should toggle the relay state, execute command, update UI and return the resulting state
@@ -1031,7 +1044,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @patch("flask.abort")
     @patch("flask.jsonify")
     def test_on_api_command__update_exceptions(self, jsonify_mock, abort_mock):
-        # Should respond with a faulty HTTP code when handler raises
+        # Should respond with a faulty HTTP code or status error when handler raises
         cases = [
             { "status": 403, "expectedMethod": abort_mock, "expectedArgument": 403 },
             { "status": 400, "expectedMethod": jsonify_mock, "expectedArgument": {"status": "error"} }
@@ -1040,6 +1053,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(case["status"]))
             self.plugin_instance.on_api_command("update", {"pin": "r4"})
             case["expectedMethod"].assert_called_with(case["expectedArgument"])
+
+    @patch("flask.jsonify")
+    def test_om_api_command__get_status_exception(self, jsonify_mock):
+        # Should respond with status false
+        self.plugin_instance.handle_get_status_command = Mock(side_effect=HandlingException(400))
+        self.plugin_instance.on_api_command("getStatus", {"pin": "r4"})
+        jsonify_mock.assert_called_with({"status": False})
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
