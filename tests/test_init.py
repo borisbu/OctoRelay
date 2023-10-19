@@ -1034,7 +1034,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should respond with a faulty HTTP code when handler raises
         cases = [
             { "status": 403, "expectedMethod": abort_mock, "expectedArgument": 403 },
-            { "status": 404, "expectedMethod": jsonify_mock, "expectedArgument": {"status": "error"} }
+            { "status": 400, "expectedMethod": jsonify_mock, "expectedArgument": {"status": "error"} }
         ]
         for case in cases:
             self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(case["status"]))
