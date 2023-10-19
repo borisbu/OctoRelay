@@ -137,8 +137,8 @@ class OctoRelayPlugin(
             self._logger.warn(f"Invalid relay index supplied: {index}")
             raise HandlingException(400)
         try:
-            state = self.toggle_relay(index, target) # can raise an Exception if relay is disabled
-        except Exception as exception:
+            state = self.toggle_relay(index, target)
+        except Exception as exception: # disabled relay
             raise HandlingException(400) from exception
         self.update_ui()
         return state
