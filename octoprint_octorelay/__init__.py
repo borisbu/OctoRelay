@@ -136,10 +136,10 @@ class OctoRelayPlugin(
             raise HandlingException(400)
         try:
             state = self.toggle_relay(index, target) # can raise an Exception if relay is disabled
-            self.update_ui()
-            return state
         except Exception as exception:
             raise HandlingException(404) from exception
+        self.update_ui()
+        return state
 
     def handle_cancel_task_command(self, subject: str, target: bool, owner: str) -> bool:
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
