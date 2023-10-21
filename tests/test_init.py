@@ -36,7 +36,8 @@ sys.modules["octoprint_octorelay.driver"] = Mock(
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay import (
-    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__, __plugin_hooks__, RELAY_INDEXES, Task
+    OctoRelayPlugin, __plugin_pythoncompat__, __plugin_implementation__,
+    __plugin_hooks__, RELAY_INDEXES, Task, HandlingException
 )
 
 class TestOctoRelayPlugin(unittest.TestCase):
@@ -570,7 +571,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_on": "CommandON",
             "cmd_off": "CommandOFF"
         })
-        with self.assertRaises(Exception, msg="Relay r4 is disabled"):
+        with self.assertRaises(Exception):
             self.plugin_instance.toggle_relay("r4", True)
         relayMock.toggle.assert_not_called()
 
@@ -819,9 +820,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.assertIs(actual, case["expected"])
         self.plugin_instance._logger.warn.assert_called_with("Failed to check relay switching permission, Caught!")
 
-    @patch("flask.jsonify")
-    def test_handle_list_all_command(self, jsonify_mock):
-        # Should respond with JSON having states of the active relays
+    def test_handle_list_all_command(self):
+        # Should return the active relay states
         cases = [{
             "closed": False,
             "expectedJson": list(map(lambda index: {
@@ -850,12 +850,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
             self.plugin_instance._settings.get = Mock(return_value={
                 index: relay_settings_mock for index in RELAY_INDEXES
             })
-            self.plugin_instance.handle_list_all_command()
-            jsonify_mock.assert_called_with(case["expectedJson"])
+            self.assertEqual(
+                self.plugin_instance.handle_list_all_command(),
+                case["expectedJson"]
+            )
 
-    @patch("flask.jsonify")
-    def test_handle_get_status_command(self, jsonify_mock):
-        # Should respond with JSON having the requested relay state
+    def test_handle_get_status_command(self):
+        # Should return the relay state
         cases = [
             { "closed": False, "expectedStatus": False },
             { "closed": True, "expectedStatus": True }
@@ -871,14 +872,29 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOffMock"
             }
             self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
-            self.plugin_instance.handle_get_status_command("r4")
+            self.assertEqual(
+                self.plugin_instance.handle_get_status_command("r4"),
+                case["expectedStatus"]
+            )
             self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
-            jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
-    @patch("flask.jsonify")
+    def test_handle_get_status_command__exception(self):
+        # Should raise when requesting the state of disabled relay
+        relay_settings_mock = {
+            "active": False,
+            "relay_pin": 17,
+            "inverted_output": False,
+            "label_text": "TEST",
+            "cmd_on": "CommandOnMock",
+            "cmd_off": "CommandOffMock"
+        }
+        self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
+        with self.assertRaises(HandlingException):
+            self.plugin_instance.handle_get_status_command("r4")
+
     @patch("os.system")
-    def test_handle_update_command(self, system_mock, jsonify_mock):
-        # Should toggle the relay state, execute command and update UI when having permission
+    def test_handle_update_command(self, system_mock):
+        # Should toggle the relay state, execute command, update UI and return the resulting state
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.is_printer_relay = Mock(return_value=False)
         cases = [
@@ -886,7 +902,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "index": "r4",
                 "target": None,
                 "closed": False,
-                "expectedStatus": "ok",
+                "expectedError": False,
                 "expectedResult": True,
                 "expectedToggle": True,
                 "expectedCommand": "CommandOnMock",
@@ -896,7 +912,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "index": "r4",
                 "target": False,
                 "closed": True,
-                "expectedStatus": "ok",
+                "expectedError": False,
                 "expectedResult": False, # from the !closed returned by mocked Relay::toggle() below
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
@@ -905,7 +921,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "index": "invalid",
                 "target": False,
                 "closed": True,
-                "expectedStatus": "error",
+                "expectedError": True,
             }
         ]
         for case in cases:
@@ -923,8 +939,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOffMock"
             }
             self.plugin_instance._settings.get = Mock(return_value=relay_settings_mock)
-            self.plugin_instance.handle_update_command(case["index"], case["target"])
-            if case["expectedStatus"] != "error":
+            if case["expectedError"]:
+                with self.assertRaises(HandlingException):
+                    self.plugin_instance.handle_update_command(case["index"], case["target"])
+            else:
+                self.assertEqual(
+                    self.plugin_instance.handle_update_command(case["index"], case["target"]),
+                    case["expectedResult"]
+                )
                 self.plugin_instance._settings.get.assert_called_with(["r4"], merged=True)
             if "expectedToggle" in case:
                 relayMock.toggle.assert_called_with(case["target"])
@@ -935,16 +957,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 self.plugin_instance.handle_plugin_event.assert_called_with(case["expectedEvent"], scope = ["r4"])
             else:
                 self.plugin_instance.handle_plugin_event.assert_not_called()
-            if "expectedStatus" in case:
-                if "expectedResult" in case:
-                    jsonify_mock.assert_called_with(status=case["expectedStatus"], result=case["expectedResult"])
-                else:
-                    jsonify_mock.assert_called_with(status=case["expectedStatus"])
 
-
-    @patch("flask.abort")
-    def test_handle_update_command__exception_permissions(self, abort_mock):
-        # Should refuse to update the relay state in case of insufficient permissions
+    def test_handle_update_command__exception_permissions(self):
+        # Should raise in case of insufficient permissions
         self.plugin_instance._settings.get = Mock(return_value={
             "active": True,
             "relay_pin": 17,
@@ -953,13 +968,12 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=False)
-        self.plugin_instance.handle_update_command("r4")
+        with self.assertRaises(HandlingException):
+            self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
-        abort_mock.assert_called_with(403)
 
-    @patch("flask.jsonify")
-    def test_handle_update_command__exception_disabled(self, jsonify_mock):
-        # Should refuse to update the disabled relay
+    def test_handle_update_command__exception_disabled(self):
+        # Should raise when attempting to update a disabled relay
         self.plugin_instance._settings.get = Mock(return_value={
             "active": False,
             "relay_pin": 17,
@@ -968,53 +982,85 @@ class TestOctoRelayPlugin(unittest.TestCase):
             "cmd_off": "CommandOffMock"
         })
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can = Mock(return_value=True)
-        self.plugin_instance.handle_update_command("r4")
+        with self.assertRaises(HandlingException):
+            self.plugin_instance.handle_update_command("r4")
         permissionsMock.PLUGIN_OCTORELAY_SWITCH.can.assert_called_with()
-        jsonify_mock.assert_called_with(status="error", reason="Can not toggle the relay r4")
 
-    @patch("flask.jsonify")
-    def test_handle_cancel_task_command(self, jsonify_mock):
+    def test_handle_cancel_task_command(self):
+        # Should return boolean indicating that the task was cancelled
         self.plugin_instance.update_ui = Mock()
         self.plugin_instance.cancel_tasks = Mock()
-        self.plugin_instance.handle_cancel_task_command("r4", True, "STARTUP")
+        self.assertTrue(
+            self.plugin_instance.handle_cancel_task_command("r4", True, "STARTUP")
+        )
         self.plugin_instance.cancel_tasks.assert_called_with("r4", "USER_ACTION", True, "STARTUP")
         self.plugin_instance.update_ui.assert_called_with()
-        jsonify_mock.assert_called_with(status="ok")
 
-    def test_on_api_command(self):
-        self.plugin_instance.handle_list_all_command = Mock()
-        self.plugin_instance.handle_get_status_command = Mock()
-        self.plugin_instance.handle_update_command = Mock()
-        self.plugin_instance.handle_cancel_task_command = Mock()
+    @patch("flask.jsonify")
+    def test_on_api_command(self, jsonify_mock):
+        # Should call a handler and respond with expected payload
+        self.plugin_instance.handle_list_all_command = Mock(return_value=[])
+        self.plugin_instance.handle_get_status_command = Mock(return_value=True)
+        self.plugin_instance.handle_update_command = Mock(return_value=False)
+        self.plugin_instance.handle_cancel_task_command = Mock(return_value=True)
         cases = [
             {
                 "command": "listAllStatus",
                 "data": {},
-                "expectedCall": self.plugin_instance.handle_list_all_command,
-                "expectedParams": []
+                "expectedMethod": self.plugin_instance.handle_list_all_command,
+                "expectedArguments": [],
+                "expectedOutcome": jsonify_mock,
+                "expectedPayload": [],
             },
             {
                 "command": "getStatus",
                 "data": { "pin": "r4" },
-                "expectedCall": self.plugin_instance.handle_get_status_command,
-                "expectedParams": ["r4"]
+                "expectedMethod": self.plugin_instance.handle_get_status_command,
+                "expectedArguments": ["r4"],
+                "expectedOutcome": jsonify_mock,
+                "expectedPayload": {"status": True},
             },
             {
                 "command": "update",
                 "data": { "pin": "r4", "target": True },
-                "expectedCall": self.plugin_instance.handle_update_command,
-                "expectedParams": ["r4", True]
+                "expectedMethod": self.plugin_instance.handle_update_command,
+                "expectedArguments": ["r4", True],
+                "expectedOutcome": jsonify_mock,
+                "expectedPayload": {"status": "ok", "result": False},
             },
             {
                 "command": "cancelTask",
                 "data": { "subject": "r4", "owner": "STARTUP", "target": True },
-                "expectedCall": self.plugin_instance.handle_cancel_task_command,
-                "expectedParams": [ "r4", True, "STARTUP" ]
+                "expectedMethod": self.plugin_instance.handle_cancel_task_command,
+                "expectedArguments": [ "r4", True, "STARTUP" ],
+                "expectedOutcome": jsonify_mock,
+                "expectedPayload": {"status": "ok"},
             }
         ]
         for case in cases:
             self.plugin_instance.on_api_command(case["command"], case["data"])
-            case["expectedCall"].assert_called_with(*case["expectedParams"])
+            case["expectedMethod"].assert_called_with(*case["expectedArguments"])
+            case["expectedOutcome"].assert_called_with(case["expectedPayload"])
+
+    @patch("flask.abort")
+    @patch("flask.jsonify")
+    def test_on_api_command__update_exceptions(self, jsonify_mock, abort_mock):
+        # Should respond with a faulty HTTP code or status error when handler raises
+        cases = [
+            { "status": 403, "expectedMethod": abort_mock, "expectedArgument": 403 },
+            { "status": 400, "expectedMethod": jsonify_mock, "expectedArgument": {"status": "error"} }
+        ]
+        for case in cases:
+            self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(case["status"]))
+            self.plugin_instance.on_api_command("update", {"pin": "r4"})
+            case["expectedMethod"].assert_called_with(case["expectedArgument"])
+
+    @patch("flask.jsonify")
+    def test_om_api_command__get_status_exception(self, jsonify_mock):
+        # Should respond with status false when handler raises
+        self.plugin_instance.handle_get_status_command = Mock(side_effect=HandlingException(400))
+        self.plugin_instance.on_api_command("getStatus", {"pin": "r4"})
+        jsonify_mock.assert_called_with({"status": False})
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
