@@ -169,8 +169,8 @@ class OctoRelayPlugin(
                 if version > 1: # todo remove condition when dropping v1
                     return flask.abort(exception.status)
                 is_closed = False # todo remove this when dropping v1
-            self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
-            return flask.jsonify({"status": is_closed})
+            self._logger.info(f"Responding {is_closed} to {GET_STATUS_COMMAND} command")
+            return flask.jsonify({ "status": is_closed })
         if command == UPDATE_COMMAND: # API command to toggle the relay
             try:
                 state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
