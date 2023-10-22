@@ -112,7 +112,7 @@ class OctoRelayPlugin(
                     bool(settings[index]["inverted_output"])
                 )
                 active_relays.append({
-                    "index": index,
+                    "id": index,
                     "name": settings[index]["label_text"],
                     "status": relay.is_closed(),
                 })
@@ -161,7 +161,7 @@ class OctoRelayPlugin(
         if command == LIST_ALL_COMMAND: # API command to get relay statuses
             relays = self.handle_list_all_command()
             response = list(map(lambda item: {
-                "id": item["index"],
+                "id": item["id"],
                 "name": item["name"],
                 "active": item["status"]
             }, relays)) if version == 1 else relays # todo remove ternary branch when dropping v1

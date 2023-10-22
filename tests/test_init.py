@@ -825,14 +825,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [{
             "closed": False,
             "expectedJson": list(map(lambda index: {
-                "index": index,
+                "id": index,
                 "name": "TEST",
                 "status": False
             }, RELAY_INDEXES))
         }, {
             "closed": True,
             "expectedJson": list(map(lambda index: {
-                "index": index,
+                "id": index,
                 "name": "TEST",
                 "status": True
             }, RELAY_INDEXES))
@@ -1000,7 +1000,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_on_api_command(self, jsonify_mock):
         # Should call a handler and respond with expected payload
         self.plugin_instance.handle_list_all_command = Mock(return_value=[
-            {"index": "r1", "name": "Test", "status": True}
+            {"id": "r1", "name": "Test", "status": True}
         ])
         self.plugin_instance.handle_get_status_command = Mock(return_value=True)
         self.plugin_instance.handle_update_command = Mock(return_value=False)
@@ -1020,7 +1020,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedMethod": self.plugin_instance.handle_list_all_command,
                 "expectedArguments": [],
                 "expectedOutcome": jsonify_mock,
-                "expectedPayload": [{"index": "r1", "name": "Test", "status": True}],
+                "expectedPayload": [{"id": "r1", "name": "Test", "status": True}],
             },
             {
                 "command": "getStatus",
