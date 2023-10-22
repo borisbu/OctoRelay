@@ -19,6 +19,7 @@ from .const import (
 )
 from .driver import Relay
 from .task import Task
+from .listing import Listing
 from .migrations import migrate
 from .model import Model, get_initial_model
 from .exceptions import HandlingException
@@ -101,9 +102,9 @@ class OctoRelayPlugin(
             self._logger.warn(f"Failed to check relay switching permission, {exception}")
             return False
 
-    def handle_list_all_command(self):
+    def handle_list_all_command(self) -> Listing:
         self._logger.debug("Collecting information on all the relay states")
-        active_relays = []
+        active_relays: Listing = []
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
             if bool(settings[index]["active"]):

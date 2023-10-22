@@ -50,7 +50,7 @@ plugin_url = "https://github.com/borisbu/OctoRelay"
 plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
-# todo after dropping 3.7 remove typing-extensions (used by model.py)
+# todo after dropping 3.7 remove typing-extensions (used by model.py and listing.py)
 plugin_requires = ["RPi.GPIO", "typing-extensions"]
 
 # --------------------------------------------------------------------------------------------------------------------
