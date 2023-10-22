@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional
+from typing import Optional, List, Dict, Iterable
 from functools import reduce
 import os
 import time
@@ -19,7 +19,10 @@ from .const import (
 )
 from .driver import Relay
 from .task import Task
+from .listing import Listing
 from .migrations import migrate
+from .model import Model, get_initial_model
+from .exceptions import HandlingException
 
 # pylint: disable=too-many-ancestors
 # pylint: disable=too-many-instance-attributes
@@ -38,8 +41,8 @@ class OctoRelayPlugin(
     def __init__(self):
         # pylint: disable=super-init-not-called
         self.polling_timer = None
-        self.tasks = [] # of Task
-        self.model = { index: {} for index in RELAY_INDEXES }
+        self.tasks: List[Task] = []
+        self.model: Model = get_initial_model()
 
     def get_settings_version(self):
         return SETTINGS_VERSION
@@ -77,13 +80,14 @@ class OctoRelayPlugin(
 
     def on_shutdown(self):
         self._logger.debug("Stopping the plugin")
-        self.polling_timer.cancel()
+        if self.polling_timer:
+            self.polling_timer.cancel()
         self._logger.info("The plugin stopped")
 
     def get_api_commands(self):
         return {
-            UPDATE_COMMAND: [ "pin" ],
-            GET_STATUS_COMMAND: [ "pin" ],
+            UPDATE_COMMAND: [],
+            GET_STATUS_COMMAND: [],
             LIST_ALL_COMMAND: [],
             CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
@@ -98,9 +102,9 @@ class OctoRelayPlugin(
             self._logger.warn(f"Failed to check relay switching permission, {exception}")
             return False
 
-    def handle_list_all_command(self):
+    def handle_list_all_command(self) -> Listing:
         self._logger.debug("Collecting information on all the relay states")
-        active_relays = []
+        active_relays: Listing = []
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
             if bool(settings[index]["active"]):
@@ -111,58 +115,94 @@ class OctoRelayPlugin(
                 active_relays.append({
                     "id": index,
                     "name": settings[index]["label_text"],
-                    "active": relay.is_closed(),
+                    "status": relay.is_closed(),
                 })
-        self._logger.debug(f"Responding to {LIST_ALL_COMMAND} command: {active_relays}")
-        return flask.jsonify(active_relays)
+        return active_relays
 
-    def handle_get_status_command(self, index: str):
+    def handle_get_status_command(self, index: str) -> bool:
         self._logger.debug(f"Getting the relay {index} state")
         settings = self._settings.get([index], merged=True) # expensive
-        is_closed = Relay(
+        if not bool(settings["active"]):
+            raise HandlingException(400)
+        return Relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
-        ).is_closed() if bool(settings["active"]) else False
-        self._logger.debug(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
-        return flask.jsonify(status=is_closed)
+        ).is_closed()
 
-    def handle_update_command(self, index: str, target: Optional[bool] = None):
+    def handle_update_command(self, index: str, target: Optional[bool] = None) -> bool:
         self._logger.debug(f"Requested to switch the relay {index} to {target}")
         if not self.has_switch_permission():
             self._logger.warn("Insufficient permissions")
-            return flask.abort(403)
+            raise HandlingException(403)
         if index not in RELAY_INDEXES:
             self._logger.warn(f"Invalid relay index supplied: {index}")
-            return flask.jsonify(status="error")
+            raise HandlingException(400)
         try:
             state = self.toggle_relay(index, target)
-        except Exception as exception:
-            self._logger.warn(f"Failed to toggle the relay {index}, reason: {exception}")
-            return flask.jsonify(status="error", reason=f"Can not toggle the relay {index}")
+        except Exception as exception: # disabled relay
+            raise HandlingException(400) from exception
         self.update_ui()
-        self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
-        return flask.jsonify(status="ok", result=state)
+        return state
 
-    def handle_cancel_task_command(self, subject: str, target: bool, owner: str):
+    def handle_cancel_task_command(self, subject: str, target: bool, owner: str) -> bool:
         self._logger.debug(f"Cancelling tasks from {owner} to switch the relay {subject} {'ON' if target else 'OFF'}")
-        self.cancel_tasks(subject, USER_ACTION, target, owner)
+        is_cancelled = self.cancel_tasks(subject, USER_ACTION, target, owner)
         self.update_ui()
-        self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
-        return flask.jsonify(status="ok")
+        return is_cancelled
 
     def on_api_command(self, command, data):
+        # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
-        if command == LIST_ALL_COMMAND: # API command to get relay statuses
-            return self.handle_list_all_command()
-        if command == GET_STATUS_COMMAND: # API command to get relay status
-            return self.handle_get_status_command(data["pin"])
-        if command == UPDATE_COMMAND: # API command to toggle the relay
-            target = data.get("target")
-            return self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
-        if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
-            return self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
-        self._logger.warn(f"Unknown command {command}")
-        return flask.abort(400) # Unknown command
+        version = int( data.get("version") or data.get("v") or 1 )
+        subject_param_name = "pin" if version == 1 else "subject" # todo remove pin when dropping v1
+        subject = data.get(subject_param_name)
+        target = data.get("target")
+        if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
+            return flask.abort(400, description=f"Parameter {subject_param_name} is missing")
+        # API command to list all the relays with their names and statuses
+        if command == LIST_ALL_COMMAND:
+            relays = self.handle_list_all_command()
+            response = list(map(lambda item: {
+                "id": item["id"],
+                "name": item["name"],
+                "active": item["status"]
+            }, relays)) if version == 1 else relays # todo remove ternary branch when dropping v1
+            self._logger.info(f"Responding {response} to {LIST_ALL_COMMAND} command")
+            return flask.jsonify(response)
+        # API command to get relay status
+        if command == GET_STATUS_COMMAND:
+            is_closed = False # todo remove this when dropping v1
+            try:
+                is_closed = self.handle_get_status_command(subject)
+            except HandlingException as exception:
+                if version != 1: # todo remove condition when dropping v1
+                    return flask.abort(exception.status)
+            self._logger.info(f"Responding {is_closed} to {GET_STATUS_COMMAND} command")
+            return flask.jsonify({ "status": is_closed })
+        # API command to toggle the relay
+        if command == UPDATE_COMMAND:
+            try:
+                state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
+                self._logger.debug(f"Responding {state} to {UPDATE_COMMAND} command")
+                if version == 1:
+                    return flask.jsonify({ "status": "ok", "result": state }) # todo remove branch when dropping v1
+                return flask.jsonify({ "status": state })
+            except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
+                if version == 1 and exception.status == 400: # todo remove this branch when dropping v1
+                    return flask.jsonify({ "status": "error", "reason": f"Can not toggle the relay {subject}" })
+                return flask.abort(exception.status)
+        # API command to cancel the postponed toggling task
+        if command == CANCEL_TASK_COMMAND:
+            cancelled = self.handle_cancel_task_command(
+                data.get("subject"), bool(target), data["owner"] # todo use subject after dropping v1
+            )
+            self._logger.debug(f"Responding {cancelled} to {CANCEL_TASK_COMMAND} command")
+            if version == 1:
+                return flask.jsonify({ "status": "ok" }) # todo remove this branch when dropping v1
+            return flask.jsonify({ "cancelled": cancelled })
+        # Unknown commands
+        self._logger.warn(f"Received unknown API command {command}")
+        return flask.abort(400, description="Unknown command")
 
     def on_event(self, event, payload):
         self._logger.debug(f"Received the {event} event having payload: {payload}")
@@ -221,7 +261,8 @@ class OctoRelayPlugin(
     def toggle_relay(self, index, target: Optional[bool] = None) -> bool:
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
-            raise Exception(f"Relay {index} is disabled")
+            self._logger.warn(f"Relay {index} is disabled")
+            raise Exception("Can not toggle a disabled relay")
         if target is not True and self.is_printer_relay(index):
             self._logger.debug(f"{index} is the printer relay")
             if self._printer.is_operational():
@@ -275,15 +316,16 @@ class OctoRelayPlugin(
             self._logger.debug(f"Running the system command: {cmd}")
             os.system(cmd)
 
-    def get_upcoming_tasks(self, subjects):
+    def get_upcoming_tasks(self, subjects: Iterable[str]) -> Dict[str, Optional[Task]]:
         self._logger.debug("Finding the upcoming tasks")
         future_tasks = filter(
             lambda task: task.subject in subjects and task.deadline > time.time() + PREEMPTIVE_CANCELLATION_CUTOFF,
             self.tasks
         )
-        def reducer(agg, task):
+        def reducer(agg: Dict[str, Optional[Task]], task: Task):
             index = task.subject
-            agg[index] = task if agg[index] is None or task.deadline < agg[index].deadline else agg[index]
+            current = agg[index]
+            agg[index] = task if current is None or task.deadline < current.deadline else current
             return agg
         return reduce( # { r1: task, r2: None, ... }
             reducer,
@@ -294,7 +336,7 @@ class OctoRelayPlugin(
     def update_ui(self):
         self._logger.debug("Updating the UI")
         settings = self._settings.get([], merged=True) # expensive
-        upcoming = self.get_upcoming_tasks(filter(
+        upcoming_tasks = self.get_upcoming_tasks(filter(
             lambda index: bool(settings[index]["active"]) and bool(settings[index]["show_upcoming"]),
             RELAY_INDEXES
         ))
@@ -305,6 +347,7 @@ class OctoRelayPlugin(
                 bool(settings[index]["inverted_output"])
             )
             relay_state = relay.is_closed() if active else False
+            task = upcoming_tasks[index]
             self.model[index] = {
                 "relay_pin": relay.pin,
                 "inverted_output": relay.inverted,
@@ -313,10 +356,10 @@ class OctoRelayPlugin(
                 "active": active,
                 "icon_html": settings[index]["icon_on" if relay_state else "icon_off"],
                 "confirm_off": bool(settings[index]["confirm_off"]) if relay_state else False,
-                "upcoming": None if upcoming[index] is None else {
-                    "target": upcoming[index].target,
-                    "owner": upcoming[index].owner,
-                    "deadline": int(upcoming[index].deadline * 1000) # ms for JS
+                "upcoming": None if task is None else {
+                    "target": task.target,
+                    "owner": task.owner,
+                    "deadline": int(task.deadline * 1000) # ms for JS
                 }
             }
         self._logger.debug(f"The UI feed: {self.model}")

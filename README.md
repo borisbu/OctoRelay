@@ -85,6 +85,7 @@ You can toggle the relays ON and OFF the following ways:
 ## OctoRelay API
 
 Relays can be queried and updated through the [OctoPrint API](https://docs.octoprint.org/en/master/api/). Read that documentation on how to get an API Key.
+Each API request payload is required to have `version` or `v` entry, meaning the API version as described below.
 
 ### Change the relay state
 
@@ -95,16 +96,15 @@ curl 'http://octopi.local/api/plugin/octorelay' \
   -H 'X-Api-Key: YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -X POST \
-  -d '{ "command": "update", "pin": "r1", "target": false }'
+  -d '{ "v": 2, "command": "update", "subject": "r1", "target": false }'
 
 # Sample response:
 # {
-#   "result": false,
-#   "status": "ok"
+#   "status": false
 # }
 ```
 
-The `target` entry in request payload is an optional boolean parameter. When it's `null` or omitted the relay will toggle. The `result` entry in the response payload reflects the relay state as the outcome of the request.
+The `target` entry in request payload is an optional boolean parameter. When it's `null` or omitted the relay will toggle. The `status` entry in the response payload reflects the relay state as the outcome of the request.
 
 ### Request the relay state
 
@@ -115,7 +115,7 @@ curl 'http://octopi.local/api/plugin/octorelay' \
   -H 'X-Api-Key: YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -X POST \
-  -d '{ "command": "getStatus", "pin": "r1" }'
+  -d '{ "v": 2, "command": "getStatus", "subject": "r1" }'
 
 # Sample response:
 # {
@@ -132,24 +132,24 @@ curl 'http://octopi.local/api/plugin/octorelay' \
   -H 'X-Api-Key: YOUR_API_KEY' \
   -H 'Content-Type: application/json' \
   -X POST \
-  -d '{ "command": "listAllStatus" }'
+  -d '{ "v": 2, "command": "listAllStatus" }'
 
 # Sample response:
 # [
 #   {
-#     "active": true,
+#     "status": true,
 #     "id": "r1",
 #     "name": "Light"
 #   },
 #   {
-#     "active": false,
+#     "status": false,
 #     "id": "r2",
 #     "name": "Printer"
 #   }
 # ]
 ```
 
-The `active` entry reflects the actual state of the relay.
+The `status` entry reflects the actual state of the relay.
 
 ## Updates
 
