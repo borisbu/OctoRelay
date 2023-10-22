@@ -1047,45 +1047,33 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedOutcome"].assert_called_with(case["expectedPayload"])
 
     @patch("flask.abort")
-    @patch("flask.jsonify")
-    def test_on_api_command__update_exceptions(self, jsonify_mock, abort_mock):
-        # Should respond with a faulty HTTP code or status error when handler raises
+    def test_on_api_command__update_exceptions(self, abort_mock):
+        # Should respond with a faulty HTTP code when handler raises
         cases = [
             {
                 "payload": { "subject": "r4" },
                 "status": 403,
-                "expectedMethod": abort_mock,
-                "expectedArgument": 403
+                "expectedCode": 403
             },
             {
                 "payload": { "subject": "r4" },
                 "status": 400,
-                "expectedMethod": abort_mock,
-                "expectedArgument": 400
+                "expectedCode": 400
             }
         ]
         for case in cases:
-            case["expectedMethod"].reset_mock()
+            abort_mock.reset_mock()
             self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(case["status"]))
             self.plugin_instance.on_api_command("update", case["payload"])
-            case["expectedMethod"].assert_called_with(case["expectedArgument"])
+            abort_mock.assert_called_with(case["expectedCode"])
 
     @patch("flask.abort")
-    @patch("flask.jsonify")
-    def test_om_api_command__get_status_exception(self, jsonify_mock, abort_mock):
+    def test_om_api_command__get_status_exception(self, abort_mock):
         # Should respond with status false when handler raises
-        cases = [
-            {
-                "payload": { "subject": "r4" },
-                "expectedMethod": abort_mock,
-                "expectedArgument": 400
-            }
-        ]
         self.plugin_instance.handle_get_status_command = Mock(side_effect=HandlingException(400))
-        for case in cases:
-            case["expectedMethod"].reset_mock()
-            self.plugin_instance.on_api_command("getStatus", case["payload"])
-            case["expectedMethod"].assert_called_with(case["expectedArgument"])
+        abort_mock.reset_mock()
+        self.plugin_instance.on_api_command("getStatus", { "subject": "r4" })
+        abort_mock.assert_called_with(400)
 
     @patch("flask.abort")
     def test_on_api_command__missing_parameters(self, abort_mock):
