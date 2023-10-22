@@ -153,30 +153,21 @@ class OctoRelayPlugin(
     def on_api_command(self, command, data):
         # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
-        version = int( data.get("version") or data.get("v") or 1 )
-        subject_param_name = "pin" if version == 1 else "subject" # todo remove pin when dropping v1
-        subject = data.get(subject_param_name)
+        subject = data.get("subject")
         target = data.get("target")
         if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
-            return flask.abort(400, description=f"Parameter {subject_param_name} is missing")
+            return flask.abort(400, description=f"Parameter subject is missing")
         # API command to list all the relays with their names and statuses
         if command == LIST_ALL_COMMAND:
             relays = self.handle_list_all_command()
-            response = list(map(lambda item: {
-                "id": item["id"],
-                "name": item["name"],
-                "active": item["status"]
-            }, relays)) if version == 1 else relays # todo remove ternary branch when dropping v1
-            self._logger.info(f"Responding {response} to {LIST_ALL_COMMAND} command")
-            return flask.jsonify(response)
+            self._logger.info(f"Responding {relays} to {LIST_ALL_COMMAND} command")
+            return flask.jsonify(relays)
         # API command to get relay status
         if command == GET_STATUS_COMMAND:
-            is_closed = False # todo remove this when dropping v1
             try:
                 is_closed = self.handle_get_status_command(subject)
             except HandlingException as exception:
-                if version != 1: # todo remove condition when dropping v1
-                    return flask.abort(exception.status)
+                return flask.abort(exception.status)
             self._logger.info(f"Responding {is_closed} to {GET_STATUS_COMMAND} command")
             return flask.jsonify({ "status": is_closed })
         # API command to toggle the relay
@@ -184,21 +175,15 @@ class OctoRelayPlugin(
             try:
                 state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding {state} to {UPDATE_COMMAND} command")
-                if version == 1:
-                    return flask.jsonify({ "status": "ok", "result": state }) # todo remove branch when dropping v1
                 return flask.jsonify({ "status": state })
-            except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
-                if version == 1 and exception.status == 400: # todo remove this branch when dropping v1
-                    return flask.jsonify({ "status": "error", "reason": f"Can not toggle the relay {subject}" })
+            except HandlingException as exception:
                 return flask.abort(exception.status)
         # API command to cancel the postponed toggling task
         if command == CANCEL_TASK_COMMAND:
             cancelled = self.handle_cancel_task_command(
-                data.get("subject"), bool(target), data["owner"] # todo use subject after dropping v1
+                subject, bool(target), data["owner"]
             )
             self._logger.debug(f"Responding {cancelled} to {CANCEL_TASK_COMMAND} command")
-            if version == 1:
-                return flask.jsonify({ "status": "ok" }) # todo remove this branch when dropping v1
             return flask.jsonify({ "cancelled": cancelled })
         # Unknown commands
         self._logger.warn(f"Received unknown API command {command}")

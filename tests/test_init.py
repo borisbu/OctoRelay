@@ -1008,27 +1008,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             {
                 "command": "listAllStatus",
-                "data": {},
-                "expectedMethod": self.plugin_instance.handle_list_all_command,
-                "expectedArguments": [],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": [{"id": "r1", "name": "Test", "active": True}],
-            },
-            {
-                "command": "listAllStatus",
                 "data": {"v": 2},
                 "expectedMethod": self.plugin_instance.handle_list_all_command,
                 "expectedArguments": [],
                 "expectedOutcome": jsonify_mock,
                 "expectedPayload": [{"id": "r1", "name": "Test", "status": True}],
-            },
-            {
-                "command": "getStatus",
-                "data": { "pin": "r4" },
-                "expectedMethod": self.plugin_instance.handle_get_status_command,
-                "expectedArguments": ["r4"],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": True},
             },
             {
                 "command": "getStatus",
@@ -1040,27 +1024,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "update",
-                "data": { "pin": "r4", "target": True },
-                "expectedMethod": self.plugin_instance.handle_update_command,
-                "expectedArguments": ["r4", True],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": "ok", "result": False},
-            },
-            {
-                "command": "update",
                 "data": { "v": 2, "subject": "r4", "target": True },
                 "expectedMethod": self.plugin_instance.handle_update_command,
                 "expectedArguments": ["r4", True],
                 "expectedOutcome": jsonify_mock,
                 "expectedPayload": {"status": False},
-            },
-            {
-                "command": "cancelTask",
-                "data": { "subject": "r4", "owner": "STARTUP", "target": True },
-                "expectedMethod": self.plugin_instance.handle_cancel_task_command,
-                "expectedArguments": [ "r4", True, "STARTUP" ],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": "ok"},
             },
             {
                 "command": "cancelTask",
@@ -1084,22 +1052,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should respond with a faulty HTTP code or status error when handler raises
         cases = [
             {
-                "payload": { "pin": "r4" },
-                "status": 403,
-                "expectedMethod": abort_mock,
-                "expectedArgument": 403
-            },
-            {
                 "payload": { "version": 2, "subject": "r4" },
                 "status": 403,
                 "expectedMethod": abort_mock,
                 "expectedArgument": 403
-            },
-            {
-                "payload": { "pin": "r4" },
-                "status": 400,
-                "expectedMethod": jsonify_mock,
-                "expectedArgument": { "status": "error", "reason": "Can not toggle the relay r4" }
             },
             {
                 "payload": { "v": 2, "subject": "r4" },
@@ -1120,11 +1076,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should respond with status false when handler raises
         cases = [
             {
-                "payload": { "pin": "r4" },
-                "expectedMethod": jsonify_mock,
-                "expectedArgument": {"status": False}
-            },
-            {
                 "payload": { "v": 2, "subject": "r4" },
                 "expectedMethod": abort_mock,
                 "expectedArgument": 400
@@ -1139,8 +1090,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @patch("flask.abort")
     def test_on_api_command__missing_parameters(self, abort_mock):
         cases = [
-            { "command": "getStatus", "version": 1, "missing": "pin" },
-            { "command": "update", "version": 1, "missing": "pin" },
             { "command": "getStatus", "version": 2, "missing": "subject" },
             { "command": "update", "version": 2, "missing": "subject" }
         ]
