@@ -30,7 +30,8 @@ describe("Actions", () => {
         upcoming: null,
       });
       expect(apiMock).toHaveBeenCalledWith("octorelay", "update", {
-        pin: "r1",
+        v: 2,
+        subject: "r1",
       });
     });
 
@@ -56,7 +57,8 @@ describe("Actions", () => {
       elementMock.modal.mockClear();
       elementMock.on.mock.calls[1][1](); // confirm
       expect(apiMock).toHaveBeenCalledWith("octorelay", "update", {
-        pin: "r2",
+        v: 2,
+        subject: "r2",
       });
       expect(elementMock.modal).toHaveBeenCalledWith("hide");
     });
@@ -70,6 +72,7 @@ describe("Actions", () => {
         deadline: 86400,
       });
       expect(apiMock).toHaveBeenCalledWith("octorelay", "cancelTask", {
+        v: 2,
         owner: "PRINTING_STARTED",
         subject: "r2",
         target: true,
