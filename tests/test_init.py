@@ -1099,7 +1099,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "payload": { "pin": "r4" },
                 "status": 400,
                 "expectedMethod": jsonify_mock,
-                "expectedArgument": { "status": "error"}
+                "expectedArgument": { "status": "error", "reason": "Can not toggle the relay r4" }
             },
             {
                 "payload": { "v": 2, "subject": "r4" },

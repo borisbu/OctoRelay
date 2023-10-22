@@ -188,8 +188,8 @@ class OctoRelayPlugin(
                     return flask.jsonify({ "status": "ok", "result": state }) # todo remove branch when dropping v1
                 return flask.jsonify({ "status": state })
             except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
-                if version == 1 and exception.status == 400:
-                    return flask.jsonify({ "status": "error" }) # todo remove this branch when dropping v1
+                if version == 1 and exception.status == 400: # todo remove this branch when dropping v1
+                    return flask.jsonify({ "status": "error", "reason": f"Can not toggle the relay {subject}" })
                 return flask.abort(exception.status)
         # API command to cancel the postponed toggling task
         if command == CANCEL_TASK_COMMAND:
