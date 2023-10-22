@@ -150,15 +150,16 @@ class OctoRelayPlugin(
         return is_cancelled
 
     def on_api_command(self, command, data):
+        # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
+        index = data.get("pin")
+        if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and index is None:
+            return flask.abort(400, description="Parameter pin is missing")
         if command == LIST_ALL_COMMAND: # API command to get relay statuses
             response = self.handle_list_all_command()
             self._logger.info(f"Responding to {LIST_ALL_COMMAND} command: {response}")
             return flask.jsonify(response)
         if command == GET_STATUS_COMMAND: # API command to get relay status
-            index = data.get("pin")
-            if index is None:
-                return flask.abort(400, description="Parameter pin is missing")
             try:
                 is_closed = self.handle_get_status_command(index)
             except HandlingException:
@@ -166,10 +167,7 @@ class OctoRelayPlugin(
             self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
             return flask.jsonify({"status": is_closed})
         if command == UPDATE_COMMAND: # API command to toggle the relay
-            index = data.get("pin")
             target = data.get("target")
-            if index is None:
-                return flask.abort(400, description="Parameter pin is missing")
             try:
                 state = self.handle_update_command(index, target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
