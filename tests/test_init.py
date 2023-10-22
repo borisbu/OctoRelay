@@ -1042,7 +1042,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedMethod": self.plugin_instance.handle_update_command,
                 "expectedArguments": ["r4", True],
                 "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": "ok", "result": False},
+                "expectedPayload": {"status": False},
             },
             {
                 "command": "cancelTask",

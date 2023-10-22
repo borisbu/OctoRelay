@@ -175,7 +175,9 @@ class OctoRelayPlugin(
             try:
                 state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
-                return flask.jsonify({"status": "ok", "result": state})
+                if version == 1:
+                    return flask.jsonify({ "status": "ok", "result": state }) # todo remove branch when dropping v1
+                return flask.jsonify({ "status": state })
             except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
                 if version == 1 and exception.status == 400:
                     return flask.jsonify({ "status": "error" }) # todo remove this branch when dropping v1
