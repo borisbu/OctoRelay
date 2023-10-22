@@ -152,30 +152,32 @@ class OctoRelayPlugin(
     def on_api_command(self, command, data):
         # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
-        index = data.get("pin")
-        if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and index is None:
-            return flask.abort(400, description="Parameter pin is missing")
+        version = data.get("version") or data.get("v") or 1;
+        subject_param_name = "pin" if version == 1 else "subject"
+        subject = data.get(subject_param_name)
+        target = data.get("target")
+        if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
+            return flask.abort(400, description=f"Parameter {subject_param_name} is missing")
         if command == LIST_ALL_COMMAND: # API command to get relay statuses
             response = self.handle_list_all_command()
             self._logger.info(f"Responding to {LIST_ALL_COMMAND} command: {response}")
             return flask.jsonify(response)
         if command == GET_STATUS_COMMAND: # API command to get relay status
             try:
-                is_closed = self.handle_get_status_command(index)
+                is_closed = self.handle_get_status_command(subject)
             except HandlingException:
                 is_closed = False # todo should just abort in the next version
             self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
             return flask.jsonify({"status": is_closed})
         if command == UPDATE_COMMAND: # API command to toggle the relay
-            target = data.get("target")
             try:
-                state = self.handle_update_command(index, target if isinstance(target, bool) else None)
+                state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
                 return flask.jsonify({"status": "ok", "result": state})
             except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
                 return flask.jsonify({"status": "error"}) if exception.status == 400 else flask.abort(exception.status)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
-            self.handle_cancel_task_command(data["subject"], bool(data["target"]), data["owner"])
+            self.handle_cancel_task_command(data.get("subject"), bool(target), data["owner"]) # use subject after dropping v1
             self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
             return flask.jsonify({"status": "ok"})
         self._logger.warn(f"Unknown command {command}")
