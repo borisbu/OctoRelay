@@ -85,8 +85,8 @@ class OctoRelayPlugin(
 
     def get_api_commands(self):
         return {
-            UPDATE_COMMAND: [ "pin" ],
-            GET_STATUS_COMMAND: [ "pin" ],
+            UPDATE_COMMAND: [],
+            GET_STATUS_COMMAND: [],
             LIST_ALL_COMMAND: [],
             CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
@@ -156,16 +156,22 @@ class OctoRelayPlugin(
             self._logger.info(f"Responding to {LIST_ALL_COMMAND} command: {response}")
             return flask.jsonify(response)
         if command == GET_STATUS_COMMAND: # API command to get relay status
+            index = data.get("pin")
+            if index is None:
+                return flask.abort(400, description="Parameter pin is missing")
             try:
-                is_closed = self.handle_get_status_command(data["pin"])
+                is_closed = self.handle_get_status_command(index)
             except HandlingException:
                 is_closed = False # todo should just abort in the next version
             self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
             return flask.jsonify({"status": is_closed})
         if command == UPDATE_COMMAND: # API command to toggle the relay
+            index = data.get("pin")
             target = data.get("target")
+            if index is None:
+                return flask.abort(400, description="Parameter pin is missing")
             try:
-                state = self.handle_update_command(data["pin"], target if isinstance(target, bool) else None)
+                state = self.handle_update_command(index, target if isinstance(target, bool) else None)
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
                 return flask.jsonify({"status": "ok", "result": state})
             except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
@@ -175,7 +181,7 @@ class OctoRelayPlugin(
             self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
             return flask.jsonify({"status": "ok"})
         self._logger.warn(f"Unknown command {command}")
-        return flask.abort(400) # Unknown command
+        return flask.abort(400, description="Unknown command")
 
     def on_event(self, event, payload):
         self._logger.debug(f"Received the {event} event having payload: {payload}")

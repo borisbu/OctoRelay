@@ -396,8 +396,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_get_api_commands(self):
         # Should return the list of available plugin commands
         expected = {
-            "update": [ "pin" ],
-            "getStatus": [ "pin" ],
+            "update": [],
+            "getStatus": [],
             "listAllStatus": [],
             "cancelTask": [ "subject", "target", "owner" ]
         }
@@ -1063,10 +1063,17 @@ class TestOctoRelayPlugin(unittest.TestCase):
         jsonify_mock.assert_called_with({"status": False})
 
     @patch("flask.abort")
+    def test_on_api_command__missing_parameters(self, abort_mock):
+        commands = ["getStatus", "update"]
+        for command in commands:
+            self.plugin_instance.on_api_command(command, {})
+            abort_mock.assert_called_with(400, description="Parameter pin is missing")
+
+    @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
         # Should respond with status code 400 (bad request) to unknown commands
         self.plugin_instance.on_api_command("command", {})
-        abort_mock.assert_called_with(400)
+        abort_mock.assert_called_with(400, description="Unknown command")
 
     def test_process_at_command(self):
         # Should toggle the relay having index supplied as a parameter
