@@ -2,6 +2,39 @@
 
 ## Version 3
 
+### 3.14.0
+
+- UI: Generating CSS from SCSS.
+- Using `mypy` for type constraints.
+- Introducing the plugin API v2.
+  - This feature aims to establish consistency and improve clarity across inputs and responses of the plugin API.
+  - This feature is opt-in until the next major release of the plugin.
+  - Developers and other API users are advised to migrate to the new API.
+  - Introducing the `version` and its shorthand `v` parameter of each API request payload (integer).
+    - When the parameter is ommitted, the API falls back to v1 (previous behaviour and responses).
+    - When the parameter is set to `2`, the new request payload is expected and the API responds differently.
+  - Key changes:
+    - For `update` and `getStatus` commands `pin` parameter is renamed to `subject`.
+    - For `listAllStatus` command `active` property renamed to `status`.
+    - For `getStatus` command on disabled relay the API responds with an HTTP code `400` instead of `status: false`.
+    - For `update` and `cancelTask` commands there is no more `status: "ok" | "error"`:
+      - The `status` now always means the relay state (boolean), while errors are reported via HTTP codes.
+  - Check out the updated Readme for new examples.
+
+| Command       | v1 request parameters    | v2 request parameter     |
+|---------------|--------------------------|--------------------------|
+| update        | `pin, target`            | `subject, target`        |
+| getStatus     | `pin`                    | `subject`                |
+| listAllStatus | None                     | None                     |
+| cancelTask    | `subject, target, owner` | `subject, target, owner` |
+
+| Command       | v1 response                | v2 response          |
+|---------------|----------------------------|----------------------|
+| update        | `result: bool, status: ok` | `status: bool`       |
+| getStatus     | `status`                   | `status`             |
+| listAllStatus | `[active, id, name]`       | `[status, id, name]` |
+| cancelTask    | `status: ok`               | `cancelled: bool`    |
+
 ### 3.12.0
 
 - Feature: the API command `update` now accepts the optional `target` parameter.
