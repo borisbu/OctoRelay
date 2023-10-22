@@ -85,7 +85,7 @@ You can toggle the relays ON and OFF the following ways:
 ## OctoRelay API
 
 Relays can be queried and updated through the [OctoPrint API](https://docs.octoprint.org/en/master/api/). Read that documentation on how to get an API Key.
-Each API request payload is required to have `version` or `v`, meaning the API version as described below.
+Each API request payload is required to have `version` or `v` entry, meaning the API version as described below.
 
 ### Change the relay state
 
