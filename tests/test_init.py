@@ -999,7 +999,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @patch("flask.jsonify")
     def test_on_api_command(self, jsonify_mock):
         # Should call a handler and respond with expected payload
-        self.plugin_instance.handle_list_all_command = Mock(return_value=[{"index": "r1", "name": "Test", "status": True}])
+        self.plugin_instance.handle_list_all_command = Mock(return_value=[
+            {"index": "r1", "name": "Test", "status": True}
+        ])
         self.plugin_instance.handle_get_status_command = Mock(return_value=True)
         self.plugin_instance.handle_update_command = Mock(return_value=False)
         self.plugin_instance.handle_cancel_task_command = Mock(return_value=True)
