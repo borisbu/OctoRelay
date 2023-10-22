@@ -13,7 +13,7 @@
   - Introducing the `version` and its shorthand `v` parameter of each API request payload (integer).
     - When the parameter is ommitted, the API falls back to v1 (previous behaviour and responses).
     - When the parameter is set to `2`, the new request payload is expected and the API responds differently.
-  - Key changes:
+  - Main differences of v2:
     - For `update` and `getStatus` commands `pin` parameter is renamed to `subject`.
     - For `listAllStatus` command `active` property renamed to `status`.
     - For `getStatus` command on disabled relay the API responds with an HTTP code `400` instead of `status: false`.
