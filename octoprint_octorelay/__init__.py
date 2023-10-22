@@ -152,7 +152,7 @@ class OctoRelayPlugin(
     def on_api_command(self, command, data):
         # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
-        version = data.get("version") or data.get("v") or 1
+        version = int( data.get("version") or data.get("v") or 1 )
         subject_param_name = "pin" if version == 1 else "subject"
         subject = data.get(subject_param_name)
         target = data.get("target")
