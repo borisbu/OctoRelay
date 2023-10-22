@@ -1008,7 +1008,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             {
                 "command": "listAllStatus",
-                "data": {"v": 2},
+                "data": {},
                 "expectedMethod": self.plugin_instance.handle_list_all_command,
                 "expectedArguments": [],
                 "expectedOutcome": jsonify_mock,
@@ -1016,7 +1016,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "getStatus",
-                "data": { "version": 2, "subject": "r4" },
+                "data": { "subject": "r4" },
                 "expectedMethod": self.plugin_instance.handle_get_status_command,
                 "expectedArguments": ["r4"],
                 "expectedOutcome": jsonify_mock,
@@ -1024,7 +1024,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "update",
-                "data": { "v": 2, "subject": "r4", "target": True },
+                "data": { "subject": "r4", "target": True },
                 "expectedMethod": self.plugin_instance.handle_update_command,
                 "expectedArguments": ["r4", True],
                 "expectedOutcome": jsonify_mock,
@@ -1032,7 +1032,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "cancelTask",
-                "data": { "v": 2, "subject": "r4", "owner": "STARTUP", "target": True },
+                "data": { "subject": "r4", "owner": "STARTUP", "target": True },
                 "expectedMethod": self.plugin_instance.handle_cancel_task_command,
                 "expectedArguments": [ "r4", True, "STARTUP" ],
                 "expectedOutcome": jsonify_mock,
@@ -1052,13 +1052,13 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should respond with a faulty HTTP code or status error when handler raises
         cases = [
             {
-                "payload": { "version": 2, "subject": "r4" },
+                "payload": { "subject": "r4" },
                 "status": 403,
                 "expectedMethod": abort_mock,
                 "expectedArgument": 403
             },
             {
-                "payload": { "v": 2, "subject": "r4" },
+                "payload": { "subject": "r4" },
                 "status": 400,
                 "expectedMethod": abort_mock,
                 "expectedArgument": 400
@@ -1076,7 +1076,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should respond with status false when handler raises
         cases = [
             {
-                "payload": { "v": 2, "subject": "r4" },
+                "payload": { "subject": "r4" },
                 "expectedMethod": abort_mock,
                 "expectedArgument": 400
             }
@@ -1090,11 +1090,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
     @patch("flask.abort")
     def test_on_api_command__missing_parameters(self, abort_mock):
         cases = [
-            { "command": "getStatus", "version": 2, "missing": "subject" },
-            { "command": "update", "version": 2, "missing": "subject" }
+            { "command": "getStatus", "missing": "subject" },
+            { "command": "update", "missing": "subject" }
         ]
         for case in cases:
-            self.plugin_instance.on_api_command(case["command"], { "version": case["version"] })
+            self.plugin_instance.on_api_command(case["command"], {})
             abort_mock.assert_called_with(400, description=f"Parameter {case['missing']} is missing")
 
     @patch("flask.abort")
