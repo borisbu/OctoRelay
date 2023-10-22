@@ -112,9 +112,9 @@ class OctoRelayPlugin(
                     bool(settings[index]["inverted_output"])
                 )
                 active_relays.append({
-                    "id": index,
+                    "index": index,
                     "name": settings[index]["label_text"],
-                    "active": relay.is_closed(),
+                    "status": relay.is_closed(),
                 })
         return active_relays
 
@@ -159,8 +159,13 @@ class OctoRelayPlugin(
         if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
             return flask.abort(400, description=f"Parameter {subject_param_name} is missing")
         if command == LIST_ALL_COMMAND: # API command to get relay statuses
-            response = self.handle_list_all_command()
-            self._logger.info(f"Responding to {LIST_ALL_COMMAND} command: {response}")
+            relays = self.handle_list_all_command()
+            response = list(map(lambda item: {
+                "id": item["index"],
+                "name": item["name"],
+                "active": item["status"]
+            }, relays)) if version == 1 else relays # todo remove ternary branch when dropping v1
+            self._logger.info(f"Responding {response} to {LIST_ALL_COMMAND} command")
             return flask.jsonify(response)
         if command == GET_STATUS_COMMAND: # API command to get relay status
             try:
@@ -174,7 +179,7 @@ class OctoRelayPlugin(
         if command == UPDATE_COMMAND: # API command to toggle the relay
             try:
                 state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
-                self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
+                self._logger.debug(f"Responding {state} to {UPDATE_COMMAND} command")
                 if version == 1:
                     return flask.jsonify({ "status": "ok", "result": state }) # todo remove branch when dropping v1
                 return flask.jsonify({ "status": state })
