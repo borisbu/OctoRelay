@@ -153,7 +153,7 @@ class OctoRelayPlugin(
         # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
         version = int( data.get("version") or data.get("v") or 1 )
-        subject_param_name = "pin" if version == 1 else "subject"
+        subject_param_name = "pin" if version == 1 else "subject" # todo remove pin when dropping v1
         subject = data.get(subject_param_name)
         target = data.get("target")
         if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
