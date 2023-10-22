@@ -165,8 +165,10 @@ class OctoRelayPlugin(
         if command == GET_STATUS_COMMAND: # API command to get relay status
             try:
                 is_closed = self.handle_get_status_command(subject)
-            except HandlingException:
-                is_closed = False # todo should just abort in the next version
+            except HandlingException as exception:
+                if version > 1: # todo remove condition when dropping v1
+                    return flask.abort(exception.status)
+                is_closed = False # todo remove this when dropping v1
             self._logger.info(f"Responding to {GET_STATUS_COMMAND} command: {is_closed}")
             return flask.jsonify({"status": is_closed})
         if command == UPDATE_COMMAND: # API command to toggle the relay
@@ -175,9 +177,11 @@ class OctoRelayPlugin(
                 self._logger.debug(f"Responding to {UPDATE_COMMAND} command. Switched state to {state}")
                 return flask.jsonify({"status": "ok", "result": state})
             except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
-                return flask.jsonify({"status": "error"}) if exception.status == 400 else flask.abort(exception.status)
+                if version == 1 and exception.status == 400:
+                    return flask.jsonify({"status": "error"})
+                return flask.abort(exception.status)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
-            self.handle_cancel_task_command(data.get("subject"), bool(target), data["owner"]) # use subject after dropping v1
+            self.handle_cancel_task_command(data.get("subject"), bool(target), data["owner"]) # todo use subject after dropping v1
             self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
             return flask.jsonify({"status": "ok"})
         self._logger.warn(f"Unknown command {command}")
