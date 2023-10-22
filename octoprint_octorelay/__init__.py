@@ -178,14 +178,14 @@ class OctoRelayPlugin(
                 return flask.jsonify({"status": "ok", "result": state})
             except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
                 if version == 1 and exception.status == 400:
-                    return flask.jsonify({"status": "error"})
+                    return flask.jsonify({ "status": "error" })
                 return flask.abort(exception.status)
         if command == CANCEL_TASK_COMMAND: # API command to cancel the postponed toggling task
-            self.handle_cancel_task_command(
+            cancelled = self.handle_cancel_task_command(
                 data.get("subject"), bool(target), data["owner"] # todo use subject after dropping v1
             )
-            self._logger.debug(f"Responding to {CANCEL_TASK_COMMAND} command")
-            return flask.jsonify({"status": "ok"})
+            self._logger.debug(f"Responding {cancelled} to {CANCEL_TASK_COMMAND} command")
+            return flask.jsonify({ "status": "ok" } if version == 1 else { "cancelled": cancelled })
         self._logger.warn(f"Unknown command {command}")
         return flask.abort(400, description="Unknown command")
 

@@ -1051,6 +1051,14 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedArguments": [ "r4", True, "STARTUP" ],
                 "expectedOutcome": jsonify_mock,
                 "expectedPayload": {"status": "ok"},
+            },
+            {
+                "command": "cancelTask",
+                "data": { "v": 2, "subject": "r4", "owner": "STARTUP", "target": True },
+                "expectedMethod": self.plugin_instance.handle_cancel_task_command,
+                "expectedArguments": [ "r4", True, "STARTUP" ],
+                "expectedOutcome": jsonify_mock,
+                "expectedPayload": {"cancelled": True},
             }
         ]
         for case in cases:
