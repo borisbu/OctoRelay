@@ -156,31 +156,24 @@ class OctoRelayPlugin(
         subject = data.get("subject")
         target = data.get("target")
         try:
-            # API command to list all the relays with their names and statuses
-            if command == LIST_ALL_COMMAND:
-                relays = self.handle_list_all_command()
-                self._logger.info(f"Responding {relays} to {LIST_ALL_COMMAND} command")
-                return flask.jsonify(relays)
-            # API command to get relay status
-            if command == GET_STATUS_COMMAND:
+            if command == LIST_ALL_COMMAND: # lists all the relays with their names and statuses
+                response = self.handle_list_all_command()
+            elif command == GET_STATUS_COMMAND: # informs on the relay status
                 is_closed = self.handle_get_status_command(subject)
-                self._logger.info(f"Responding {is_closed} to {GET_STATUS_COMMAND} command")
-                return flask.jsonify({ "status": is_closed })
-            # API command to toggle the relay
-            if command == UPDATE_COMMAND:
+                response = { "status": is_closed }
+            elif command == UPDATE_COMMAND: # switches to a desired or an opposite state
                 state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
-                self._logger.debug(f"Responding {state} to {UPDATE_COMMAND} command")
-                return flask.jsonify({ "status": state })
-            # API command to cancel the postponed toggling task
-            if command == CANCEL_TASK_COMMAND:
+                response = { "status": state }
+            elif command == CANCEL_TASK_COMMAND: # cancels a postponed toggling task
                 cancelled = self.handle_cancel_task_command(subject, bool(target), data["owner"])
-                self._logger.debug(f"Responding {cancelled} to {CANCEL_TASK_COMMAND} command")
-                return flask.jsonify({ "cancelled": cancelled })
+                response = { "cancelled": cancelled }
+            else:
+                self._logger.warn(f"Received unknown API command {command}")
+                return flask.abort(400, description="Unknown command")
+            self._logger.info(f"Responding {response} to {command} command")
+            return flask.jsonify(response)
         except HandlingException as exception:
             return flask.abort(exception.status)
-        # Unknown commands
-        self._logger.warn(f"Received unknown API command {command}")
-        return flask.abort(400, description="Unknown command")
 
     def on_event(self, event, payload):
         self._logger.debug(f"Received the {event} event having payload: {payload}")
