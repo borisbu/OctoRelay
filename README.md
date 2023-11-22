@@ -67,7 +67,7 @@ Each relay has the following settings *(in order of appearance)*:
 | on Printing Started     | The state to switch the relay to when started printing           |
 | on Printing Stopped     | The state to switch the relay to when stopped printing           |
 | after Turned `ON`       | The state to switch the relay to after it has been turned `ON`   |
-| skip *(option)*         | No action should be taken                                        |                                 |
+| skip *(option)*         | No action should be taken                                        |
 | delay                   | Postpones the action for the time specified in seconds           |
 | **Side effects:**       | Additional actions in certain cases                              |
 | Command `ON` / `OFF`    | An optional OS command to run when toggling the relay            |
