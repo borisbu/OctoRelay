@@ -2,10 +2,6 @@
 
 ## Version 3
 
-### 3.14.1
-
-- UI: Upgrading all dependencies.
-
 ### 3.14.0
 
 - UI: Generating CSS from SCSS.
