@@ -173,9 +173,7 @@ class OctoRelayPlugin(
                 return flask.jsonify({ "status": state })
             # API command to cancel the postponed toggling task
             if command == CANCEL_TASK_COMMAND:
-                cancelled = self.handle_cancel_task_command(
-                    subject, bool(target), data["owner"]
-                )
+                cancelled = self.handle_cancel_task_command(subject, bool(target), data["owner"])
                 self._logger.debug(f"Responding {cancelled} to {CANCEL_TASK_COMMAND} command")
                 return flask.jsonify({ "cancelled": cancelled })
         except HandlingException as exception:
