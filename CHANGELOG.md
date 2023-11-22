@@ -1,6 +1,98 @@
 # Changelog
 
+## Version 4
+
+### 4.0.0
+
+- **Breaking changes**:
+  - Plugin API v1 removed.
+- How to migrate confidently:
+  - If you're not using the plugin API or mobile applications that use the plugin API:
+    - No action required.
+  - Read the release notes for version 3.14.0 (below) to inform yourself on differences between API v1 and v2.
+  - If you're using API v1:
+    - Make sure you're using OctoRelay version 3.14.0 or upgrade to that version first,
+    - Rename `pin` parameter in your request payload to `subject`,
+    - Add `version: 2` or `v: 2` parameter to all your API requests,
+    - Expect to receive a response having HTTP status code `200` and handle others as failures,
+    - In response to `listAllStatus` command expect to receive `status` (boolean) instead of `active`,
+    - In response to `update` command expect to receive boolean `status` instead of "ok" string,
+    - In response to `cancelTask` command expect to receive `cancelled` (boolean) instead of `status`,
+    - Test all your API requests before upgrading.
+  - If you're using [OctoPod, iOS/tvOS/watchOS App](https://apps.apple.com/us/app/octopod-for-octoprint/id1412557625):
+    - Upgrade it to at least 3.27 — this version supports the plugin API v2 (and v1 too).
+  - After upgrading to this version:
+    - You can remove `version` or `v` argument from the request payload (no longer needed).
+- Other improvements:
+  - UI: Upgraded all dependencies.
+
 ## Version 3
+
+### 3.14.0
+
+- UI: Generating CSS from SCSS.
+- Using `mypy` for type constraints.
+- Introducing the plugin API v2.
+  - This feature aims to establish consistency and improve clarity across inputs and responses of the plugin API.
+  - This feature is opt-in until the next major release of the plugin.
+  - Developers and other API users are advised to migrate to the new API.
+  - Introducing the `version` and its shorthand `v` parameter of each API request payload (integer).
+    - When the parameter is ommitted, the API falls back to v1 (previous behaviour and responses).
+    - When the parameter is set to `2`, the new request payload is expected and the API responds differently.
+  - Main differences of v2:
+    - For `update` and `getStatus` commands `pin` parameter is renamed to `subject`.
+    - For `listAllStatus` command `active` property renamed to `status`.
+    - For `getStatus` command on disabled relay the API responds with an HTTP code `400` instead of `status: false`.
+    - For `update` and `cancelTask` commands there is no more `status: "ok" | "error"`:
+      - The `status` now always means the relay state (boolean), while errors are reported via HTTP codes.
+  - Check out the updated Readme for new examples.
+
+| Command       | v1 request parameters    | v2 request parameter     |
+|---------------|--------------------------|--------------------------|
+| update        | `pin, target`            | `subject, target`        |
+| getStatus     | `pin`                    | `subject`                |
+| listAllStatus | None                     | None                     |
+| cancelTask    | `subject, target, owner` | `subject, target, owner` |
+
+| Command       | v1 response                | v2 response          |
+|---------------|----------------------------|----------------------|
+| update        | `result: bool, status: ok` | `status: bool`       |
+| getStatus     | `status`                   | `status`             |
+| listAllStatus | `[active, id, name]`       | `[status, id, name]` |
+| cancelTask    | `status: ok`               | `cancelled: bool`    |
+
+### 3.12.0
+
+- Feature: the API command `update` now accepts the optional `target` parameter.
+  - Check out the updated documentation in Readme for the request samples and more details.
+  - Thanks to [@patrickcollins12](https://github.com/patrickcollins12) for that contribution.
+
+### 3.11.2
+
+- UI source code splitting.
+  - Making the code easier to test and to maintain.
+
+### 3.11.1
+
+- Removing the stub `js` file from the sources.
+  - The plugin should only be installed from the distributed release file (not from the sources).
+- Changing the UI compiler from `tsc` to `tsup` (based on `esbuild` and `rollup`).
+- Extracting the types into the dedicated files.
+
+### 3.11.0
+
+- UI improvement: better handling of multiple upcoming switches.
+  - No overlapping popovers: single popover for all upcoming events instead.
+  - Sorted by the time left.
+  - Assigned to the relay having the closest switching.
+
+![UI](https://user-images.githubusercontent.com/13189514/270194227-b763214f-d237-4d0e-aab8-78de3215fb45.png)
+
+### 3.10.0
+
+- New feature: AutoConnect delay setting.
+  - Only visible for a Printer Relay (another setting).
+  - Only functional for OctoPrint 1.9.0+.
 
 ### 3.9.1
 
@@ -83,7 +175,7 @@
 ### 3.5.0
 
 - A couple more improvements for the UI/UX.
-  - This version introduces a new asset — CSS file. 
+  - This version introduces a new asset — CSS file.
 
 ![UI](https://user-images.githubusercontent.com/13189514/260043096-38e10e10-1285-401f-bf1f-18aa9e397c25.png)
 
@@ -105,7 +197,7 @@
 
 | Before                 | After                          | Type           |
 |------------------------|--------------------------------|----------------|
-| `initial_value`        | `rules.STARTUP.state`          | `bool or None` | 
+| `initial_value`        | `rules.STARTUP.state`          | `bool or None` |
 | `auto_on_before_print` | `rules.PRINTING_STARTED.state` | `bool or None` |
 | `auto_off_after_print` | `rules.PRINTING_STOPPED.state` | `bool or None` |
 | `auto_off_delay`       | `rules.PRINTING_STOPPED.delay` | `int`          |

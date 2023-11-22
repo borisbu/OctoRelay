@@ -13,7 +13,7 @@
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "script",
-    "project": "./tsconfig.json"
+    "project": true
   },
   "plugins": [
     "@typescript-eslint",
@@ -21,5 +21,13 @@
     "import"
   ],
   "rules": {
-  }
+  },
+  "overrides": [
+    {
+      "files": ["tsup.config.ts"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ]
 }

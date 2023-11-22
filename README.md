@@ -17,12 +17,12 @@ The plugin allows you to set your own icons and flexibly customize the way the r
 > _Just hooked up the GPIO pins with the relay board, and now I can turn the
 > power of the printer, the fan and the light on and off with OctoPrint._
 >
-> | ![Relay Board](img/relay-raspberry.jpg) | ![Raspberry Pi GPIO](img/rpi_gpio.png) |
-> |-----------------------------------------|----------------------------------------|
->
 > _This plugin was based on the [OctoLight Plugin](https://github.com/gigibu5/OctoLight) by Žiga Kralj, thanks ;-)_
 >
 > — _Boris Burgstaller_
+
+| ![Relay Board](img/relay.jpg) | ![Raspberry Pi GPIO](img/gpio.png) |
+|-------------------------------|------------------------------------|
 
 ## Requirements
 
@@ -55,8 +55,9 @@ Each relay has the following settings *(in order of appearance)*:
 |-------------------------|------------------------------------------------------------------|
 | Active                  | Activates the relay control and indication on the navigation bar |
 | Label                   | The relay description to show on tooltip and in dialogs          |
-| This is printer relay   | Closes the printer connection when turning this relay `OFF`      |
 | Icon `ON` / `OFF`       | An image or emoji to indicate the relay state (supports HTML)    |
+| This is printer relay   | Closes the printer connection when turning this relay `OFF`      |
+| AutoConnect delay       | Printer relay feature adjustment when turning it `ON`            |
 | GPIO Number             | The [GPIO pin on the Raspberry Pi](https://pinout.xyz/)          |
 | Inverted output         | For normally closed relay: the relay is `ON` without power       |
 | Confirm turning `OFF`   | Enables a confirmation dialog when turning the relay `OFF`       |
@@ -66,7 +67,7 @@ Each relay has the following settings *(in order of appearance)*:
 | on Printing Started     | The state to switch the relay to when started printing           |
 | on Printing Stopped     | The state to switch the relay to when stopped printing           |
 | after Turned `ON`       | The state to switch the relay to after it has been turned `ON`   |
-| skip *(option)*         | No action should be taken                                        |                                 |
+| skip *(option)*         | No action should be taken                                        |
 | delay                   | Postpones the action for the time specified in seconds           |
 | **Side effects:**       | Additional actions in certain cases                              |
 | Command `ON` / `OFF`    | An optional OS command to run when toggling the relay            |
@@ -79,10 +80,75 @@ You can toggle the relays ON and OFF the following ways:
   - The icon you choose for the button will display the current state.
 - By sending GCODE command `@OCTORELAY r#`.
   - Where `#` is relay index from `1` to `8`.
-- Or by querying [OctoRelay API](https://docs.octoprint.org/en/master/api/).
-  - Using path: `/api/plugin/octorelay`.
-  - With JSON payload `{ "pin": "r#", "command": "update" }`.
-  - Where `#` is relay index from `1` to `8`.
+- Or by querying the API (see below).
+
+## OctoRelay API
+
+Relays can be queried and updated through the [OctoPrint API](https://docs.octoprint.org/en/master/api/). Read that documentation on how to get an API Key.
+
+### Change the relay state
+
+This query turns the relay `r1` OFF:
+
+```bash
+curl 'http://octopi.local/api/plugin/octorelay' \
+  -H 'X-Api-Key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{ "command": "update", "subject": "r1", "target": false }'
+
+# Sample response:
+# {
+#   "status": false
+# }
+```
+
+The `target` entry in request payload is an optional boolean parameter. When it's `null` or omitted the relay will toggle. The `status` entry in the response payload reflects the relay state as the outcome of the request.
+
+### Request the relay state
+
+This query provides the status or the relay `r1`:
+
+```bash
+curl 'http://octopi.local/api/plugin/octorelay' \
+  -H 'X-Api-Key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{ "command": "getStatus", "subject": "r1" }'
+
+# Sample response:
+# {
+#   "status": true
+# }
+```
+
+### List all the relay states
+
+This query provides the statuses of all the relays:
+
+```bash
+curl 'http://octopi.local/api/plugin/octorelay' \
+  -H 'X-Api-Key: YOUR_API_KEY' \
+  -H 'Content-Type: application/json' \
+  -X POST \
+  -d '{ "command": "listAllStatus" }'
+
+# Sample response:
+# [
+#   {
+#     "status": true,
+#     "id": "r1",
+#     "name": "Light"
+#   },
+#   {
+#     "status": false,
+#     "id": "r2",
+#     "name": "Printer"
+#   }
+# ]
+```
+
+The `status` entry reflects the actual state of the relay.
 
 ## Updates
 

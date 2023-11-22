@@ -5,6 +5,7 @@
     ]
   },
   "collectCoverage": true,
+  "coveragePathIgnorePatterns": ["mocks"],
   "coverageReporters": [
     "json",
     "lcov",
