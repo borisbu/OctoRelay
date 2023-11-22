@@ -396,8 +396,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_get_api_commands(self):
         # Should return the list of available plugin commands
         expected = {
-            "update": [],
-            "getStatus": [],
+            "update": [ "subject" ],
+            "getStatus": [ "subject" ],
             "listAllStatus": [],
             "cancelTask": [ "subject", "target", "owner" ]
         }
@@ -1012,27 +1012,11 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "expectedMethod": self.plugin_instance.handle_list_all_command,
                 "expectedArguments": [],
                 "expectedOutcome": jsonify_mock,
-                "expectedPayload": [{"id": "r1", "name": "Test", "active": True}],
-            },
-            {
-                "command": "listAllStatus",
-                "data": {"v": 2},
-                "expectedMethod": self.plugin_instance.handle_list_all_command,
-                "expectedArguments": [],
-                "expectedOutcome": jsonify_mock,
                 "expectedPayload": [{"id": "r1", "name": "Test", "status": True}],
             },
             {
                 "command": "getStatus",
-                "data": { "pin": "r4" },
-                "expectedMethod": self.plugin_instance.handle_get_status_command,
-                "expectedArguments": ["r4"],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": True},
-            },
-            {
-                "command": "getStatus",
-                "data": { "version": 2, "subject": "r4" },
+                "data": { "subject": "r4" },
                 "expectedMethod": self.plugin_instance.handle_get_status_command,
                 "expectedArguments": ["r4"],
                 "expectedOutcome": jsonify_mock,
@@ -1040,15 +1024,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
             },
             {
                 "command": "update",
-                "data": { "pin": "r4", "target": True },
-                "expectedMethod": self.plugin_instance.handle_update_command,
-                "expectedArguments": ["r4", True],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": "ok", "result": False},
-            },
-            {
-                "command": "update",
-                "data": { "v": 2, "subject": "r4", "target": True },
+                "data": { "subject": "r4", "target": True },
                 "expectedMethod": self.plugin_instance.handle_update_command,
                 "expectedArguments": ["r4", True],
                 "expectedOutcome": jsonify_mock,
@@ -1057,14 +1033,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
             {
                 "command": "cancelTask",
                 "data": { "subject": "r4", "owner": "STARTUP", "target": True },
-                "expectedMethod": self.plugin_instance.handle_cancel_task_command,
-                "expectedArguments": [ "r4", True, "STARTUP" ],
-                "expectedOutcome": jsonify_mock,
-                "expectedPayload": {"status": "ok"},
-            },
-            {
-                "command": "cancelTask",
-                "data": { "v": 2, "subject": "r4", "owner": "STARTUP", "target": True },
                 "expectedMethod": self.plugin_instance.handle_cancel_task_command,
                 "expectedArguments": [ "r4", True, "STARTUP" ],
                 "expectedOutcome": jsonify_mock,
@@ -1079,74 +1047,33 @@ class TestOctoRelayPlugin(unittest.TestCase):
             case["expectedOutcome"].assert_called_with(case["expectedPayload"])
 
     @patch("flask.abort")
-    @patch("flask.jsonify")
-    def test_on_api_command__update_exceptions(self, jsonify_mock, abort_mock):
-        # Should respond with a faulty HTTP code or status error when handler raises
+    def test_on_api_command__update_exceptions(self, abort_mock):
+        # Should respond with a faulty HTTP code when handler raises
         cases = [
             {
-                "payload": { "pin": "r4" },
+                "payload": { "subject": "r4" },
                 "status": 403,
-                "expectedMethod": abort_mock,
-                "expectedArgument": 403
+                "expectedCode": 403
             },
             {
-                "payload": { "version": 2, "subject": "r4" },
-                "status": 403,
-                "expectedMethod": abort_mock,
-                "expectedArgument": 403
-            },
-            {
-                "payload": { "pin": "r4" },
+                "payload": { "subject": "r4" },
                 "status": 400,
-                "expectedMethod": jsonify_mock,
-                "expectedArgument": { "status": "error", "reason": "Can not toggle the relay r4" }
-            },
-            {
-                "payload": { "v": 2, "subject": "r4" },
-                "status": 400,
-                "expectedMethod": abort_mock,
-                "expectedArgument": 400
+                "expectedCode": 400
             }
         ]
         for case in cases:
-            case["expectedMethod"].reset_mock()
+            abort_mock.reset_mock()
             self.plugin_instance.handle_update_command = Mock(side_effect=HandlingException(case["status"]))
             self.plugin_instance.on_api_command("update", case["payload"])
-            case["expectedMethod"].assert_called_with(case["expectedArgument"])
+            abort_mock.assert_called_with(case["expectedCode"])
 
     @patch("flask.abort")
-    @patch("flask.jsonify")
-    def test_om_api_command__get_status_exception(self, jsonify_mock, abort_mock):
+    def test_om_api_command__get_status_exception(self, abort_mock):
         # Should respond with status false when handler raises
-        cases = [
-            {
-                "payload": { "pin": "r4" },
-                "expectedMethod": jsonify_mock,
-                "expectedArgument": {"status": False}
-            },
-            {
-                "payload": { "v": 2, "subject": "r4" },
-                "expectedMethod": abort_mock,
-                "expectedArgument": 400
-            }
-        ]
         self.plugin_instance.handle_get_status_command = Mock(side_effect=HandlingException(400))
-        for case in cases:
-            case["expectedMethod"].reset_mock()
-            self.plugin_instance.on_api_command("getStatus", case["payload"])
-            case["expectedMethod"].assert_called_with(case["expectedArgument"])
-
-    @patch("flask.abort")
-    def test_on_api_command__missing_parameters(self, abort_mock):
-        cases = [
-            { "command": "getStatus", "version": 1, "missing": "pin" },
-            { "command": "update", "version": 1, "missing": "pin" },
-            { "command": "getStatus", "version": 2, "missing": "subject" },
-            { "command": "update", "version": 2, "missing": "subject" }
-        ]
-        for case in cases:
-            self.plugin_instance.on_api_command(case["command"], { "version": case["version"] })
-            abort_mock.assert_called_with(400, description=f"Parameter {case['missing']} is missing")
+        abort_mock.reset_mock()
+        self.plugin_instance.on_api_command("getStatus", { "subject": "r4" })
+        abort_mock.assert_called_with(400)
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):
