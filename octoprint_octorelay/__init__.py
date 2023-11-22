@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, List, Dict, Iterable
+from typing import Optional, List, Dict, Iterable, Union
 from functools import reduce
 import os
 import time
@@ -86,8 +86,8 @@ class OctoRelayPlugin(
 
     def get_api_commands(self):
         return {
-            UPDATE_COMMAND: [],
-            GET_STATUS_COMMAND: [],
+            UPDATE_COMMAND: [ "subject" ],
+            GET_STATUS_COMMAND: [ "subject" ],
             LIST_ALL_COMMAND: [],
             CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
@@ -151,58 +151,29 @@ class OctoRelayPlugin(
         return is_cancelled
 
     def on_api_command(self, command, data):
-        # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
-        version = int( data.get("version") or data.get("v") or 1 )
-        subject_param_name = "pin" if version == 1 else "subject" # todo remove pin when dropping v1
-        subject = data.get(subject_param_name)
+        subject = data.get("subject")
         target = data.get("target")
-        if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
-            return flask.abort(400, description=f"Parameter {subject_param_name} is missing")
-        # API command to list all the relays with their names and statuses
-        if command == LIST_ALL_COMMAND:
-            relays = self.handle_list_all_command()
-            response = list(map(lambda item: {
-                "id": item["id"],
-                "name": item["name"],
-                "active": item["status"]
-            }, relays)) if version == 1 else relays # todo remove ternary branch when dropping v1
-            self._logger.info(f"Responding {response} to {LIST_ALL_COMMAND} command")
-            return flask.jsonify(response)
-        # API command to get relay status
-        if command == GET_STATUS_COMMAND:
-            is_closed = False # todo remove this when dropping v1
-            try:
+        response: Union[List, Dict] = {}
+        try:
+            if command == LIST_ALL_COMMAND: # lists all the relays with their names and statuses
+                response = self.handle_list_all_command()
+            elif command == GET_STATUS_COMMAND: # informs on the relay status
                 is_closed = self.handle_get_status_command(subject)
-            except HandlingException as exception:
-                if version != 1: # todo remove condition when dropping v1
-                    return flask.abort(exception.status)
-            self._logger.info(f"Responding {is_closed} to {GET_STATUS_COMMAND} command")
-            return flask.jsonify({ "status": is_closed })
-        # API command to toggle the relay
-        if command == UPDATE_COMMAND:
-            try:
+                response = { "status": is_closed }
+            elif command == UPDATE_COMMAND: # switches to a desired or an opposite state
                 state = self.handle_update_command(subject, target if isinstance(target, bool) else None)
-                self._logger.debug(f"Responding {state} to {UPDATE_COMMAND} command")
-                if version == 1:
-                    return flask.jsonify({ "status": "ok", "result": state }) # todo remove branch when dropping v1
-                return flask.jsonify({ "status": state })
-            except HandlingException as exception: # todo: deprecate the behavior for 400, only abort in next version
-                if version == 1 and exception.status == 400: # todo remove this branch when dropping v1
-                    return flask.jsonify({ "status": "error", "reason": f"Can not toggle the relay {subject}" })
-                return flask.abort(exception.status)
-        # API command to cancel the postponed toggling task
-        if command == CANCEL_TASK_COMMAND:
-            cancelled = self.handle_cancel_task_command(
-                data.get("subject"), bool(target), data["owner"] # todo use subject after dropping v1
-            )
-            self._logger.debug(f"Responding {cancelled} to {CANCEL_TASK_COMMAND} command")
-            if version == 1:
-                return flask.jsonify({ "status": "ok" }) # todo remove this branch when dropping v1
-            return flask.jsonify({ "cancelled": cancelled })
-        # Unknown commands
-        self._logger.warn(f"Received unknown API command {command}")
-        return flask.abort(400, description="Unknown command")
+                response = { "status": state }
+            elif command == CANCEL_TASK_COMMAND: # cancels a postponed toggling task
+                cancelled = self.handle_cancel_task_command(subject, bool(target), data["owner"])
+                response = { "cancelled": cancelled }
+            else:
+                self._logger.warn(f"Received unknown API command {command}")
+                return flask.abort(400, description="Unknown command")
+            self._logger.info(f"Responding {response} to {command} command")
+            return flask.jsonify(response)
+        except HandlingException as exception:
+            return flask.abort(exception.status)
 
     def on_event(self, event, payload):
         self._logger.debug(f"Received the {event} event having payload: {payload}")

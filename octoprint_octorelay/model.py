@@ -6,6 +6,7 @@ from typing_extensions import TypedDict
 from .const import RELAY_INDEXES
 
 # pylint: disable=too-few-public-methods
+# pylint: disable=too-many-ancestors
 
 class Upcoming(TypedDict):
     target: bool
