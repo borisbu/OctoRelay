@@ -1,5 +1,31 @@
 # Changelog
 
+## Version 4
+
+### 4.0.0
+
+- **Breaking changes**:
+  - Plugin API v1 removed.
+- How to migrate confidently:
+  - If you're not using the plugin API or mobile applications that use the plugin API:
+    - No action required.
+  - Read the release notes for version 3.14.0 (below) to inform yourself on differences between API v1 and v2.
+  - If you're using API v1:
+    - Make sure you're using OctoRelay version 3.14.0 or upgrade to that version first,
+    - Rename `pin` parameter in your request payload to `subject`,
+    - Add `version: 2` or `v: 2` parameter to all your API requests,
+    - Expect to receive a response having HTTP status code `200` and handle others as failures,
+    - In response to `listAllStatus` command expect to receive `status` (boolean) instead of `active`,
+    - In response to `update` command expect to receive boolean `status` instead of "ok" string,
+    - In response to `cancelTask` command expect to receive `cancelled` (boolean) instead of `status`,
+    - Test all your API requests before upgrading.
+  - If you're using [OctoPod, iOS/tvOS/watchOS App](https://apps.apple.com/us/app/octopod-for-octoprint/id1412557625):
+    - Upgrade it to at least 3.27 — this version supports the plugin API v2 (and v1 too).
+  - After upgrading to this version:
+    - You can remove `version` or `v` argument from the request payload (no longer needed).
+- Other improvements:
+  - UI: Upgraded all dependencies.
+
 ## Version 3
 
 ### 3.14.0
