@@ -396,8 +396,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_get_api_commands(self):
         # Should return the list of available plugin commands
         expected = {
-            "update": [],
-            "getStatus": [],
+            "update": [ "subject" ],
+            "getStatus": [ "subject" ],
             "listAllStatus": [],
             "cancelTask": [ "subject", "target", "owner" ]
         }
@@ -1074,16 +1074,6 @@ class TestOctoRelayPlugin(unittest.TestCase):
         abort_mock.reset_mock()
         self.plugin_instance.on_api_command("getStatus", { "subject": "r4" })
         abort_mock.assert_called_with(400)
-
-    @patch("flask.abort")
-    def test_on_api_command__missing_parameters(self, abort_mock):
-        cases = [
-            { "command": "getStatus", "missing": "subject" },
-            { "command": "update", "missing": "subject" }
-        ]
-        for case in cases:
-            self.plugin_instance.on_api_command(case["command"], {})
-            abort_mock.assert_called_with(400, description=f"Parameter {case['missing']} is missing")
 
     @patch("flask.abort")
     def test_on_api_command__unknown(self, abort_mock):

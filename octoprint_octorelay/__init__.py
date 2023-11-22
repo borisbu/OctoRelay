@@ -86,8 +86,8 @@ class OctoRelayPlugin(
 
     def get_api_commands(self):
         return {
-            UPDATE_COMMAND: [],
-            GET_STATUS_COMMAND: [],
+            UPDATE_COMMAND: [ "subject" ],
+            GET_STATUS_COMMAND: [ "subject" ],
             LIST_ALL_COMMAND: [],
             CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
@@ -155,8 +155,6 @@ class OctoRelayPlugin(
         self._logger.info(f"Received the API command {command} with parameters: {data}")
         subject = data.get("subject")
         target = data.get("target")
-        if command in [GET_STATUS_COMMAND, UPDATE_COMMAND] and subject is None:
-            return flask.abort(400, description="Parameter subject is missing")
         # API command to list all the relays with their names and statuses
         if command == LIST_ALL_COMMAND:
             relays = self.handle_list_all_command()
