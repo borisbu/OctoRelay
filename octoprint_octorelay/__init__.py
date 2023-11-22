@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from typing import Optional, List, Dict, Iterable
+from typing import Optional, List, Dict, Iterable, Union
 from functools import reduce
 import os
 import time
@@ -151,10 +151,10 @@ class OctoRelayPlugin(
         return is_cancelled
 
     def on_api_command(self, command, data):
-        # pylint: disable=too-many-return-statements
         self._logger.info(f"Received the API command {command} with parameters: {data}")
         subject = data.get("subject")
         target = data.get("target")
+        response: Union[List, Dict] = {}
         try:
             if command == LIST_ALL_COMMAND: # lists all the relays with their names and statuses
                 response = self.handle_list_all_command()
