@@ -27,13 +27,13 @@ jobs:
           path: ${{ steps.yarnCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
-        working-directory: ts
+        working-directory: ui
         run: yarn install
       - name: Lint
-        working-directory: ts
+        working-directory: ui
         run: yarn lint
       - name: Test
-        working-directory: ts
+        working-directory: ui
         run: yarn test
       - name: Coveralls
         uses: coverallsapp/github-action@v2
@@ -43,7 +43,7 @@ jobs:
           flag-name: ui
           parallel: true
       - name: Build JS
-        working-directory: ts
+        working-directory: ui
         run: yarn build
 
   Python:
