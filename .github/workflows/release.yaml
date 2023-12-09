@@ -31,10 +31,10 @@ jobs:
         path: ${{ steps.yarnCache.outputs.dir }}
         key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
     - name: Install UI dependencies
-      working-directory: ts
+      working-directory: ui
       run: yarn install
     - name: Build JS
-      working-directory: ts
+      working-directory: ui
       run: yarn build
     ### Python
     - name: Install Python
