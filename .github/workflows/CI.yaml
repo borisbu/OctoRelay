@@ -115,7 +115,7 @@ jobs:
       - name: Types checking
         run: mypy ./octoprint_octorelay
       - name: Lint
-        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
+        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests/*.py
 
   finish:
     needs: [UI, Python]
