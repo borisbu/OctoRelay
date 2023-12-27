@@ -1,3 +1,5 @@
-export const modelMock = jest.fn();
+import { vi } from "vitest";
 
-jest.mock("../model/OctoRelayModel", () => ({ OctoRelayViewModel: modelMock }));
+export const modelMock = vi.fn();
+
+vi.mock("../model/OctoRelayModel", () => ({ OctoRelayViewModel: modelMock }));

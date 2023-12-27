@@ -1,7 +1,9 @@
-export const clearMock = jest.fn();
-export const showMock = jest.fn();
+import { vi } from "vitest";
 
-jest.mock("../helpers/hints", () => ({
+export const clearMock = vi.fn();
+export const showMock = vi.fn();
+
+vi.mock("../helpers/hints", () => ({
   clearHints: clearMock,
   showHints: showMock,
 }));

@@ -1,8 +1,10 @@
-export const disposerMock = jest.fn();
-export const countdownMock = jest.fn(() => disposerMock);
-export const deadlineMock = jest.fn(() => "sample deadline");
+import { vi } from "vitest";
 
-jest.mock("../helpers/countdown", () => ({
+export const disposerMock = vi.fn();
+export const countdownMock = vi.fn(() => disposerMock);
+export const deadlineMock = vi.fn(() => "sample deadline");
+
+vi.mock("../helpers/countdown", () => ({
   setCountdown: countdownMock,
   formatDeadline: deadlineMock,
 }));

@@ -1,12 +1,21 @@
 import MockDate from "mockdate";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { formatDeadline, getCountdownDelay, setCountdown } from "./countdown";
+import {
+  describe,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+  expect,
+  test,
+} from "vitest";
 
 describe("Countdown helpers", () => {
-  const setIntervalMock = jest.fn<void, [() => void, number]>(
+  const setIntervalMock = vi.fn<[() => void, number], void>(
     () => "mockedInterval",
   );
-  const clearIntervalMock = jest.fn();
+  const clearIntervalMock = vi.fn();
 
   Object.assign(global, {
     LOCALE: "en",

@@ -1,7 +1,9 @@
-export const cancelMock = jest.fn();
-export const toggleMock = jest.fn();
+import { vi } from "vitest";
 
-jest.mock("../helpers/actions", () => ({
+export const cancelMock = vi.fn();
+export const toggleMock = vi.fn();
+
+vi.mock("../helpers/actions", () => ({
   cancelTask: cancelMock,
   toggleRelay: toggleMock,
 }));

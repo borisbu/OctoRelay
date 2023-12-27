@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Hints helpers addPopover() helper should add a popover to the target element: .find() 1`] = `
+exports[`Hints helpers > addPopover() helper > should add a popover to the target element > .find() 1`] = `
 [
   [
     "#pop-closer",
@@ -14,7 +14,7 @@ exports[`Hints helpers addPopover() helper should add a popover to the target el
 ]
 `;
 
-exports[`Hints helpers addPopover() helper should add a popover to the target element: .popover() 1`] = `
+exports[`Hints helpers > addPopover() helper > should add a popover to the target element > .popover() 1`] = `
 [
   [
     {
@@ -32,7 +32,7 @@ exports[`Hints helpers addPopover() helper should add a popover to the target el
 ]
 `;
 
-exports[`Hints helpers showHints() helper should display tooltips 1`] = `
+exports[`Hints helpers > showHints() helper > should display tooltips 1`] = `
 [
   [
     {
@@ -49,7 +49,7 @@ exports[`Hints helpers showHints() helper should display tooltips 1`] = `
 ]
 `;
 
-exports[`Hints helpers showHints() helper should show popover for a single upcoming task 1`] = `
+exports[`Hints helpers > showHints() helper > should show popover for a single upcoming task 1`] = `
 [
   [
     {
@@ -67,7 +67,7 @@ exports[`Hints helpers showHints() helper should show popover for a single upcom
 ]
 `;
 
-exports[`Hints helpers showHints() helper should show single popover for multiple upcoming tasks 1`] = `
+exports[`Hints helpers > showHints() helper > should show single popover for multiple upcoming tasks 1`] = `
 [
   [
     {
@@ -78,7 +78,7 @@ exports[`Hints helpers showHints() helper should show single popover for multipl
 ]
 `;
 
-exports[`Hints helpers showHints() helper should show single popover for multiple upcoming tasks 2`] = `
+exports[`Hints helpers > showHints() helper > should show single popover for multiple upcoming tasks 2`] = `
 [
   [
     {

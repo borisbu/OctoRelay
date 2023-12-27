@@ -3,9 +3,10 @@ import type { OwnModel, OwnProperties } from "../types/OwnModel";
 import { clearMock, showMock } from "../mocks/hints";
 import { toggleMock } from "../mocks/actions";
 import { makeMessageHandler } from "./messageHandler";
+import { describe, vi, afterEach, test, expect } from "vitest";
 
 describe("makeMessageHandler()", () => {
-  const permissionMock = jest.fn();
+  const permissionMock = vi.fn();
   const handler = makeMessageHandler({
     settingsViewModel: {
       access: {

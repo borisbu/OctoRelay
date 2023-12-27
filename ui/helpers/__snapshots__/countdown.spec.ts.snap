@@ -1,33 +1,33 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 0 seconds 1`] = `"in 0 seconds"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 0 seconds 1`] = `"in 0 seconds"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 1 seconds 1`] = `"in 1 second"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 1 seconds 1`] = `"in 1 second"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 30 seconds 1`] = `"in 30 seconds"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 30 seconds 1`] = `"in 30 seconds"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 59 seconds 1`] = `"in 59 seconds"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 59 seconds 1`] = `"in 59 seconds"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 60 seconds 1`] = `"in 1.0 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 60 seconds 1`] = `"in 1.0 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 61 seconds 1`] = `"in 1.0 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 61 seconds 1`] = `"in 1.0 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 90 seconds 1`] = `"in 1.5 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 90 seconds 1`] = `"in 1.5 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 119 seconds 1`] = `"in 2.0 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 119 seconds 1`] = `"in 2.0 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 120 seconds 1`] = `"in 2 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 120 seconds 1`] = `"in 2 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 121 seconds 1`] = `"in 2 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 121 seconds 1`] = `"in 2 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 300 seconds 1`] = `"in 5 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 300 seconds 1`] = `"in 5 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 600 seconds 1`] = `"in 10 minutes"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 600 seconds 1`] = `"in 10 minutes"`;
 
-exports[`Countdown helpers formatDeadline() helper Should format the supplied UNIX timestamp having offset 3600 seconds 1`] = `"in 1 hour"`;
+exports[`Countdown helpers > formatDeadline() helper > Should format the supplied UNIX timestamp having offset 3600 seconds 1`] = `"in 1 hour"`;
 
-exports[`Countdown helpers getCountdownDelay() helper should return refresh interval for supplied timestamp having offset 60 seconds 1`] = `1000`;
+exports[`Countdown helpers > getCountdownDelay() helper > should return refresh interval for supplied timestamp having offset 60 seconds 1`] = `1000`;
 
-exports[`Countdown helpers getCountdownDelay() helper should return refresh interval for supplied timestamp having offset 120 seconds 1`] = `1000`;
+exports[`Countdown helpers > getCountdownDelay() helper > should return refresh interval for supplied timestamp having offset 120 seconds 1`] = `1000`;
 
-exports[`Countdown helpers getCountdownDelay() helper should return refresh interval for supplied timestamp having offset 121 seconds 1`] = `60000`;
+exports[`Countdown helpers > getCountdownDelay() helper > should return refresh interval for supplied timestamp having offset 121 seconds 1`] = `60000`;
