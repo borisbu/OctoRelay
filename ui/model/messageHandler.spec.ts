@@ -59,9 +59,7 @@ describe("makeMessageHandler()", () => {
   });
 
   test("Should not show buttons without permission", () => {
-    const { handler, hasPermissionMock } = initialize(
-      vi.fn().mockImplementationOnce(() => false),
-    );
+    const { handler, hasPermissionMock } = initialize(vi.fn(() => false));
     handler("octorelay", {
       r1: {
         relay_pin: 16,
@@ -83,7 +81,7 @@ describe("makeMessageHandler()", () => {
   });
 
   test("Should not show buttons for inactive relays", () => {
-    const { handler } = initialize(vi.fn().mockImplementationOnce(() => true));
+    const { handler } = initialize(vi.fn(() => true));
     handler("octorelay", {
       r1: {
         relay_pin: 16,
@@ -102,7 +100,7 @@ describe("makeMessageHandler()", () => {
   });
 
   test("Should activate the controls and set click handlers", () => {
-    const { handler } = initialize(vi.fn().mockImplementationOnce(() => true));
+    const { handler } = initialize(vi.fn(() => true));
     handler("octorelay", {
       r1: {
         relay_pin: 16,
