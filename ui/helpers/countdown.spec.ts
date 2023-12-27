@@ -72,6 +72,11 @@ describe("Countdown helpers", () => {
           expect.any(Function),
           1000,
         );
+        // coverage branch for the case nextDelay === delay
+        const nextIntervalFn = setIntervalMock.mock.calls[1][0];
+        MockDate.set(Date.now() + 1000); // same delay branch this time
+        nextIntervalFn();
+        expect(setIntervalMock).toHaveBeenCalledTimes(2); // not called again this time
       } else {
         expect(elementMock.text).not.toHaveBeenCalled();
         expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");
