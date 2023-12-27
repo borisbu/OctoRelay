@@ -1,6 +1,6 @@
 {
   "env": {
-    "es6": true,
+    "es2022": true,
     "browser": true
   },
   "extends": [
@@ -10,8 +10,8 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "script",
+    "ecmaVersion": "latest",
+    "sourceType": "module",
     "project": true
   },
   "plugins": [
@@ -23,7 +23,7 @@
   },
   "overrides": [
     {
-      "files": ["*.config.*ts", "mocks/*.ts"],
+      "files": ["*.config.ts", "mocks/*.ts"],
       "rules": {
         "import/no-extraneous-dependencies": "off"
       }

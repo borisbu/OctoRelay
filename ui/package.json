@@ -3,6 +3,7 @@
   "description": "The UI scripts for OctoRelay plugin",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "author": {
     "name": "Anna Bocharova",
     "url": "https://github.com/RobinTail"
