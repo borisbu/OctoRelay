@@ -1,12 +1,21 @@
 import MockDate from "mockdate";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { formatDeadline, getCountdownDelay, setCountdown } from "./countdown";
+import {
+  describe,
+  vi,
+  beforeAll,
+  afterEach,
+  afterAll,
+  expect,
+  test,
+} from "vitest";
 
 describe("Countdown helpers", () => {
-  const setIntervalMock = jest.fn<void, [() => void, number]>(
+  const setIntervalMock = vi.fn<[() => void, number], void>(
     () => "mockedInterval",
   );
-  const clearIntervalMock = jest.fn();
+  const clearIntervalMock = vi.fn();
 
   Object.assign(global, {
     LOCALE: "en",
@@ -63,6 +72,11 @@ describe("Countdown helpers", () => {
           expect.any(Function),
           1000,
         );
+        // coverage branch for the case nextDelay === delay
+        const nextIntervalFn = setIntervalMock.mock.calls[1][0];
+        MockDate.set(Date.now() + 1000); // same delay branch this time
+        nextIntervalFn();
+        expect(setIntervalMock).toHaveBeenCalledTimes(2); // not called again this time
       } else {
         expect(elementMock.text).not.toHaveBeenCalled();
         expect(clearIntervalMock).toHaveBeenCalledWith("mockedInterval");

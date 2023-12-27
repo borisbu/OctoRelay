@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { JSDOM } from "jsdom";
+import { describe, test, expect } from "vitest";
 
 describe("Knockout bindings", () => {
   const html = readFileSync(

@@ -1,3 +1,5 @@
+import { vi, Mock } from "vitest";
+
 export const elementMock: Record<
   | "toggle"
   | "html"
@@ -9,21 +11,21 @@ export const elementMock: Record<
   | "is"
   | "popover"
   | "tooltip",
-  jest.Mock
+  Mock
 > = {
-  toggle: jest.fn(() => elementMock),
-  html: jest.fn(() => elementMock),
-  off: jest.fn(() => elementMock),
-  on: jest.fn(() => elementMock),
-  find: jest.fn(() => elementMock),
-  text: jest.fn(() => elementMock),
-  modal: jest.fn(() => elementMock),
-  is: jest.fn(() => elementMock),
-  tooltip: jest.fn(() => elementMock),
-  popover: jest.fn(() => elementMock),
+  toggle: vi.fn(() => elementMock),
+  html: vi.fn(() => elementMock),
+  off: vi.fn(() => elementMock),
+  on: vi.fn(() => elementMock),
+  find: vi.fn(() => elementMock),
+  text: vi.fn(() => elementMock),
+  modal: vi.fn(() => elementMock),
+  is: vi.fn(() => elementMock),
+  tooltip: vi.fn(() => elementMock),
+  popover: vi.fn(() => elementMock),
 };
 
-export const jQueryMock = jest.fn((subject: string | (() => void)) => {
+export const jQueryMock = vi.fn((subject: string | (() => void)) => {
   if (typeof subject === "function") {
     return subject();
   }

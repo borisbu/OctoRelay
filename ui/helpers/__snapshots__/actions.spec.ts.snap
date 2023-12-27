@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Actions toggleRelay() action should open the confirmation dialog: .find() 1`] = `
+exports[`Actions > toggleRelay() action > should open the confirmation dialog > .find() 1`] = `
 [
   [
     ".modal-title",
@@ -17,7 +17,7 @@ exports[`Actions toggleRelay() action should open the confirmation dialog: .find
 ]
 `;
 
-exports[`Actions toggleRelay() action should open the confirmation dialog: .text() 1`] = `
+exports[`Actions > toggleRelay() action > should open the confirmation dialog > .text() 1`] = `
 [
   [
     "Turning Printer off",

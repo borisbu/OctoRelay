@@ -1,5 +1,7 @@
-export const handlerMock = jest.fn();
+import { vi } from "vitest";
 
-jest.mock("../model/messageHandler", () => ({
-  makeMessageHandler: jest.fn(() => handlerMock),
+export const handlerMock = vi.fn();
+
+vi.mock("../model/messageHandler", () => ({
+  makeMessageHandler: vi.fn(() => handlerMock),
 }));
