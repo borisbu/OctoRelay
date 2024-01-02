@@ -2,6 +2,10 @@
 
 ## Version 4
 
+### 4.0.1
+
+- Technical update: no new features, no fixes.
+
 ### 4.0.0
 
 - **Breaking changes**:

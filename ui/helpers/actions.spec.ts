@@ -1,8 +1,9 @@
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { cancelTask, toggleRelay } from "./actions";
+import { vi, describe, afterEach, test, expect } from "vitest";
 
 describe("Actions", () => {
-  const apiMock = jest.fn();
+  const apiMock = vi.fn();
 
   Object.assign(global, {
     OctoPrint: { simpleApiCommand: apiMock },

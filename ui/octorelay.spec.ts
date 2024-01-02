@@ -1,7 +1,8 @@
 import { initOctoRelayModel } from "./model/initOctoRelayModel";
+import { describe, vi, test, expect } from "vitest";
 
 describe("Entrypoint", () => {
-  const jQueryMock = jest.fn();
+  const jQueryMock = vi.fn();
   Object.assign(global, {
     $: jQueryMock,
   });

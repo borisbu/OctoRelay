@@ -1,8 +1,7 @@
 {
   "env": {
-    "es6": true,
-    "browser": true,
-    "jest": true
+    "es2022": true,
+    "browser": true
   },
   "extends": [
     "airbnb-typescript/base",
@@ -11,8 +10,8 @@
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "script",
+    "ecmaVersion": "latest",
+    "sourceType": "module",
     "project": true
   },
   "plugins": [
@@ -24,7 +23,7 @@
   },
   "overrides": [
     {
-      "files": ["tsup.config.ts"],
+      "files": ["*.config.ts", "mocks/*.ts"],
       "rules": {
         "import/no-extraneous-dependencies": "off"
       }

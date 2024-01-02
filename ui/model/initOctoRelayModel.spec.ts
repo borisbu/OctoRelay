@@ -1,5 +1,6 @@
 import { modelMock } from "../mocks/OctoRelayModel";
 import { initOctoRelayModel } from "./initOctoRelayModel";
+import { describe, test, expect } from "vitest";
 
 describe("initOctorelayModel()", () => {
   const registryMock: ViewModel[] = [];

@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Actions > toggleRelay() action > should open the confirmation dialog > .find() 1`] = `
+[
+  [
+    ".modal-title",
+  ],
+  [
+    "#octorelay-confirmation-text",
+  ],
+  [
+    ".btn-cancel",
+  ],
+  [
+    ".btn-confirm",
+  ],
+]
+`;
+
+exports[`Actions > toggleRelay() action > should open the confirmation dialog > .text() 1`] = `
+[
+  [
+    "Turning Printer off",
+  ],
+  [
+    "Are you sure you want to turn the Printer off?",
+  ],
+]
+`;
