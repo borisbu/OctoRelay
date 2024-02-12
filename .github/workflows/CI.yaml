@@ -90,7 +90,6 @@ jobs:
         run: pip install octoprint~=${{ matrix.octoprint }}
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
-        if: matrix.octoprint != '1.9.0' # todo find a better way
         run: pip install wheel
       - name: Install OctoRelay
         run: pip install -e .
