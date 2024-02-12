@@ -52,7 +52,7 @@ jobs:
     strategy:
       matrix:
         python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
-        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10.0rc2" ] # todo: use stable 1.10
+        octoprint: [ "1.5.0", "1.6.0", "1.7.0", "1.8.0", "1.9.0", "1.10.0rc2" ] # todo: use stable 1.10
         exclude:
           # These versions are not compatible to each other:
           - octoprint: 1.5
@@ -87,10 +87,10 @@ jobs:
           key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
       - name: Install OctoPrint
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
-        run: pip install octoprint~=${{ matrix.octoprint }}.0
+        run: pip install octoprint~=${{ matrix.octoprint }}
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
-        if: matrix.octoprint != '1.9'
+        if: matrix.octoprint != '1.9.0' # todo find a better way
         run: pip install wheel
       - name: Install OctoRelay
         run: pip install -e .
