@@ -1084,9 +1084,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_process_at_command(self):
         # Should toggle or switch the relay having index and optional target supplied as a parameters
         cases = [
-            { params: "r4", expected: ["r4", None] },
-            { params: "r4 ON", expected: ["r4", True] },
-            { params: " r4  OFF  ", expected: ["r4", False] }
+            { "params": "r4", "expected": ["r4", None] },
+            { "params": "r4 ON", "expected": ["r4", True] },
+            { "params": " r4  OFF  ", "expected": ["r4", False] }
         ]
         for case in cases:
             self.plugin_instance.toggle_relay = Mock()
