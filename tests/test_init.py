@@ -1082,10 +1082,16 @@ class TestOctoRelayPlugin(unittest.TestCase):
         abort_mock.assert_called_with(400, description="Unknown command")
 
     def test_process_at_command(self):
-        # Should toggle the relay having index supplied as a parameter
-        self.plugin_instance.toggle_relay = Mock()
-        self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4"))
-        self.plugin_instance.toggle_relay.assert_called_with("r4", None)
+        # Should toggle or switch the relay having index and optional target supplied as a parameters
+        cases = [
+            { params: "r4", expected: ["r4", None] },
+            { params: "r4 ON", expected: ["r4", True] },
+            { params: " r4  OFF  ", expected: ["r4", False] }
+        ]
+        for case in cases:
+            self.plugin_instance.toggle_relay = Mock()
+            self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", case["params"]))
+            self.plugin_instance.toggle_relay.assert_called_with(*case["expected"])
 
     def test_get_additional_permissions(self):
         # Should return the list of the plugin custom permissions
