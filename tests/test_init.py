@@ -1087,7 +1087,8 @@ class TestOctoRelayPlugin(unittest.TestCase):
         cases = [
             { "params": "r4", "expected": ["r4", None] },
             { "params": "r4 ON", "expected": ["r4", True] },
-            { "params": " r4  OFF  ", "expected": ["r4", False] }
+            { "params": " r4  off  ", "expected": ["r4", False] },
+            { "params": " r4  ...  ", "expected": ["r4", None] }
         ]
         for case in cases:
             self.plugin_instance.toggle_relay.reset_mock()
