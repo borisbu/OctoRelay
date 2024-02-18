@@ -339,10 +339,14 @@ class OctoRelayPlugin(
     # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
         self._logger.info(f"Received @{AT_COMMAND} command with params: {parameters}")
+        params_list = parameters.split()
+        self._logger.debug(f"Split into {params_list}")
         if command == AT_COMMAND:
-            index = parameters
+            index = params_list[0] if len(params_list) > 0 else None
+            target_str = params_list[1].upper() if len(params_list) > 1 else None
+            target = True if target_str == "ON" else False if target_str == "OFF" else None
             if index in RELAY_INDEXES:
-                self.toggle_relay(index)
+                self.toggle_relay(index, target)
         return None # meaning no further actions required
 
     def get_update_information(self):
