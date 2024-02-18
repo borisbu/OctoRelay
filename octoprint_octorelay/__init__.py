@@ -338,7 +338,7 @@ class OctoRelayPlugin(
 
     # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, parameters, *args, **kwargs):
-        self._logger.info(f"Received @{AT_COMMAND} command with params: {parameters}")
+        self._logger.info(f"Received @{command} command with params: {parameters}")
         params_list = parameters.split()
         self._logger.debug(f"Split into {params_list}")
         if command == AT_COMMAND:
