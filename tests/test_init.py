@@ -1085,7 +1085,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should toggle the relay having index supplied as a parameter
         self.plugin_instance.toggle_relay = Mock()
         self.assertIsNone(self.plugin_instance.process_at_command(None, None, "OCTORELAY", "r4"))
-        self.plugin_instance.toggle_relay.assert_called_with("r4")
+        self.plugin_instance.toggle_relay.assert_called_with("r4", None)
 
     def test_get_additional_permissions(self):
         # Should return the list of the plugin custom permissions
