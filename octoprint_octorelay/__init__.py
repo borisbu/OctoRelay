@@ -341,7 +341,7 @@ class OctoRelayPlugin(
         self._logger.info(f"Received @{command} command with params: {params_str}")
         if command == AT_COMMAND:
             [index, target_str, *rest] = params_str.split() + [None] * 2 # unpack with defaults
-            target = True if target_str == "ON" else False if target_str == "OFF" else None
+            target = True if target_str.upper() == "ON" else False if target_str.upper() == "OFF" else None
             if index in RELAY_INDEXES:
                 self.toggle_relay(index, target)
         return None # meaning no further actions required
