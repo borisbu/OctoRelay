@@ -338,9 +338,9 @@ class OctoRelayPlugin(
 
     # pylint: disable=useless-return
     def process_at_command(self, _comm, _phase, command, params_str, *args, **kwargs):
-        params = params_str.split()
-        self._logger.info(f"Received @{command} command with params: {params}")
+        self._logger.info(f"Received @{command} command with params: {params_str}")
         if command == AT_COMMAND:
+            params = params_str.split()
             index = params[0] if len(params) > 0 else None
             target_str = params[1].upper() if len(params) > 1 else None
             target = True if target_str == "ON" else False if target_str == "OFF" else None
