@@ -52,7 +52,7 @@ jobs:
     strategy:
       matrix:
         python: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12" ]
-        octoprint: [ "1.5.0", "1.6.0", "1.7.0", "1.8.0", "1.9.0", "1.10.0rc2" ] # todo: use stable 1.10
+        octoprint: [ "1.5.0", "1.6.0", "1.7.0", "1.8.0", "1.9.0", "1.10.0rc3" ] # todo: use stable 1.10
         exclude:
           # These versions are not compatible to each other:
           - octoprint: 1.5.0
