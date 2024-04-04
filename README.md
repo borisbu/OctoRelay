@@ -26,7 +26,7 @@ The plugin allows you to set your own icons and flexibly customize the way the r
 
 ## Requirements
 
-- Python: at least `3.7`,
+- Python: at least `3.8`,
 - OctoPrint: at least `1.5.3`.
   - For [AutoConnect feature](https://github.com/borisbu/OctoRelay/blob/master/CHANGELOG.md#330): at least `1.9.0`.
 
