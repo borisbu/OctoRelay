@@ -129,7 +129,7 @@ jobs:
           name: dist
           path: dist
       - name: Rename to release.zip
-        run: cp dist/OctoRelay-*.zip release.zip
+        run: cp dist/octorelay-*.zip release.zip
       - name: Get release ID
         id: get_release
         uses: bruceadams/get-release@v1.3.2
