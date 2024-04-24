@@ -51,26 +51,36 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
-        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9" ]
+        python: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10" ]
         exclude:
           # These versions are not compatible to each other:
           - octoprint: 1.5
             python: 3.10
           - octoprint: 1.5
             python: 3.11
+          - octoprint: 1.5
+            python: 3.12
           - octoprint: 1.6
             python: 3.10
           - octoprint: 1.6
             python: 3.11
+          - octoprint: 1.6
+            python: 3.12
           - octoprint: 1.7
             python: 3.10
           - octoprint: 1.7
             python: 3.11
+          - octoprint: 1.7
+            python: 3.12
           - octoprint: 1.8
             python: 3.10
           - octoprint: 1.8
             python: 3.11
+          - octoprint: 1.8
+            python: 3.12
+          - octoprint: 1.9
+            python: 3.12
     steps:
       - uses: actions/checkout@v4
       - name: Install Python
@@ -90,12 +100,11 @@ jobs:
         run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
-        if: matrix.octoprint != '1.9'
         run: pip install wheel
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
-        run: pip install coverage pylint snapshottest mypy
+        run: pip install coverage pylint mypy
       - name: Test
         working-directory: tests
         run: python -m coverage run -m unittest test*.py
@@ -103,7 +112,7 @@ jobs:
         working-directory: tests
         run: |
           python -m coverage lcov --omit=test*,_version*
-          python -m coverage report --show-missing --omit=test*,_version*,snap_*
+          python -m coverage report --show-missing --omit=test*,_version*
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
