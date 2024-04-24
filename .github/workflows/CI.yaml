@@ -22,7 +22,7 @@ jobs:
         with:
           node-version: 18.x
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.yarnCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -91,7 +91,7 @@ jobs:
         id: pipCache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache pip modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
