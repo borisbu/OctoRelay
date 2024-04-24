@@ -2,6 +2,10 @@
 
 ## Version 4
 
+### 4.2.0
+
+- Supporting OctoPrint 1.10 and Python 3.12.
+
 ### 4.1.0
 
 - New feature: target for GCODE command (at-command):

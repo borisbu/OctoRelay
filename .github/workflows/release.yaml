@@ -22,11 +22,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Install Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ env.NODE_VERSION }}
     - name: Cache node modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.yarnCache.outputs.dir }}
         key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -38,14 +38,14 @@ jobs:
       run: yarn build
     ### Python
     - name: Install Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Get pip cache dir
       id: pipCache
       run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
     - name: Cache pip modules
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ${{ steps.pipCache.outputs.dir }}
         key: ${{ runner.os }}-release-cache-pip
@@ -57,7 +57,7 @@ jobs:
     - name: Build distribution package
       run: python setup.py sdist --formats=zip
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist
@@ -68,33 +68,43 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
-        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9" ]
+        python: [ "3.7", "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10" ]
         exclude:
           # These versions are not compatible to each other:
           - octoprint: 1.5
             python: 3.10
           - octoprint: 1.5
             python: 3.11
+          - octoprint: 1.5
+            python: 3.12
           - octoprint: 1.6
             python: 3.10
           - octoprint: 1.6
             python: 3.11
+          - octoprint: 1.6
+            python: 3.12
           - octoprint: 1.7
             python: 3.10
           - octoprint: 1.7
             python: 3.11
+          - octoprint: 1.7
+            python: 3.12
           - octoprint: 1.8
             python: 3.10
           - octoprint: 1.8
             python: 3.11
+          - octoprint: 1.8
+            python: 3.12
+          - octoprint: 1.9
+            python: 3.12
     steps:
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
@@ -102,10 +112,9 @@ jobs:
         run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
-        if: matrix.octoprint != '1.9'
         run: pip install wheel
       - name: Install the distributed package
-        run: pip install dist/OctoRelay-*.zip
+        run: pip install dist/octorelay-*.zip
 
   attach:
     name: Attaching asset to the release
@@ -115,12 +124,12 @@ jobs:
       - integration
     steps:
       - name: Download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist
       - name: Rename to release.zip
-        run: cp dist/OctoRelay-*.zip release.zip
+        run: cp dist/octorelay-*.zip release.zip
       - name: Get release ID
         id: get_release
         uses: bruceadams/get-release@v1.3.2
