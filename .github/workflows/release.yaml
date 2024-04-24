@@ -114,7 +114,7 @@ jobs:
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
       - name: Install the distributed package
-        run: pip install dist/OctoRelay-*.zip
+        run: pip install dist/octorelay-*.zip
 
   attach:
     name: Attaching asset to the release
