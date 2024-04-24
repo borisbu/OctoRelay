@@ -57,7 +57,7 @@ jobs:
     - name: Build distribution package
       run: python setup.py sdist --formats=zip
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: dist
         path: dist
