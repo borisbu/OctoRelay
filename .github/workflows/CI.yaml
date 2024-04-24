@@ -104,7 +104,7 @@ jobs:
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
-        run: pip install coverage pylint snapshottest mypy
+        run: pip install coverage pylint mypy
       - name: Test
         working-directory: tests
         run: python -m coverage run -m unittest test*.py
@@ -112,7 +112,7 @@ jobs:
         working-directory: tests
         run: |
           python -m coverage lcov --omit=test*,_version*
-          python -m coverage report --show-missing --omit=test*,_version*,snap_*
+          python -m coverage report --show-missing --omit=test*,_version*
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
