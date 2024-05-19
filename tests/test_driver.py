@@ -81,15 +81,15 @@ class TestRelayDriver(unittest.TestCase):
 
     def test_toggle__no_argument(self):
         cases = [
-            { "mocked_state": "ActiveMock", "inverted": False, "expected_pin_state": False, "expected_relay_state": False },
-            { "mocked_state": "InactiveMock", "inverted": False, "expected_pin_state": True, "expected_relay_state": True },
-            { "mocked_state": "ActiveMock", "inverted": True, "expected_pin_state": False, "expected_relay_state": True },
-            { "mocked_state": "InactiveMock", "inverted": True, "expected_pin_state": True, "expected_relay_state": False },
+            { "mocked_state": "ActiveMock", "inverted": False, "exp_pin": "InactiveMock", "exp_relay": False },
+            { "mocked_state": "InactiveMock", "inverted": False, "exp_pin": "ActiveMock", "exp_relay": True },
+            { "mocked_state": "ActiveMock", "inverted": True, "exp_pin": "InactiveMock", "exp_relay": True },
+            { "mocked_state": "InactiveMock", "inverted": True, "exp_pin": "ActiveMock", "exp_relay": False },
         ]
         for case in cases:
             line_mock.get_value = Mock(return_value=case["mocked_state"])
             relay = Relay(18, case["inverted"])
-            self.assertEqual(relay.toggle(), case["expected_relay_state"])
+            self.assertEqual(relay.toggle(), case["exp_relay"])
             line_mock.get_value.assert_called_with(18)
             gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
             gpiod_mock.request_lines.assert_called_with(
@@ -97,7 +97,7 @@ class TestRelayDriver(unittest.TestCase):
                 consumer = "OctoRelay",
                 config = { 18: "LineSettingsMock" }
             )
-            line_mock.set_value.assert_called_with(18, "ActiveMock" if case["expected_pin_state"] else "InactiveMock")
+            line_mock.set_value.assert_called_with(18, case["exp_pin"])
 
 if __name__ == "__main__":
     unittest.main()
