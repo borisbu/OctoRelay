@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 from typing import Optional
+
+# pylint: disable=no-name-in-module
 from gpiod import request_lines, LineSettings # type: ignore[attr-defined]
+
+# pylint: disable=import-error
 from gpiod.line import Direction, Value
 
 def xor(left: bool, right: bool) -> bool:
