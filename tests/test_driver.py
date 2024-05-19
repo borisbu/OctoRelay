@@ -49,7 +49,7 @@ class TestRelayDriver(unittest.TestCase):
             gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
             gpiod_mock.request_lines.assert_called_with(
                 "/dev/gpiochip0",
-                consumer = "OctoRelay"
+                consumer = "OctoRelay",
                 config = { 18: "LineSettingsMock" }
             )
             lineMock.set_value.assert_called_with(18, case["expected_pin_state"])
@@ -64,7 +64,7 @@ class TestRelayDriver(unittest.TestCase):
             gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
             gpiod_mock.request_lines.assert_called_with(
                 "/dev/gpiochip0",
-                consumer = "OctoRelay"
+                consumer = "OctoRelay",
                 config = { 18: "LineSettingsMock" }
             )
             lineMock.set_value.assert_called_with(18, case["expected_pin_state"])
