@@ -81,20 +81,23 @@ class TestRelayDriver(unittest.TestCase):
 
     def test_toggle__no_argument(self):
         cases = [
-            { "mocked_state": 1, "inverted": False, "expected_pin_state": False, "expected_relay_state": False },
-            { "mocked_state": 0, "inverted": False, "expected_pin_state": True, "expected_relay_state": True },
-            { "mocked_state": 1, "inverted": True, "expected_pin_state": False, "expected_relay_state": True },
-            { "mocked_state": 0, "inverted": True, "expected_pin_state": True, "expected_relay_state": False },
+            { "mocked_state": "ActiveMock", "inverted": False, "expected_pin_state": False, "expected_relay_state": False },
+            { "mocked_state": "InactiveMock", "inverted": False, "expected_pin_state": True, "expected_relay_state": True },
+            { "mocked_state": "ActiveMock", "inverted": True, "expected_pin_state": False, "expected_relay_state": True },
+            { "mocked_state": "InactiveMock", "inverted": True, "expected_pin_state": True, "expected_relay_state": False },
         ]
         for case in cases:
-            gpiod_mock.input = Mock(return_value=case["mocked_state"])
+            line_mock.get_value = Mock(return_value=case["mocked_state"])
             relay = Relay(18, case["inverted"])
             self.assertEqual(relay.toggle(), case["expected_relay_state"])
-            gpiod_mock.setwarnings.assert_any_call(False)
-            gpiod_mock.setwarnings.assert_called_with(True)
-            gpiod_mock.input.assert_called_with(18)
-            gpiod_mock.setup.assert_called_with(18, "MockedOUT")
-            gpiod_mock.output.assert_called_with(18, case["expected_pin_state"])
+            line_mock.get_value.assert_called_with(18)
+            gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
+            gpiod_mock.request_lines.assert_called_with(
+                "/dev/gpiochip0",
+                consumer = "OctoRelay",
+                config = { 18: "LineSettingsMock" }
+            )
+            line_mock.set_value.assert_called_with(18, "ActiveMock" if case["expected_pin_state"] else "InactiveMock")
 
 if __name__ == "__main__":
     unittest.main()
