@@ -35,7 +35,7 @@ plugin_version = miniver_version
 
 # The plugin's description. Can be overwritten within OctoPrint's internal data via __plugin_description__ in the plugin
 # module
-plugin_description = """A plugin that adds buttons to the navbar for toggling GPIO on the RPi. It can be used for turning relays on and off."""
+plugin_description = """A plugin that adds buttons to the navbar for toggling GPIO on Raspberry Pi. It can be used for turning relays on and off."""
 
 # The plugin's author. Can be overwritten within OctoPrint's internal data via __plugin_author__ in the plugin module
 plugin_author = "Boris Burgstaller"
@@ -51,7 +51,7 @@ plugin_license = "AGPLv3"
 
 # Any additional requirements besides OctoPrint should be listed here
 # todo after dropping 3.7 remove typing-extensions (used by model.py and listing.py)
-plugin_requires = ["RPi.GPIO", "typing-extensions"]
+plugin_requires = ["gpiod", "typing-extensions"]
 
 # --------------------------------------------------------------------------------------------------------------------
 # More advanced options that you usually shouldn't have to touch follow after this point

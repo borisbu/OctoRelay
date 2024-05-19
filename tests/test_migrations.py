@@ -9,7 +9,7 @@ if "octoprint_octorelay.migrations" in sys.modules:
     del sys.modules["octoprint_octorelay.migrations"]
 
 # Mocking required before the further import
-sys.modules["RPi.GPIO"] = Mock()
+sys.modules["gpiod"] = Mock()
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.const import SETTINGS_VERSION

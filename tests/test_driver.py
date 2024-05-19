@@ -7,7 +7,7 @@ from unittest.mock import Mock
 GPIO_mock = Mock()
 GPIO_mock.BCM = "MockedBCM"
 GPIO_mock.OUT = "MockedOUT"
-sys.modules["RPi.GPIO"] = GPIO_mock
+sys.modules["gpiod"] = GPIO_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay

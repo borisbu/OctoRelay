@@ -10,7 +10,7 @@ from octoprint.events import Events
 from octoprint.access import ADMIN_GROUP, USER_GROUP
 
 # Patching required before importing OctoRelayPlugin class
-sys.modules["RPi.GPIO"] = Mock()
+sys.modules["gpiod"] = Mock()
 
 # Mocks used for assertions
 timerMock = Mock()

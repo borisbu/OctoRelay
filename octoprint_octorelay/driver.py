@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 from typing import Optional
-from RPi import GPIO
-
-# The driver operates BCM mode of pins enumeration
-GPIO.setmode(GPIO.BCM)
+import gpiod
 
 def xor(left: bool, right: bool) -> bool:
     return left is not right
 
 class Relay():
     def __init__(self, pin: int, inverted: bool):
+        self.path = "/dev/gpiochip0"
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
 
@@ -26,10 +24,14 @@ class Relay():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        pin_state = bool(GPIO.input(self.pin))
-        GPIO.setwarnings(True)
+        request = gpiod.request_lines(
+            self.path,
+            consumer = "OctoRelay",
+            config = {
+                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT, output_value=gpiod.line.Value.ACTIVE)
+            }
+        )
+        pin_state = request.get_value(self.pin) == gpiod.line.Value.ACTIVE
         return xor(self.inverted, pin_state)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
@@ -40,8 +42,12 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        GPIO.output(self.pin, xor(self.inverted, desired_state))
-        GPIO.setwarnings(True)
+        request = gpiod.request_lines(
+            self.path,
+            consumer = "OctoRelay",
+            config = {
+                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT, output_value=gpiod.line.Value.ACTIVE)
+            }
+        )
+        request.set_value(self.pin, gpiod.line.Value.ACTIVE if xor(self.inverted, desired_state) else gpiod.line.Value.INACTIVE)
         return desired_state
