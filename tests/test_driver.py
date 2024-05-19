@@ -38,8 +38,8 @@ class TestRelayDriver(unittest.TestCase):
 
     def test_close(self):
         cases = [
-            { "relay": Relay(18, False), "expected_pin_state": True },
-            { "relay": Relay(18, True), "expected_pin_state": False }
+            { "relay": Relay(18, False), "expected_pin_state": "ActiveMock" },
+            { "relay": Relay(18, True), "expected_pin_state": "InactiveMock" }
         ]
         for case in cases:
             case["relay"].close()
@@ -53,8 +53,8 @@ class TestRelayDriver(unittest.TestCase):
 
     def test_open(self):
         cases = [
-            { "relay": Relay(18, False), "expected_pin_state": False },
-            { "relay": Relay(18, True), "expected_pin_state": True }
+            { "relay": Relay(18, False), "expected_pin_state": "InactiveMock" },
+            { "relay": Relay(18, True), "expected_pin_state": "ActiveMock" }
         ]
         for case in cases:
             case["relay"].open()
