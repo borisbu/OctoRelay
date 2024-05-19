@@ -28,7 +28,7 @@ class Relay():
             self.path,
             consumer = "OctoRelay",
             config = {
-                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT, output_value=gpiod.line.Value.ACTIVE)
+                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT)
             }
         )
         pin_state = request.get_value(self.pin) == gpiod.line.Value.ACTIVE
@@ -46,7 +46,7 @@ class Relay():
             self.path,
             consumer = "OctoRelay",
             config = {
-                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT, output_value=gpiod.line.Value.ACTIVE)
+                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT)
             }
         )
         request.set_value(self.pin, gpiod.line.Value.ACTIVE if xor(self.inverted, desired_state) else gpiod.line.Value.INACTIVE)

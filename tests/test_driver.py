@@ -4,10 +4,20 @@ import sys
 from unittest.mock import Mock
 
 # Mocks used for assertions
-GPIO_mock = Mock()
-GPIO_mock.BCM = "MockedBCM"
-GPIO_mock.OUT = "MockedOUT"
-sys.modules["gpiod"] = GPIO_mock
+gpiod_mock = Mock()
+line_mock = Mock()
+gpiod_mock.request_lines = Mock(return_value=line_mock)
+gpiod_mock.LineSettings = Mock(return_value="LineSettingsMock")
+gpiod_mock.line = {
+    "Direction": {
+        "OUTPUT": "OutputMock"
+    },
+    "Value": {
+        "ACTIVE": "ActiveMock",
+        "INACTIVE": "InactiveMock"
+    }
+}
+sys.modules["gpiod"] = gpiod_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay
@@ -19,7 +29,6 @@ del sys.modules["octoprint_octorelay.task"]
 
 class TestRelayDriver(unittest.TestCase):
     def test_constructor(self):
-        GPIO_mock.setmode.assert_called_with("MockedBCM")
         relay = Relay(18, True)
         self.assertIsInstance(relay, Relay)
         self.assertEqual(relay.pin, 18)
@@ -37,10 +46,13 @@ class TestRelayDriver(unittest.TestCase):
         ]
         for case in cases:
             case["relay"].close()
-            GPIO_mock.setup.assert_called_with(18, "MockedOUT")
-            GPIO_mock.output.assert_called_with(18, case["expected_pin_state"])
-            GPIO_mock.setwarnings.assert_any_call(False)
-            GPIO_mock.setwarnings.assert_called_with(True)
+            gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
+            gpiod_mock.request_lines.assert_called_with(
+                "/dev/gpiochip0",
+                consumer = "OctoRelay"
+                config = { 18: "LineSettingsMock" }
+            )
+            lineMock.set_value.assert_called_with(18, case["expected_pin_state"])
 
     def test_open(self):
         cases = [
@@ -49,10 +61,13 @@ class TestRelayDriver(unittest.TestCase):
         ]
         for case in cases:
             case["relay"].open()
-            GPIO_mock.setup.assert_called_with(18, "MockedOUT")
-            GPIO_mock.output.assert_called_with(18, case["expected_pin_state"])
-            GPIO_mock.setwarnings.assert_any_call(False)
-            GPIO_mock.setwarnings.assert_called_with(True)
+            gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
+            gpiod_mock.request_lines.assert_called_with(
+                "/dev/gpiochip0",
+                consumer = "OctoRelay"
+                config = { 18: "LineSettingsMock" }
+            )
+            lineMock.set_value.assert_called_with(18, case["expected_pin_state"])
 
     def test_is_closed(self):
         cases = [
@@ -62,12 +77,12 @@ class TestRelayDriver(unittest.TestCase):
             { "mocked_state": 0, "inverted": True, "expected_relay_state": True },
         ]
         for case in cases:
-            GPIO_mock.input = Mock(return_value=case["mocked_state"])
+            gpiod_mock.input = Mock(return_value=case["mocked_state"])
             relay = Relay(18, case["inverted"])
             self.assertEqual(relay.is_closed(), case["expected_relay_state"])
-            GPIO_mock.setwarnings.assert_any_call(False)
-            GPIO_mock.setwarnings.assert_called_with(True)
-            GPIO_mock.input.assert_called_with(18)
+            gpiod_mock.setwarnings.assert_any_call(False)
+            gpiod_mock.setwarnings.assert_called_with(True)
+            gpiod_mock.input.assert_called_with(18)
 
     def test_toggle__no_argument(self):
         cases = [
@@ -77,14 +92,14 @@ class TestRelayDriver(unittest.TestCase):
             { "mocked_state": 0, "inverted": True, "expected_pin_state": True, "expected_relay_state": False },
         ]
         for case in cases:
-            GPIO_mock.input = Mock(return_value=case["mocked_state"])
+            gpiod_mock.input = Mock(return_value=case["mocked_state"])
             relay = Relay(18, case["inverted"])
             self.assertEqual(relay.toggle(), case["expected_relay_state"])
-            GPIO_mock.setwarnings.assert_any_call(False)
-            GPIO_mock.setwarnings.assert_called_with(True)
-            GPIO_mock.input.assert_called_with(18)
-            GPIO_mock.setup.assert_called_with(18, "MockedOUT")
-            GPIO_mock.output.assert_called_with(18, case["expected_pin_state"])
+            gpiod_mock.setwarnings.assert_any_call(False)
+            gpiod_mock.setwarnings.assert_called_with(True)
+            gpiod_mock.input.assert_called_with(18)
+            gpiod_mock.setup.assert_called_with(18, "MockedOUT")
+            gpiod_mock.output.assert_called_with(18, case["expected_pin_state"])
 
 if __name__ == "__main__":
     unittest.main()
