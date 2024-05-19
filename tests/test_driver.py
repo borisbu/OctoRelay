@@ -68,18 +68,16 @@ class TestRelayDriver(unittest.TestCase):
 
     def test_is_closed(self):
         cases = [
-            { "mocked_state": 1, "inverted": False, "expected_relay_state": True },
-            { "mocked_state": 0, "inverted": False, "expected_relay_state": False },
-            { "mocked_state": 1, "inverted": True, "expected_relay_state": False },
-            { "mocked_state": 0, "inverted": True, "expected_relay_state": True },
+            { "mocked_state": "ActiveMock", "inverted": False, "expected_relay_state": True },
+            { "mocked_state": "InactiveMock", "inverted": False, "expected_relay_state": False },
+            { "mocked_state": "ActiveMock", "inverted": True, "expected_relay_state": False },
+            { "mocked_state": "InactiveMock", "inverted": True, "expected_relay_state": True },
         ]
         for case in cases:
-            gpiod_mock.input = Mock(return_value=case["mocked_state"])
+            line_mock.get_value = Mock(return_value=case["mocked_state"])
             relay = Relay(18, case["inverted"])
             self.assertEqual(relay.is_closed(), case["expected_relay_state"])
-            gpiod_mock.setwarnings.assert_any_call(False)
-            gpiod_mock.setwarnings.assert_called_with(True)
-            gpiod_mock.input.assert_called_with(18)
+            line_mock.get_value.assert_called_with(18)
 
     def test_toggle__no_argument(self):
         cases = [
