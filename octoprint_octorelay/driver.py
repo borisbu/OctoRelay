@@ -12,7 +12,7 @@ class Relay():
             "/dev/gpiochip0",
             consumer = "OctoRelay",
             config = {
-                pin: LineSettings(direction=Direction.OUTPUT)
+                pin: LineSettings(direction=Direction.OUTPUT, active_low=False)
             }
         )
         self.pin = pin # GPIO pin

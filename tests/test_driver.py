@@ -31,7 +31,7 @@ class TestRelayDriver(unittest.TestCase):
         self.assertIsInstance(relay, Relay)
         self.assertEqual(relay.pin, 18)
         self.assertTrue(relay.inverted)
-        gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
+        gpiod_mock.LineSettings.assert_called_with(direction="OutputMock", active_low=False)
         gpiod_mock.request_lines.assert_called_with(
             "/dev/gpiochip0",
             consumer = "OctoRelay",
