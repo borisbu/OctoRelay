@@ -4,17 +4,18 @@ import sys
 from unittest.mock import Mock
 
 # Mocks used for assertions
-gpiod_mock = Mock()
 line_mock = Mock()
+gpiod_mock = Mock()
 gpiod_mock.request_lines = Mock(return_value=line_mock)
 gpiod_mock.LineSettings = Mock(return_value="LineSettingsMock")
 sys.modules["gpiod"] = gpiod_mock
-line_mock.Direction = Mock()
-line_mock.Direction.OUTPUT = "OutputMock"
-line_mock.Value = Mock()
-line_mock.Value.ACTIVE = "ActiveMock"
-line_mock.Value.INACTIVE = "InactiveMock"
-sys.modules["gpiod.line"] = line_mock
+gpiod_line_mock = Mock()
+gpiod_line_mock.Direction = Mock()
+gpiod_line_mock.Direction.OUTPUT = "OutputMock"
+gpiod_line_mock.Value = Mock()
+gpiod_line_mock.Value.ACTIVE = "ActiveMock"
+gpiod_line_mock.Value.INACTIVE = "InactiveMock"
+sys.modules["gpiod.line"] = gpiod_line_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay
