@@ -8,13 +8,13 @@ gpiod_mock = Mock()
 line_mock = Mock()
 gpiod_mock.request_lines = Mock(return_value=line_mock)
 gpiod_mock.LineSettings = Mock(return_value="LineSettingsMock")
-gpiod_mock.line = Mock()
-gpiod_mock.line.Direction = Mock()
-gpiod_mock.line.Direction.OUTPUT = "OutputMock"
-gpiod_mock.line.Value = Mock()
-gpiod_mock.line.Value.ACTIVE = "ActiveMock"
-gpiod_mock.line.Value.INACTIVE = "InactiveMock"
 sys.modules["gpiod"] = gpiod_mock
+line_mock.Direction = Mock()
+line_mock.Direction.OUTPUT = "OutputMock"
+line_mock.Value = Mock()
+line_mock.Value.ACTIVE = "ActiveMock"
+line_mock.Value.INACTIVE = "InactiveMock"
+sys.modules["gpiod.line"] = line_mock
 
 # pylint: disable=wrong-import-position
 from octoprint_octorelay.driver import Relay
