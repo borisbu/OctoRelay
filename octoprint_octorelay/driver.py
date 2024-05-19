@@ -3,17 +3,20 @@ from typing import Optional
 from gpiod import request_lines, LineSettings
 from gpiod.line import Direction, Value
 
+def xor(left: bool, right: bool) -> bool:
+    return left is not right
+
 class Relay():
     def __init__(self, pin: int, inverted: bool):
         self.request = request_lines(
             "/dev/gpiochip0",
             consumer = "OctoRelay",
             config = {
-                pin: LineSettings(direction = Direction.OUTPUT, active_low = inverted)
+                pin: LineSettings(direction=Direction.OUTPUT)
             }
         )
         self.pin = pin # GPIO pin
-        self.inverted = inverted # for serialization purposes only
+        self.inverted = inverted # marks the relay as normally closed
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
@@ -29,7 +32,7 @@ class Relay():
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
         pin_state = self.request.get_value(self.pin) == Value.ACTIVE
-        return pin_state
+        return xor(self.inverted, pin_state)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
@@ -39,5 +42,5 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        self.request.set_value(self.pin, Value.ACTIVE if desired_state else Value.INACTIVE)
+        self.request.set_value(self.pin, Value.ACTIVE if xor(self.inverted, desired_state) else Value.INACTIVE)
         return desired_state
