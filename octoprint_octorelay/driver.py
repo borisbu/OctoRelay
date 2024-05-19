@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from typing import Optional
-import gpiod
+from gpiod import request_lines, LineSettings
+from gpiod.line import Direction, Value
 
 def xor(left: bool, right: bool) -> bool:
     return left is not right
@@ -24,14 +25,14 @@ class Relay():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        request = gpiod.request_lines(
+        request = request_lines(
             self.path,
             consumer = "OctoRelay",
             config = {
-                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT)
+                self.pin: LineSettings(direction=Direction.OUTPUT)
             }
         )
-        pin_state = request.get_value(self.pin) == gpiod.line.Value.ACTIVE
+        pin_state = request.get_value(self.pin) == Value.ACTIVE
         return xor(self.inverted, pin_state)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
@@ -42,12 +43,12 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        request = gpiod.request_lines(
+        request = request_lines(
             self.path,
             consumer = "OctoRelay",
             config = {
-                self.pin: gpiod.LineSettings(direction=gpiod.line.Direction.OUTPUT)
+                self.pin: LineSettings(direction=Direction.OUTPUT)
             }
         )
-        request.set_value(self.pin, gpiod.line.Value.ACTIVE if xor(self.inverted, desired_state) else gpiod.line.Value.INACTIVE)
+        request.set_value(self.pin, Value.ACTIVE if xor(self.inverted, desired_state) else Value.INACTIVE)
         return desired_state
