@@ -8,15 +8,12 @@ gpiod_mock = Mock()
 line_mock = Mock()
 gpiod_mock.request_lines = Mock(return_value=line_mock)
 gpiod_mock.LineSettings = Mock(return_value="LineSettingsMock")
-gpiod_mock.line = {
-    "Direction": {
-        "OUTPUT": "OutputMock"
-    },
-    "Value": {
-        "ACTIVE": "ActiveMock",
-        "INACTIVE": "InactiveMock"
-    }
-}
+gpiod_mock.line = Mock()
+gpiod_mock.line.Direction = Mock()
+gpiod_mock.line.Direction.OUTPUT = "OutputMock"
+gpiod_mock.line.Value = Mock()
+gpiod_mock.line.Value.ACTIVE = "ActiveMock"
+gpiod_mock.line.Value.INACTIVE = "InactiveMock"
 sys.modules["gpiod"] = gpiod_mock
 
 # pylint: disable=wrong-import-position
