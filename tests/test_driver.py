@@ -30,6 +30,12 @@ class TestRelayDriver(unittest.TestCase):
         self.assertIsInstance(relay, Relay)
         self.assertEqual(relay.pin, 18)
         self.assertTrue(relay.inverted)
+        gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
+        gpiod_mock.request_lines.assert_called_with(
+            "/dev/gpiochip0",
+            consumer = "OctoRelay",
+            config = { 18: "LineSettingsMock" }
+        )
 
     def test_serialization(self):
         relay = Relay(18, True)
@@ -43,12 +49,6 @@ class TestRelayDriver(unittest.TestCase):
         ]
         for case in cases:
             case["relay"].close()
-            gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
-            gpiod_mock.request_lines.assert_called_with(
-                "/dev/gpiochip0",
-                consumer = "OctoRelay",
-                config = { 18: "LineSettingsMock" }
-            )
             line_mock.set_value.assert_called_with(18, case["expected_pin_state"])
 
     def test_open(self):
@@ -58,12 +58,6 @@ class TestRelayDriver(unittest.TestCase):
         ]
         for case in cases:
             case["relay"].open()
-            gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
-            gpiod_mock.request_lines.assert_called_with(
-                "/dev/gpiochip0",
-                consumer = "OctoRelay",
-                config = { 18: "LineSettingsMock" }
-            )
             line_mock.set_value.assert_called_with(18, case["expected_pin_state"])
 
     def test_is_closed(self):
@@ -91,12 +85,6 @@ class TestRelayDriver(unittest.TestCase):
             relay = Relay(18, case["inverted"])
             self.assertEqual(relay.toggle(), case["exp_relay"])
             line_mock.get_value.assert_called_with(18)
-            gpiod_mock.LineSettings.assert_called_with(direction="OutputMock")
-            gpiod_mock.request_lines.assert_called_with(
-                "/dev/gpiochip0",
-                consumer = "OctoRelay",
-                config = { 18: "LineSettingsMock" }
-            )
             line_mock.set_value.assert_called_with(18, case["exp_pin"])
 
 if __name__ == "__main__":

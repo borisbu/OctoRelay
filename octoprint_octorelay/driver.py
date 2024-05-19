@@ -8,7 +8,13 @@ def xor(left: bool, right: bool) -> bool:
 
 class Relay():
     def __init__(self, pin: int, inverted: bool):
-        self.path = "/dev/gpiochip0"
+        self.request = request_lines(
+            "/dev/gpiochip0",
+            consumer = "OctoRelay",
+            config = {
+                pin: LineSettings(direction=Direction.OUTPUT)
+            }
+        )
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
 
@@ -25,14 +31,7 @@ class Relay():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        request = request_lines(
-            self.path,
-            consumer = "OctoRelay",
-            config = {
-                self.pin: LineSettings(direction=Direction.OUTPUT)
-            }
-        )
-        pin_state = request.get_value(self.pin) == Value.ACTIVE
+        pin_state = self.request.get_value(self.pin) == Value.ACTIVE
         return xor(self.inverted, pin_state)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
@@ -43,12 +42,5 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        request = request_lines(
-            self.path,
-            consumer = "OctoRelay",
-            config = {
-                self.pin: LineSettings(direction=Direction.OUTPUT)
-            }
-        )
-        request.set_value(self.pin, Value.ACTIVE if xor(self.inverted, desired_state) else Value.INACTIVE)
+        self.request.set_value(self.pin, Value.ACTIVE if xor(self.inverted, desired_state) else Value.INACTIVE)
         return desired_state
