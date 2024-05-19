@@ -11,9 +11,7 @@ class Relay():
         self.request = request_lines(
             "/dev/gpiochip0",
             consumer = "OctoRelay",
-            config = {
-                pin: LineSettings(direction=Direction.OUTPUT, active_low=False)
-            }
+            config = { pin: LineSettings(direction=Direction.AS_IS) }
         )
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed

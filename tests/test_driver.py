@@ -11,7 +11,7 @@ gpiod_mock.LineSettings = Mock(return_value="LineSettingsMock")
 sys.modules["gpiod"] = gpiod_mock
 gpiod_line_mock = Mock()
 gpiod_line_mock.Direction = Mock()
-gpiod_line_mock.Direction.OUTPUT = "OutputMock"
+gpiod_line_mock.Direction.AS_IS = "AsIsMock"
 gpiod_line_mock.Value = Mock()
 gpiod_line_mock.Value.ACTIVE = "ActiveMock"
 gpiod_line_mock.Value.INACTIVE = "InactiveMock"
@@ -31,7 +31,7 @@ class TestRelayDriver(unittest.TestCase):
         self.assertIsInstance(relay, Relay)
         self.assertEqual(relay.pin, 18)
         self.assertTrue(relay.inverted)
-        gpiod_mock.LineSettings.assert_called_with(direction="OutputMock", active_low=False)
+        gpiod_mock.LineSettings.assert_called_with(direction="AsIsMock")
         gpiod_mock.request_lines.assert_called_with(
             "/dev/gpiochip0",
             consumer = "OctoRelay",
