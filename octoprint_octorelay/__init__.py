@@ -371,7 +371,7 @@ class OctoRelayPlugin(
                 self.update_ui()
                 break
 
-__plugin_pythoncompat__ = ">=3.7,<4"
+__plugin_pythoncompat__ = ">=3.9,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
