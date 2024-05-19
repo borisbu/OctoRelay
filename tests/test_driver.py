@@ -49,7 +49,7 @@ class TestRelayDriver(unittest.TestCase):
                 consumer = "OctoRelay",
                 config = { 18: "LineSettingsMock" }
             )
-            lineMock.set_value.assert_called_with(18, case["expected_pin_state"])
+            line_mock.set_value.assert_called_with(18, case["expected_pin_state"])
 
     def test_open(self):
         cases = [
@@ -64,7 +64,7 @@ class TestRelayDriver(unittest.TestCase):
                 consumer = "OctoRelay",
                 config = { 18: "LineSettingsMock" }
             )
-            lineMock.set_value.assert_called_with(18, case["expected_pin_state"])
+            line_mock.set_value.assert_called_with(18, case["expected_pin_state"])
 
     def test_is_closed(self):
         cases = [
