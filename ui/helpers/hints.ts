@@ -69,7 +69,7 @@ export const showHints = ({
     hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
   hints.sort(compareDeadlines);
   let title = "";
-  let content: string[] = [];
+  const content: string[] = [];
   let target: JQuery | undefined = undefined;
   let originalSubject = "";
   const items: PopoverItem[] = [];

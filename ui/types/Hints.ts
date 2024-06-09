@@ -10,5 +10,5 @@ export interface PopoverItem {
   cancelId: string;
   timeTagId: string;
   deadline: number;
-  cancel: () => JQuery.Promise<any>;
+  cancel: () => JQuery.Promise<unknown>;
 }

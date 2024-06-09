@@ -14,7 +14,7 @@ describe("Knockout bindings", () => {
     "r{{n}}",
     "rules.{{event}}",
   ];
-  const settingRegex = /([\w\{}]+).*$/;
+  const settingRegex = /([\w{}]+).*$/;
   const relaySettings = [
     "active",
     "relay_pin",
