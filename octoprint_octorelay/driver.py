@@ -3,8 +3,8 @@ from typing import Optional
 from gpiozero import LED
 
 
-def xor(left: bool, right: bool) -> bool:
-    return left is not right
+relays = []
+
 
 class Relay():
     def __init__(self, pin: int, inverted: bool):
@@ -35,3 +35,29 @@ class Relay():
         """
         self.relay.toggle()
         return desired_state
+
+
+def get_or_create_relay(pin: int, inverted: bool):
+    to_return = None
+
+    for relay in relays:
+        if relay.pin == pin:
+            to_return = relay
+            break
+
+    if to_return is None:
+        relay = Relay(pin, inverted)
+        relays.append(relay)
+        to_return = relay
+
+    return to_return
+
+
+if __name__ == '__main__':
+    a = get_or_create_relay(15, True)
+    print(a.is_closed())
+    a.close()
+    print(a.is_closed())
+
+    a = get_or_create_relay(15, True)
+    print(a.is_closed())
