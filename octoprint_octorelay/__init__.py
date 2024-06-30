@@ -42,7 +42,6 @@ class OctoRelayPlugin(
         # pylint: disable=super-init-not-called
         self.polling_timer = None
         self.tasks: List[Task] = []
-        self.relays: List[Relay] = []
         self.model: Model = get_initial_model()
 
     def get_settings_version(self):

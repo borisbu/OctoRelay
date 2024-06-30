@@ -6,26 +6,30 @@ from gpiozero import LED
 relays = []
 
 
+def xor(left: bool, right: bool) -> bool:
+    return left is not right
+
+
 class Relay():
     def __init__(self, pin: int, inverted: bool):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
-        self.relay = LED(pin, active_high=inverted)
+        self.relay = LED(pin)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
 
     def close(self):
         """Activates the current flow through the relay."""
-        self.relay.on()
+        self.toggle(True)
 
     def open(self):
         """Deactivates the current flow through the relay."""
-        self.relay.off()
+        self.toggle(False)
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        return self.relay.is_lit
+        return xor(self.inverted, self.relay.is_lit)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
@@ -33,7 +37,14 @@ class Relay():
         If the argument is not specified then switches based on the current state.
         Returns the new logical state of the relay.
         """
-        self.relay.toggle()
+        if desired_state is None:
+            desired_state = not self.is_closed()
+        
+        if xor(self.inverted, desired_state) is True:
+            self.relay.on()
+        else:
+            self.relay.off()
+
         return desired_state
 
 
@@ -42,6 +53,9 @@ def get_or_create_relay(pin: int, inverted: bool):
 
     for relay in relays:
         if relay.pin == pin:
+            if relay.inverted != inverted:
+                relay.inverted = inverted
+
             to_return = relay
             break
 
@@ -51,13 +65,3 @@ def get_or_create_relay(pin: int, inverted: bool):
         to_return = relay
 
     return to_return
-
-
-if __name__ == '__main__':
-    a = get_or_create_relay(15, True)
-    print(a.is_closed())
-    a.close()
-    print(a.is_closed())
-
-    a = get_or_create_relay(15, True)
-    print(a.is_closed())
