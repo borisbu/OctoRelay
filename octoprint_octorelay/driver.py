@@ -3,14 +3,9 @@ from typing import Optional
 from gpiozero import LED
 
 
-relays = []
-
-
-def xor(left: bool, right: bool) -> bool:
-    return left is not right
-
-
 class Relay():
+    relays = []
+
     def __init__(self, pin: int, inverted: bool):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
@@ -18,6 +13,9 @@ class Relay():
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
+
+    def __xor(left: bool, right: bool) -> bool:
+        return left is not right
 
     def close(self):
         """Activates the current flow through the relay."""
@@ -47,21 +45,21 @@ class Relay():
 
         return desired_state
 
+    @classmethod
+    def get_or_create_relay(cls, pin: int, inverted: bool):
+        to_return = None
 
-def get_or_create_relay(pin: int, inverted: bool):
-    to_return = None
+        for relay in cls.relays:
+            if relay.pin == pin:
+                if relay.inverted != inverted:
+                    relay.inverted = inverted
 
-    for relay in relays:
-        if relay.pin == pin:
-            if relay.inverted != inverted:
-                relay.inverted = inverted
+                to_return = relay
+                break
 
+        if to_return is None:
+            relay = cls(pin, inverted)
+            cls.relays.append(relay)
             to_return = relay
-            break
 
-    if to_return is None:
-        relay = Relay(pin, inverted)
-        relays.append(relay)
-        to_return = relay
-
-    return to_return
+        return to_return

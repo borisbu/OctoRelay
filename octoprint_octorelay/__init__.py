@@ -17,7 +17,7 @@ from .const import (
     STARTUP, PRINTING_STOPPED, PRINTING_STARTED, PRIORITIES, FALLBACK_PRIORITY, PREEMPTIVE_CANCELLATION_CUTOFF,
     CANCEL_TASK_COMMAND, USER_ACTION, TURNED_ON
 )
-from .driver import Relay, get_or_create_relay
+from .driver import Relay
 from .task import Task
 from .listing import Listing
 from .migrations import migrate
@@ -108,7 +108,7 @@ class OctoRelayPlugin(
         settings = self._settings.get([], merged=True) # expensive
         for index in RELAY_INDEXES:
             if bool(settings[index]["active"]):
-                relay = get_or_create_relay(
+                relay = Relay.get_or_create_relay(
                     int(settings[index]["relay_pin"] or 0),
                     bool(settings[index]["inverted_output"])
                 )
@@ -125,7 +125,7 @@ class OctoRelayPlugin(
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
             raise HandlingException(400)
-        return  get_or_create_relay(
+        return  Relay.get_or_create_relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
         ).is_closed()
@@ -242,7 +242,7 @@ class OctoRelayPlugin(
                 self._printer.disconnect()
         pin = int(settings["relay_pin"] or 0)
         inverted = bool(settings["inverted_output"])
-        relay = get_or_create_relay(pin, inverted)
+        relay = Relay.get_or_create_relay(pin, inverted)
         self._logger.debug(
             f"Toggling the relay {index} on pin {pin}" if target is None else
             f"Turning the relay {index} {'ON' if target else 'OFF'} (pin {pin})"
@@ -314,7 +314,7 @@ class OctoRelayPlugin(
         ))
         for index in RELAY_INDEXES:
             active = bool(settings[index]["active"])
-            relay = get_or_create_relay(
+            relay = Relay.get_or_create_relay(
                 int(settings[index]["relay_pin"] or 0),
                 bool(settings[index]["inverted_output"])
             )
@@ -363,7 +363,7 @@ class OctoRelayPlugin(
         for index in RELAY_INDEXES:
             active = self.model[index]["active"]
             model_state = self.model[index]["relay_state"] # bool since v3.1
-            actual_state = get_or_create_relay(
+            actual_state = Relay.get_or_create_relay(
                 self.model[index]["relay_pin"],
                 self.model[index]["inverted_output"]
             ).is_closed() if active else False
