@@ -27,7 +27,7 @@ class Relay():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        return xor(self.inverted, self.relay.is_lit)
+        return self.__xor(self.inverted, self.relay.is_lit)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
@@ -38,7 +38,7 @@ class Relay():
         if desired_state is None:
             desired_state = not self.is_closed()
         
-        if xor(self.inverted, desired_state) is True:
+        if self.__xor(self.inverted, desired_state) is True:
             self.relay.on()
         else:
             self.relay.off()
