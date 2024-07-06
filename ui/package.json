@@ -30,7 +30,7 @@
     "eslint-plugin-unicorn": "^53.0.0",
     "jsdom": "^23.0.1",
     "mockdate": "^3.0.5",
-    "prettier": "3.2.5",
+    "prettier": "3.3.2",
     "sass": "^1.68.0",
     "tsup": "^8.0.1",
     "typescript": "^5.2.2",
