@@ -3,7 +3,7 @@ import type { OwnModel, OwnProperties } from "../types/OwnModel";
 import { clearMock, showMock } from "../mocks/hints";
 import { toggleMock } from "../mocks/actions";
 import { makeMessageHandler } from "./messageHandler";
-import { describe, vi, Mock, afterEach, test, expect } from "vitest";
+import { describe, vi, type Mock, afterEach, test, expect } from "vitest";
 
 describe("makeMessageHandler()", () => {
   Object.assign(global, {

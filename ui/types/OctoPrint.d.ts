@@ -46,5 +46,5 @@ declare const OctoPrint: {
     command: string,
     payload: object,
     opts?: object,
-  ) => JQuery.Promise<any>;
+  ) => JQuery.Promise<unknown>;
 };
