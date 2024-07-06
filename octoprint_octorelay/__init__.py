@@ -125,7 +125,7 @@ class OctoRelayPlugin(
         settings = self._settings.get([index], merged=True) # expensive
         if not bool(settings["active"]):
             raise HandlingException(400)
-        return  Relay.get_or_create_relay(
+        return Relay.get_or_create_relay(
             int(settings["relay_pin"] or 0),
             bool(settings["inverted_output"])
         ).is_closed()
