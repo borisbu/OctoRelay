@@ -1,4 +1,4 @@
-import { vi, Mock } from "vitest";
+import { vi, type Mock } from "vitest";
 
 export const elementMock: Record<
   | "toggle"
