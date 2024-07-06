@@ -2,6 +2,13 @@
 
 ## Version 4
 
+### 4.2.1
+
+- Technical update: 
+  - Dependencies reduced by half;
+  - Upgraded testing framework;
+  - Removed a redundant statement. 
+
 ### 4.2.0
 
 - Supporting OctoPrint 1.10 and Python 3.12.
