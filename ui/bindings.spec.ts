@@ -3,8 +3,7 @@ import { Window } from "happy-dom";
 import { describe, test, expect } from "vitest";
 
 describe("Knockout bindings", () => {
-  const window = new Window();
-  const document = window.document;
+  const document = new Window().document;
   document.body.innerHTML = readFileSync(
     "../octoprint_octorelay/templates/octorelay_settings.jinja2",
     "utf-8",
