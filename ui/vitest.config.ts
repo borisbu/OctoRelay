@@ -6,7 +6,7 @@ export default defineConfig({
       enabled: true,
       provider: "istanbul",
       reporter: ["json", "lcov", "text", "html"],
-      exclude: ["mocks"],
+      exclude: ["mocks", "*.config.ts"],
     },
   },
 });
