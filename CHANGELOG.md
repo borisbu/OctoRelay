@@ -5,7 +5,7 @@
 ### 4.2.1
 
 - Technical update: 
-  - Dependencies reduced by half;
+  - Reduced number of dependencies;
   - Upgraded testing framework;
   - Removed a redundant statement. 
 
