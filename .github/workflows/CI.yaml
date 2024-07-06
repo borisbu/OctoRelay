@@ -18,22 +18,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 18.x
       - name: Cache node modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.yarnCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
-        working-directory: ts
+        working-directory: ui
         run: yarn install
       - name: Lint
-        working-directory: ts
+        working-directory: ui
         run: yarn lint
       - name: Test
-        working-directory: ts
+        working-directory: ui
         run: yarn test
       - name: Coveralls
         uses: coverallsapp/github-action@v2
@@ -43,7 +43,7 @@ jobs:
           flag-name: ui
           parallel: true
       - name: Build JS
-        working-directory: ts
+        working-directory: ui
         run: yarn build
 
   Python:
@@ -51,37 +51,47 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ "3.8", "3.9", "3.10", "3.11" ]
-        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9" ]
+        python: [ "3.8", "3.9", "3.10", "3.11", "3.12" ]
+        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10" ]
         exclude:
           # These versions are not compatible to each other:
           - octoprint: 1.5
             python: 3.10
           - octoprint: 1.5
             python: 3.11
+          - octoprint: 1.5
+            python: 3.12
           - octoprint: 1.6
             python: 3.10
           - octoprint: 1.6
             python: 3.11
+          - octoprint: 1.6
+            python: 3.12
           - octoprint: 1.7
             python: 3.10
           - octoprint: 1.7
             python: 3.11
+          - octoprint: 1.7
+            python: 3.12
           - octoprint: 1.8
             python: 3.10
           - octoprint: 1.8
             python: 3.11
+          - octoprint: 1.8
+            python: 3.12
+          - octoprint: 1.9
+            python: 3.12
     steps:
       - uses: actions/checkout@v4
       - name: Install Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
       - name: Get pip cache dir
         id: pipCache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache pip modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
@@ -90,12 +100,11 @@ jobs:
         run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
-        if: matrix.octoprint != '1.9'
         run: pip install wheel
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
-        run: pip install coverage pylint snapshottest mypy
+        run: pip install coverage pylint mypy
       - name: Test
         working-directory: tests
         run: python -m coverage run -m unittest test*.py
@@ -103,7 +112,7 @@ jobs:
         working-directory: tests
         run: |
           python -m coverage lcov --omit=test*,_version*
-          python -m coverage report --show-missing --omit=test*,_version*,snap_*
+          python -m coverage report --show-missing --omit=test*,_version*
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
@@ -115,7 +124,7 @@ jobs:
       - name: Types checking
         run: mypy ./octoprint_octorelay
       - name: Lint
-        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests
+        run: pylint --rcfile=.pylintrc ./octoprint_octorelay ./tests/*.py
 
   finish:
     needs: [UI, Python]

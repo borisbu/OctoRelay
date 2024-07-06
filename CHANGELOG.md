@@ -2,6 +2,22 @@
 
 ## Version 4
 
+### 4.2.0
+
+- Supporting OctoPrint 1.10 and Python 3.12.
+
+### 4.1.0
+
+- New feature: target for GCODE command (at-command):
+  - You can now switch the relay to the desired state;
+  - `@OCTORELAY r1 ON` — to switch the first relay on;
+  - `@OCTORELAY r1 OFF` — to switch the first relay off;
+  - `@OCTORELAY r1` — to toggle the first relay.
+
+### 4.0.1
+
+- Technical update: no new features, no fixes.
+
 ### 4.0.0
 
 - **Breaking changes**:

@@ -1,0 +1,42 @@
+{
+  "name": "octorelay-ui",
+  "description": "The UI scripts for OctoRelay plugin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "author": {
+    "name": "Anna Bocharova",
+    "url": "https://github.com/RobinTail"
+  },
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "lint": "eslint",
+    "test": "tsc --noEmit && TZ=UTC vitest run",
+    "build": "yarn build:js && yarn build:styles",
+    "build:js": "tsup",
+    "build:styles": "sass styles/octorelay.scss ../octoprint_octorelay/static/css/octorelay.css --no-source-map"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tsconfig/node18": "^18.2.2",
+    "@types/jquery": "^3.5.22",
+    "@types/jsdom": "^21.1.3",
+    "@vitest/coverage-istanbul": "^1.1.0",
+    "eslint": "^9.4.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import-x": "^0.5.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-unicorn": "^53.0.0",
+    "jsdom": "^23.0.1",
+    "mockdate": "^3.0.5",
+    "prettier": "3.2.5",
+    "sass": "^1.68.0",
+    "tsup": "^8.0.1",
+    "typescript": "^5.2.2",
+    "typescript-eslint": "^8.0.0-alpha.29",
+    "vitest": "^1.1.0"
+  },
+  "resolutions": {
+    "**/@typescript-eslint/utils": "^8.0.0-alpha.29"
+  }
+}
