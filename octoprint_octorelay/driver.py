@@ -7,10 +7,14 @@ from gpiozero import LED
 class Relay():
     relays = []
 
-    def __init__(self, pin: int, inverted: bool):
+    def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
-        self.relay = LED(pin, pin_factory=LGPIOFactory(chip=0))
+
+        if pin_factory is None:
+            pin_factory = LGPIOFactory(chip=0)
+
+        self.relay = LED(pin, pin_factory=pin_factory)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
@@ -47,7 +51,7 @@ class Relay():
         return desired_state
 
     @classmethod
-    def get_or_create_relay(cls, pin: int, inverted: bool):
+    def get_or_create_relay(cls, pin: int, inverted: bool, pin_factory=None):
         for relay in cls.relays:
             if relay.pin == pin:
                 if relay.inverted is not inverted:
@@ -55,6 +59,6 @@ class Relay():
 
                 return relay
 
-        relay = cls(pin, inverted)
+        relay = cls(pin, inverted, pin_factory)
         cls.relays.append(relay)
         return relay
