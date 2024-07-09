@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import unittest
 import sys
-from unittest.mock import Mock
 
 from gpiozero.pins.mock import MockFactory
 
