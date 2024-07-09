@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from typing import Optional
+from typing import Optional, List
 from gpiozero.pins.lgpio import LGPIOFactory
 from gpiozero import LED
 
 
 class Relay():
-    relays = []
+    relays: List["Relay"] = []
 
     def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin
