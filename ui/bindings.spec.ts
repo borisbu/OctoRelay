@@ -1,20 +1,20 @@
 import { readFileSync } from "node:fs";
-import { JSDOM } from "jsdom";
+import { Window } from "happy-dom";
 import { describe, test, expect } from "vitest";
 
 describe("Knockout bindings", () => {
-  const html = readFileSync(
+  const document = new Window().document;
+  document.body.innerHTML = readFileSync(
     "../octoprint_octorelay/templates/octorelay_settings.jinja2",
     "utf-8",
   );
-  const document = JSDOM.fragment(html);
   const usingContexts = [
     "settings.plugins.octorelay.r{{n}}",
     "settings.plugins.octorelay",
     "r{{n}}",
     "rules.{{event}}",
   ];
-  const settingRegex = /([\w\{}]+).*$/;
+  const settingRegex = /([\w{}]+).*$/;
   const relaySettings = [
     "active",
     "relay_pin",
