@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import Optional, Dict
-# todo after dropping 3.7 take TypedDict from typing instead
-from typing_extensions import TypedDict
-
+from typing import Optional, Dict, TypedDict
 from .const import RELAY_INDEXES
 
 # pylint: disable=too-few-public-methods

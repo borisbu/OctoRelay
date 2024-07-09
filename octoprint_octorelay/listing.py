@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import List
-# todo after dropping 3.7 take TypedDict from typing instead
-from typing_extensions import TypedDict
+from typing import List, TypedDict
 
 # false positive, see https://github.com/pylint-dev/pylint/issues/4166
 # pylint: disable=too-many-ancestors
