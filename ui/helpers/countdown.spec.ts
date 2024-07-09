@@ -12,7 +12,7 @@ import {
 } from "vitest";
 
 describe("Countdown helpers", () => {
-  const setIntervalMock = vi.fn<[() => void, number], void>(
+  const setIntervalMock = vi.fn<(handler: () => void, delay: number) => void>(
     () => "mockedInterval",
   );
   const clearIntervalMock = vi.fn();
