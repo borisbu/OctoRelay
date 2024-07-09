@@ -66,14 +66,14 @@ class TestRelayDriver(unittest.TestCase):
             relay.relay.value = case["mocked_state"]
             self.assertEqual(relay.toggle(), case["expected_relay_state"])
             self.assertEqual(relay.relay.is_lit, case["expected_pin_state"])
-    
+
     def test_get_or_create_relay(self):
         # Test creating a new relay
         relay1 = Relay.get_or_create_relay(17, False, MockFactory())
         self.assertEqual(len(Relay.relays), 1)
         self.assertEqual(relay1.pin, 17)
         self.assertFalse(relay1.inverted)
-    
+
         # Test retrieving the existing relay with the same pin and inversion
         relay2 = Relay.get_or_create_relay(17, True, MockFactory())
         self.assertIs(relay1, relay2)

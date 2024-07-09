@@ -42,7 +42,7 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        
+
         if self.__xor(self.inverted, desired_state) is True:
             self.relay.on()
         else:
