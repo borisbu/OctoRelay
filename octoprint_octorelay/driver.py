@@ -43,11 +43,9 @@ class Relay():
     def get_or_create_relay(cls, pin: int, inverted: bool, pin_factory=None):
         for relay in cls.relays:
             if relay.pin == pin:
-                if relay.inverted is not inverted:
+                if xor(relay.inverted, inverted):
                     relay.inverted = inverted
-
                 return relay
-
         relay = cls(pin, inverted, pin_factory)
         cls.relays.append(relay)
         return relay
