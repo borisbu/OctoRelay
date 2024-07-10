@@ -30,7 +30,7 @@ sys.modules["octoprint_octorelay.migrations"] = migrationsMock
 
 relayMock = Mock()
 relayConstructorMock = Mock(return_value=relayMock)
-relayConstructorMock.get_or_create_relay = Mock(return_value=relayMock)
+relayConstructorMock.ensure = Mock(return_value=relayMock)
 
 sys.modules["octoprint_octorelay.driver"] = Mock(
     Relay=relayConstructorMock
@@ -469,9 +469,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         relayMock.is_closed = Mock(return_value=True)
         self.plugin_instance.input_polling()
-        self.assertEqual(relayConstructorMock.get_or_create_relay.call_count, 2)
-        relayConstructorMock.get_or_create_relay.assert_any_call(17, False)
-        relayConstructorMock.get_or_create_relay.assert_any_call(18, False)
+        self.assertEqual(relayConstructorMock.ensure.call_count, 2)
+        relayConstructorMock.ensure.assert_any_call(17, False)
+        relayConstructorMock.ensure.assert_any_call(18, False)
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
 
@@ -510,7 +510,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "upcoming": None
                 }
             self.plugin_instance.update_ui()
-            relayConstructorMock.get_or_create_relay.assert_called_with(17, False)
+            relayConstructorMock.ensure.assert_called_with(17, False)
             for index in RELAY_INDEXES:
                 self.plugin_instance._settings.get.assert_any_call([], merged=True)
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
@@ -555,7 +555,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOFF"
             })
             self.plugin_instance.toggle_relay("r4", case["target"])
-            relayConstructorMock.get_or_create_relay.assert_called_with(17, case["inverted"])
+            relayConstructorMock.ensure.assert_called_with(17, case["inverted"])
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with(case["expectedCommand"])
             if case["expectedCommand"] == "CommandON":

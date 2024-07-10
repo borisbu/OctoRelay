@@ -40,7 +40,7 @@ class Relay():
         return desired_state
 
     @classmethod
-    def get_or_create_relay(cls, pin: int, inverted: bool, pin_factory=None):
+    def ensure(cls, pin: int, inverted: bool, pin_factory=None):
         for relay in cls.cache:
             if relay.pin == pin:
                 if xor(relay.inverted, inverted):
