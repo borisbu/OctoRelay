@@ -12,7 +12,7 @@ del sys.modules["octoprint_octorelay"]
 del sys.modules["octoprint_octorelay.migrations"]
 del sys.modules["octoprint_octorelay.task"]
 
-class TestDriverDriver(unittest.TestCase):
+class TestDriver(unittest.TestCase):
     def test_constructor(self):
         relay = Driver(18, True, MockFactory())
         self.assertIsInstance(relay, Driver)
