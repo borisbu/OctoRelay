@@ -70,18 +70,18 @@ class TestRelayDriver(unittest.TestCase):
     def test_get_or_create_relay(self):
         # Test creating a new relay
         relay1 = Relay.get_or_create_relay(17, False, MockFactory())
-        self.assertEqual(len(Relay.relays), 1)
+        self.assertEqual(len(Relay.cache), 1)
         self.assertEqual(relay1.pin, 17)
         self.assertFalse(relay1.inverted)
 
         # Test retrieving the existing relay with the same pin and inversion
         relay2 = Relay.get_or_create_relay(17, True, MockFactory())
         self.assertIs(relay1, relay2)
-        self.assertEqual(len(Relay.relays), 1)  # Should still be 1
+        self.assertEqual(len(Relay.cache), 1)  # Should still be 1
 
         # Test retrieving the existing relay with the same pin but different inversion
         relay3 = Relay.get_or_create_relay(17, True, MockFactory())
-        self.assertEqual(len(Relay.relays), 1)  # Should still be 1
+        self.assertEqual(len(Relay.cache), 1)  # Should still be 1
         self.assertIs(relay1, relay3)
         self.assertTrue(relay1.inverted)  # Inversion should be updated
 

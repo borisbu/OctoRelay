@@ -6,7 +6,7 @@ def xor(left: bool, right: bool) -> bool:
     return left is not right
 
 class Relay():
-    relays: List["Relay"] = []
+    cache: List["Relay"] = []
 
     def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin
@@ -41,11 +41,11 @@ class Relay():
 
     @classmethod
     def get_or_create_relay(cls, pin: int, inverted: bool, pin_factory=None):
-        for relay in cls.relays:
+        for relay in cls.cache:
             if relay.pin == pin:
                 if xor(relay.inverted, inverted):
                     relay.inverted = inverted
                 return relay
         relay = cls(pin, inverted, pin_factory)
-        cls.relays.append(relay)
+        cls.cache.append(relay)
         return relay
