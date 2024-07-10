@@ -5,8 +5,8 @@ from gpiozero import LED
 def xor(left: bool, right: bool) -> bool:
     return left is not right
 
-class Relay():
-    cache: List["Relay"] = []
+class Driver():
+    cache: List["Driver"] = []
 
     def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin

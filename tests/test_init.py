@@ -33,7 +33,7 @@ relayConstructorMock = Mock(return_value=relayMock)
 relayConstructorMock.ensure = Mock(return_value=relayMock)
 
 sys.modules["octoprint_octorelay.driver"] = Mock(
-    Relay=relayConstructorMock
+    Driver=relayConstructorMock
 )
 
 # pylint: disable=wrong-import-position
@@ -915,7 +915,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "target": False,
                 "closed": True,
                 "expectedError": False,
-                "expectedResult": False, # from the !closed returned by mocked Relay::toggle() below
+                "expectedResult": False, # from the !closed returned by mocked Driver::toggle() below
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
