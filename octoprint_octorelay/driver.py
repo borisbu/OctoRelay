@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from typing import Optional, List
-from gpiozero.pins.lgpio import LGPIOFactory
 from gpiozero import LED
 
 
@@ -10,10 +9,6 @@ class Relay():
     def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
-
-        if pin_factory is None:
-            pin_factory = LGPIOFactory(chip=0)
-
         self.relay = LED(pin, pin_factory=pin_factory)
 
     def __repr__(self) -> str:
