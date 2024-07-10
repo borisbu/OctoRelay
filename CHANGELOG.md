@@ -8,7 +8,10 @@
   - Minimum version of Python supported: 3.9;
 - Feature: Supporting Raspberry Pi 5:
   - Using `gpiozero` with two `lgpio` and `RPi.GPIO` factories depending on your hardware;
-  - The feature implemented by [Mattia Vidoni](https://github.com/ch3p4ll3)
+  - The feature implemented by [Mattia Vidoni](https://github.com/ch3p4ll3).
+- How to migrate:
+  - Ensure having Python version 3.9 or higher;
+  - If you can not upgrade Python to at least 3.9 — continue using version 4.
 
 ## Version 4
 
