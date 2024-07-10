@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 5
+
+### 5.0.0
+
+- **Breaking changes**:
+  - Minimum version of Python supported: 3.9;
+- Feature: Supporting Raspberry Pi 5:
+  - Using `gpiozero` with two `lgpio` and `RPi.GPIO` factories depending on your hardware;
+  - The feature implemented by [Mattia Vidoni](https://github.com/ch3p4ll3)
+
 ## Version 4
 
 ### 4.2.1
