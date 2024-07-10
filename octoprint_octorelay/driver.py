@@ -2,6 +2,8 @@
 from typing import Optional, List
 from gpiozero import LED
 
+def xor(left: bool, right: bool) -> bool:
+    return left is not right
 
 class Relay():
     relays: List["Relay"] = []
@@ -14,9 +16,6 @@ class Relay():
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
 
-    def __xor(self, left: bool, right: bool) -> bool:
-        return left is not right
-
     def close(self):
         """Activates the current flow through the relay."""
         self.toggle(True)
@@ -27,7 +26,7 @@ class Relay():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        return self.__xor(self.inverted, self.relay.is_lit)
+        return xor(self.inverted, self.relay.is_lit)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
@@ -37,23 +36,16 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-
-        if self.__xor(self.inverted, desired_state) is True:
-            self.relay.on()
-        else:
-            self.relay.off()
-
+        (self.relay.on if xor(self.inverted, desired_state) else self.relay.off)()
         return desired_state
 
     @classmethod
     def get_or_create_relay(cls, pin: int, inverted: bool, pin_factory=None):
         for relay in cls.relays:
             if relay.pin == pin:
-                if relay.inverted is not inverted:
+                if xor(relay.inverted, inverted):
                     relay.inverted = inverted
-
                 return relay
-
         relay = cls(pin, inverted, pin_factory)
         cls.relays.append(relay)
         return relay
