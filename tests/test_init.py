@@ -33,7 +33,7 @@ relayConstructorMock = Mock(return_value=relayMock)
 relayConstructorMock.get_or_create_relay = Mock(return_value=relayMock)
 
 sys.modules["octoprint_octorelay.driver"] = Mock(
-    Relay=relayConstructorMock,
+    Relay=relayConstructorMock
 )
 
 # pylint: disable=wrong-import-position

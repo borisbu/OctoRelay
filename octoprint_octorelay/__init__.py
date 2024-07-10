@@ -112,7 +112,6 @@ class OctoRelayPlugin(
                     int(settings[index]["relay_pin"] or 0),
                     bool(settings[index]["inverted_output"])
                 )
-
                 active_relays.append({
                     "id": index,
                     "name": settings[index]["label_text"],
