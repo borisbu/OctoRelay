@@ -1,20 +1,21 @@
 # -*- coding: utf-8 -*-
-from typing import Optional
-from RPi import GPIO
+from typing import Optional, List
+from gpiozero import LED
 
-# The driver operates BCM mode of pins enumeration
-GPIO.setmode(GPIO.BCM)
-
-def xor(left: bool, right: bool) -> bool:
-    return left is not right
 
 class Relay():
-    def __init__(self, pin: int, inverted: bool):
+    relays: List["Relay"] = []
+
+    def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
+        self.relay = LED(pin, pin_factory=pin_factory)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
+
+    def __xor(self, left: bool, right: bool) -> bool:
+        return left is not right
 
     def close(self):
         """Activates the current flow through the relay."""
@@ -26,11 +27,7 @@ class Relay():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        pin_state = bool(GPIO.input(self.pin))
-        GPIO.setwarnings(True)
-        return xor(self.inverted, pin_state)
+        return self.__xor(self.inverted, self.relay.is_lit)
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
@@ -40,8 +37,23 @@ class Relay():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        GPIO.setwarnings(False)
-        GPIO.setup(self.pin, GPIO.OUT)
-        GPIO.output(self.pin, xor(self.inverted, desired_state))
-        GPIO.setwarnings(True)
+
+        if self.__xor(self.inverted, desired_state) is True:
+            self.relay.on()
+        else:
+            self.relay.off()
+
         return desired_state
+
+    @classmethod
+    def get_or_create_relay(cls, pin: int, inverted: bool, pin_factory=None):
+        for relay in cls.relays:
+            if relay.pin == pin:
+                if relay.inverted is not inverted:
+                    relay.inverted = inverted
+
+                return relay
+
+        relay = cls(pin, inverted, pin_factory)
+        cls.relays.append(relay)
+        return relay
