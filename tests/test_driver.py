@@ -31,7 +31,7 @@ class TestDriverDriver(unittest.TestCase):
         ]
         for case in cases:
             case["relay"].close()
-            self.assertEqual(case["relay"].relay.is_lit, case["expected_pin_state"])
+            self.assertEqual(case["relay"].handle.is_lit, case["expected_pin_state"])
 
     def test_open(self):
         cases = [
@@ -40,7 +40,7 @@ class TestDriverDriver(unittest.TestCase):
         ]
         for case in cases:
             case["relay"].open()
-            self.assertEqual(case["relay"].relay.is_lit, case["expected_pin_state"])
+            self.assertEqual(case["relay"].handle.is_lit, case["expected_pin_state"])
 
     def test_is_closed(self):
         cases = [
@@ -51,7 +51,7 @@ class TestDriverDriver(unittest.TestCase):
         ]
         for case in cases:
             relay = Driver(18, case["inverted"], MockFactory())
-            relay.relay.value = case["mocked_state"]
+            relay.handle.value = case["mocked_state"]
             self.assertEqual(relay.is_closed(), case["expected_relay_state"])
 
     def test_toggle__no_argument(self):
@@ -63,9 +63,9 @@ class TestDriverDriver(unittest.TestCase):
         ]
         for case in cases:
             relay = Driver(18, case["inverted"], MockFactory())
-            relay.relay.value = case["mocked_state"]
+            relay.handle.value = case["mocked_state"]
             self.assertEqual(relay.toggle(), case["expected_relay_state"])
-            self.assertEqual(relay.relay.is_lit, case["expected_pin_state"])
+            self.assertEqual(relay.handle.is_lit, case["expected_pin_state"])
 
     def test_ensure(self):
         # Test creating a new relay
