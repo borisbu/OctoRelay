@@ -29,11 +29,11 @@ migrationsMock = Mock()
 sys.modules["octoprint_octorelay.migrations"] = migrationsMock
 
 relayMock = Mock()
-relayConstructorMock = Mock(return_value=relayMock)
-relayConstructorMock.get_or_create_relay = Mock(return_value=relayMock)
+DriverMock = Mock(return_value=relayMock)
+DriverMock.ensure = Mock(return_value=relayMock)
 
 sys.modules["octoprint_octorelay.driver"] = Mock(
-    Relay=relayConstructorMock
+    Driver=DriverMock
 )
 
 # pylint: disable=wrong-import-position
@@ -461,7 +461,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
     def test_input_polling(self):
         # First active relay having state not equal to the one stored in model should trigger UI update
         self.plugin_instance.update_ui = Mock()
-        relayConstructorMock.reset_mock()
+        DriverMock.reset_mock()
         self.plugin_instance.model = {
             "r1": { "active": False, "relay_pin": 4, "inverted_output": False, "relay_state": True },
             "r2": { "active": True, "relay_pin": 17, "inverted_output": False, "relay_state": True },
@@ -469,9 +469,9 @@ class TestOctoRelayPlugin(unittest.TestCase):
         }
         relayMock.is_closed = Mock(return_value=True)
         self.plugin_instance.input_polling()
-        self.assertEqual(relayConstructorMock.get_or_create_relay.call_count, 2)
-        relayConstructorMock.get_or_create_relay.assert_any_call(17, False)
-        relayConstructorMock.get_or_create_relay.assert_any_call(18, False)
+        self.assertEqual(DriverMock.ensure.call_count, 2)
+        DriverMock.ensure.assert_any_call(17, False)
+        DriverMock.ensure.assert_any_call(18, False)
         self.plugin_instance.update_ui.assert_called_with()
         self.plugin_instance._logger.debug.assert_called_with("relay: r3 has changed its pin state")
 
@@ -510,7 +510,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                     "upcoming": None
                 }
             self.plugin_instance.update_ui()
-            relayConstructorMock.get_or_create_relay.assert_called_with(17, False)
+            DriverMock.ensure.assert_called_with(17, False)
             for index in RELAY_INDEXES:
                 self.plugin_instance._settings.get.assert_any_call([], merged=True)
             self.plugin_instance._plugin_manager.send_plugin_message.assert_called_with(
@@ -555,7 +555,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "cmd_off": "CommandOFF"
             })
             self.plugin_instance.toggle_relay("r4", case["target"])
-            relayConstructorMock.get_or_create_relay.assert_called_with(17, case["inverted"])
+            DriverMock.ensure.assert_called_with(17, case["inverted"])
             relayMock.toggle.assert_called_with(case["target"])
             system_mock.assert_called_with(case["expectedCommand"])
             if case["expectedCommand"] == "CommandON":
@@ -915,7 +915,7 @@ class TestOctoRelayPlugin(unittest.TestCase):
                 "target": False,
                 "closed": True,
                 "expectedError": False,
-                "expectedResult": False, # from the !closed returned by mocked Relay::toggle() below
+                "expectedResult": False, # from the !closed returned by mocked Driver::toggle() below
                 "expectedToggle": True,
                 "expectedCommand": "CommandOffMock"
             },
