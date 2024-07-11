@@ -6,6 +6,7 @@
 
 - **Breaking changes**:
   - Minimum version of Python supported: 3.9;
+  - Having `swig` command is required to install this version.
 - Feature: Supporting Raspberry Pi 5:
   - Using `gpiozero` with `lgpio` or `RPi.GPIO` depending on your hardware;
   - The feature implemented by [Mattia Vidoni](https://github.com/ch3p4ll3).
