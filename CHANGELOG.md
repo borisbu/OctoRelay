@@ -11,7 +11,13 @@
   - The feature implemented by [Mattia Vidoni](https://github.com/ch3p4ll3).
 - How to migrate:
   - Ensure having Python version 3.9 or higher;
-  - If you can not upgrade Python to at least 3.9 — continue using version 4.
+  - If you can not upgrade Python to at least 3.9 — continue using version 4;
+  - If you're getting error during installation: 
+    - `unable to execute 'swig': No such file or directory`:
+      - ensure having the `swig` command installed by following
+        [this advice](https://github.com/automl/auto-sklearn/issues/314#issuecomment-309682572);
+    - `cannot find -llgpio: No such file or directory`:
+      - ensure having Python version 3.9 or higher.
 
 ## Version 4
 
