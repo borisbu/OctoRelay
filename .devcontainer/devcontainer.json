@@ -1,5 +1,18 @@
 {
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
   "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": true,
+      "version": "18",
+      "nvmVersion": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "installTools": true,
+      "version": "3.9"
+    },
+    "ghcr.io/devcontainers-contrib/features/bash-command:1": {
+      "command": "git config --global alias.s status"
+    }
   }
 }
