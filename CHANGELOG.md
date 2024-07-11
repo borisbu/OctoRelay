@@ -2,6 +2,12 @@
 
 ## Version 5
 
+### 5.0.1
+
+- Added `swig` to the plugin dependencies:
+  - This should resolve the possible error `unable to execute 'swig': No such file or directory`;
+  - The `swig` command is required to install `lgpio` (another dependency).
+
 ### 5.0.0
 
 - **Breaking changes**:
