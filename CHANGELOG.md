@@ -15,7 +15,8 @@
   - If you're getting error during installation: 
     - `unable to execute 'swig': No such file or directory`:
       - ensure having the `swig` command installed by following
-        [this advice](https://github.com/automl/auto-sklearn/issues/314#issuecomment-309682572);
+        [this advice](https://github.com/automl/auto-sklearn/issues/314#issuecomment-309682572)
+        or by `pip install swig`.
     - `cannot find -llgpio: No such file or directory`:
       - ensure having Python version 3.9 or higher.
 
