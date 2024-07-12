@@ -100,7 +100,7 @@ setup_parameters = octoprint_setuptools.create_plugin_setup_parameters(
     mail=plugin_author_email,
     url=plugin_url,
     license=plugin_license,
-    python_requires=">=3.9,<4"
+    python_requires=">=3.9,<4",
     requires=plugin_requires,
     additional_packages=plugin_additional_packages,
     ignored_packages=plugin_ignored_packages,
