@@ -383,4 +383,3 @@ __plugin_hooks__ = {
     "octoprint.comm.protocol.atcommand.sending":
         __plugin_implementation__.process_at_command
 }
-
