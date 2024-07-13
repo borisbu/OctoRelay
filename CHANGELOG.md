@@ -2,6 +2,12 @@
 
 ## Version 5
 
+### 5.0.1
+
+- Preventing installations on environments having unsupported Python versions:
+  - Add Python 3.9 into the plugin setup conditions.
+- Upgraded all dependencies; 
+
 ### 5.0.0
 
 - **Breaking changes**:
