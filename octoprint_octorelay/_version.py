@@ -149,6 +149,7 @@ def get_version_from_git_archive(version_info):
 
 __version__ = get_version()
 
+
 # The following section defines a 'get_cmdclass' function
 # that can be used from setup.py. The '__version__' module
 # global is used (but not modified).
