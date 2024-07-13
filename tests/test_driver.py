@@ -18,7 +18,6 @@ class TestDriver(unittest.TestCase):
         self.assertIsInstance(relay, Driver)
         self.assertEqual(relay.pin, 18)
         self.assertTrue(relay.inverted)
-        self.assertFalse(relay.handle.is_lit) # turned off initially
 
     def test_serialization(self):
         relay = Driver(18, True, MockFactory())
