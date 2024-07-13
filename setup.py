@@ -13,9 +13,9 @@ def get_version_and_cmdclass(pkg_path):
     spec = spec_from_file_location("version", os.path.join(pkg_path, "_version.py"))
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.__version__, module.__plugin_pythoncompat__, module.get_cmdclass(pkg_path)
+    return module.__version__, module.get_cmdclass(pkg_path)
 
-miniver_version, python_compatibility, cmdclass = get_version_and_cmdclass(r"octoprint_octorelay")
+miniver_version, cmdclass = get_version_and_cmdclass(r"octoprint_octorelay")
 
 ########################################################################################################################
 # Do not forget to adjust the following variables to your own plugin.
@@ -76,7 +76,7 @@ plugin_ignored_packages = []
 # Example:
 #     plugin_requires = ["someDependency==dev"]
 #     additional_setup_parameters = {"dependency_links": ["https://github.com/someUser/someRepo/archive/master.zip#egg=someDependency-dev"]}
-additional_setup_parameters = { "python_requires": python_compatibility }
+additional_setup_parameters = { "python_requires": ">=3.9,<4" } # see also __init__.py
 
 ########################################################################################################################
 
