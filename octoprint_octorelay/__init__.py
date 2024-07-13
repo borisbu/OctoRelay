@@ -371,7 +371,6 @@ class OctoRelayPlugin(
                 self.update_ui()
                 break
 
-__plugin_pythoncompat__ = ">=3.9,<4"
 __plugin_implementation__ = OctoRelayPlugin()
 
 __plugin_hooks__ = {
@@ -384,4 +383,4 @@ __plugin_hooks__ = {
 }
 
 # pylint: disable=wrong-import-position
-from ._version import __version__
+from ._version import __version__, __plugin_pythoncompat__

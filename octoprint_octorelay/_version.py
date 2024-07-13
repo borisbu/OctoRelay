@@ -148,7 +148,7 @@ def get_version_from_git_archive(version_info):
 
 
 __version__ = get_version()
-
+__plugin_pythoncompat__ = ">=3.9,<4"
 
 # The following section defines a 'get_cmdclass' function
 # that can be used from setup.py. The '__version__' module
