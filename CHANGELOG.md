@@ -2,6 +2,10 @@
 
 ## Version 5
 
+### 5.0.2
+
+- Fixed excessive switches for inverted relays on startup.
+
 ### 5.0.1
 
 - Preventing installations on environments having unsupported Python versions:

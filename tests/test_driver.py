@@ -22,7 +22,7 @@ class TestDriver(unittest.TestCase):
     def test_serialization(self):
         relay = Driver(18, True, MockFactory())
         serialization = f"{relay}"
-        self.assertEqual(serialization, "Driver(pin=18,inverted=True,closed=True)")
+        self.assertEqual(serialization, "Driver(pin=18,inverted=True,closed=False)")
 
     def test_close(self):
         cases = [
