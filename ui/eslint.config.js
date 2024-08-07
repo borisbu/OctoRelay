@@ -4,7 +4,8 @@ import tsPlugin from "typescript-eslint";
 import prettierOverrides from "eslint-config-prettier";
 import prettierRules from "eslint-plugin-prettier/recommended";
 import unicornPlugin from "eslint-plugin-unicorn";
-import importPlugin from "eslint-plugin-import";
+import allowedDepsPlugin from "eslint-plugin-allowed-dependencies";
+import manifest from "./package.json" assert { type: "json" };
 
 export default [
   {
@@ -13,12 +14,7 @@ export default [
     },
     plugins: {
       unicorn: unicornPlugin,
-      import: importPlugin,
-    },
-    settings: {
-      // "import-x" plugin installed as "import", in order to suppress the warning from the typescript resolver
-      // @link https://github.com/import-js/eslint-import-resolver-typescript/issues/293
-      "import-x/resolver": { typescript: true, node: true },
+      allowed: allowedDepsPlugin,
     },
   },
   jsPlugin.configs.recommended,
@@ -30,9 +26,6 @@ export default [
   // Things to turn on globally
   {
     rules: {
-      "import/named": "error",
-      "import/export": "error",
-      "import/no-duplicates": "warn",
       "unicorn/prefer-node-protocol": "error",
     },
   },
@@ -40,7 +33,14 @@ export default [
   {
     files: ["model/*.ts", "helpers/*.ts"],
     rules: {
-      "import/no-extraneous-dependencies": "error",
+      "allowed/dependencies": ["error", { manifest }],
+    },
+  },
+  // For the tests
+  {
+    files: ["model/*.spec.ts", "helpers/*.spec.ts"],
+    rules: {
+      "allowed/dependencies": "off",
     },
   },
 ];
