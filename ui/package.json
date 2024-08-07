@@ -24,8 +24,7 @@
     "@vitest/coverage-istanbul": "^2.0.5",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "npm:eslint-plugin-import-x@^3.1.0",
+    "eslint-plugin-allowed-dependencies": "^0.2.4",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-unicorn": "^55.0.0",
     "happy-dom": "^14.12.3",
@@ -36,8 +35,5 @@
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.0.0",
     "vitest": "^2.0.5"
-  },
-  "resolutions": {
-    "**/@typescript-eslint/utils": "^8.0.0"
   }
 }
