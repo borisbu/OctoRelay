@@ -5,7 +5,6 @@ import prettierOverrides from "eslint-config-prettier";
 import prettierRules from "eslint-plugin-prettier/recommended";
 import unicornPlugin from "eslint-plugin-unicorn";
 import allowedDepsPlugin from "eslint-plugin-allowed-dependencies";
-import manifest from "./package.json" assert { type: "json" };
 
 export default [
   {
@@ -33,7 +32,7 @@ export default [
   {
     files: ["model/*.ts", "helpers/*.ts"],
     rules: {
-      "allowed/dependencies": ["error", { manifest }],
+      "allowed/dependencies": "error",
     },
   },
   // For the tests
