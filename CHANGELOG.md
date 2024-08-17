@@ -4,7 +4,7 @@
 
 ### 5.0.2
 
-- Fixed excessive switches for inverted relays on startup.
+- Initial state for relays is `OFF` — fixes excessive switches on startup in most cases.
 
 ### 5.0.1
 
