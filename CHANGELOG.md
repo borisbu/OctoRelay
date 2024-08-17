@@ -2,6 +2,10 @@
 
 ## Version 5
 
+### 5.0.2
+
+- Initial state for relays is `OFF` — fixes excessive switches on startup in most cases.
+
 ### 5.0.1
 
 - Preventing installations on environments having unsupported Python versions:
