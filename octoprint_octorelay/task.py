@@ -3,6 +3,7 @@ import time
 from octoprint.util import ResettableTimer
 
 # pylint: disable=too-many-arguments
+# pylint: disable=too-many-positional-arguments
 class Task():
     def __init__(self, subject: str, target: bool, owner: str, delay: int, function, args):
         self.subject = subject
