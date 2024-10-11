@@ -42,7 +42,7 @@ jobs:
           github-token: ${{ secrets.github_token }}
           flag-name: ui
           parallel: true
-      - name: Build JS
+      - name: Build UI
         working-directory: ui
         run: yarn build
 
