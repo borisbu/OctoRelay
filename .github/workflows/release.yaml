@@ -33,7 +33,7 @@ jobs:
     - name: Install UI dependencies
       working-directory: ui
       run: yarn install
-    - name: Build JS
+    - name: Build UI
       working-directory: ui
       run: yarn build
     ### Python

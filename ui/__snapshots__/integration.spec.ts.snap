@@ -1,0 +1,307 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Integration test > css/octorelay.css build remains 1`] = `
+"#settings_plugin_octorelay .tab-content {
+  position: relative;
+}
+#settings_plugin_octorelay .btn > input[type=radio] {
+  display: none;
+}
+#settings_plugin_octorelay input.code {
+  font-family: monospace;
+}
+#settings_plugin_octorelay .input-prepend > .add-on.tiny {
+  font-size: 0.45rem;
+  font-weight: 600;
+}
+#settings_plugin_octorelay .help-inline a.same-color {
+  color: inherit;
+}
+#settings_plugin_octorelay .control-label span.label, #settings_plugin_octorelay .help-inline span.label {
+  zoom: 0.85;
+}
+#settings_plugin_octorelay .fa-info {
+  border: 2px solid currentColor;
+  padding: 3px 8px;
+  border-radius: 50%;
+  scale: 0.6;
+  transform-origin: left;
+}
+#settings_plugin_octorelay .preview {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+  line-height: unset;
+  font-size: 1.25rem;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  scale: 3;
+  transform-origin: top left;
+  border: 0.3px dashed rgba(0, 0, 0, 0.4);
+  box-sizing: content-box;
+  border-radius: 2px;
+}
+#settings_plugin_octorelay .preview-caption {
+  position: absolute;
+  top: 75px;
+  width: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.5ch;
+  white-space: nowrap;
+  scale: 0.75;
+  transform-origin: top;
+}
+
+#navbar_plugin_octorelay > a {
+  display: flex;
+  float: left;
+  width: 40px;
+  height: 40px;
+  padding: unset;
+  cursor: pointer;
+  font-size: 1.25rem;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+}
+#navbar_plugin_octorelay .popover {
+  width: auto;
+}
+#navbar_plugin_octorelay .popover .popover-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+#navbar_plugin_octorelay .popover .popover-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+#navbar_plugin_octorelay .popover .popover-content > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+#navbar_plugin_octorelay .popover .popover-content .btn {
+  outline: none;
+  margin-top: unset;
+}
+"
+`;
+
+exports[`Integration test > js/octorelay.js build remains 1`] = `
+""use strict";
+
+// helpers/const.ts
+var ownCode = "octorelay";
+var closeBtnId = "pop-closer";
+var closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
+var closeBtnHTML = \`<button id="\${closeBtnId}" type="button" class="close">\${closeIconHTML}</button>\`;
+
+// helpers/countdown.ts
+var formatDeadline = (time) => {
+  let unit = "second";
+  let timeLeft = (time - Date.now()) / 1e3;
+  if (timeLeft >= 60) {
+    timeLeft /= 60;
+    unit = "minute";
+  }
+  if (timeLeft >= 60) {
+    timeLeft /= 60;
+    unit = "hour";
+  }
+  const isLastMinute = unit === "minute" && timeLeft < 2;
+  const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
+    style: "unit",
+    unitDisplay: "long",
+    minimumFractionDigits: isLastMinute ? 1 : 0,
+    maximumFractionDigits: isLastMinute ? 1 : 0,
+    unit
+  }).format(Math.max(0, timeLeft));
+  return \`in \${formattedTimeLeft}\`;
+};
+var getCountdownDelay = (deadline) => deadline - Date.now() > 12e4 ? 6e4 : 1e3;
+var setCountdown = (selector, deadline) => {
+  const delay = getCountdownDelay(deadline);
+  let disposer;
+  const interval = setInterval(() => {
+    const isVisible = selector.is(":visible");
+    if (!isVisible) {
+      return disposer();
+    }
+    selector.text(formatDeadline(deadline));
+    const nextDelay = getCountdownDelay(deadline);
+    if (nextDelay !== delay) {
+      disposer();
+      disposer = setCountdown(selector, deadline);
+    }
+  }, delay);
+  disposer = () => clearInterval(interval);
+  return disposer;
+};
+
+// helpers/narrowing.ts
+var hasUpcomingTask = (relay) => relay.upcoming ? relay.upcoming.target !== relay.relay_state : false;
+
+// helpers/actions.ts
+var toggleRelay = (key, relay) => {
+  const command = () => OctoPrint.simpleApiCommand(ownCode, "update", { subject: key });
+  if (!relay.confirm_off) {
+    return command();
+  }
+  const dialog = $("#octorelay-confirmation-dialog");
+  dialog.find(".modal-title").text("Turning " + relay.label_text + " off");
+  dialog.find("#octorelay-confirmation-text").text("Are you sure you want to turn the " + relay.label_text + " off?");
+  dialog.find(".btn-cancel").off("click").on("click", () => dialog.modal("hide"));
+  dialog.find(".btn-confirm").off("click").on("click", () => {
+    command();
+    dialog.modal("hide");
+  });
+  dialog.modal("show");
+};
+var cancelTask = (key, { owner, target }) => OctoPrint.simpleApiCommand(ownCode, "cancelTask", {
+  subject: key,
+  owner,
+  target
+});
+
+// helpers/hints.ts
+var clearHints = (btn) => btn.tooltip("destroy").popover("destroy");
+var addTooltip = (btn, text) => btn.tooltip({ placement: "bottom", title: text });
+var addPopover = ({
+  target,
+  title,
+  content,
+  navbar,
+  items,
+  originalSubject
+}) => {
+  target.popover({
+    title,
+    html: true,
+    animation: false,
+    placement: "bottom",
+    trigger: "manual",
+    content: content.join("")
+  }).popover("show");
+  const closeBtn = navbar.find(\`#\${closeBtnId}\`);
+  const countdownDisposers = items.map(
+    ({ cancelId, timeTagId, deadline, cancel }) => {
+      const cancelBtn = navbar.find(\`#\${cancelId}\`);
+      cancelBtn.on("click", cancel);
+      const timeTag = navbar.find(\`#\${timeTagId}\`);
+      return setCountdown(timeTag, deadline);
+    }
+  );
+  closeBtn.on("click", () => {
+    for (const disposer of countdownDisposers) {
+      disposer();
+    }
+    closeBtn.off("click");
+    addTooltip(clearHints(target), originalSubject);
+  });
+};
+var compareDeadlines = (a, b) => {
+  var _a, _b;
+  return (((_a = a.relay.upcoming) == null ? void 0 : _a.deadline) || 0) - (((_b = b.relay.upcoming) == null ? void 0 : _b.deadline) || 0);
+};
+var showHints = ({
+  hints,
+  navbar
+}) => {
+  const hasMultipleTasks = hints.filter(({ relay }) => hasUpcomingTask(relay)).length > 1;
+  hints.sort(compareDeadlines);
+  let title = "";
+  const content = [];
+  let target = void 0;
+  let originalSubject = "";
+  const items = [];
+  for (const { key, relay, control } of hints) {
+    const isRelayHavingTask = hasUpcomingTask(relay);
+    if (!isRelayHavingTask || target) {
+      addTooltip(control, relay.label_text);
+    }
+    if (!isRelayHavingTask) {
+      continue;
+    }
+    const { upcoming, label_text: subject } = relay;
+    const dateObj = new Date(upcoming.deadline);
+    const dateISO = dateObj.toISOString();
+    const dateLocalized = dateObj.toLocaleString();
+    const timeLeft = formatDeadline(upcoming.deadline);
+    const targetState = upcoming.target ? "ON" : "OFF";
+    const [cancelId, timeTagId] = ["cancel-btn", "time-tag"].map(
+      (prefix) => \`\${prefix}-\${key}\`
+    );
+    items.push({
+      cancelId,
+      timeTagId,
+      deadline: upcoming.deadline,
+      cancel: () => cancelTask(key, upcoming)
+    });
+    target = target || control;
+    originalSubject = originalSubject || subject;
+    const upcomingHTML = \`\${subject} goes <span class="label">\${targetState}</span>\`;
+    const timeHTML = \`<time id="\${timeTagId}" datetime="\${dateISO}" title="\${dateLocalized}">\${timeLeft}</time>\`;
+    const cancelHTML = \`<button id="\${cancelId}" class="btn btn-mini" type="button">Cancel</button>\`;
+    title = hasMultipleTasks ? \`<span>Several relay switches ahead</span>\${closeBtnHTML}\` : \`<span>\${upcomingHTML}</span>\${closeBtnHTML}\`;
+    content.push(
+      hasMultipleTasks ? \`<div><span>\${upcomingHTML} \${timeHTML}</span>\${cancelHTML}</div>\` : \`<div>\${timeHTML}\${cancelHTML}</div>\`
+    );
+  }
+  if (target) {
+    addPopover({
+      target,
+      navbar,
+      originalSubject,
+      title,
+      content,
+      items
+    });
+  }
+};
+
+// model/messageHandler.ts
+var makeMessageHandler = (model) => (plugin, data) => {
+  var _a, _b;
+  if (plugin !== ownCode) {
+    return;
+  }
+  const permission = (_b = (_a = model.settingsViewModel.access) == null ? void 0 : _a.permissions) == null ? void 0 : _b.PLUGIN_OCTORELAY_SWITCH;
+  const hasPermission = permission && model.loginState.hasPermission ? model.loginState.hasPermission(permission) : false;
+  const navbar = $(\`#navbar_plugin_\${ownCode}\`);
+  const hints = [];
+  for (const [key, relay] of Object.entries(data)) {
+    const control = navbar.find(\`#relais\${key}\`).toggle(hasPermission && relay.active).html(relay.icon_html).off("click").on("click", () => toggleRelay(key, relay));
+    clearHints(control);
+    hints.push({ control, key, relay });
+  }
+  showHints({ hints, navbar });
+};
+
+// model/OctoRelayModel.ts
+var OctoRelayViewModel = function([settingsViewModel, loginStateViewModel]) {
+  this.settingsViewModel = settingsViewModel;
+  this.loginState = loginStateViewModel;
+  this.onDataUpdaterPluginMessage = makeMessageHandler(this);
+};
+
+// model/initOctoRelayModel.ts
+var initOctoRelayModel = () => {
+  OCTOPRINT_VIEWMODELS.push({
+    construct: OctoRelayViewModel,
+    dependencies: ["settingsViewModel", "loginStateViewModel"]
+  });
+};
+
+// octorelay.ts
+$(initOctoRelayModel);
+"
+`;
