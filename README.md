@@ -26,8 +26,10 @@ The plugin allows you to set your own icons and flexibly customize the way the r
 
 ## Requirements
 
-- Python: at least `3.9`:
+- Python: at least `3.9`: ⚠️
   - Earlier versions of Python are supported by the plugin version `4.x` (however it does not support Raspberry Pi 5);
+    - You can install that version of the plugin manually using this URL in OctoPrint Plugin Manager:
+      `https://github.com/borisbu/OctoRelay/releases/download/4.2.1/release.zip`.
 - OctoPrint: at least `1.5.3`:
   - For [AutoConnect feature](https://github.com/borisbu/OctoRelay/blob/master/CHANGELOG.md#330): at least `1.9.0`.
 
