@@ -11,11 +11,11 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "lint": "eslint",
-    "test": "tsc --noEmit && TZ=UTC vitest run --coverage --exclude integration*",
-    "build": "yarn build:js && yarn build:styles && yarn build:verify",
+    "test": "tsc --noEmit && TZ=UTC vitest run --coverage --exclude qa*",
+    "build": "yarn build:js && yarn build:styles && yarn build:qa",
     "build:js": "tsup",
     "build:styles": "sass styles/octorelay.scss ../octoprint_octorelay/static/css/octorelay.css --no-source-map",
-    "build:verify": "vitest run integration.spec.ts"
+    "build:qa": "vitest run qa.spec.ts"
   },
   "dependencies": {},
   "devDependencies": {
