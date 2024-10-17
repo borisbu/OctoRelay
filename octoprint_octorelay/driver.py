@@ -12,6 +12,8 @@ class Driver():
         self.pin = pin # GPIO pin
         self.inverted = inverted # marks the relay as normally closed
         self.handle = LED(pin, pin_factory=pin_factory, initial_value=inverted)
+        # release immediately, avoid lock, allow physical buttons to operate same relays:
+        self.handle.pin_factory.release_pins(self.handle, self.pin)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
