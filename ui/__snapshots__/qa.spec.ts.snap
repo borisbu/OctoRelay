@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Integration test > css/octorelay.css build remains 1`] = `
+exports[`QA > css/octorelay.css build remains 1`] = `
 "#settings_plugin_octorelay .tab-content {
   position: relative;
 }
@@ -96,7 +96,7 @@ exports[`Integration test > css/octorelay.css build remains 1`] = `
 "
 `;
 
-exports[`Integration test > js/octorelay.js build remains 1`] = `
+exports[`QA > js/octorelay.js build remains 1`] = `
 ""use strict";
 
 // helpers/const.ts
