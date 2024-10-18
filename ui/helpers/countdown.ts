@@ -1,4 +1,7 @@
-/** @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments */
+/**
+ * @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments
+ * @since 5.1.0 also iterating over the requested locale, fixed locale and default one, then falling back to custom
+ * */
 const createNumberFormat = _.memoize(
   (
     ...[requested, options]: Parameters<typeof Intl.NumberFormat>
