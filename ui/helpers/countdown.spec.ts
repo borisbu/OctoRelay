@@ -46,6 +46,30 @@ describe("Countdown helpers", () => {
         expect(formatDeadline(Date.now() + offset * 1000)).toMatchSnapshot();
       },
     );
+
+    test.each([
+      [10000, "10 seconds"],
+      [60000, "1 minute"],
+    ])(`should handle invalid locales %#`, (offset, label) => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+      expect(
+        formatDeadline(Date.now() + offset, [
+          "invalid_locale_id",
+          "another_invalid_one",
+        ]),
+      ).toBe(`in ${label}`);
+      expect(warnSpy).toHaveBeenCalledTimes(2);
+      expect(warnSpy.mock.calls).toEqual([
+        [
+          "Failed to format time using invalid_locale_id locale",
+          expect.any(Error),
+        ],
+        [
+          "Failed to format time using another_invalid_one locale",
+          expect.any(Error),
+        ],
+      ]);
+    });
   });
 
   describe("getCountdownDelay() helper", () => {

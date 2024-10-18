@@ -1,4 +1,7 @@
-export const formatDeadline = (time: number): string => {
+export const formatDeadline = (
+  time: number,
+  locales = [LOCALE, undefined],
+): string => {
   let unit: "second" | "minute" | "hour" = "second";
   let timeLeft = (time - Date.now()) / 1000;
   if (timeLeft >= 60) {
@@ -10,7 +13,7 @@ export const formatDeadline = (time: number): string => {
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  for (const locale of [LOCALE, undefined]) {
+  for (const locale of locales) {
     try {
       const formattedTimeLeft = new Intl.NumberFormat(locale, {
         style: "unit",
@@ -24,7 +27,7 @@ export const formatDeadline = (time: number): string => {
       console.warn(`Failed to format time using ${locale} locale`, error);
     }
   }
-  return `in ${time} seconds`;
+  return `in ${timeLeft} ${unit}${timeLeft > 1 ? "s" : ""}`;
 };
 
 export const getCountdownDelay = (deadline: number): number =>
