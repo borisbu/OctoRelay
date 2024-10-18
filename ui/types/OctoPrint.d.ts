@@ -40,8 +40,6 @@ interface ViewModel {
 declare const OCTOPRINT_VIEWMODELS: Array<ViewModel>;
 /** @see https://github.com/OctoPrint/OctoPrint/blob/1.5.3/src/octoprint/templates/initscript.jinja2#L32 */
 declare const LOCALE: string;
-/** @see https://github.com/OctoPrint/OctoPrint/blob/1.5.3/src/octoprint/static/js/lib/lodash.js */
-declare const _: LoDashStatic;
 
 /** @see https://github.com/OctoPrint/OctoPrint/blob/1.9.0/docs/jsclientlib/base.rst */
 declare const OctoPrint: {
