@@ -10,14 +10,21 @@ export const formatDeadline = (time: number): string => {
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
-    style: "unit",
-    unitDisplay: "long",
-    minimumFractionDigits: isLastMinute ? 1 : 0,
-    maximumFractionDigits: isLastMinute ? 1 : 0,
-    unit,
-  }).format(Math.max(0, timeLeft));
-  return `in ${formattedTimeLeft}`;
+  for (const locale of [LOCALE, undefined]) {
+    try {
+      const formattedTimeLeft = new Intl.NumberFormat(locale, {
+        style: "unit",
+        unitDisplay: "long",
+        minimumFractionDigits: isLastMinute ? 1 : 0,
+        maximumFractionDigits: isLastMinute ? 1 : 0,
+        unit,
+      }).format(Math.max(0, timeLeft));
+      return `in ${formattedTimeLeft}`;
+    } catch (error) {
+      console.warn(`Failed to format time using ${locale} locale`, error);
+    }
+  }
+  return `in ${time} seconds`;
 };
 
 export const getCountdownDelay = (deadline: number): number =>
