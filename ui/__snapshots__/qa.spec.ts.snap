@@ -106,6 +106,10 @@ var closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
 var closeBtnHTML = \`<button id="\${closeBtnId}" type="button" class="close">\${closeIconHTML}</button>\`;
 
 // helpers/countdown.ts
+var createNumberFormat = _.memoize(
+  (...[locale, options]) => new Intl.NumberFormat(locale, options),
+  (...[locale, options]) => [locale, options == null ? void 0 : options.unit, options == null ? void 0 : options.maximumFractionDigits].join("|")
+);
 var formatDeadline = (time, locales = [LOCALE, void 0]) => {
   let unit = "second";
   let timeLeft = (time - Date.now()) / 1e3;
@@ -121,7 +125,7 @@ var formatDeadline = (time, locales = [LOCALE, void 0]) => {
   const nonNegTimeLeft = Math.max(0, timeLeft);
   for (const locale of locales) {
     try {
-      const formattedTimeLeft = new Intl.NumberFormat(locale, {
+      const formattedTimeLeft = createNumberFormat(locale, {
         style: "unit",
         unitDisplay: "long",
         minimumFractionDigits: isLastMinute ? 1 : 0,
