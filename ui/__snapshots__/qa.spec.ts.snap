@@ -106,7 +106,7 @@ var closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
 var closeBtnHTML = \`<button id="\${closeBtnId}" type="button" class="close">\${closeIconHTML}</button>\`;
 
 // helpers/countdown.ts
-var formatDeadline = (time) => {
+var formatDeadline = (time, locales = [LOCALE, void 0]) => {
   let unit = "second";
   let timeLeft = (time - Date.now()) / 1e3;
   if (timeLeft >= 60) {
@@ -118,14 +118,22 @@ var formatDeadline = (time) => {
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
-    style: "unit",
-    unitDisplay: "long",
-    minimumFractionDigits: isLastMinute ? 1 : 0,
-    maximumFractionDigits: isLastMinute ? 1 : 0,
-    unit
-  }).format(Math.max(0, timeLeft));
-  return \`in \${formattedTimeLeft}\`;
+  const nonNegTimeLeft = Math.max(0, timeLeft);
+  for (const locale of locales) {
+    try {
+      const formattedTimeLeft = new Intl.NumberFormat(locale, {
+        style: "unit",
+        unitDisplay: "long",
+        minimumFractionDigits: isLastMinute ? 1 : 0,
+        maximumFractionDigits: isLastMinute ? 1 : 0,
+        unit
+      }).format(nonNegTimeLeft);
+      return \`in \${formattedTimeLeft}\`;
+    } catch (error) {
+      console.warn(\`Failed to format time using \${locale} locale\`, error);
+    }
+  }
+  return \`in \${nonNegTimeLeft} \${unit}\${nonNegTimeLeft === 1 ? "" : "s"}\`;
 };
 var getCountdownDelay = (deadline) => deadline - Date.now() > 12e4 ? 6e4 : 1e3;
 var setCountdown = (selector, deadline) => {
