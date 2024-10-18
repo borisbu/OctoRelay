@@ -107,10 +107,25 @@ var closeBtnHTML = \`<button id="\${closeBtnId}" type="button" class="close">\${
 
 // helpers/countdown.ts
 var createNumberFormat = _.memoize(
-  (...[locale, options]) => new Intl.NumberFormat(locale, options),
+  (...[requested, options]) => {
+    const locales = [requested];
+    if (typeof requested === "string" && requested.includes("_")) {
+      locales.push(requested.replaceAll("_", "-"));
+    }
+    locales.push(void 0);
+    for (const locale of locales) {
+      try {
+        return new Intl.NumberFormat(locale, options);
+      } catch (error) {
+        console.warn(\`Failed to format time using \${locale} locale\`, error);
+      }
+    }
+    const format = (value) => \`\${value} \${options == null ? void 0 : options.unit}\${value === 1 ? "" : "s"}\`;
+    return { format };
+  },
   (...[locale, options]) => [locale, options == null ? void 0 : options.unit, options == null ? void 0 : options.maximumFractionDigits].join("|")
 );
-var formatDeadline = (time, locales = [LOCALE, void 0]) => {
+var formatDeadline = (time) => {
   let unit = "second";
   let timeLeft = (time - Date.now()) / 1e3;
   if (timeLeft >= 60) {
@@ -122,22 +137,14 @@ var formatDeadline = (time, locales = [LOCALE, void 0]) => {
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  const nonNegTimeLeft = Math.max(0, timeLeft);
-  for (const locale of locales) {
-    try {
-      const formattedTimeLeft = createNumberFormat(locale, {
-        style: "unit",
-        unitDisplay: "long",
-        minimumFractionDigits: isLastMinute ? 1 : 0,
-        maximumFractionDigits: isLastMinute ? 1 : 0,
-        unit
-      }).format(nonNegTimeLeft);
-      return \`in \${formattedTimeLeft}\`;
-    } catch (error) {
-      console.warn(\`Failed to format time using \${locale} locale\`, error);
-    }
-  }
-  return \`in \${nonNegTimeLeft} \${unit}\${nonNegTimeLeft === 1 ? "" : "s"}\`;
+  const formattedTimeLeft = createNumberFormat(LOCALE, {
+    style: "unit",
+    unitDisplay: "long",
+    minimumFractionDigits: isLastMinute ? 1 : 0,
+    maximumFractionDigits: isLastMinute ? 1 : 0,
+    unit
+  }).format(Math.max(0, timeLeft));
+  return \`in \${formattedTimeLeft}\`;
 };
 var getCountdownDelay = (deadline) => deadline - Date.now() > 12e4 ? 6e4 : 1e3;
 var setCountdown = (selector, deadline) => {
