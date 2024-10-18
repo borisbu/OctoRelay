@@ -1,6 +1,8 @@
 /** @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments */
 const createNumberFormat = _.memoize(
-  (...[requested, options]: Parameters<typeof Intl.NumberFormat>) => {
+  (
+    ...[requested, options]: Parameters<typeof Intl.NumberFormat>
+  ): Pick<Intl.NumberFormat, "format"> => {
     const locales = [requested];
     if (typeof requested === "string" && requested.includes("_")) {
       locales.push(requested.replaceAll("_", "-"));
@@ -13,10 +15,9 @@ const createNumberFormat = _.memoize(
         console.warn(`Failed to format time using ${locale} locale`, error);
       }
     }
-    return {
-      format: (value: number) =>
-        `${value} ${options?.unit}${value === 1 ? "" : "s"}`,
-    } satisfies Pick<Intl.NumberFormat, "format">;
+    const format = (value: number) =>
+      `${value} ${options?.unit}${value === 1 ? "" : "s"}`;
+    return { format };
   },
   (...[locale, options]: Parameters<typeof Intl.NumberFormat>) =>
     [locale, options?.unit, options?.maximumFractionDigits].join("|"),
