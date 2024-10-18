@@ -1,13 +1,11 @@
 /** @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments */
 const createNumberFormat = _.memoize(
   (...[requested, options]: Parameters<typeof Intl.NumberFormat>) => {
-    const locales = [requested]
-      .concat(
-        typeof requested === "string" && requested.includes("_")
-          ? requested.replaceAll("_", "-")
-          : [],
-      )
-      .concat(undefined);
+    const locales = [requested];
+    if (typeof requested === "string" && requested.includes("_")) {
+      locales.push(requested.replaceAll("_", "-"));
+    }
+    locales.push(undefined);
     for (const locale of locales) {
       try {
         return new Intl.NumberFormat(locale, options);
