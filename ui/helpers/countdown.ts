@@ -1,3 +1,11 @@
+/** @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments */
+const createNumberFormat = _.memoize(
+  (...[locale, options]: Parameters<typeof Intl.NumberFormat>) =>
+    new Intl.NumberFormat(locale, options),
+  (...[locale, options]: Parameters<typeof Intl.NumberFormat>) =>
+    [locale, options?.unit, options?.maximumFractionDigits].join("|"),
+);
+
 export const formatDeadline = (
   time: number,
   locales = [LOCALE, undefined],
@@ -16,7 +24,7 @@ export const formatDeadline = (
   const nonNegTimeLeft = Math.max(0, timeLeft);
   for (const locale of locales) {
     try {
-      const formattedTimeLeft = new Intl.NumberFormat(locale, {
+      const formattedTimeLeft = createNumberFormat(locale, {
         style: "unit",
         unitDisplay: "long",
         minimumFractionDigits: isLastMinute ? 1 : 0,

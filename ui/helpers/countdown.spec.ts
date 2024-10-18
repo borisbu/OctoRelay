@@ -1,6 +1,6 @@
 import MockDate from "mockdate";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
-import { formatDeadline, getCountdownDelay, setCountdown } from "./countdown";
+import { lodashMock } from "../mocks/lodash";
 import {
   describe,
   vi,
@@ -11,7 +11,7 @@ import {
   test,
 } from "vitest";
 
-describe("Countdown helpers", () => {
+describe("Countdown helpers", async () => {
   const setIntervalMock = vi.fn<(handler: () => void, delay: number) => void>(
     () => "mockedInterval",
   );
@@ -20,9 +20,14 @@ describe("Countdown helpers", () => {
   Object.assign(global, {
     LOCALE: "en",
     $: jQueryMock,
+    _: lodashMock,
     setInterval: setIntervalMock,
     clearInterval: clearIntervalMock,
   });
+
+  const { formatDeadline, getCountdownDelay, setCountdown } = await import(
+    "./countdown"
+  );
 
   beforeAll(() => {
     MockDate.set("2023-08-13T22:30:00");
