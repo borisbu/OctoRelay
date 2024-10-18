@@ -1,4 +1,5 @@
 import MockDate from "mockdate";
+import assert from "node:assert";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { lodashMock } from "../mocks/lodash";
 import {
@@ -12,6 +13,7 @@ import {
 } from "vitest";
 
 describe("Countdown helpers", async () => {
+  const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
   const setIntervalMock = vi.fn<(handler: () => void, delay: number) => void>(
     () => "mockedInterval",
   );
@@ -34,6 +36,10 @@ describe("Countdown helpers", async () => {
   });
 
   afterEach(() => {
+    Object.assign(global, {
+      LOCALE: "en",
+    });
+    warnSpy.mockClear();
     setIntervalMock.mockClear();
     clearIntervalMock.mockClear();
     elementMock.text.mockClear();
@@ -49,21 +55,15 @@ describe("Countdown helpers", async () => {
       "Should format the supplied UNIX timestamp having offset %s seconds",
       (offset) => {
         expect(formatDeadline(Date.now() + offset * 1000)).toMatchSnapshot();
+        expect(warnSpy).not.toHaveBeenCalled();
       },
     );
 
-    test.each([
-      [10000, "10 seconds"],
-      [60000, "1 minute"],
-      [-10000, "0 seconds"],
-    ])(`should handle invalid locales %#`, (offset, label) => {
-      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-      expect(
-        formatDeadline(Date.now() + offset, [
-          "invalid_locale_id",
-          "another_invalid_one",
-        ]),
-      ).toBe(`in ${label}`);
+    test("should handle invalid locales", () => {
+      Object.assign(global, {
+        LOCALE: "invalid_locale_id",
+      });
+      expect(formatDeadline(Date.now() + 10000)).toBe(`in 10 seconds`);
       expect(warnSpy).toHaveBeenCalledTimes(2);
       expect(warnSpy.mock.calls).toEqual([
         [
@@ -71,9 +71,24 @@ describe("Countdown helpers", async () => {
           expect.any(Error),
         ],
         [
-          "Failed to format time using another_invalid_one locale",
+          "Failed to format time using invalid-locale-id locale",
           expect.any(Error),
         ],
+      ]);
+    });
+
+    test.each([
+      [1000, "1 second"],
+      [10000, "10 seconds"],
+    ])("should handle complete Intl malfunction", (offset, expected) => {
+      vi.spyOn(Intl, "NumberFormat").mockImplementation(() =>
+        assert.fail("Can not do this"),
+      );
+      expect(formatDeadline(Date.now() + offset)).toBe(`in ${expected}`);
+      expect(warnSpy).toHaveBeenCalledTimes(2);
+      expect(warnSpy.mock.calls).toEqual([
+        ["Failed to format time using en locale", expect.any(Error)],
+        ["Failed to format time using undefined locale", expect.any(Error)],
       ]);
     });
   });

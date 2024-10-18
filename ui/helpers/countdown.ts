@@ -1,15 +1,30 @@
 /** @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments */
 const createNumberFormat = _.memoize(
-  (...[locale, options]: Parameters<typeof Intl.NumberFormat>) =>
-    new Intl.NumberFormat(locale, options),
+  (...[requested, options]: Parameters<typeof Intl.NumberFormat>) => {
+    const locales = [requested]
+      .concat(
+        typeof requested === "string" && requested.includes("_")
+          ? requested.replaceAll("_", "-")
+          : [],
+      )
+      .concat(undefined);
+    for (const locale of locales) {
+      try {
+        return new Intl.NumberFormat(locale, options);
+      } catch (error) {
+        console.warn(`Failed to format time using ${locale} locale`, error);
+      }
+    }
+    return {
+      format: (value: number) =>
+        `${value} ${options?.unit}${value === 1 ? "" : "s"}`,
+    } satisfies Pick<Intl.NumberFormat, "format">;
+  },
   (...[locale, options]: Parameters<typeof Intl.NumberFormat>) =>
     [locale, options?.unit, options?.maximumFractionDigits].join("|"),
 );
 
-export const formatDeadline = (
-  time: number,
-  locales = [LOCALE, undefined],
-): string => {
+export const formatDeadline = (time: number): string => {
   let unit: "second" | "minute" | "hour" = "second";
   let timeLeft = (time - Date.now()) / 1000;
   if (timeLeft >= 60) {
@@ -21,22 +36,14 @@ export const formatDeadline = (
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  const nonNegTimeLeft = Math.max(0, timeLeft);
-  for (const locale of locales) {
-    try {
-      const formattedTimeLeft = createNumberFormat(locale, {
-        style: "unit",
-        unitDisplay: "long",
-        minimumFractionDigits: isLastMinute ? 1 : 0,
-        maximumFractionDigits: isLastMinute ? 1 : 0,
-        unit,
-      }).format(nonNegTimeLeft);
-      return `in ${formattedTimeLeft}`;
-    } catch (error) {
-      console.warn(`Failed to format time using ${locale} locale`, error);
-    }
-  }
-  return `in ${nonNegTimeLeft} ${unit}${nonNegTimeLeft === 1 ? "" : "s"}`;
+  const formattedTimeLeft = createNumberFormat(LOCALE, {
+    style: "unit",
+    unitDisplay: "long",
+    minimumFractionDigits: isLastMinute ? 1 : 0,
+    maximumFractionDigits: isLastMinute ? 1 : 0,
+    unit,
+  }).format(Math.max(0, timeLeft));
+  return `in ${formattedTimeLeft}`;
 };
 
 export const getCountdownDelay = (deadline: number): number =>
