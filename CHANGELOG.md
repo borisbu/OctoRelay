@@ -2,6 +2,14 @@
 
 ## Version 5
 
+### 5.0.3
+
+- Fixed issue with incorrect locale format causing countdown failure and disability to cancel upcoming relay switch:
+  - The issue reported by [Mattia Vidoni](https://github.com/ch3p4ll3);
+  - The correct locale format is described here:
+    https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#locales_argument;
+  - When locale has invalid format or unsupported by the browser, the default one will be used.
+
 ### 5.0.2
 
 - Initial state for relays is `OFF` — fixes excessive switches on startup in most cases.
