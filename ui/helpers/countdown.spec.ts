@@ -50,6 +50,7 @@ describe("Countdown helpers", () => {
     test.each([
       [10000, "10 seconds"],
       [60000, "1 minute"],
+      [-10000, "0 seconds"],
     ])(`should handle invalid locales %#`, (offset, label) => {
       const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
       expect(
