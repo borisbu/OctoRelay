@@ -1,5 +1,4 @@
 import { readFile } from "node:fs/promises";
-import { describe, test, expect } from "vitest";
 
 describe("QA", () => {
   test.each(["css/octorelay.css", "js/octorelay.js"])(

@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { Window } from "happy-dom";
-import { describe, test, expect } from "vitest";
 
 describe("Knockout bindings", () => {
   const document = new Window().document;

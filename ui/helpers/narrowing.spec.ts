@@ -1,5 +1,4 @@
 import { hasUpcomingTask } from "./narrowing";
-import { describe, test, expect } from "vitest";
 
 describe("Narrowing helpers", () => {
   describe("hasUpcomingTask() helper", () => {
