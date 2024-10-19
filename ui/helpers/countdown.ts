@@ -1,3 +1,31 @@
+/**
+ * @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments
+ * @since 5.1.0 also iterating over the requested locale, fixed locale and default one, then falling back to custom
+ * */
+const createNumberFormat = _.memoize(
+  (
+    ...[requested, options]: Parameters<typeof Intl.NumberFormat>
+  ): Pick<Intl.NumberFormat, "format"> => {
+    const locales = [requested];
+    if (typeof requested === "string" && requested.includes("_")) {
+      locales.push(requested.replaceAll("_", "-"));
+    }
+    locales.push(undefined);
+    for (const locale of locales) {
+      try {
+        return new Intl.NumberFormat(locale, options);
+      } catch (error) {
+        console.warn(`Failed to format time using ${locale} locale`, error);
+      }
+    }
+    const format = (value: number) =>
+      `${value} ${options?.unit}${value === 1 ? "" : "s"}`;
+    return { format };
+  },
+  (...[locale, options]: Parameters<typeof Intl.NumberFormat>) =>
+    [locale, options?.unit, options?.maximumFractionDigits].join("|"),
+);
+
 export const formatDeadline = (time: number): string => {
   let unit: "second" | "minute" | "hour" = "second";
   let timeLeft = (time - Date.now()) / 1000;
@@ -10,7 +38,7 @@ export const formatDeadline = (time: number): string => {
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
+  const formattedTimeLeft = createNumberFormat(LOCALE, {
     style: "unit",
     unitDisplay: "long",
     minimumFractionDigits: isLastMinute ? 1 : 0,

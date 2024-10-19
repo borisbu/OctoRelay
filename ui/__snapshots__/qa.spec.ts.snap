@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Integration test > css/octorelay.css build remains 1`] = `
+exports[`QA > css/octorelay.css build remains 1`] = `
 "#settings_plugin_octorelay .tab-content {
   position: relative;
 }
@@ -96,7 +96,7 @@ exports[`Integration test > css/octorelay.css build remains 1`] = `
 "
 `;
 
-exports[`Integration test > js/octorelay.js build remains 1`] = `
+exports[`QA > js/octorelay.js build remains 1`] = `
 ""use strict";
 
 // helpers/const.ts
@@ -106,6 +106,25 @@ var closeIconHTML = '<span class="fa fa-close fa-sm"></span>';
 var closeBtnHTML = \`<button id="\${closeBtnId}" type="button" class="close">\${closeIconHTML}</button>\`;
 
 // helpers/countdown.ts
+var createNumberFormat = _.memoize(
+  (...[requested, options]) => {
+    const locales = [requested];
+    if (typeof requested === "string" && requested.includes("_")) {
+      locales.push(requested.replaceAll("_", "-"));
+    }
+    locales.push(void 0);
+    for (const locale of locales) {
+      try {
+        return new Intl.NumberFormat(locale, options);
+      } catch (error) {
+        console.warn(\`Failed to format time using \${locale} locale\`, error);
+      }
+    }
+    const format = (value) => \`\${value} \${options == null ? void 0 : options.unit}\${value === 1 ? "" : "s"}\`;
+    return { format };
+  },
+  (...[locale, options]) => [locale, options == null ? void 0 : options.unit, options == null ? void 0 : options.maximumFractionDigits].join("|")
+);
 var formatDeadline = (time) => {
   let unit = "second";
   let timeLeft = (time - Date.now()) / 1e3;
@@ -118,7 +137,7 @@ var formatDeadline = (time) => {
     unit = "hour";
   }
   const isLastMinute = unit === "minute" && timeLeft < 2;
-  const formattedTimeLeft = new Intl.NumberFormat(LOCALE, {
+  const formattedTimeLeft = createNumberFormat(LOCALE, {
     style: "unit",
     unitDisplay: "long",
     minimumFractionDigits: isLastMinute ? 1 : 0,
