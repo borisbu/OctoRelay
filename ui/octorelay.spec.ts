@@ -1,5 +1,4 @@
 import { lodashMock } from "./mocks/lodash";
-import { describe, vi, test, expect } from "vitest";
 
 describe("Entrypoint", () => {
   const jQueryMock = vi.fn();

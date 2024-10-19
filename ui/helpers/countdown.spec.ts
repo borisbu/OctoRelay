@@ -1,16 +1,7 @@
 import MockDate from "mockdate";
-import assert from "node:assert";
+import assert from "node:assert/strict";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { lodashMock } from "../mocks/lodash";
-import {
-  describe,
-  vi,
-  beforeAll,
-  afterEach,
-  afterAll,
-  expect,
-  test,
-} from "vitest";
 
 describe("Countdown helpers", async () => {
   const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});

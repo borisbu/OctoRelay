@@ -3,7 +3,6 @@ import { countdownMock, deadlineMock, disposerMock } from "../mocks/countdown";
 import { cancelMock } from "../mocks/actions";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { addTooltip, clearHints, addPopover, showHints } from "./hints";
-import { describe, beforeAll, afterAll, afterEach, test, expect } from "vitest";
 
 describe("Hints helpers", () => {
   Object.assign(global, {
