@@ -4,7 +4,9 @@
     "target": "ES6",
     "module": "ES2022",
     "moduleResolution": "Bundler",
-    "removeComments": true
+    "removeComments": true,
+    "allowUmdGlobalAccess": true,
+    "types": ["vitest/globals"]
   },
   "exclude": [
     "node_modules"

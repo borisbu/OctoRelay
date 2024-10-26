@@ -1,6 +1,5 @@
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { cancelTask, toggleRelay } from "./actions";
-import { vi, describe, afterEach, test, expect } from "vitest";
 
 describe("Actions", () => {
   const apiMock = vi.fn();

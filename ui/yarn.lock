@@ -743,6 +743,11 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.15.tgz#596a1747233694d50f6ad8a7869fcb6f56cf5841"
   integrity sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==
 
+"@types/lodash@^3.10.9":
+  version "3.10.9"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-3.10.9.tgz#8e2276d0b1d60a0d3820268f85705f77ec482c5e"
+  integrity sha512-BqzpDcDNIj0D15QezYF2C8OhOZVsm3g9Y6bLfXC6jO+wgxDGdCJlzge9OqnI0RezYJNsfsGXovhb3zTZjHpiCA==
+
 "@types/node@^22.5.2":
   version "22.7.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-22.7.5.tgz#cfde981727a7ab3611a481510b473ae54442b92b"
