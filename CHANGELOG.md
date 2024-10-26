@@ -4,6 +4,9 @@
 
 ### 5.1.0
 
+- Fixed compatibility issue with [Physical Button plugin](https://github.com/LuxuSam/PhysicalButton):
+  - OctoRelay v5 uses a new driver having exclusive pin reservation, so that two plugins could not operate same pin.
+  - This version releases the reservation immediately, enabling relay operation both using the UI and a physical button.
 - Performance improvement for the countdown (remaining time formatting function):
   - Attempting to fix user defined locale (`it_IT —> it-IT`) in order to preserve translations;
   - Looking up for a suitable locale only once per time unit (memoization);
