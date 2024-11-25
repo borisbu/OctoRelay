@@ -4,9 +4,9 @@
 
 ### 5.1.1
 
-- Fixed a bug on requesting inactive relay state during the UI update:
-  - OctoRelay v5 used to request the GPIO pin state of inactive relays which could cause reservation conflicts and
-    errors such as `lgpio.error: 'GPIO busy'`;
+- Fixed a bug on requesting the state of inactive relays during the UI update:
+  - OctoRelay v5 queried the GPIO pin state of inactive relays which could cause reservation conflicts and errors
+    such as `lgpio.error: 'GPIO busy'`;
   - The issue was found and reported by [Christoph Hagen](https://github.com/christophhagen).
 
 ### 5.1.0
