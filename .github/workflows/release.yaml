@@ -130,17 +130,7 @@ jobs:
           path: dist
       - name: Rename to release.zip
         run: cp dist/octorelay-*.zip release.zip
-      - name: Get release ID
-        id: get_release
-        uses: bruceadams/get-release@v1.3.2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Attach the asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: release.zip
-          asset_name: release.zip
-          asset_content_type: application/zip
+          files: release.zip
