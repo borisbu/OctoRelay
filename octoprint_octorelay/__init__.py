@@ -313,15 +313,13 @@ class OctoRelayPlugin(
         ))
         for index in RELAY_INDEXES:
             active = bool(settings[index]["active"])
-            relay = Driver.ensure(
-                int(settings[index]["relay_pin"] or 0),
-                bool(settings[index]["inverted_output"])
-            )
-            relay_state = relay.is_closed() if active else False
+            pin = int(settings[index]["relay_pin"] or 0)
+            inverted = bool(settings[index]["inverted_output"])
+            relay_state = Driver.ensure(pin, inverted).is_closed() if active else False
             task = upcoming_tasks[index]
             self.model[index] = {
-                "relay_pin": relay.pin,
-                "inverted_output": relay.inverted,
+                "relay_pin": pin,
+                "inverted_output": inverted,
                 "relay_state": relay_state, # bool since v3.1
                 "label_text": settings[index]["label_text"],
                 "active": active,
