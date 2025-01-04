@@ -17,9 +17,7 @@
     "build:styles": "sass styles/octorelay.scss ../octoprint_octorelay/static/css/octorelay.css --no-source-map",
     "build:qa": "vitest run qa.spec.ts"
   },
-  "dependencies": {
-    "vite": "^6"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@tsconfig/node18": "^18.2.4",
     "@types/jquery": "^3.5.30",
