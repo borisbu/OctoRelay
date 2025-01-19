@@ -11,7 +11,7 @@ jobs:
     name: Build the distribution
     runs-on: ubuntu-latest
     env:
-      NODE_VERSION: 18.x
+      NODE_VERSION: 20.x
       PYTHON_VERSION: 3.11
       OCTOPRINT_VERSION: 1.9
     steps:
