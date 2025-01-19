@@ -23,7 +23,7 @@
     "@types/jquery": "^3.5.30",
     "@types/lodash": "^3.10.9",
     "@types/node": "^22.5.2",
-    "@vitest/coverage-istanbul": "^2.0.5",
+    "@vitest/coverage-istanbul": "^3.0.2",
     "eslint": "^9.12.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-allowed-dependencies": "^1.0.1",
@@ -36,7 +36,7 @@
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.10.0",
-    "vitest": "^2.0.5"
+    "vitest": "^3.0.2"
   },
   "resolutions": {
     "**/vite": "^6"
