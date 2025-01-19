@@ -2,6 +2,10 @@
 
 ## Version 5
 
+### 5.1.2
+
+- Technical update: no changes.
+
 ### 5.1.1
 
 - Fixed a bug on requesting the state of inactive relays during the UI update:
