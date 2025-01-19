@@ -6,7 +6,7 @@ export default defineConfig({
     coverage: {
       provider: "istanbul",
       reporter: ["json", "lcov", "text", "html"],
-      exclude: ["mocks", "*.config.ts", "**/*.spec.ts"],
+      exclude: ["mocks", "*.config.ts"],
     },
   },
 });
