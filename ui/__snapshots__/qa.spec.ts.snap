@@ -4,7 +4,7 @@ exports[`QA > css/octorelay.css build remains 1`] = `
 "#settings_plugin_octorelay .tab-content {
   position: relative;
 }
-#settings_plugin_octorelay .btn > input[type=radio] {
+#settings_plugin_octorelay .btn > input[type='radio'] {
   display: none;
 }
 #settings_plugin_octorelay input.code {
@@ -17,7 +17,8 @@ exports[`QA > css/octorelay.css build remains 1`] = `
 #settings_plugin_octorelay .help-inline a.same-color {
   color: inherit;
 }
-#settings_plugin_octorelay .control-label span.label, #settings_plugin_octorelay .help-inline span.label {
+#settings_plugin_octorelay .control-label span.label,
+#settings_plugin_octorelay .help-inline span.label {
   zoom: 0.85;
 }
 #settings_plugin_octorelay .fa-info {
@@ -40,7 +41,7 @@ exports[`QA > css/octorelay.css build remains 1`] = `
   top: 0;
   scale: 3;
   transform-origin: top left;
-  border: 0.3px dashed rgba(0, 0, 0, 0.4);
+  border: 0.3px dashed #00000066;
   box-sizing: content-box;
   border-radius: 2px;
 }
@@ -56,7 +57,6 @@ exports[`QA > css/octorelay.css build remains 1`] = `
   scale: 0.75;
   transform-origin: top;
 }
-
 #navbar_plugin_octorelay > a {
   display: flex;
   float: left;
