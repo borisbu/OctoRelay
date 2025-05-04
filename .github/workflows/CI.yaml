@@ -123,7 +123,7 @@ jobs:
           make
           sudo make install
       - name: Install OctoRelay
-        run: pip install -e .
+        run: PIP_USE_PEP517=0 pip install -e .
       - name: Prepare testing environment
         run: pip install coverage pylint mypy
       - name: Test
