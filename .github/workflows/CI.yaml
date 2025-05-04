@@ -101,6 +101,9 @@ jobs:
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
+      - name: Fixed setuptools
+        # see https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html
+        run: pip install "setuptools~=79.0.0"
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
