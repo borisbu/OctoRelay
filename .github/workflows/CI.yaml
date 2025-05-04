@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: [ "3.9", "3.10", "3.11", "3.12" ]
+        python: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
         octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11" ]
         exclude:
           # These versions are not compatible to each other:
@@ -61,26 +61,38 @@ jobs:
             python: 3.11
           - octoprint: 1.5
             python: 3.12
+          - octoprint: 1.5
+            python: 3.13
           - octoprint: 1.6
             python: 3.10
           - octoprint: 1.6
             python: 3.11
           - octoprint: 1.6
             python: 3.12
+          - octoprint: 1.6
+            python: 3.13
           - octoprint: 1.7
             python: 3.10
           - octoprint: 1.7
             python: 3.11
           - octoprint: 1.7
             python: 3.12
+          - octoprint: 1.7
+            python: 3.13
           - octoprint: 1.8
             python: 3.10
           - octoprint: 1.8
             python: 3.11
           - octoprint: 1.8
             python: 3.12
+          - octoprint: 1.8
+            python: 3.13
           - octoprint: 1.9
             python: 3.12
+          - octoprint: 1.9
+            python: 3.13
+          - octoprint: 1.10
+            python: 3.13
     steps:
       - uses: actions/checkout@v4
       - name: Install Python
@@ -104,6 +116,15 @@ jobs:
       - name: Fixed setuptools
         # see https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html
         run: pip install "setuptools~=79.0.0"
+      - name: Make liblgpio.so
+        if: ${{ matrix.python == '3.13' }}
+        # see https://github.com/borisbu/OctoRelay/issues/346#issuecomment-2849009685
+        run: |
+          wget https://abyz.me.uk/lg/lg.zip
+          unzip lg.zip
+          cd lg
+          make
+          sudo make install
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
