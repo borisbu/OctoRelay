@@ -113,6 +113,9 @@ jobs:
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
+      - name: Install octoprint-setuptools
+        if: ${{ matrix.octoprint == '1.11' }}
+        run: pip install "octoprint-setuptools>=1.0.0"
       - name: Make liblgpio.so
         if: ${{ matrix.python == '3.13' }}
         run: |
