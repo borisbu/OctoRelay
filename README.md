@@ -31,6 +31,8 @@ The plugin allows you to set your own icons and flexibly customize the way the r
   - That version however does not support Raspberry Pi 5;
   - You can install that version of the plugin manually using this URL in OctoPrint Plugin Manager:
     `https://github.com/borisbu/OctoRelay/releases/download/4.2.1/release.zip`.
+  - For Python `3.13` and higher you might need to build `lgpio` from sources:
+    https://abyz.me.uk/lg/download.html
 - OctoPrint — at least `1.5.3`:
   - For [AutoConnect feature](https://github.com/borisbu/OctoRelay/blob/master/CHANGELOG.md#330) — at least `1.9.0`.
 
