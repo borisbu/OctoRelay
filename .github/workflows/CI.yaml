@@ -113,6 +113,14 @@ jobs:
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
+      - name: Make liblgpio.so
+        if: ${{ matrix.python == '3.13' }}
+        run: |
+          wget https://abyz.me.uk/lg/lg.zip
+          unzip lg.zip
+          cd lg
+          make
+          sudo make install
       - name: Install OctoRelay
         run: pip install -e .
       - name: Prepare testing environment
