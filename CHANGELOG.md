@@ -2,6 +2,13 @@
 
 ## Version 5
 
+### 5.2.0
+
+- Switched from SASS to LESS;
+- Tested with OctoPrint 1.11;
+- Tested with Python 3.13:
+  - This version might require to build `lgpio` from sources: https://abyz.me.uk/lg/download.html
+
 ### 5.1.2
 
 - Technical update: no changes.
