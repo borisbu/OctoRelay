@@ -24,7 +24,7 @@
     "@types/lodash": "^3.10.9",
     "@types/node": "^22.15.3",
     "@vitest/coverage-istanbul": "^3.1.2",
-    "eslint": "^9.26.0",
+    "eslint": "~9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-allowed-dependencies": "^1.2.0",
     "eslint-plugin-prettier": "^5.2.6",
