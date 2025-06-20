@@ -75,7 +75,7 @@ class TestDriver(unittest.TestCase):
         self.assertFalse(relay1.inverted)
 
         # Test retrieving the existing relay with the same pin and inversion
-        relay2 = Driver.ensure(17, True, MockFactory())
+        relay2 = Driver.ensure(17, False, MockFactory())
         self.assertIs(relay1, relay2)
         self.assertEqual(len(Driver.cache), 1)  # Should still be 1
 
