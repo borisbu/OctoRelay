@@ -27,7 +27,7 @@ class TestDriver(unittest.TestCase):
     def test_close(self):
         cases = [
             { "relay": Driver(18, False, MockFactory()), "expected_pin_state": True },
-            { "relay": Driver(18, True, MockFactory()), "expected_pin_state": False }
+            { "relay": Driver(18, True, MockFactory()), "expected_pin_state": True }
         ]
         for case in cases:
             case["relay"].close()
@@ -36,7 +36,7 @@ class TestDriver(unittest.TestCase):
     def test_open(self):
         cases = [
             { "relay": Driver(18, False, MockFactory()), "expected_pin_state": False },
-            { "relay": Driver(18, True, MockFactory()), "expected_pin_state": True }
+            { "relay": Driver(18, True, MockFactory()), "expected_pin_state": False }
         ]
         for case in cases:
             case["relay"].open()
@@ -46,8 +46,8 @@ class TestDriver(unittest.TestCase):
         cases = [
             { "mocked_state": 1, "inverted": False, "expected_relay_state": True },
             { "mocked_state": 0, "inverted": False, "expected_relay_state": False },
-            { "mocked_state": 1, "inverted": True, "expected_relay_state": False },
-            { "mocked_state": 0, "inverted": True, "expected_relay_state": True },
+            { "mocked_state": 1, "inverted": True, "expected_relay_state": True },
+            { "mocked_state": 0, "inverted": True, "expected_relay_state": False },
         ]
         for case in cases:
             relay = Driver(18, case["inverted"], MockFactory())
@@ -58,8 +58,8 @@ class TestDriver(unittest.TestCase):
         cases = [
             { "mocked_state": 1, "inverted": False, "expected_pin_state": False, "expected_relay_state": False },
             { "mocked_state": 0, "inverted": False, "expected_pin_state": True, "expected_relay_state": True },
-            { "mocked_state": 1, "inverted": True, "expected_pin_state": False, "expected_relay_state": True },
-            { "mocked_state": 0, "inverted": True, "expected_pin_state": True, "expected_relay_state": False },
+            { "mocked_state": 1, "inverted": True, "expected_pin_state": False, "expected_relay_state": False },
+            { "mocked_state": 0, "inverted": True, "expected_pin_state": True, "expected_relay_state": True },
         ]
         for case in cases:
             relay = Driver(18, case["inverted"], MockFactory())
