@@ -1,5 +1,6 @@
 include README.md
 include CHANGELOG.md
+include pyproject.toml
 recursive-include octoprint_octorelay/templates *
 recursive-include octoprint_octorelay/translations *
 recursive-include octoprint_octorelay/static *
