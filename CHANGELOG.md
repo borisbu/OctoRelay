@@ -2,6 +2,12 @@
 
 ## Version 5
 
+### 5.3.0
+
+- Adds `pyproject.toml` file to the distribution:
+  - See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+- Upgrades to UI and dev dependencies.
+
 ### 5.2.0
 
 - Switched from SASS to LESS;
