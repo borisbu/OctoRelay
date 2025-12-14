@@ -37,7 +37,8 @@
     "vitest": "^4.0.15"
   },
   "resolutions": {
-    "happy-dom/@types/node": "^24"
+    "happy-dom/@types/node": "^24",
+    "vite": "8.0.0-beta.1"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
