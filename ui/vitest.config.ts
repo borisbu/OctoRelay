@@ -8,5 +8,9 @@ export default defineConfig({
       reporter: ["json", "lcov", "text", "html"],
       exclude: ["mocks", "*.config.ts"],
     },
+    fakeTimers: {
+      // used by countdown.spec.ts
+      toFake: ["setTimeout", "clearTimeout", "Date"],
+    },
   },
 });
