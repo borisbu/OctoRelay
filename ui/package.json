@@ -29,7 +29,7 @@
     "eslint-plugin-allowed-dependencies": "^2.0.1",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-unicorn": "^56.0.1",
-    "happy-dom": "^16.8.1",
+    "happy-dom": "^20.0.11",
     "less": "^4.4.2",
     "mockdate": "^3.0.5",
     "prettier": "3.7.4",
@@ -37,6 +37,9 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
     "vitest": "^4.0.15"
+  },
+  "resolutions": {
+    "happy-dom/@types/node": "^24"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
