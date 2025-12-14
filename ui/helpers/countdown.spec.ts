@@ -1,4 +1,3 @@
-import MockDate from "mockdate";
 import assert from "node:assert/strict";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
 import { lodashMock } from "../mocks/lodash";
@@ -18,12 +17,11 @@ describe("Countdown helpers", async () => {
     clearInterval: clearIntervalMock,
   });
 
-  const { formatDeadline, getCountdownDelay, setCountdown } = await import(
-    "./countdown"
-  );
+  const { formatDeadline, getCountdownDelay, setCountdown } =
+    await import("./countdown");
 
   beforeAll(() => {
-    MockDate.set("2023-08-13T22:30:00");
+    vi.useFakeTimers().setSystemTime("2023-08-13T22:30:00");
   });
 
   afterEach(() => {
@@ -38,7 +36,7 @@ describe("Countdown helpers", async () => {
   });
 
   afterAll(() => {
-    MockDate.reset();
+    vi.useRealTimers();
   });
 
   describe("formatDeadline() helper", () => {
@@ -72,9 +70,9 @@ describe("Countdown helpers", async () => {
       [1000, "1 second"],
       [10000, "10 seconds"],
     ])("should handle complete Intl malfunction", (offset, expected) => {
-      vi.spyOn(Intl, "NumberFormat").mockImplementation(() =>
-        assert.fail("Can not do this"),
-      );
+      vi.spyOn(Intl, "NumberFormat").mockImplementation(function () {
+        assert.fail("Can not do this");
+      });
       expect(formatDeadline(Date.now() + offset)).toBe(`in ${expected}`);
       expect(warnSpy).toHaveBeenCalledTimes(2);
       expect(warnSpy.mock.calls).toEqual([
@@ -99,7 +97,7 @@ describe("Countdown helpers", async () => {
       expect(setIntervalMock).toHaveBeenCalledWith(expect.any(Function), 60000);
       const intervalFn = setIntervalMock.mock.calls[0][0];
       elementMock.is.mockImplementationOnce(() => isVisible);
-      MockDate.set(Date.now() + 1000); // this will trigger the new delay
+      vi.setSystemTime(Date.now() + 1000); // this will trigger the new delay
       intervalFn();
       if (isVisible) {
         expect(elementMock.text).toHaveBeenCalledWith("in 2 minutes");
@@ -110,7 +108,7 @@ describe("Countdown helpers", async () => {
         );
         // coverage branch for the case nextDelay === delay
         const nextIntervalFn = setIntervalMock.mock.calls[1][0];
-        MockDate.set(Date.now() + 1000); // same delay branch this time
+        vi.setSystemTime(Date.now() + 1000); // same delay branch this time
         nextIntervalFn();
         expect(setIntervalMock).toHaveBeenCalledTimes(2); // not called again this time
       } else {
