@@ -18,9 +18,8 @@ describe("Countdown helpers", async () => {
     clearInterval: clearIntervalMock,
   });
 
-  const { formatDeadline, getCountdownDelay, setCountdown } = await import(
-    "./countdown"
-  );
+  const { formatDeadline, getCountdownDelay, setCountdown } =
+    await import("./countdown");
 
   beforeAll(() => {
     MockDate.set("2023-08-13T22:30:00");
