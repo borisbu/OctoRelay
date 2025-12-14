@@ -72,9 +72,9 @@ describe("Countdown helpers", async () => {
       [1000, "1 second"],
       [10000, "10 seconds"],
     ])("should handle complete Intl malfunction", (offset, expected) => {
-      vi.spyOn(Intl, "NumberFormat").mockImplementation(() =>
-        assert.fail("Can not do this"),
-      );
+      vi.spyOn(Intl, "NumberFormat").mockImplementation(function () {
+        assert.fail("Can not do this");
+      });
       expect(formatDeadline(Date.now() + offset)).toBe(`in ${expected}`);
       expect(warnSpy).toHaveBeenCalledTimes(2);
       expect(warnSpy.mock.calls).toEqual([
