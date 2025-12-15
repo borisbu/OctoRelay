@@ -6,6 +6,7 @@
 
 - Adds `pyproject.toml` file to the distribution:
   - See https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html for details.
+- The bundler changed from `tsup` to `tsdown`;
 - Upgrades to UI and dev dependencies.
 
 ### 5.2.0
