@@ -97,8 +97,7 @@ exports[`QA > css/octorelay.css build remains 1`] = `
 `;
 
 exports[`QA > js/octorelay.js build remains 1`] = `
-"
-//#region helpers/const.ts
+"//#region helpers/const.ts
 const ownCode = "octorelay";
 const closeBtnId = "pop-closer";
 const closeIconHTML = "<span class=\\"fa fa-close fa-sm\\"></span>";
