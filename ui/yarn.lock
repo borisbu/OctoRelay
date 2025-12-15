@@ -1070,7 +1070,7 @@ keyv@^4.5.4:
   dependencies:
     json-buffer "3.0.1"
 
-less@^4.4.2:
+less@^4.5.1:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/less/-/less-4.5.1.tgz#739266532249a3de232e8b60ffb1b27ad5ec6ad8"
   integrity sha512-UKgI3/KON4u6ngSsnDADsUERqhZknsVZbnuzlRZXLQCmfC/MDld42fTydUE9B+Mla1AL6SJ/Pp6SlEFi/AVGfw==

@@ -29,7 +29,7 @@
     "eslint-plugin-allowed-dependencies": "^2.0.1",
     "eslint-plugin-prettier": "^5.5.4",
     "happy-dom": "^20.0.11",
-    "less": "^4.4.2",
+    "less": "^4.5.1",
     "prettier": "3.7.4",
     "tsdown": "^0.17.4",
     "typescript": "^5.9.3",
