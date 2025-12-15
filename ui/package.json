@@ -13,7 +13,7 @@
     "lint": "eslint",
     "test": "tsc --noEmit && TZ=UTC vitest run --coverage --exclude qa*",
     "build": "yarn build:js && yarn build:styles && yarn build:qa",
-    "build:js": "tsup",
+    "build:js": "tsdown",
     "build:styles": "lessc styles/octorelay.less ../octoprint_octorelay/static/css/octorelay.css",
     "build:qa": "vitest run qa.spec.ts"
   },
@@ -31,13 +31,15 @@
     "happy-dom": "^20.0.11",
     "less": "^4.4.2",
     "prettier": "3.7.4",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.17.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
     "vitest": "^4.0.15"
   },
   "resolutions": {
-    "happy-dom/@types/node": "^24"
+    "happy-dom/@types/node": "^24",
+    "vite": "8.0.0-beta.1",
+    "vite/lightningcss": "npm:empty-npm-package@1.0.0"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }
