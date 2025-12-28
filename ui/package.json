@@ -23,7 +23,7 @@
     "@types/jquery": "^3.5.33",
     "@types/lodash": "^3.10.9",
     "@types/node": "^24.10.4",
-    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-allowed-dependencies": "^2.0.1",
@@ -31,14 +31,14 @@
     "happy-dom": "^20.0.11",
     "less": "^4.5.1",
     "prettier": "3.7.4",
-    "tsdown": "^0.17.4",
+    "tsdown": "^0.18.3",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.49.0",
-    "vitest": "^4.0.15"
+    "vitest": "^4.0.16"
   },
   "resolutions": {
     "happy-dom/@types/node": "^24",
-    "vite": "8.0.0-beta.1",
+    "vite": "8.0.0-beta.5",
     "vite/lightningcss": "npm:empty-npm-package@1.0.0"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
