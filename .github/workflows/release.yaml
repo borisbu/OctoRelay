@@ -13,7 +13,7 @@ jobs:
     env:
       NODE_VERSION: 20.x
       PYTHON_VERSION: 3.11
-      OCTOPRINT_VERSION: 1.9
+      OCTOPRINT_VERSION: 1.11
     steps:
     ### UI
     - name: Get yarn cache dir
