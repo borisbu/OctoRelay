@@ -100,7 +100,7 @@ jobs:
         id: pipCache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache pip modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
