@@ -19,7 +19,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@tsconfig/node20": "^20.1.8",
+    "@tsconfig/node22": "^22.0.5",
     "@types/jquery": "^3.5.34",
     "@types/lodash": "^3.10.9",
     "@types/node": "^25.6.0",
