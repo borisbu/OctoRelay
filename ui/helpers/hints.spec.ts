@@ -1,4 +1,3 @@
-import MockDate from "mockdate";
 import { countdownMock, deadlineMock, disposerMock } from "../mocks/countdown";
 import { cancelMock } from "../mocks/actions";
 import { elementMock, jQueryMock } from "../mocks/jQuery";
@@ -10,7 +9,7 @@ describe("Hints helpers", () => {
   });
 
   beforeAll(() => {
-    MockDate.set("2023-08-13T22:30:00");
+    vi.useFakeTimers().setSystemTime("2023-08-13T22:30:00");
   });
 
   afterEach(() => {
@@ -26,7 +25,7 @@ describe("Hints helpers", () => {
   });
 
   afterAll(() => {
-    MockDate.reset();
+    vi.useRealTimers();
   });
 
   describe("clearHints() helper", () => {
