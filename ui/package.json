@@ -12,7 +12,7 @@
   "scripts": {
     "lint": "eslint",
     "test": "tsc --noEmit && TZ=UTC vitest run --coverage --exclude qa*",
-    "build": "yarn build:js && yarn build:styles && yarn build:qa",
+    "build": "pnpm build:js && pnpm build:styles && pnpm build:qa",
     "build:js": "tsdown",
     "build:styles": "lessc styles/octorelay.less ../octoprint_octorelay/static/css/octorelay.css",
     "build:qa": "vitest run qa.spec.ts"
@@ -39,8 +39,8 @@
     "vitest": "^4.1.4"
   },
   "resolutions": {
-    "happy-dom/@types/node": "^25",
-    "vite/lightningcss": "npm:empty-npm-package@1.0.0"
+    "@types/node": "^25",
+    "lightningcss": "-"
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "packageManager": "pnpm@10.33.0"
 }
