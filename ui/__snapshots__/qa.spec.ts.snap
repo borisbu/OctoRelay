@@ -264,7 +264,7 @@ const showHints = ({ hints, navbar }) => {
 //#region model/messageHandler.ts
 const makeMessageHandler = (model) => (plugin, data) => {
 	var _model$settingsViewMo;
-	if (plugin !== "octorelay") return;
+	if (plugin !== ownCode) return;
 	const permission = (_model$settingsViewMo = model.settingsViewModel.access) === null || _model$settingsViewMo === void 0 || (_model$settingsViewMo = _model$settingsViewMo.permissions) === null || _model$settingsViewMo === void 0 ? void 0 : _model$settingsViewMo.PLUGIN_OCTORELAY_SWITCH;
 	const hasPermission = permission && model.loginState.hasPermission ? model.loginState.hasPermission(permission) : false;
 	const navbar = $(\`#navbar_plugin_\${ownCode}\`);

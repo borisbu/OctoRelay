@@ -9,4 +9,9 @@ export default defineConfig({
   clean: true,
   dts: false,
   minify: false,
+  inputOptions: {
+    optimization: {
+      inlineConst: false,
+    },
+  },
 });
