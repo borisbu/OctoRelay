@@ -12,29 +12,26 @@ jobs:
   UI:
     runs-on: ubuntu-latest
     steps:
-      - name: Get yarn cache dir
-        id: yarnCache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - name: Checkout
         uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v5
+        with:
+          package_json_file: ui/package.json
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22.x
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.yarnCache.outputs.dir }}
-          key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
       - name: Install dependencies
         working-directory: ui
-        run: yarn install
+        run: pnpm install
       - name: Lint
         working-directory: ui
-        run: yarn lint
+        run: pnpm lint
       - name: Test
         working-directory: ui
-        run: yarn test
+        run: pnpm test
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
@@ -44,7 +41,7 @@ jobs:
           parallel: true
       - name: Build UI
         working-directory: ui
-        run: yarn build
+        run: pnpm build
 
   Python:
     name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
