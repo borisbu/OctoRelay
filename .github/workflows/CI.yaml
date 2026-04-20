@@ -12,29 +12,26 @@ jobs:
   UI:
     runs-on: ubuntu-latest
     steps:
-      - name: Get yarn cache dir
-        id: yarnCache
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          package_json_file: ui/package.json
       - name: Install Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20.x
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.yarnCache.outputs.dir }}
-          key: ${{ runner.os }}-build-cache-yarn-${{ hashFiles('**/yarn.lock') }}
+          node-version: 22.x
+          cache: pnpm
+          cache-dependency-path: ui/pnpm-lock.yaml
       - name: Install dependencies
         working-directory: ui
-        run: yarn install
+        run: pnpm install
       - name: Lint
         working-directory: ui
-        run: yarn lint
+        run: pnpm lint
       - name: Test
         working-directory: ui
-        run: yarn test
+        run: pnpm test
       - name: Coveralls
         uses: coverallsapp/github-action@v2
         continue-on-error: true
@@ -44,7 +41,7 @@ jobs:
           parallel: true
       - name: Build UI
         working-directory: ui
-        run: yarn build
+        run: pnpm build
 
   Python:
     name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
@@ -94,28 +91,28 @@ jobs:
           - octoprint: 1.10
             python: 3.13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Get pip cache dir
         id: pipCache
         run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
       - name: Cache pip modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
+      - name: Install setuptools 81
+        # https://github.com/pypa/setuptools/issues/3085
+        run: pip install 'setuptools>=81.0.0,<82.0.0'
       - name: Install OctoPrint
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
         run: pip install octoprint~=${{ matrix.octoprint }}.0
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
-      - name: Fixed setuptools
-        # see https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html
-        run: pip install "setuptools~=79.0.0"
       - name: Make liblgpio.so
         if: ${{ matrix.python == '3.13' }}
         # see https://github.com/borisbu/OctoRelay/issues/346#issuecomment-2849009685

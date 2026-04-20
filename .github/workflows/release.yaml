@@ -11,41 +11,38 @@ jobs:
     name: Build the distribution
     runs-on: ubuntu-latest
     env:
-      NODE_VERSION: 20.x
+      NODE_VERSION: 22.x
       PYTHON_VERSION: 3.11
-      OCTOPRINT_VERSION: 1.9
+      OCTOPRINT_VERSION: 1.11
     steps:
     ### UI
-    - name: Get yarn cache dir
-      id: yarnCache
-      run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
+    - uses: pnpm/action-setup@v5
+      with:
+        package_json_file: ui/package.json
     - name: Install Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ env.NODE_VERSION }}
-    - name: Cache node modules
-      uses: actions/cache@v4
-      with:
-        path: ${{ steps.yarnCache.outputs.dir }}
-        key: ${{ runner.os }}-release-cache-yarn-${{ hashFiles('**/yarn.lock') }}
+        cache: pnpm
+        cache-dependency-path: ui/pnpm-lock.yaml
     - name: Install UI dependencies
       working-directory: ui
-      run: yarn install
+      run: pnpm install
     - name: Build UI
       working-directory: ui
-      run: yarn build
+      run: pnpm build
     ### Python
     - name: Install Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Get pip cache dir
       id: pipCache
       run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
     - name: Cache pip modules
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ steps.pipCache.outputs.dir }}
         key: ${{ runner.os }}-release-cache-pip
@@ -57,7 +54,7 @@ jobs:
     - name: Build distribution package
       run: python setup.py sdist --formats=zip
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: dist
         path: dist
@@ -100,7 +97,7 @@ jobs:
             python: 3.12
     steps:
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Download artifact

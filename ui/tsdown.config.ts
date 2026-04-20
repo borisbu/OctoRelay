@@ -1,14 +1,17 @@
-import { defineConfig } from "tsup";
+import { defineConfig } from "tsdown";
 
 export default defineConfig({
   entry: ["octorelay.ts"],
   outDir: "../octoprint_octorelay/static/js",
-  format: "cjs",
-  outExtension: () => ({ js: ".js" }),
   platform: "browser",
-  splitting: false,
+  target: "es6",
   sourcemap: false,
   clean: true,
   dts: false,
   minify: false,
+  inputOptions: {
+    optimization: {
+      inlineConst: false,
+    },
+  },
 });

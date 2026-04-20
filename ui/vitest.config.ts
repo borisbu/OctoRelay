@@ -4,9 +4,13 @@ export default defineConfig({
   test: {
     globals: true,
     coverage: {
-      provider: "istanbul",
+      provider: "v8",
       reporter: ["json", "lcov", "text", "html"],
       exclude: ["mocks", "*.config.ts"],
+    },
+    fakeTimers: {
+      // used by countdown.spec.ts
+      toFake: ["setTimeout", "clearTimeout", "Date"],
     },
   },
 });
