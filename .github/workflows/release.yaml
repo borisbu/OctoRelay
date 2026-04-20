@@ -19,6 +19,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - uses: pnpm/action-setup@v5
+      with:
+        package_json_file: ui/package.json
     - name: Install Node.js
       uses: actions/setup-node@v4
       with:
