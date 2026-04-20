@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
         with:
           package_json_file: ui/package.json
@@ -91,7 +91,7 @@ jobs:
           - octoprint: 1.10
             python: 3.13
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install Python
         uses: actions/setup-python@v5
         with:
