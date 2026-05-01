@@ -3,7 +3,7 @@
 [![CI](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/CI.yaml)
 [![CodeQL](https://github.com/borisbu/OctoRelay/actions/workflows/codeql.yml/badge.svg)](https://github.com/borisbu/OctoRelay/actions/workflows/codeql.yml)
 [![Coverage Status](https://coveralls.io/repos/github/borisbu/OctoRelay/badge.svg?branch=master)](https://coveralls.io/github/borisbu/OctoRelay?branch=master)
-[![Downloads of latest release](https://img.shields.io/github/downloads/borisbu/octorelay/latest/release.zip?color=blue)](https://github.com/borisbu/OctoRelay/releases/latest)
+[![Downloads of latest release](https://img.shields.io/github/downloads/borisbu/octorelay/latest/release.tar.gz?color=blue)](https://github.com/borisbu/OctoRelay/releases/latest)
 
 The plugin adds buttons to control GPIO pins of Raspberry Pi (incl. Pi 5) for switching relays and indicating their states.
 
@@ -42,7 +42,7 @@ Install via the bundled [Plugin Manager](https://docs.octoprint.org/en/master/bu
 or manually using this URL:
 
 ```
-https://github.com/borisbu/OctoRelay/releases/latest/download/release.zip
+https://github.com/borisbu/OctoRelay/releases/latest/download/release.tar.gz
 ```
 
 In case you want to enable the plugin for user groups other than admins and users (operators), you need to
