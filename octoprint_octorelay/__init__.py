@@ -382,4 +382,5 @@ __plugin_hooks__ = {
 }
 
 # pylint: disable=wrong-import-position
-from ._version import __version__
+from importlib.metadata import version
+__version__ = version("OctoRelay")
