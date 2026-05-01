@@ -7,3 +7,13 @@ recursive-include octoprint_octorelay/static *
 exclude octoprint_octorelay/static/js/.gitkeep
 exclude octoprint_octorelay/static/css/.gitkeep
 prune tests
+prune ui
+prune .github
+prune .devcontainer
+prune img
+exclude .gitignore
+exclude .pylintrc
+exclude mypy.ini
+exclude *.sh
+exclude MIGRATION_miniver_to_scm.md
+exclude setup.cfg
