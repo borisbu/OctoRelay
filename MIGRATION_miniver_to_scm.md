@@ -1,9 +1,10 @@
 # Phased Migration Plan: miniver → setuptools-scm
 
-## Phase 0: Pre-Migration Audit
-1. Check `octoprint_octorelay/__init__.py` for version import patterns
-2. Confirm a `v5.3.0` git tag exists (matches current version)
-3. Confirm no `setup.py`/`setup.cfg` remains
+## Phase 0: Pre-Migration Audit (Complete)
+1. ✅ `octoprint_octorelay/__init__.py` imports `from ._version import __version__` (line 385)
+2. ✅ Git tag `5.3.0` exists (no `v` prefix in this repo)
+3. ✅ No `setup.py`/`setup.cfg` remains
+4. ✅ Miniver references only in `_version.py` and `_static_version.py`
 
 ---
 
@@ -21,7 +22,7 @@
    dynamic = ["version"]
    # ... rest unchanged
    ```
-3. Add setuptools-scm config (no `version_file` needed):
+3. Add setuptools-scm config (default tag_regex handles tags without `v` prefix):
    ```toml
    [tool.setuptools_scm]
    ```
