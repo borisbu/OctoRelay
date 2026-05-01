@@ -38,9 +38,6 @@ content-type = "text/markdown"
 [tool.setuptools]
 include-package-data = true
 
-[tool.setuptools.sdist]
-formats = ["zip"]
-
 [tool.setuptools.packages.find]
 include = [
     "octoprint_octorelay",

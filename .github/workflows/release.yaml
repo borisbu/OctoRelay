@@ -50,9 +50,9 @@ jobs:
       run: pip install build
     - name: Install OctoPrint
       run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
-    ### Packing
+    ### Packing, the "--" separates build options from backend options
     - name: Build distribution package
-      run: python -m build --sdist
+      run: python -m build --sdist -- --formats=zip
     - name: Upload artifact
       uses: actions/upload-artifact@v7
       with:
