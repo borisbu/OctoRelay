@@ -50,9 +50,9 @@ jobs:
       run: pip install build
     - name: Install OctoPrint
       run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
-    ### Packing, the "--" separates build options from backend options
+    ### Packing
     - name: Build distribution package
-      run: python -m build --sdist -- --formats=zip
+      run: python -m build --sdist
     - name: Upload artifact
       uses: actions/upload-artifact@v7
       with:
@@ -111,7 +111,7 @@ jobs:
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
       - name: Install the distributed package
-        run: pip install dist/octorelay-*.zip
+        run: pip install dist/octorelay-*.tar.gz
 
   attach:
     name: Attaching asset to the release
@@ -125,9 +125,9 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: Rename to release.zip
-        run: cp dist/octorelay-*.zip release.zip
+      - name: Rename to release.tar.gz
+        run: cp dist/octorelay-*.tar.gz release.tar.gz
       - name: Attach the asset
         uses: softprops/action-gh-release@v2
         with:
-          files: release.zip
+          files: release.tar.gz
