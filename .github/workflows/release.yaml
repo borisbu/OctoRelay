@@ -53,8 +53,6 @@ jobs:
     - name: Install OctoPrint
       run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
     ### Packing
-    - name: Control the working directory state
-      run: git status
     - name: Build distribution package
       run: python -m build --sdist
     - name: Upload artifact
