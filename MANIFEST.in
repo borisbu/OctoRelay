@@ -15,6 +15,5 @@ exclude .gitignore
 exclude .pylintrc
 exclude mypy.ini
 exclude *.sh
-exclude MIGRATION_miniver_to_scm.md
 exclude setup.cfg
 exclude babel.cfg
