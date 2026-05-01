@@ -4,6 +4,7 @@ from typing import Optional, List, Dict, Iterable, Union
 from functools import reduce
 import os
 import time
+from importlib.metadata import version
 import flask
 
 import octoprint.plugin
@@ -381,6 +382,4 @@ __plugin_hooks__ = {
         __plugin_implementation__.process_at_command
 }
 
-# pylint: disable=wrong-import-position
-from importlib.metadata import version
 __version__ = version("OctoRelay")
