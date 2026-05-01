@@ -18,6 +18,8 @@ jobs:
     ### UI
     - name: Checkout
       uses: actions/checkout@v6
+      with:
+        ref: ${{ github.event.release.tag_name }}
     - uses: pnpm/action-setup@v5
       with:
         package_json_file: ui/package.json
