@@ -17,12 +17,12 @@ jobs:
     steps:
     ### UI
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - uses: pnpm/action-setup@v5
       with:
         package_json_file: ui/package.json
     - name: Install Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: pnpm
@@ -35,14 +35,14 @@ jobs:
       run: pnpm build
     ### Python
     - name: Install Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: Get pip cache dir
       id: pipCache
       run: echo "dir=$(pip cache dir)" >> $GITHUB_OUTPUT
     - name: Cache pip modules
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ${{ steps.pipCache.outputs.dir }}
         key: ${{ runner.os }}-release-cache-pip
@@ -54,7 +54,7 @@ jobs:
     - name: Build distribution package
       run: python setup.py sdist --formats=zip
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: dist
         path: dist
@@ -97,7 +97,7 @@ jobs:
             python: 3.12
     steps:
       - name: Install Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
       - name: Download artifact
