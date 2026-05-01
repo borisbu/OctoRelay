@@ -104,6 +104,9 @@ jobs:
         with:
           path: ${{ steps.pipCache.outputs.dir }}
           key: ${{ runner.os }}-build-cache-pip-python-${{ matrix.python }}-octoprint-${{ matrix.octoprint}}
+      - name: Install setuptools 81
+        # https://github.com/pypa/setuptools/issues/3085
+        run: pip install 'setuptools>=81.0.0,<82.0.0'
       - name: Install OctoPrint
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
         run: pip install octoprint~=${{ matrix.octoprint }}.0
