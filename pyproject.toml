@@ -1,6 +1,6 @@
 [build-system]
 requires = [
-    "setuptools>=68",
+    "setuptools>=77",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -17,9 +17,7 @@ dependencies = [
     "lgpio",
     "RPi.GPIO",
 ]
-dynamic = [
-    "license",
-]
+license = "AGPL-3.0-or-later"
 
 [project.entry-points."octoprint.plugin"]
 octorelay = "octoprint_octorelay"
