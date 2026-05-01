@@ -11,7 +11,8 @@
       "version": "3.11"
     },
     "ghcr.io/devcontainers-contrib/features/bash-command:1": {
-      "command": "corepack enable && git config --global alias.s status"
+      "command": "git config --global alias.s status"
     }
-  }
+  },
+  "postCreateCommand": "corepack enable"
 }
