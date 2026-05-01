@@ -2,6 +2,12 @@
 
 ## Version 5
 
+### 5.4.0
+
+- Modernized the build system: no longer use `setup.py`, now using `pyproject.toml` solely;
+- Plugin versioning switched from `miniver` to `setuptools-scm`;
+- Release file format remains `.zip` for automatic updates, but may be changed in the future v6.
+
 ### 5.3.0
 
 - Adds `pyproject.toml` file to the distribution:

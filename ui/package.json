@@ -13,7 +13,7 @@
     "lint": "eslint",
     "test": "tsc --noEmit && TZ=UTC vitest run --coverage --exclude qa*",
     "build": "pnpm build:js && pnpm build:styles && pnpm build:qa",
-    "build:js": "tsdown",
+    "build:js": "tsdown && git restore ../**/.gitkeep",
     "build:styles": "lessc styles/octorelay.less ../octoprint_octorelay/static/css/octorelay.css",
     "build:qa": "vitest run qa.spec.ts"
   },

@@ -1,7 +1,47 @@
 [build-system]
 requires = [
-    "setuptools",
-    "wheel",
-    "octoprint",
+    "setuptools>=77",
+    "setuptools-scm>=8",
 ]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "OctoRelay"
+dynamic = ["version"]
+description = "A plugin that adds buttons to the navbar for toggling GPIO on the RPi. It can be used for turning relays on and off."
+authors = [
+    { name = "Boris Burgstaller", email = "raspi@burgstaller.net" },
+]
+requires-python = ">=3.9,<4"
+dependencies = [
+    "gpiozero",
+    "lgpio",
+    "RPi.GPIO",
+]
+license = "AGPL-3.0-or-later"
+
+[project.entry-points."octoprint.plugin"]
+octorelay = "octoprint_octorelay"
+
+[project.urls]
+Homepage = "https://github.com/borisbu/OctoRelay"
+
+[project.optional-dependencies]
+develop = [
+    "go-task-bin",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = [
+    "octoprint_octorelay",
+    "octoprint_octorelay.*",
+]
+
+[tool.setuptools_scm]
