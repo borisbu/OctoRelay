@@ -1,12 +1,13 @@
 [build-system]
 requires = [
     "setuptools>=77",
+    "setuptools-scm>=8",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "OctoRelay"
-version = "5.3.0"
+dynamic = ["version"]
 description = "A plugin that adds buttons to the navbar for toggling GPIO on the RPi. It can be used for turning relays on and off."
 authors = [
     { name = "Boris Burgstaller", email = "raspi@burgstaller.net" },
@@ -42,3 +43,5 @@ include = [
     "octoprint_octorelay",
     "octoprint_octorelay.*",
 ]
+
+[tool.setuptools_scm]
