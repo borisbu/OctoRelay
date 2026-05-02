@@ -406,6 +406,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         actual = self.plugin_instance.get_api_commands()
         self.assertEqual(actual, expected)
 
+    def test_is_api_protected(self):
+        # Should return True to enforce API key authentication for SimpleApi endpoints
+        self.assertTrue(self.plugin_instance.is_api_protected())
+
     def test_get_update_information(self):
         # Should return the update strategy configuration
         expected = {
