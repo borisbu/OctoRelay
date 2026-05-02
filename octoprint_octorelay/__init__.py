@@ -93,6 +93,10 @@ class OctoRelayPlugin(
             CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
 
+    def is_api_protected(self):
+        # https://docs.octoprint.org/en/main/plugins/mixins.html#octoprint.plugin.SimpleApiPlugin.is_api_protected
+        return True
+
     def get_additional_permissions(self, *args, **kwargs):
         return [ SWITCH_PERMISSION ]
 

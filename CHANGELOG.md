@@ -6,7 +6,8 @@
 
 - Modernized the build system: no longer use `setup.py`, now using `pyproject.toml` solely;
 - Plugin versioning switched from `miniver` to `setuptools-scm`;
-- Release file format remains `.zip` for automatic updates, but may be changed in the future v6.
+- Release file format remains `.zip` for automatic updates, but may be changed in the future v6;
+- Excplicitly enabled the plugin API protection: authentication required (`X-Api-Key`).
 
 ### 5.3.0
 
