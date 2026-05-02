@@ -47,12 +47,20 @@ jobs:
         path: ${{ steps.pipCache.outputs.dir }}
         key: ${{ runner.os }}-release-cache-pip
     - name: Install distribution dependencies
-      run: pip install --upgrade wheel setuptools pip
+      run: pip install build
     - name: Install OctoPrint
       run: pip install octoprint~=${{ env.OCTOPRINT_VERSION }}.0
     ### Packing
     - name: Build distribution package
-      run: python setup.py sdist --formats=zip
+      run: python -m build --sdist
+    ## Required for backward compatibility, see UPDATES_CONFIG, todo: reconsider in v6
+    - name: Repack as ZIP
+      run: |
+        mkdir -p repack
+        tar -xzf dist/octorelay-*.tar.gz -C repack
+        rm -rf dist/*
+        cd repack && zip -r ../dist/release.zip .
+        cd .. && rm -rf repack
     - name: Upload artifact
       uses: actions/upload-artifact@v7
       with:
@@ -111,7 +119,7 @@ jobs:
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
       - name: Install the distributed package
-        run: pip install dist/octorelay-*.zip
+        run: pip install dist/release.zip
 
   attach:
     name: Attaching asset to the release
@@ -125,9 +133,7 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: Rename to release.zip
-        run: cp dist/octorelay-*.zip release.zip
       - name: Attach the asset
         uses: softprops/action-gh-release@v2
         with:
-          files: release.zip
+          files: dist/release.zip

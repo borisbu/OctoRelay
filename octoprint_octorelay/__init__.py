@@ -4,6 +4,7 @@ from typing import Optional, List, Dict, Iterable, Union
 from functools import reduce
 import os
 import time
+from importlib.metadata import version
 import flask
 
 import octoprint.plugin
@@ -91,6 +92,14 @@ class OctoRelayPlugin(
             LIST_ALL_COMMAND: [],
             CANCEL_TASK_COMMAND: [ "subject", "target", "owner" ]
         }
+
+    def is_api_protected(self):
+        # https://docs.octoprint.org/en/main/plugins/mixins.html#octoprint.plugin.SimpleApiPlugin.is_api_protected
+        return True
+
+    def is_template_autoescaped(self):
+        # https://docs.octoprint.org/en/main/plugins/mixins.html#octoprint.plugin.TemplatePlugin.is_template_autoescaped
+        return True
 
     def get_additional_permissions(self, *args, **kwargs):
         return [ SWITCH_PERMISSION ]
@@ -381,5 +390,4 @@ __plugin_hooks__ = {
         __plugin_implementation__.process_at_command
 }
 
-# pylint: disable=wrong-import-position
-from ._version import __version__
+__version__ = version("OctoRelay")
