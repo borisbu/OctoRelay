@@ -97,6 +97,10 @@ class OctoRelayPlugin(
         # https://docs.octoprint.org/en/main/plugins/mixins.html#octoprint.plugin.SimpleApiPlugin.is_api_protected
         return True
 
+    def is_template_autoescaped(self):
+        # https://docs.octoprint.org/en/main/plugins/mixins.html#octoprint.plugin.TemplatePlugin.is_template_autoescaped
+        return True
+
     def get_additional_permissions(self, *args, **kwargs):
         return [ SWITCH_PERMISSION ]
 

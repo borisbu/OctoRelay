@@ -410,6 +410,10 @@ class TestOctoRelayPlugin(unittest.TestCase):
         # Should return True to enforce API key authentication for SimpleApi endpoints
         self.assertTrue(self.plugin_instance.is_api_protected())
 
+    def test_is_template_autoescaped(self):
+        # Should return True to enable autoescaping for templates, preventing XSS
+        self.assertTrue(self.plugin_instance.is_template_autoescaped())
+
     def test_get_update_information(self):
         # Should return the update strategy configuration
         expected = {
