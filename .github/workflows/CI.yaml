@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         python: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
-        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11" ]
+        octoprint: [ "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "2.0" ]
         exclude:
           # These versions are not compatible to each other:
           - octoprint: 1.5
@@ -109,7 +109,12 @@ jobs:
         run: pip install 'setuptools>=81.0.0,<82.0.0'
       - name: Install OctoPrint
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
-        run: pip install octoprint~=${{ matrix.octoprint }}.0
+        run: |
+          if [ "${{ matrix.octoprint }}" = "2.0" ]; then
+            pip install octoprint==2.0.0rc1
+          else
+            pip install octoprint~=${{ matrix.octoprint }}.0
+          fi
       - name: Install Wheel
         # see https://community.octoprint.org/t/setuptools-error-while-installing-plugin-octoklipper-on-manual-op-installation/51387
         run: pip install wheel
