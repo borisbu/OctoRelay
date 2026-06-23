@@ -111,7 +111,7 @@ jobs:
         # see https://stackoverflow.com/questions/49854628/how-do-i-pip-install-the-latest-patch-number-of-a-package
         run: |
           if [ "${{ matrix.octoprint }}" = "2.0" ]; then
-            pip install octoprint==2.0.0rc2
+            pip install octoprint==2.0.0rc3
           else
             pip install octoprint~=${{ matrix.octoprint }}.0
           fi
