@@ -205,7 +205,8 @@ const addPopover = ({ target, title, content, navbar, items, originalSubject }) 
 	const closeBtn = navbar.find(\`#\${closeBtnId}\`);
 	const countdownDisposers = items.map(({ cancelId, timeTagId, deadline, cancel }) => {
 		navbar.find(\`#\${cancelId}\`).on("click", cancel);
-		return setCountdown(navbar.find(\`#\${timeTagId}\`), deadline);
+		const timeTag = navbar.find(\`#\${timeTagId}\`);
+		return setCountdown(timeTag, deadline);
 	});
 	closeBtn.on("click", () => {
 		for (const disposer of countdownDisposers) disposer();
