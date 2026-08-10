@@ -1,8 +1,6 @@
 import globals from "globals";
 import jsPlugin from "@eslint/js";
 import tsPlugin from "typescript-eslint";
-import prettierOverrides from "eslint-config-prettier";
-import prettierRules from "eslint-plugin-prettier/recommended";
 import allowedDepsPlugin from "eslint-plugin-allowed-dependencies";
 import { builtinModules } from "node:module";
 
@@ -17,8 +15,6 @@ export default [
   },
   jsPlugin.configs.recommended,
   ...tsPlugin.configs.recommended,
-  prettierOverrides,
-  prettierRules,
   // Things to turn off globally
   { ignores: ["coverage/", "styles/"] },
   // Things to turn on globally
