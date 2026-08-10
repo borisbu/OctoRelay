@@ -4,7 +4,7 @@ exports[`QA > css/octorelay.css build remains 1`] = `
 "#settings_plugin_octorelay .tab-content {
   position: relative;
 }
-#settings_plugin_octorelay .btn > input[type='radio'] {
+#settings_plugin_octorelay .btn > input[type="radio"] {
   display: none;
 }
 #settings_plugin_octorelay input.code {
