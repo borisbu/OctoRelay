@@ -15,6 +15,6 @@ export default defineConfig({
     },
     experimental: {
       attachDebugInfo: "none",
-    }
+    },
   },
 });
