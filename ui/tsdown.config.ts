@@ -13,5 +13,8 @@ export default defineConfig({
     optimization: {
       inlineConst: false,
     },
+    experimental: {
+      attachDebugInfo: "none",
+    }
   },
 });
