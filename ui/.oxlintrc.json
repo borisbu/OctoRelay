@@ -1,7 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "ignorePatterns": ["coverage/", "styles/"],
-  "plugins": ["typescript"],
   "jsPlugins": [
     {
       "name": "allowed",
@@ -18,6 +17,8 @@
     "node": true
   },
   "rules": {
+    "unicorn/prefer-node-protocol": "warn",
+    "unicorn/no-abusive-eslint-disable": "warn",
     "constructor-super": "error",
     "for-direction": "error",
     "getter-return": "error",
