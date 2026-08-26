@@ -4,7 +4,7 @@ exports[`QA > css/octorelay.css build remains 1`] = `
 "#settings_plugin_octorelay .tab-content {
   position: relative;
 }
-#settings_plugin_octorelay .btn > input[type='radio'] {
+#settings_plugin_octorelay .btn > input[type="radio"] {
   display: none;
 }
 #settings_plugin_octorelay input.code {
@@ -97,14 +97,11 @@ exports[`QA > css/octorelay.css build remains 1`] = `
 `;
 
 exports[`QA > js/octorelay.js build remains 1`] = `
-"//#region helpers/const.ts
-const ownCode = "octorelay";
+"const ownCode = "octorelay";
 const closeBtnId = "pop-closer";
 const closeIconHTML = "<span class=\\"fa fa-close fa-sm\\"></span>";
 const closeBtnHTML = \`<button id="\${closeBtnId}" type="button" class="close">\${closeIconHTML}</button>\`;
 
-//#endregion
-//#region helpers/countdown.ts
 /**
 * @desc Creating Intl.NumberFormat is relatively slow, therefore using memoize() per set of arguments
 * @since 5.1.0 also iterating over the requested locale, fixed locale and default one, then falling back to custom
@@ -161,12 +158,8 @@ const setCountdown = (selector, deadline) => {
 	return disposer;
 };
 
-//#endregion
-//#region helpers/narrowing.ts
 const hasUpcomingTask = (relay) => relay.upcoming ? relay.upcoming.target !== relay.relay_state : false;
 
-//#endregion
-//#region helpers/actions.ts
 const toggleRelay = (key, relay) => {
 	const command = () => OctoPrint.simpleApiCommand(ownCode, "update", { subject: key });
 	if (!relay.confirm_off) return command();
@@ -186,8 +179,6 @@ const cancelTask = (key, { owner, target }) => OctoPrint.simpleApiCommand(ownCod
 	target
 });
 
-//#endregion
-//#region helpers/hints.ts
 const clearHints = (btn) => btn.tooltip("destroy").popover("destroy");
 const addTooltip = (btn, text) => btn.tooltip({
 	placement: "bottom",
@@ -205,7 +196,8 @@ const addPopover = ({ target, title, content, navbar, items, originalSubject }) 
 	const closeBtn = navbar.find(\`#\${closeBtnId}\`);
 	const countdownDisposers = items.map(({ cancelId, timeTagId, deadline, cancel }) => {
 		navbar.find(\`#\${cancelId}\`).on("click", cancel);
-		return setCountdown(navbar.find(\`#\${timeTagId}\`), deadline);
+		const timeTag = navbar.find(\`#\${timeTagId}\`);
+		return setCountdown(timeTag, deadline);
 	});
 	closeBtn.on("click", () => {
 		for (const disposer of countdownDisposers) disposer();
@@ -260,8 +252,6 @@ const showHints = ({ hints, navbar }) => {
 	});
 };
 
-//#endregion
-//#region model/messageHandler.ts
 const makeMessageHandler = (model) => (plugin, data) => {
 	var _model$settingsViewMo;
 	if (plugin !== ownCode) return;
@@ -284,16 +274,12 @@ const makeMessageHandler = (model) => (plugin, data) => {
 	});
 };
 
-//#endregion
-//#region model/OctoRelayModel.ts
 const OctoRelayViewModel = function([settingsViewModel, loginStateViewModel]) {
 	this.settingsViewModel = settingsViewModel;
 	this.loginState = loginStateViewModel;
 	this.onDataUpdaterPluginMessage = makeMessageHandler(this);
 };
 
-//#endregion
-//#region model/initOctoRelayModel.ts
 const initOctoRelayModel = () => {
 	OCTOPRINT_VIEWMODELS.push({
 		construct: OctoRelayViewModel,
@@ -301,9 +287,6 @@ const initOctoRelayModel = () => {
 	});
 };
 
-//#endregion
-//#region octorelay.ts
 $(initOctoRelayModel);
-
-//#endregion"
+"
 `;

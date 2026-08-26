@@ -2,6 +2,11 @@
 
 ## Version 5
 
+### 5.4.1
+
+- Fixed the label for the "after Turned ON" event;
+- Removed the bundle debugging comments.
+
 ### 5.4.0
 
 - Modernized the build system: no longer use `setup.py`, now using `pyproject.toml` solely;
