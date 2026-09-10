@@ -6,7 +6,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["json", "lcov", "text", "html"],
-      exclude: ["mocks", "*.config.ts"],
+      exclude: ["mocks/*", "*.config.ts"],
     },
     fakeTimers: {
       // used by countdown.spec.ts
