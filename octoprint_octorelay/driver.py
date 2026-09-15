@@ -10,13 +10,22 @@ class Driver():
 
     def __init__(self, pin: int, inverted: bool, pin_factory=None):
         self.pin = pin # GPIO pin
-        self.inverted = inverted # marks the relay as normally closed
-        self.handle = LED(pin, pin_factory=pin_factory, initial_value=inverted)
+        self.handle = LED(pin, pin_factory=pin_factory, active_high=not inverted)
         # release immediately, avoid lock, allow physical buttons to operate same relays:
         self.handle.pin_factory.release_pins(self.handle, self.pin)
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}(pin={self.pin},inverted={self.inverted},closed={self.is_closed()})"
+
+    @property
+    def inverted(self):
+        """Returns true if the relay is normally closed."""
+        return not self.handle.active_high
+
+    @inverted.setter
+    def inverted(self, value):
+        """Changing this will invert is_closed value without inverting the pin"""
+        self.handle.active_high = not value
 
     def close(self):
         """Activates the current flow through the relay."""
@@ -28,7 +37,7 @@ class Driver():
 
     def is_closed(self) -> bool:
         """Returns the logical state of the relay."""
-        return xor(self.inverted, self.handle.is_lit)
+        return self.handle.is_lit
 
     def toggle(self, desired_state: Optional[bool] = None) -> bool:
         """
@@ -38,7 +47,7 @@ class Driver():
         """
         if desired_state is None:
             desired_state = not self.is_closed()
-        (self.handle.on if xor(self.inverted, desired_state) else self.handle.off)()
+        (self.handle.on if desired_state else self.handle.off)()
         return desired_state
 
     @classmethod
