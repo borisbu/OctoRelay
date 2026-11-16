@@ -10,7 +10,7 @@ on:
 
 jobs:
   UI:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -45,7 +45,7 @@ jobs:
 
   Python:
     name: Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: [ "3.9", "3.10", "3.11", "3.12", "3.13" ]
@@ -149,7 +149,7 @@ jobs:
 
   finish:
     needs: [UI, Python]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Coveralls Finished
         continue-on-error: true
