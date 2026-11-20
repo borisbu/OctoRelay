@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build the distribution
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       NODE_VERSION: 22.x
       PYTHON_VERSION: 3.11
@@ -70,7 +70,7 @@ jobs:
   integration:
     name: Integration test on Python ${{ matrix.python }}, OctoPrint ${{ matrix.octoprint }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         python: [ "3.9", "3.10", "3.11", "3.12" ]
@@ -123,7 +123,7 @@ jobs:
 
   attach:
     name: Attaching asset to the release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs:
       - build
       - integration
