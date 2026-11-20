@@ -18,20 +18,20 @@
     "build:qa": "vitest run qa.spec.ts"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node22": "^22.0.7",
     "@types/jquery": "^3.5.34",
     "@types/lodash": "^3.10.9",
-    "@types/node": "^26.1.2",
-    "@vitest/coverage-v8": "^5.0.0",
+    "@types/node": "^26.6.0",
+    "@vitest/coverage-v8": "^5.1.0",
     "eslint-plugin-allowed-dependencies": "^3.1.0",
-    "happy-dom": "^20.11.1",
-    "less": "^4.8.1",
-    "oxfmt": "0.62.0",
-    "oxlint": "^1.77.0",
-    "tsdown": "^0.23.0",
-    "typescript": "^7.0.2",
-    "vite": "^8.2.2",
-    "vitest": "^5.0.0"
+    "happy-dom": "^21.0.0",
+    "less": "^4.9.1",
+    "oxfmt": "0.78.0",
+    "oxlint": "^1.92.0",
+    "tsdown": "0.23.4",
+    "typescript": "7.1.0-beta",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.0"
   },
   "packageManager": "pnpm@12.18.0+sha512.9d7882d5dc82147ecfc4e062aa34834e0ad0296710a1837a1115ae012127d36b7109e321ac1598a1dd0a65597681b1e99917e12ed0d749eae91187943363beb3"
 }
