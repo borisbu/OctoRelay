@@ -18,7 +18,7 @@
     "build:qa": "vitest run qa.spec.ts"
   },
   "devDependencies": {
-    "@tsconfig/node22": "^22.0.5",
+    "@tsconfig/node22": "^22.0.7",
     "@types/jquery": "^3.5.34",
     "@types/lodash": "^3.10.9",
     "@types/node": "^26.1.2",
