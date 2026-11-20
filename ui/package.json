@@ -25,7 +25,7 @@
     "@vitest/coverage-v8": "^5.0.0",
     "eslint-plugin-allowed-dependencies": "^3.1.0",
     "happy-dom": "^21.0.0",
-    "less": "^4.8.1",
+    "less": "^4.9.1",
     "oxfmt": "0.62.0",
     "oxlint": "^1.77.0",
     "tsdown": "^0.23.0",
