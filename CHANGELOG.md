@@ -2,6 +2,10 @@
 
 ## Version 5
 
+### 5.5.0
+
+- Supporting OctoPrint 2.0.
+
 ### 5.4.1
 
 - Fixed the label for the "after Turned ON" event;
